@@ -29,13 +29,6 @@ let connectClient = async function () {
 
 connectClient();
 
-let getBuilding = function (name) {
-    const collection = client.db("TrojanCheck").collection("Buildings");
-    let query = { name: name };
-    let building = collection.findOne(query);
-    return building;
-};
-
 // Query defines all of the top-level entry points for queries
 const Query = `
 	type Query {
@@ -43,17 +36,62 @@ const Query = `
 	}
 `;
 
+let getBuilding = function (name) {
+    const collection = client.db("TrojanCheck").collection("Buildings");
+    let query = {name: name};
+    let building = collection.findOne(query);
+    return building;
+};
+
+const Mutation = `
+    type Mutation {
+        buildingCapacity(name: String!, capacity: Int!) : Status
+    }
+`;
+
+let updateCapacity = async function (name, capacity) {
+    const collection = client.db("TrojanCheck").collection("Buildings");
+    let filter = {
+        name: name,
+    };
+    let update = {
+        $set: {
+            capacity: capacity,
+        },
+    };
+
+    try {
+        let response = await collection.updateOne(filter, update);
+        if (response.modifiedCount === 1) {
+            return {
+                status: true,
+            };
+        }
+        return {
+            status: false,
+        };
+    } catch (err) {
+        console.error(`Something went wrong: ${err}`);
+        return {
+            status: false,
+        };
+    }
+};
+
 const Building = require("./building");
-const typeDefs = [
-	Query, 
-	Building.typeDef
-];
+const Status = require("./status");
+const typeDefs = [Query, Mutation, Building.typeDef, Status.typeDef];
 
 // The resolvers
 const resolvers = {
     Query: {
         building(_, args) {
             return getBuilding(args.name);
+        },
+    },
+    Mutation: {
+        buildingCapacity(_, args) {
+            return updateCapacity(args.name, args.capacity);
         },
     },
 };
