@@ -2,16 +2,12 @@
 require("dotenv").config();
 
 // Package Imports
-const mongo = require("mongodb");
 const express = require("express");
-const bodyParser = require("body-parser");
-const { graphqlExpress, graphiqlExpress } = require("apollo-server-express");
-const { makeExecutableSchema } = require("graphql-tools");
+const { ApolloServer, gql } = require('apollo-server-express');
 
 // Instantiate MongoDB Connection
 const MongoClient = require("mongodb").MongoClient;
 const console = require("console");
-const { argsToArgsConfig } = require("graphql/type/definition");
 const uri = `mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@tcio.yhcmw.mongodb.net/TrojanCheck?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
     useNewUrlParser: true,
@@ -30,13 +26,13 @@ let connectClient = async function () {
 connectClient();
 
 // Query defines all of the top-level entry points for queries
-const Query = `
+const Query = gql `
 	type Query {
 		building(name: String): [Building]
 	}
 `;
 
-const Mutation = `
+const Mutation = gql `
     type Mutation {
         updateCapacity(name: String!, capacity: Int!): Status
         deleteAccount(email: String!): Status
@@ -68,22 +64,14 @@ const resolvers = {
     },
 };
 
-// Put together a schema
-const schema = makeExecutableSchema({
-    typeDefs,
-    resolvers,
-});
-
 // Initialize the app
 const app = express();
 
-// The GraphQL endpoint
-app.use("/graphql", bodyParser.json(), graphqlExpress({ schema }));
+const PORT = 4000;
 
-// GraphiQL, a visual editor for queries
-app.use("/graphiql", graphiqlExpress({ endpointURL: "/graphql" }));
+const server = new ApolloServer({ typeDefs, resolvers });
+server.applyMiddleware({ app });
 
-// Start the server
-app.listen(3000, () => {
-    console.log("Go to http://localhost:3000/graphiql to run queries!");
-});
+app.listen({ port: PORT }, () =>
+  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
+)
