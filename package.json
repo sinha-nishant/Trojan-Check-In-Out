@@ -22,9 +22,7 @@
   "homepage": "https://github.com/sinha-nishant/Trojan-Check-In-Out#readme",
   "dependencies": {
     "apollo-server": "^2.21.0",
-    "apollo-server-express": "^2.21.0",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1",
     "graphql": "^15.5.0",
     "graphql-tools": "^4.0.8",
     "mongodb": "^3.6.4"

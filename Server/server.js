@@ -2,8 +2,7 @@
 require("dotenv").config();
 
 // Package Imports
-const express = require("express");
-const { ApolloServer, gql } = require('apollo-server-express');
+const { ApolloServer, gql } = require('apollo-server');
 
 // Instantiate MongoDB Connection
 const MongoClient = require("mongodb").MongoClient;
@@ -64,14 +63,8 @@ const resolvers = {
     },
 };
 
-// Initialize the app
-const app = express();
-
-const PORT = 4000;
-
 const server = new ApolloServer({ typeDefs, resolvers });
-server.applyMiddleware({ app });
 
-app.listen({ port: PORT }, () =>
-  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
-)
+server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
+    console.log(`🚀 Server ready at ${url}`);
+});
