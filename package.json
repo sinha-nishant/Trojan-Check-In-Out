@@ -4,6 +4,7 @@
   "description": "Track student check-ins and check-outs through QR code scanning.",
   "main": "server.js",
   "scripts": {
+    "start" : "node Server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
