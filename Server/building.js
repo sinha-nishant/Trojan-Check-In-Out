@@ -7,6 +7,7 @@ const typeDef = `
 	}
 `;
 
+// Get building given its name
 let getBuilding = async function (client, name) {
     const collection = client.db("TrojanCheck").collection("Buildings");
     let query = {name: name};
@@ -14,12 +15,14 @@ let getBuilding = async function (client, name) {
     return [building];
 };
 
+// Get all buildings
 let getAllBuildings = async function(client) {
     const collection = client.db("TrojanCheck").collection("Buildings");
     let buildings = await collection.find().toArray();
     return buildings;
 }
 
+// Update the capacity of a building given the name of the building and its new capacity
 let updateCapacity = async function (client, name, capacity) {
     let collection = client.db("TrojanCheck").collection("Buildings");
     let filter = {
