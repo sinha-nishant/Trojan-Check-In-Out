@@ -2,12 +2,12 @@
 require("dotenv").config();
 
 // Package Imports
-const { ApolloServer, gql } = require('apollo-server');
+const { ApolloServer, gql } = require("apollo-server");
 
 // Instantiate MongoDB Connection
 const MongoClient = require("mongodb").MongoClient;
 const console = require("console");
-const uri = "const uri = `mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@tcio.yhcmw.mongodb.net/TrojanCheck?retryWrites=true&w=majority`;";
+const uri = `mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@tcio.yhcmw.mongodb.net/TrojanCheck?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -25,25 +25,35 @@ let connectClient = async function () {
 connectClient();
 
 // Query defines all of the top-level entry points for queries
-const Query = gql `
-	type Query {
-		building(name: String): [Building]
-	}
+const Query = gql`
+    type Query {
+        building(name: String): [Building]
+    }
 `;
 
-const Mutation = gql `
+const Mutation = gql`
     type Mutation {
         updateCapacity(name: String!, capacity: Int!): Status
         deleteAccount(email: String!): Status
-        createAccount(firstname: String!, 
-            lastname: String!, 
-            email: String!, 
-            password: String!, 
-            profilePicture: String!,
-            uscID: Int!,
-            major: String!,
-            isManager: Boolean!): Status
-        checkIn(buildingName: String!, email: String!, checkInTime: Int!): Status
+        createAccount(
+            firstname: String!
+            lastname: String!
+            email: String!
+            password: String!
+            profilePicture: String!
+            uscID: Int!
+            major: String!
+            isManager: Boolean!
+        ): Status
+        checkIn(
+            buildingName: String!
+            email: String!
+            checkInTime: Int!
+        ): Status
+        checkOut(
+            uscID: Int!
+            checkOutTime: String!
+        ) : Status
     }
 `;
 
@@ -70,22 +80,36 @@ const resolvers = {
             return Account.deleteAccount(client, args.email);
         },
 
-        createAccount(_, args){
-            return Account.createAccount(client, args.firstname, 
-                args.lastname, 
-                args.email, 
+        createAccount(_, args) {
+            return Account.createAccount(
+                client,
+                args.firstname,
+                args.lastname,
+                args.email,
                 args.profilePicture,
-                args.password, 
+                args.password,
                 args.isManager,
                 args.uscID,
-                args.major);
+                args.major
+            );
         },
 
-        checkIn(_, args){
-            return Account.checkIn(client, args.email, args.buildingName, args.checkInTime);
+        checkIn(_, args) {
+            return Account.checkIn(
+                client,
+                args.email,
+                args.buildingName,
+                args.checkInTime
+            );
+        },
+        checkOut(_, args) {
+            return Account.checkOut(
+                client,
+                args.uscID,
+                args.checkOutTime
+            )
         }
-
-        }
+    },
 };
 
 const server = new ApolloServer({ typeDefs, resolvers });
