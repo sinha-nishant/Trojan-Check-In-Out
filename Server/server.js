@@ -47,8 +47,8 @@ const Mutation = gql`
         ): Status
         checkIn(
             buildingName: String!
-            email: String!
-            checkInTime: Int!
+            uscID: Int!
+            checkInTime: String!
         ): Status
         checkOut(
             uscID: Int!
@@ -97,7 +97,7 @@ const resolvers = {
         checkIn(_, args) {
             return Account.checkIn(
                 client,
-                args.email,
+                args.uscID,
                 args.buildingName,
                 args.checkInTime
             );

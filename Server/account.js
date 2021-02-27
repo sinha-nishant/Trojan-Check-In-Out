@@ -62,13 +62,13 @@ let createAccount = async function (
 };
 
 //Check in into a building given user's email, building's name and check in time
-let checkIn = async (client, email, buildingName, checkInTime) => {
+let checkIn = async (client, uscID, buildingName, checkInTime) => {
     let collection = client.db("TrojanCheck").collection("Accounts");
-    const query = { email: email };
+    let query = { uscID: uscID };
     const push_query = {
         buildingName: buildingName,
         checkInTime: checkInTime,
-        checkOutTime: 0,
+        checkOutTime: null,
     };
     let curr_status = false;
 
@@ -77,8 +77,23 @@ let checkIn = async (client, email, buildingName, checkInTime) => {
         .then((result) => {
             curr_status = true;
         });
+    if(curr_status===false){
+        return{
+            status:false
+        };
+    }
 
-    if (curr_status) {
+    let another_status=false
+
+    collection = client.db("TrojanCheck").collection("Buildings");
+    query = {"name": buildingName};
+    response = await collection
+        .updateOne(query, {$push: {students: uscID}})
+        .then((result) => {
+            another_status = true;
+        });
+
+    if (curr_status&&another_status) {
         return {
             status: true,
         };
