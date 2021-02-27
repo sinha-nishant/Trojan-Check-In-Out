@@ -70,13 +70,16 @@ let checkIn = async (client, uscID, buildingName, checkInTime) => {
         checkInTime: checkInTime,
         checkOutTime: null,
     };
+    
     let curr_status = false;
+    console.log("Before status: ", curr_status)
 
     let response = await collection
         .updateOne(query, { $push: { activity: push_query } })
         .then((result) => {
-            curr_status = true;
+            curr_status = result.modifiedCount===1;
         });
+    
     if(curr_status===false){
         return{
             status:false
@@ -90,8 +93,10 @@ let checkIn = async (client, uscID, buildingName, checkInTime) => {
     response = await collection
         .updateOne(query, {$push: {students: uscID}})
         .then((result) => {
-            another_status = true;
+            another_status = result.modifiedCount===1;
         });
+
+    console.log("Another status: ", another_status)
 
     if (curr_status&&another_status) {
         return {
