@@ -7,7 +7,7 @@ const { ApolloServer, gql } = require('apollo-server');
 // Instantiate MongoDB Connection
 const MongoClient = require("mongodb").MongoClient;
 const console = require("console");
-const uri = `mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@tcio.yhcmw.mongodb.net/TrojanCheck?retryWrites=true&w=majority`;
+const uri = "const uri = `mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@tcio.yhcmw.mongodb.net/TrojanCheck?retryWrites=true&w=majority`;";
 const client = new MongoClient(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -35,6 +35,15 @@ const Mutation = gql `
     type Mutation {
         updateCapacity(name: String!, capacity: Int!): Status
         deleteAccount(email: String!): Status
+        createAccount(firstname: String!, 
+            lastname: String!, 
+            email: String!, 
+            password: String!, 
+            profilePicture: String!,
+            uscID: Int!,
+            major: String!,
+            isManager: Boolean!): Status
+        checkIn(buildingName: String!, email: String!, checkInTime: Int!): Status
     }
 `;
 
@@ -59,8 +68,24 @@ const resolvers = {
         },
         deleteAccount(_, args) {
             return Account.deleteAccount(client, args.email);
+        },
+
+        createAccount(_, args){
+            return Account.createAccount(client, args.firstname, 
+                args.lastname, 
+                args.email, 
+                args.profilePicture,
+                args.password, 
+                args.isManager,
+                args.uscID,
+                args.major);
+        },
+
+        checkIn(_, args){
+            return Account.checkIn(client, args.email, args.buildingName, args.checkInTime);
         }
-    },
+
+        }
 };
 
 const server = new ApolloServer({ typeDefs, resolvers });
