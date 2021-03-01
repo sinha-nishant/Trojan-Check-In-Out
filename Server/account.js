@@ -1,3 +1,25 @@
+const ActivityTypeDef = `
+	type Activity {
+		buildingName: String,
+        checkInTime: String,
+        checkOutTime: String
+	}
+`;
+
+const StudentTypeDef = `
+	type Student {
+		firstName: String, 
+        lastName: String,
+        email: String,
+        profilePicture: String,
+        password: String,
+        isManager: Boolean,
+        uscID: Int,
+        major: String,
+		activity: [Activity]
+	}
+`;
+
 // Delete account given user's email
 let deleteAccount = async function (client, email) {
     let collection = client.db("TrojanCheck").collection("Accounts");
@@ -166,10 +188,20 @@ let checkOut = async function(client, uscID, checkOutTime) {
 	return {status: true};
 };
 
+let getStudent = async function(client, uscID) {
+    const collection = client.db("TrojanCheck").collection("Accounts");
+    const query = {uscID: uscID};
+    const result = await collection.findOne(query);
+    return result;
+}
+
 //exports
 module.exports = {
+    ActivityTypeDef,
+    StudentTypeDef,
     deleteAccount,
     createAccount,
     checkIn,
-	checkOut
+	checkOut,
+    getStudent
 };

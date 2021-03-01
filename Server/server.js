@@ -28,6 +28,7 @@ connectClient();
 const Query = gql`
     type Query {
         building(name: String): [Building]
+        student(uscID: Int): Student
     }
 `;
 
@@ -60,7 +61,7 @@ const Mutation = gql`
 const Building = require("./building");
 const Account = require("./account");
 const Status = require("./status");
-const typeDefs = [Query, Mutation, Building.typeDef, Status.typeDef];
+const typeDefs = [Query, Mutation, Building.typeDef, Status.typeDef, Account.StudentTypeDef, Account.ActivityTypeDef];
 
 // The resolvers
 const resolvers = {
@@ -71,6 +72,9 @@ const resolvers = {
             }
             return Building.getAllBuildings(client);
         },
+        student(_, args) {
+            return Account.getStudent(client, args.uscID);
+        }
     },
     Mutation: {
         updateCapacity(_, args) {
