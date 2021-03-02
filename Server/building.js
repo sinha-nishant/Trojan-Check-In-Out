@@ -7,13 +7,6 @@ const BuildingTypeDef = `
 	}
 `;
 
-const CapacityUpdateTypeDef = `
-	type CapacityUpdate {
-		name: String, 
-		newCapacity: Int
-	}
-`;
-
 // Get building given its name
 let getBuilding = async function (client, name) {
     const collection = client.db("TrojanCheck").collection("Buildings");
@@ -59,6 +52,7 @@ let updateCapacity = async function (client, name, capacity) {
     }
 };
 
+// Batch update building capacities
 let updateCapacities = function(client, buildingNames, newCapacities) {
     let collection = client.db("TrojanCheck").collection("Buildings");
     let updates = []
@@ -73,7 +67,9 @@ let updateCapacities = function(client, buildingNames, newCapacities) {
         );
     }
 
-    collection.bulkWrite(updates);
+    // Ordered: false indicates updates don't have to be made in order
+    // Increases performance
+    collection.bulkWrite(updates, {ordered: false});
 
     // for testing purposes
     return {status: true};
@@ -81,7 +77,6 @@ let updateCapacities = function(client, buildingNames, newCapacities) {
 
 module.exports = {
 	BuildingTypeDef,
-    CapacityUpdateTypeDef,
 	getBuilding,
 	getAllBuildings,
 	updateCapacity,

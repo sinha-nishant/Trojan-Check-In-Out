@@ -62,7 +62,7 @@ const Mutation = gql`
 const Building = require("./building");
 const Account = require("./account");
 const Status = require("./status");
-const typeDefs = [Query, Mutation, Building.BuildingTypeDef, Building.CapacityUpdateTypeDef, Status.typeDef, Account.StudentTypeDef, Account.ActivityTypeDef];
+const typeDefs = [Query, Mutation, Building.BuildingTypeDef, Status.typeDef, Account.StudentTypeDef, Account.ActivityTypeDef];
 
 // The resolvers
 const resolvers = {
