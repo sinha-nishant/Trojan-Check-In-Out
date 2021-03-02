@@ -35,6 +35,7 @@ const Query = gql`
 const Mutation = gql`
     type Mutation {
         updateCapacity(name: String!, capacity: Int!): Status
+        updateCapacities(buildingNames: [String!]!, newCapacities: [Int!]!): Status
         deleteAccount(email: String!): Status
         createAccount(
             firstname: String!
@@ -61,7 +62,7 @@ const Mutation = gql`
 const Building = require("./building");
 const Account = require("./account");
 const Status = require("./status");
-const typeDefs = [Query, Mutation, Building.typeDef, Status.typeDef, Account.StudentTypeDef, Account.ActivityTypeDef];
+const typeDefs = [Query, Mutation, Building.BuildingTypeDef, Building.CapacityUpdateTypeDef, Status.typeDef, Account.StudentTypeDef, Account.ActivityTypeDef];
 
 // The resolvers
 const resolvers = {
@@ -79,6 +80,9 @@ const resolvers = {
     Mutation: {
         updateCapacity(_, args) {
             return Building.updateCapacity(client, args.name, args.capacity);
+        },
+        updateCapacities(_, args) {
+            return Building.updateCapacities(client, args.buildingNames, args.newCapacities);
         },
         deleteAccount(_, args) {
             return Account.deleteAccount(client, args.email);

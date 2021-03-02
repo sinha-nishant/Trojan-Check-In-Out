@@ -1,9 +1,16 @@
-const typeDef = `
+const BuildingTypeDef = `
 	type Building {
 		name: String, 
 		capacity: Int,
 		occupancy: Int,
 		students: [Int]
+	}
+`;
+
+const CapacityUpdateTypeDef = `
+	type CapacityUpdate {
+		name: String, 
+		newCapacity: Int
 	}
 `;
 
@@ -52,9 +59,31 @@ let updateCapacity = async function (client, name, capacity) {
     }
 };
 
+let updateCapacities = function(client, buildingNames, newCapacities) {
+    let collection = client.db("TrojanCheck").collection("Buildings");
+    let updates = []
+    for (let i = 0; i < buildingNames.length; i++) {
+        updates.push(
+            {updateOne: 
+                {
+                    filter: {name: buildingNames[i]},
+                    update: {$set: {capacity: newCapacities[i]}}
+                }
+            }
+        );
+    }
+
+    collection.bulkWrite(updates);
+
+    // for testing purposes
+    return {status: true};
+};
+
 module.exports = {
-	typeDef,
+	BuildingTypeDef,
+    CapacityUpdateTypeDef,
 	getBuilding,
 	getAllBuildings,
-	updateCapacity
+	updateCapacity,
+    updateCapacities
 }
