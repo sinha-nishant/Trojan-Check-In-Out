@@ -8,6 +8,9 @@ public class Account {
     private String password;
     private Boolean isManager;
 
+
+
+
     public Account(String firstName, String lastName, String email, String password, Boolean type){
         this.firstName=firstName;
         this.lastName=lastName;
