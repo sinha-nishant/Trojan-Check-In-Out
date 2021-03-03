@@ -22,8 +22,8 @@ public class Account {
         this.password = newPassword;
     }
 
-    public void setProfilePicture(){
-        //Todo
+    public void setProfilePicture(String url){
+        this.profilePicture= url;
     }
 
     public Boolean delete(){
