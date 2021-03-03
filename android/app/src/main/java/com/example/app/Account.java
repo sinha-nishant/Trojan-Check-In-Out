@@ -26,8 +26,12 @@ public class Account {
         //Todo
     }
 
-    public void delete(){
-        //Todo
+    public Boolean delete(){
+        //update with GraphQL
+        Boolean isSuccess=true;
+        //isSuccess=Update.deleteAccount(this.email); //GraphQL function call
+        return isSuccess;
+
     }
 
     public String getFirstName(){

@@ -1,6 +1,9 @@
 package com.example.app;
 
+import android.widget.Toast;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class StudentAccount extends Account {
@@ -19,19 +22,70 @@ public class StudentAccount extends Account {
         this.major=major;
     }
 
+    public Boolean delete(){
+        //update with GraphQL
+        LocalDateTime time= LocalDateTime.now();
+        if(this.activity!=null){
+            int last= this.activity.size()-1;
+            StudentActivity act= activity.get(last);
+            if(act.getCheckOutTime()!=null){
+                Boolean successCheckOut=checkOut(act.getBuildingName(),time);
+                if(successCheckOut==false){
+                    return false;
+                }
+                else{
+                    StudentActivity updatedLastActivity= this.activity.get(last);
+                    updatedLastActivity.setCheckOutTime(time);
+                    this.activity.set(last,updatedLastActivity);
+                }
+            }
+
+        }
+        //update with GraphQL
+        Boolean isSuccess=true;
+        //isSuccess=Update.deleteAccount(this.email); //GraphQL function call
+        return isSuccess;
+
+
+    }
+
+
     public boolean setMajor(String newMajor)
     {
-        //Todo
-        return true;
+        // update with GraphQL
+        Boolean isSuccess=true;
+        // isSuccess = Update.updateMajor(this.ID,  newMajor);
+        return isSuccess;
 
     }
 
-    public void checkIN(StudentActivity act){
-        //Todo
+    public boolean checkIN(StudentActivity act){
+        // updated to boolean so activity class can give pop up message for failure
+        //update with GraphQL
+        Boolean isSuccess = true;
+        //isSuccess = CheckInOut.checkIn(this.ID, act);
+        if(isSuccess==true){
+            if(this.activity==null){
+                this.activity = new ArrayList<StudentActivity>();
+            }
+            this.activity.add(act);
+        }
+       return isSuccess;
+
     }
 
-    public void checkOut(String buildingName, LocalDateTime checkOutTime){
-        //Todo
+    public boolean checkOut(String buildingName, LocalDateTime checkOutTime){
+        // updated to boolean so activity class can give pop up message for failure
+        //update with GraphQL
+        Boolean isSuccess = true;
+        //isSuccess = CheckInOut.checkOut(this.ID, buildingName,checkOutTime);
+        if(isSuccess==true){
+            int last= this.activity.size()-1;
+            StudentActivity updatedLastActivity= this.activity.get(last);
+            updatedLastActivity.setCheckOutTime(checkOutTime);
+            this.activity.set(last,updatedLastActivity);
+        }
+        return isSuccess;
     }
 
     public Integer getID(){
