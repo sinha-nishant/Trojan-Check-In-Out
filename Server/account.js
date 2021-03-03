@@ -21,19 +21,29 @@ const StudentTypeDef = `
 `;
 
 // Delete account given user's email
-let deleteAccount = async function (client, email) {
-    let collection = client.db("TrojanCheck").collection("Accounts");
-    const query = { email: email };
-    let response = await collection.deleteOne(query);
-    if (response.deletedCount === 1) {
+async function deleteAccount(client, email) {
+    let response = null;
+    try {
+        let collection = client.db("TrojanCheck").collection("Accounts");
+        const query = { email: email };
+        response = await collection.deleteOne(query);
+
+        if (response.deletedCount === 1) {
+            return {
+                status: true,
+            };
+        }
+    } catch (error) {
+        console.error(error);
         return {
-            status: true,
+            status: false,
         };
     }
+
     return {
         status: false,
     };
-};
+}
 
 //Create account given user's:
 //	firstname,
@@ -92,35 +102,35 @@ let checkIn = async (client, uscID, buildingName, checkInTime) => {
         checkInTime: checkInTime,
         checkOutTime: null,
     };
-    
+
     let curr_status = false;
-    console.log("Before status: ", curr_status)
+    console.log("Before status: ", curr_status);
 
     let response = await collection
         .updateOne(query, { $push: { activity: push_query } })
         .then((result) => {
-            curr_status = result.modifiedCount===1;
+            curr_status = result.modifiedCount === 1;
         });
-    
-    if(curr_status===false){
-        return{
-            status:false
+
+    if (curr_status === false) {
+        return {
+            status: false,
         };
     }
 
-    let another_status=false
+    let another_status = false;
 
     collection = client.db("TrojanCheck").collection("Buildings");
-    query = {"name": buildingName};
+    query = { name: buildingName };
     response = await collection
-        .updateOne(query, {$push: {students: uscID}})
+        .updateOne(query, { $push: { students: uscID } })
         .then((result) => {
-            another_status = result.modifiedCount===1;
+            another_status = result.modifiedCount === 1;
         });
 
-    console.log("Another status: ", another_status)
+    console.log("Another status: ", another_status);
 
-    if (curr_status&&another_status) {
+    if (curr_status && another_status) {
         return {
             status: true,
         };
@@ -130,68 +140,103 @@ let checkIn = async (client, uscID, buildingName, checkInTime) => {
     };
 };
 
-let checkOut = async function(client, uscID, checkOutTime) {
-	let collection = client.db("TrojanCheck").collection("Accounts");
-	let filter = {
-		uscID: uscID
-	};
+// TODO: Add exception handling
+async function checkOut(client, uscID, checkOutTime) {
+    try {
+        let collection = client.db("TrojanCheck").collection("Accounts");
+        let filter = {
+            uscID: uscID,
+        };
 
-	let update = {
-		$pop: {
-			activity: 1
-		}
-	};
+        let update = {
+            $pop: {
+                activity: 1,
+            },
+        };
 
-	let options = {
-		projection: {
-			lastActivity: {
-				$arrayElemAt: ["$activity", -1]
-			}
-		},
+        let options = {
+            projection: {
+                lastActivity: {
+                    $arrayElemAt: ["$activity", -1],
+                },
+            },
 
-		returnNewDocument: false
-	}
+            returnOriginal: true,
+        };
 
-    collection.findOneAndUpdate(filter, update, options, function(err, result) {
-		let lastActivity = result.value.lastActivity;
-		// console.log(lastActivity);
-		update = {
-			$push: {
-				activity: {
-					"buildingName": lastActivity.buildingName,
-					"checkInTime": lastActivity.checkInTime,
-					"checkOutTime": checkOutTime
-				}
-			}
-		}
-		console.log(update);
+        // Pops last activity node
+        collection.findOneAndUpdate(
+            filter,
+            update,
+            options,
+            function (err, result) {
+                let lastActivity = result.value.lastActivity;
 
-		collection.updateOne(filter, update, function(err, result) {
+                update = {
+                    $push: {
+                        activity: {
+                            buildingName: lastActivity.buildingName,
+                            checkInTime: lastActivity.checkInTime,
+                            checkOutTime: checkOutTime,
+                        },
+                    },
+                };
 
-			collection = client.db("TrojanCheck").collection("Buildings");
+                if (result.lastErrorObject.updatedExisting !== true) {
+                    return { status: false };
+                }
 
-			filter = {
-				name: lastActivity.buildingName
-			}
+                // Inserts new activity node based on popped with new check-out time
+                collection.updateOne(filter, update, function (err, result) {
+                    if (result.modifiedCount !== 1) {
+                        return { status: false };
+                    }
 
-			update = {
-				$pull: {
-					"students" : uscID
-				}
-			}
+                    collection = client
+                        .db("TrojanCheck")
+                        .collection("Buildings");
 
-			collection.updateOne(filter, update);
-		});
-	});
+                    filter = {
+                        name: lastActivity.buildingName,
+                    };
 
-	// just for testing purposes
-	return {status: true};
-};
+                    update = {
+                        $pull: {
+                            students: uscID,
+                        },
+                    };
 
-let getStudent = async function(client, uscID) {
+                    // Deletes student ID from building's current student array
+                    collection.updateOne(filter, update, (err, result) => {
+                        console.log("b2", result);
+                        console.log("b2", result.modifiedCount);
+                        if (result.modifiedCount !== 1) {
+                            return { status: false };
+                        }
+                    });
+                });
+            }
+        );
+    } catch (error) {
+        console.error(error);
+        return { status: false };
+    }
+
+    return { status: true };
+}
+
+// Retrieve a student's profile based on their USC ID
+async function getStudent(client, uscID) {
     const collection = client.db("TrojanCheck").collection("Accounts");
-    const query = {uscID: uscID};
-    const result = await collection.findOne(query);
+    const query = { uscID: uscID };
+    let result = null;
+    try {
+        result = await collection.findOne(query);
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+
     return result;
 }
 
@@ -202,6 +247,6 @@ module.exports = {
     deleteAccount,
     createAccount,
     checkIn,
-	checkOut,
-    getStudent
+    checkOut,
+    getStudent,
 };

@@ -8,7 +8,7 @@ const BuildingTypeDef = `
 `;
 
 // Get building given its name
-async function getBuilding (client, name) {
+async function getBuilding(client, name) {
     let building = null;
     try {
         const collection = client.db("TrojanCheck").collection("Buildings");
@@ -23,23 +23,21 @@ async function getBuilding (client, name) {
 }
 
 // Get all buildings
-async function getAllBuildings (client) {
+async function getAllBuildings(client) {
     let buildings = null;
     try {
         const collection = client.db("TrojanCheck").collection("Buildings");
         buildings = await collection.find().toArray();
-    }
-    
-    catch (error) {
+    } catch (error) {
         console.error(error);
         return null;
     }
-    
+
     return buildings;
 }
 
 // Update the capacity of a building given the name of the building and its new capacity
-async function updateCapacity (client, name, capacity) {
+async function updateCapacity(client, name, capacity) {
     try {
         let collection = client.db("TrojanCheck").collection("Buildings");
         let filter = {
@@ -56,10 +54,8 @@ async function updateCapacity (client, name, capacity) {
             return {
                 status: false,
             };
-        } 
-    } 
-    
-    catch (error) {
+        }
+    } catch (error) {
         console.error(error);
         return {
             status: false,
@@ -72,7 +68,7 @@ async function updateCapacity (client, name, capacity) {
 }
 
 // Batch update building capacities
-async function updateCapacities (client, buildingNames, newCapacities) {
+async function updateCapacities(client, buildingNames, newCapacities) {
     try {
         let collection = client.db("TrojanCheck").collection("Buildings");
         let updates = [];
@@ -89,11 +85,9 @@ async function updateCapacities (client, buildingNames, newCapacities) {
         // Increases performance
         let response = await collection.bulkWrite(updates, { ordered: false });
         if (response.modifiedCount !== buildingNames.length) {
-            return {status: false};
+            return { status: false };
         }
-    } 
-    
-    catch (error) {
+    } catch (error) {
         console.error(error);
         return { status: false };
     }
