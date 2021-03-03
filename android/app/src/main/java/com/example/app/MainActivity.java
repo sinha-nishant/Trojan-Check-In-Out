@@ -22,7 +22,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.amplifyframework.AmplifyException;
+import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
 import com.amplifyframework.core.Amplify;
+import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -43,6 +46,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        try {
+            Amplify.addPlugin(new AWSCognitoAuthPlugin());
+            Amplify.addPlugin(new AWSS3StoragePlugin());
+            Amplify.configure(getApplicationContext());
+        } catch (AmplifyException e) {
+            Log.i("MyAmplifyApp", "could not add plugins ");
+        }
+
 
         // register the UI widgets with their appropriate IDs
         BSelectImage = findViewById(R.id.BSelectImage);
@@ -97,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     Amplify.Storage.uploadInputStream(
-                            "ExampleKey",
+                            "Test.png",
                             exampleInputStream,
                             result -> Log.i("MyAmplifyApp", "Successfully uploaded: " + result.getKey()),
                             storageFailure -> Log.e("MyAmplifyApp", "Upload failed", storageFailure)

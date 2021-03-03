@@ -10,6 +10,11 @@
       "StackName": "amplify-tcic-dev-173416",
       "StackId": "arn:aws:cloudformation:us-west-2:256955077697:stack/amplify-tcic-dev-173416/97077600-7c18-11eb-b7c2-0a2500bc1439",
       "AmplifyAppId": "dq50j9bi1orjj"
+    },
+    "categories": {
+      "auth": {
+        "tcic28074602": {}
+      }
     }
   }
 }
