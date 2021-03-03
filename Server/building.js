@@ -8,77 +8,103 @@ const BuildingTypeDef = `
 `;
 
 // Get building given its name
-let getBuilding = async function (client, name) {
-    const collection = client.db("TrojanCheck").collection("Buildings");
-    let query = {name: name};
-    let building = await collection.findOne(query);
+async function getBuilding (client, name) {
+    let building = null;
+    try {
+        const collection = client.db("TrojanCheck").collection("Buildings");
+        let query = { name: name };
+        building = await collection.findOne(query);
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+
     return [building];
-};
+}
 
 // Get all buildings
-let getAllBuildings = async function(client) {
-    const collection = client.db("TrojanCheck").collection("Buildings");
-    let buildings = await collection.find().toArray();
+async function getAllBuildings (client) {
+    let buildings = null;
+    try {
+        const collection = client.db("TrojanCheck").collection("Buildings");
+        buildings = await collection.find().toArray();
+    }
+    
+    catch (error) {
+        console.error(error);
+        return null;
+    }
+    
     return buildings;
 }
 
 // Update the capacity of a building given the name of the building and its new capacity
-let updateCapacity = async function (client, name, capacity) {
-    let collection = client.db("TrojanCheck").collection("Buildings");
-    let filter = {
-        name: name,
-    };
-    let update = {
-        $set: {
-            capacity: capacity,
-        },
-    };
-
+async function updateCapacity (client, name, capacity) {
     try {
-        let response = await collection.updateOne(filter, update);
-        if (response.modifiedCount === 1) {
-            return {
-                status: true,
-            };
-        }
-        return {
-            status: false,
+        let collection = client.db("TrojanCheck").collection("Buildings");
+        let filter = {
+            name: name,
         };
-    } catch (err) {
-        console.error(`Something went wrong: ${err}`);
+        let update = {
+            $set: {
+                capacity: capacity,
+            },
+        };
+
+        let response = await collection.updateOne(filter, update);
+        if (response.modifiedCount !== 1) {
+            return {
+                status: false,
+            };
+        } 
+    } 
+    
+    catch (error) {
+        console.error(error);
         return {
             status: false,
         };
     }
-};
+
+    return {
+        status: true,
+    };
+}
 
 // Batch update building capacities
-let updateCapacities = function(client, buildingNames, newCapacities) {
-    let collection = client.db("TrojanCheck").collection("Buildings");
-    let updates = []
-    for (let i = 0; i < buildingNames.length; i++) {
-        updates.push(
-            {updateOne: 
-                {
-                    filter: {name: buildingNames[i]},
-                    update: {$set: {capacity: newCapacities[i]}}
-                }
-            }
-        );
+async function updateCapacities (client, buildingNames, newCapacities) {
+    try {
+        let collection = client.db("TrojanCheck").collection("Buildings");
+        let updates = [];
+        for (let i = 0; i < buildingNames.length; i++) {
+            updates.push({
+                updateOne: {
+                    filter: { name: buildingNames[i] },
+                    update: { $set: { capacity: newCapacities[i] } },
+                },
+            });
+        }
+
+        // "Ordered: false" indicates updates don't have to be made in order
+        // Increases performance
+        let response = await collection.bulkWrite(updates, { ordered: false });
+        if (response.modifiedCount !== buildingNames.length) {
+            return {status: false};
+        }
+    } 
+    
+    catch (error) {
+        console.error(error);
+        return { status: false };
     }
 
-    // Ordered: false indicates updates don't have to be made in order
-    // Increases performance
-    collection.bulkWrite(updates, {ordered: false});
-
-    // for testing purposes
-    return {status: true};
-};
+    return { status: true };
+}
 
 module.exports = {
-	BuildingTypeDef,
-	getBuilding,
-	getAllBuildings,
-	updateCapacity,
-    updateCapacities
-}
+    BuildingTypeDef,
+    getBuilding,
+    getAllBuildings,
+    updateCapacity,
+    updateCapacities,
+};
