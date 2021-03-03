@@ -204,12 +204,14 @@ async function checkOut(client, uscID, checkOutTime) {
                         $pull: {
                             students: uscID,
                         },
+
+                        $inc: {
+                            occupancy: -1,
+                        },
                     };
 
                     // Deletes student ID from building's current student array
                     collection.updateOne(filter, update, (err, result) => {
-                        console.log("b2", result);
-                        console.log("b2", result.modifiedCount);
                         if (result.modifiedCount !== 1) {
                             return { status: false };
                         }
