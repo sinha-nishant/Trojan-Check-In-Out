@@ -1,18 +1,20 @@
 package com.example.app;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class StudentActivity {
     private String buildingName;
-    private LocalDateTime checkInTime;
-    private LocalDateTime checkOutTime;
+    private Date checkInTime;
+    private Date checkOutTime;
 
-    public StudentActivity(String name, LocalDateTime in, LocalDateTime out){
+    StudentActivity() {};
+
+    public StudentActivity(String name, Date in, Date out){
         buildingName=name;
         checkInTime=in;
-        out = out;
+        checkOutTime = out;
     }
-    public StudentActivity(String name, LocalDateTime in){
+    public StudentActivity(String name, Date in){
         buildingName=name;
         checkInTime=in;
         checkOutTime=null;
@@ -22,15 +24,23 @@ public class StudentActivity {
         return buildingName;
     }
 
-    public LocalDateTime getCheckInTime(){
+    public Date getCheckInTime(){
         return checkInTime;
     }
 
-    public LocalDateTime getCheckOutTime(){
+    public Date getCheckOutTime(){
         return checkOutTime;
     }
 
-    public void setCheckOutTime(LocalDateTime checkOutTime) {
+    public void setCheckInTime(Date checkInTime) {
+        this.checkInTime = checkInTime; // do we need to edit checkout ?
+    }
+
+    public void setCheckOutTime(Date checkOutTime) {
         this.checkOutTime = checkOutTime; // do we need to edit checkout ?
+    }
+
+    public void setBuildingName(String buildingName) {
+        this.buildingName = buildingName;
     }
 }

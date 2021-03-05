@@ -29,4 +29,21 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp" />
 
+    <TextView
+        android:id="@+id/uri"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/IVPreviewImage"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="170dp"
+        android:layout_marginBottom="377dp"
+        android:text="TextView" />
+
+    <Button
+        android:id="@+id/button8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="upload"
+        android:text="Button" />
+
 </RelativeLayout>
