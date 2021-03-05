@@ -10,7 +10,7 @@ public class StudentActivity {
     public StudentActivity(String name, LocalDateTime in, LocalDateTime out){
         buildingName=name;
         checkInTime=in;
-        out = out;
+        checkOutTime = out;
     }
     public StudentActivity(String name, LocalDateTime in){
         buildingName=name;
