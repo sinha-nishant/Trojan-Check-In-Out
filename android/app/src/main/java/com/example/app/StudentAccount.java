@@ -2,29 +2,37 @@ package com.example.app;
 
 import android.widget.Toast;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class StudentAccount extends Account {
-    private Integer ID;
+    private Long uscID;
     private String major;
     private List<StudentActivity> activity;
 
+    public StudentAccount() {};
 
     public StudentAccount(String firstName, String lastName, String email, String password, Boolean type) {
         super(firstName, lastName, email, password, type);
     }
 
-    public StudentAccount(String firstName, String lastName, String email, String password, Integer ID, String major, Boolean type) {
+    public StudentAccount(String firstName, String lastName, String email, String password, Long uscID, String major, Boolean type) {
         super(firstName, lastName, email, password, type);
-        this.ID=ID;
+        this.uscID=uscID;
+        this.major=major;
+    }
+
+    public StudentAccount(String firstName, String lastName, String email, String password, Long uscID, String major, List<StudentActivity> activity, Boolean type) {
+        super(firstName, lastName, email, password, type);
+        this.activity = activity;
+        this.uscID=uscID;
         this.major=major;
     }
 
     public Boolean delete(){
         //update with GraphQL
-        LocalDateTime time= LocalDateTime.now();
+        Date time = new Date();
         if(this.activity!=null){
             int last= this.activity.size()-1;
             StudentActivity act= activity.get(last);
@@ -74,7 +82,7 @@ public class StudentAccount extends Account {
 
     }
 
-    public boolean checkOut(String buildingName, LocalDateTime checkOutTime){
+    public boolean checkOut(String buildingName, Date checkOutTime){
         // updated to boolean so activity class can give pop up message for failure
         //update with GraphQL
         Boolean isSuccess = true;
@@ -88,13 +96,24 @@ public class StudentAccount extends Account {
         return isSuccess;
     }
 
-    public Integer getID(){
-        return ID;
+    public Long getID(){
+        return this.uscID;
+    }
+
+    public void setUscID(Long uscID){
+        this.uscID = uscID;
     }
 
     public String getMajor(){
         return major;
     }
 
+    public List<StudentActivity> getActivity() {
+        return this.activity;
+    }
+
+    public String toString() {
+        return this.getFirstName() + " " + this.getLastName() + " " + this.getID() + " " + this.getEmail();
+    }
 
 }

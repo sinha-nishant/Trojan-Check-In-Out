@@ -8,8 +8,7 @@ public class Account {
     private String password;
     private Boolean isManager;
 
-
-
+    public Account() {};
 
     public Account(String firstName, String lastName, String email, String password, Boolean type){
         this.firstName=firstName;
@@ -57,8 +56,4 @@ public class Account {
     public Boolean getIsManager(){
         return isManager;
     }
-
-
-
-
 }

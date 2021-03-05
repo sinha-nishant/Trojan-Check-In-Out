@@ -5,23 +5,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -41,11 +38,7 @@ public class FirebaseTest extends AppCompatActivity {
 
     // FOR TESTING PURPOSES
     public void test(View v) {
-//        EditText textInput = findViewById(R.id.textInput);
-//        String text = textInput.getText().toString();
-
-        StudentActivity sa = new StudentActivity("Leventhal School of Accounting", LocalDateTime.now());
-        checkIn(42, sa);
+        getStudents(Arrays.asList(42, 43));
     }
 
     // CheckInOut
@@ -89,6 +82,38 @@ public class FirebaseTest extends AppCompatActivity {
 
     // DataRetriever
     public List<StudentAccount> getStudents(List<Integer> studentIDs) {
+        CollectionReference accounts = db.collection("Accounts");
+        Query query = accounts.whereIn("uscID", studentIDs);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    if(!task.getResult().isEmpty()) {
+                        List<DocumentSnapshot> studentDocuments = task.getResult().getDocuments();
+                        List<StudentAccount> students = new ArrayList<StudentAccount>();
+                        for (DocumentSnapshot ds: studentDocuments) {
+                            StudentAccount studentAccount = ds.toObject(StudentAccount.class);
+                            studentAccount.setUscID((Long) ds.get("uscID"));
+                            students.add(studentAccount);
+                        }
+
+                        for (StudentAccount sa: students) {
+                            Log.d("TEST", sa.toString());
+                            if (sa.getActivity() != null) {
+                                Log.d("TEST", sa.getActivity().get(0).getBuildingName());
+                                Log.d("TEST", sa.getActivity().get(0).getCheckInTime().toString());
+                            }
+                        }
+
+                        // call callback function
+                    }
+
+                }
+            }
+        });
+
+        // DO NOT USE THIS VALUE
+        // IMPLEMENT A CALLBACK FUNCTION
         return null;
     }
 
@@ -104,15 +129,21 @@ public class FirebaseTest extends AppCompatActivity {
                     if(!task.getResult().isEmpty()) {
                         ((TextView) findViewById(R.id.textBox)).setText("Email exists!");
                         Log.d("EXIST", "Email exists!");
+
+                        // call callback function with param true
                     }
 
                     else {
                         ((TextView) findViewById(R.id.textBox)).setText("Email does not exist!");
                         Log.d("EXIST", "Email does not exist");
+
+                        // call callback function with param false
                     }
                 }
             }
         });
+        // DO NOT USE THIS VALUE
+        // IMPLEMENT A CALLBACK FUNCTION
         return exists;
     }
 
