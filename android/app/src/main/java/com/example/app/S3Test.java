@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.amplifyframework.AmplifyException;
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
@@ -93,23 +94,53 @@ public class S3Test extends AppCompatActivity {
                 if (null != selectedImageUri) {
                     // update the preview image in the layout
                     IVPreviewImage.setImageURI(selectedImageUri);
-                    InputStream exampleInputStream = null;
-                    try {
-                        exampleInputStream = getContentResolver().openInputStream(selectedImageUri);
-                    } catch (FileNotFoundException e) {
-//                        e.printStackTrace();
-                        Log.i( "ERR", e.getMessage());
-                    }
+                    TextView tv= (TextView)findViewById(R.id.uri);
+                    tv.setText(selectedImageUri.toString());
+//                    InputStream exampleInputStream = null;
+//                    try {
+//                        exampleInputStream = getContentResolver().openInputStream(selectedImageUri);
+//                    } catch (FileNotFoundException e) {
+////                        e.printStackTrace();
+//                        Log.i( "ERR", e.getMessage());
+//                    }
 
-                    Amplify.Storage.uploadInputStream(
-                            "Test.png",
-                            exampleInputStream,
-                            result -> Log.i("MyAmplifyApp", "Successfully uploaded: " + result.getKey()),
-                            storageFailure -> Log.e("MyAmplifyApp", "Upload failed", storageFailure)
-                    );
+//                    Amplify.Storage.uploadInputStream(
+//                            "Test.png",
+//                            exampleInputStream,
+//                            result -> Log.i("MyAmplifyApp", "Successfully uploaded: " + result.getKey()),
+//                            storageFailure -> Log.e("MyAmplifyApp", "Upload failed", storageFailure)
+//                    );
                 }
 
             }
         }
+    }
+
+    public void upload(View v){
+        Log.i("upload", "in upload");
+        TextView tv= (TextView)findViewById(R.id.uri);
+        String uri =tv.getText().toString();
+        Log.i("upload", "uri= "+uri);
+        Uri myUri= Uri.parse(uri);
+        if(myUri==null){
+            Log.i("upload", "uri did not get parsed");
+        }
+       else{
+            Log.i("upload", "uri parsed= "+myUri.getPath());
+        }
+        try {
+            InputStream exampleInputStream = getContentResolver().openInputStream(Uri.parse(uri));
+            if(exampleInputStream==null){
+                Log.i("upload", "stream is null");
+            }
+            else{
+                Log.i("upload", "stream is valid");
+            }
+            CreateAccount ca= new CreateAccount("Adi", "Mittal","am@usc.edu",exampleInputStream,false);
+            Log.i("upload", "finished creating account");
+        } catch (FileNotFoundException e) {
+            Log.i("upload", "error in uri parsing");
+        }
+
     }
 }
