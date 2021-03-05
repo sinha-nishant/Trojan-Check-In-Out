@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     Amplify.Storage.uploadInputStream(
-                            "Test.png",
+                            "Hassib.png",
                             exampleInputStream,
                             result -> Log.i("MyAmplifyApp", "Successfully uploaded: " + result.getKey()),
                             storageFailure -> Log.e("MyAmplifyApp", "Upload failed", storageFailure)
