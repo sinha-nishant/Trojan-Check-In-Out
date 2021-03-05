@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">app</string>
+    <string name="mainTitle">Use the buttons for individual Testing</string>
+    <string name="S3">Arjun</string>
+    <string name="Firebase">Nishant</string>
+    <string name="JP">John</string>
+    <string name="MS">Markus</string>
+    <string name="HR">Hassib</string>
+    <string name="AS">Angad</string>
 </resources>
