@@ -5,14 +5,12 @@ import android.util.Log;
 import java.io.InputStream;
 
 public class CreateAccount {
-    public Boolean accepted;
+    public static Boolean accepted;
     public CreateAccount(String firstName, String lastName, String email, InputStream url, Boolean isManager){
         Log.i("CreateAccount","in create account");
 //        FirebaseTest fb= new FirebaseTest();
-//        if(fb.checkEmailExists(email)==false){
-//            accepted= false;
-//            return;
-//        }
+//        fb.checkEmailExists(email);
+//        check value of 'accepted'
         uploadPhoto up= new uploadPhoto();
         String uri= up.upload(url,email);
         Log.i("upload", uri);
@@ -22,6 +20,9 @@ public class CreateAccount {
 
     }
 
+    public static void setAccepted(Boolean accepted) {
+        accepted = accepted;
+    }
 
     public Boolean getAccepted(){
         return accepted;

@@ -131,6 +131,7 @@ public class FirebaseTest extends AppCompatActivity {
                         Log.d("EXIST", "Email exists!");
 
                         // call callback function with param true
+                        CreateAccount.setAccepted(false);
                     }
 
                     else {
@@ -138,6 +139,7 @@ public class FirebaseTest extends AppCompatActivity {
                         Log.d("EXIST", "Email does not exist");
 
                         // call callback function with param false
+                        CreateAccount.setAccepted(true);
                     }
                 }
             }
