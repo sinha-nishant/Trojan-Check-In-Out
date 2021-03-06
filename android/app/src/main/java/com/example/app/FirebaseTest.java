@@ -157,10 +157,12 @@ public class FirebaseTest extends AppCompatActivity {
         return exists;
     }
 
+    //Nishant
     public static Boolean checkUSCIdExists(Integer uscID) {
         return false;
     }
 
+    //Nishant
     public static Boolean authenticate(String email, String password) {
         return false;
     }
@@ -209,10 +211,12 @@ public class FirebaseTest extends AppCompatActivity {
         });
     }
 
+    //Angad Sood
     public static void updatePassword(String email, String newPassword) {
 
     }
 
+    //Angad Sood
     public static void updateMajor(int uscID, String newMajor) {
 
     }
