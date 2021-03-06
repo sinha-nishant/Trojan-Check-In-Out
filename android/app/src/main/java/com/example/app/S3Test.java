@@ -17,6 +17,7 @@ import com.amplifyframework.AmplifyException;
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
+import com.bumptech.glide.Glide;
 
 import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
@@ -161,21 +162,24 @@ public class S3Test extends AppCompatActivity {
 //        Uri uri=  Uri.parse("https://trojan-check-in-and-out183928-dev173416-dev.s3-us-west-2.amazonaws.com/public/Derulo%40usc.edu.png");
 //        IVPreviewImage.setImageURI(uri);
 
+//        ImageView IVPreviewImage= findViewById(R.id.IVPreviewImage);
+//        String urlString=  "https://trojan-check-in-and-out183928-dev173416-dev.s3-us-west-2.amazonaws.com/public/IMG_2405.JPG";
+//
+//        Bitmap bm = null;
+//        try {
+//            URL url = new URL(urlString);
+//
+//
+//            URLConnection conn = url.openConnection();
+//            InputStream stream = conn.getInputStream();
+//            bm = BitmapFactory.decodeStream(stream);
+//        } catch(IOException e) {
+//            System.out.println(e);
+//        }
+//        IVPreviewImage.setImageBitmap(bm);
         ImageView IVPreviewImage= findViewById(R.id.IVPreviewImage);
-        String urlString=  "https://trojan-check-in-and-out183928-dev173416-dev.s3-us-west-2.amazonaws.com/public/IMG_2405.JPG";
-
-        Bitmap bm = null;
-        try {
-            URL url = new URL(urlString);
-
-
-            URLConnection conn = url.openConnection();
-            InputStream stream = conn.getInputStream();
-            bm = BitmapFactory.decodeStream(stream);
-        } catch(IOException e) {
-            System.out.println(e);
-        }
-        IVPreviewImage.setImageBitmap(bm);
+        String url=  "https://trojan-check-in-and-out183928-dev173416-dev.s3-us-west-2.amazonaws.com/public/IMG_2405.JPG";
+        Glide.with(this).load(url).into(IVPreviewImage);
     }
 
 }
