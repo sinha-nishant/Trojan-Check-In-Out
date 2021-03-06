@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -38,7 +39,12 @@ public class FirebaseTest extends AppCompatActivity {
 
     // FOR TESTING PURPOSES
     public void test(View v) {
-        getStudents(Arrays.asList(42, 43));
+        StudentAccount a = new StudentAccount();
+        a.setMajor("BBA");
+        a.setUscID((long) 100);
+        a.setProfilePicture("somePic.jpg");
+        a.setPassword("somePass");
+        createAccount(a);
     }
 
     // CheckInOut
@@ -167,7 +173,14 @@ public class FirebaseTest extends AppCompatActivity {
     }
 
     public void createAccount(Account a) {
-
+        db.collection("Accounts").add(a).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+                if (task.isSuccessful()) {
+                    Log.d("TEST", "Account Added to DB");
+                }
+            }
+        });
     }
 
     public void deleteAccount(String email) {

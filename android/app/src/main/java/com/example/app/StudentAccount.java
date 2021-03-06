@@ -96,7 +96,7 @@ public class StudentAccount extends Account {
         return isSuccess;
     }
 
-    public Long getID(){
+    public Long getUscID(){
         return this.uscID;
     }
 
@@ -113,7 +113,7 @@ public class StudentAccount extends Account {
     }
 
     public String toString() {
-        return this.getFirstName() + " " + this.getLastName() + " " + this.getID() + " " + this.getEmail();
+        return this.getFirstName() + " " + this.getLastName() + " " + this.getUscID() + " " + this.getEmail();
     }
 
 }
