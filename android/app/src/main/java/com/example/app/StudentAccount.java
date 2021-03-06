@@ -62,6 +62,7 @@ public class StudentAccount extends Account {
     {
         // update with GraphQL
         Boolean isSuccess=true;
+        this.major= newMajor;
         // isSuccess = Update.updateMajor(this.ID,  newMajor);
         return isSuccess;
 
