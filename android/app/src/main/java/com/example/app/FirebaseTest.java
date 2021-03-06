@@ -39,12 +39,14 @@ public class FirebaseTest extends AppCompatActivity {
 
     // FOR TESTING PURPOSES
     public void test(View v) {
-        StudentAccount a = new StudentAccount();
-        a.setMajor("BBA");
-        a.setUscID((long) 100);
-        a.setProfilePicture("somePic.jpg");
-        a.setPassword("somePass");
-        createAccount(a);
+//        StudentAccount a = new StudentAccount();
+//        a.setMajor("BBA");
+//        a.setUscID((long) 100);
+//        a.setProfilePicture("somePic.jpg");
+//        a.setPassword("somePass");
+//        createAccount(a);
+
+        deleteAccount("someEmail@usc.edu");
     }
 
     // CheckInOut
@@ -184,7 +186,23 @@ public class FirebaseTest extends AppCompatActivity {
     }
 
     public void deleteAccount(String email) {
-
+        db.collection("Accounts").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot qds: task.getResult()) {
+                        db.collection("Accounts").document(qds.getId()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Log.d("TEST", "Deleted Account");
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
     }
 
     public void updatePassword(String email, String newPassword) {
