@@ -29,7 +29,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 public class FirebaseTest extends AppCompatActivity {
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,18 +39,18 @@ public class FirebaseTest extends AppCompatActivity {
 
     // FOR TESTING PURPOSES
     public void test(View v) {
-//        StudentAccount a = new StudentAccount();
-//        a.setMajor("BBA");
-//        a.setUscID((long) 100);
-//        a.setProfilePicture("somePic.jpg");
-//        a.setPassword("somePass");
-//        createAccount(a);
+        StudentAccount a = new StudentAccount();
+        a.setMajor("BBA");
+        a.setUscID((long) 100);
+        a.setProfilePicture("somePic.jpg");
+        a.setPassword("somePass");
+        createAccount(a);
 
-        deleteAccount("someEmail@usc.edu");
+//        FirebaseTest.deleteAccount("someEmail@usc.edu");
     }
 
     // CheckInOut
-    public void checkIn (int uscID, StudentActivity sa) {
+    public static void checkIn (int uscID, StudentActivity sa) {
         CollectionReference accounts = db.collection("Accounts");
         Query studentQuery = accounts.whereEqualTo("uscID", uscID);
         studentQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -84,12 +84,12 @@ public class FirebaseTest extends AppCompatActivity {
         });
     }
 
-    public void checkOut(int uscID, String buildingName, LocalDateTime checkOutTime) {
+    public static void checkOut(int uscID, String buildingName, LocalDateTime checkOutTime) {
 
     }
 
     // DataRetriever
-    public List<StudentAccount> getStudents(List<Integer> studentIDs) {
+    public static List<StudentAccount> getStudents(List<Integer> studentIDs) {
         CollectionReference accounts = db.collection("Accounts");
         Query query = accounts.whereIn("uscID", studentIDs);
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -126,7 +126,7 @@ public class FirebaseTest extends AppCompatActivity {
     }
 
     // WORKS
-    public Boolean checkEmailExists(String email) {
+    public static Boolean checkEmailExists(String email) {
         Boolean exists = false;
         CollectionReference accounts = db.collection("Accounts");
         Query query = accounts.whereEqualTo("email", email);
@@ -135,7 +135,7 @@ public class FirebaseTest extends AppCompatActivity {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     if(!task.getResult().isEmpty()) {
-                        ((TextView) findViewById(R.id.textBox)).setText("Email exists!");
+//                        ((TextView) findViewById(R.id.textBox)).setText("Email exists!");
                         Log.d("EXIST", "Email exists!");
 
                         // call callback function with param true
@@ -143,7 +143,7 @@ public class FirebaseTest extends AppCompatActivity {
                     }
 
                     else {
-                        ((TextView) findViewById(R.id.textBox)).setText("Email does not exist!");
+//                        ((TextView) findViewById(R.id.textBox)).setText("Email does not exist!");
                         Log.d("EXIST", "Email does not exist");
 
                         // call callback function with param false
@@ -157,24 +157,24 @@ public class FirebaseTest extends AppCompatActivity {
         return exists;
     }
 
-    public Boolean checkUSCIdExists(Integer uscID) {
+    public static Boolean checkUSCIdExists(Integer uscID) {
         return false;
     }
 
-    public Boolean authenticate(String email, String password) {
+    public static Boolean authenticate(String email, String password) {
         return false;
     }
 
     // Update
-    public void updateCapacity(String buildingName, int newCapacity) {
+    public static void updateCapacity(String buildingName, int newCapacity) {
 
     }
 
-    public void updateCapacities(HashMap<String, Integer> newCapacities) {
+    public static void updateCapacities(HashMap<String, Integer> newCapacities) {
 
     }
 
-    public void createAccount(Account a) {
+    public static void createAccount(Account a) {
         db.collection("Accounts").add(a).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
@@ -185,7 +185,7 @@ public class FirebaseTest extends AppCompatActivity {
         });
     }
 
-    public void deleteAccount(String email) {
+    public static void deleteAccount(String email) {
         db.collection("Accounts").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -205,11 +205,11 @@ public class FirebaseTest extends AppCompatActivity {
         });
     }
 
-    public void updatePassword(String email, String newPassword) {
+    public static void updatePassword(String email, String newPassword) {
 
     }
 
-    public void updateMajor(int uscID, String newMajor) {
+    public static void updateMajor(int uscID, String newMajor) {
 
     }
 }
