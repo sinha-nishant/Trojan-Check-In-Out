@@ -139,7 +139,7 @@ public class FirebaseTest extends AppCompatActivity {
                         Log.d("EXIST", "Email exists!");
 
                         // call callback function with param true
-                        CreateAccount.setAccepted(false);
+                        CreateAccount.setEmailAccepted(false);
                     }
 
                     else {
@@ -147,7 +147,7 @@ public class FirebaseTest extends AppCompatActivity {
                         Log.d("EXIST", "Email does not exist");
 
                         // call callback function with param false
-                        CreateAccount.setAccepted(true);
+                        CreateAccount.setEmailAccepted(true);
                     }
                 }
             }
@@ -180,6 +180,10 @@ public class FirebaseTest extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentReference> task) {
                 if (task.isSuccessful()) {
                     Log.d("TEST", "Account Added to DB");
+                    CreateAccount.setCreateAccountAccepted(true);
+                }
+                else{
+                    CreateAccount.setCreateAccountAccepted(false);
                 }
             }
         });

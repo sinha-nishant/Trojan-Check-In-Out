@@ -1,6 +1,5 @@
 package com.example.app;
 
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,18 +12,21 @@ public class StudentAccount extends Account {
 
     public StudentAccount() {};
 
-    public StudentAccount(String firstName, String lastName, String email, String password, Boolean type) {
-        super(firstName, lastName, email, password, type);
+    public StudentAccount(String firstName, String lastName, String email, String password,String profilePicture, Boolean type) {
+        super(firstName, lastName, email, password,profilePicture, type);
+        activity= new ArrayList<StudentActivity>();
+
     }
 
-    public StudentAccount(String firstName, String lastName, String email, String password, Long uscID, String major, Boolean type) {
-        super(firstName, lastName, email, password, type);
+    public StudentAccount(String firstName, String lastName, String email, String password,String profilePicture, Long uscID, String major, Boolean type) {
+        super(firstName, lastName, email, password,profilePicture, type);
         this.uscID=uscID;
         this.major=major;
+        activity= new ArrayList<StudentActivity>();
     }
 
-    public StudentAccount(String firstName, String lastName, String email, String password, Long uscID, String major, List<StudentActivity> activity, Boolean type) {
-        super(firstName, lastName, email, password, type);
+    public StudentAccount(String firstName, String lastName, String email, String password,String profilePicture, Long uscID, String major, List<StudentActivity> activity, Boolean type) {
+        super(firstName, lastName, email, password, profilePicture,type);
         this.activity = activity;
         this.uscID=uscID;
         this.major=major;

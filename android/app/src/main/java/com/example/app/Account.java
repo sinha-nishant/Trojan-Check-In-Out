@@ -10,11 +10,12 @@ public class Account {
 
     public Account() {};
 
-    public Account(String firstName, String lastName, String email, String password, Boolean type){
+    public Account(String firstName, String lastName, String email, String password,String profilePicture, Boolean type){
         this.firstName=firstName;
         this.lastName=lastName;
         this.email=email;
         this.password= password;
+        this.profilePicture=profilePicture;
         this.isManager=type;
     }
     public void setPassword(String newPassword) {
