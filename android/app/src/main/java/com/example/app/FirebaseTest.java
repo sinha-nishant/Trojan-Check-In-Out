@@ -39,14 +39,7 @@ public class FirebaseTest extends AppCompatActivity {
 
     // FOR TESTING PURPOSES
     public void test(View v) {
-        checkUSCIdExists((long) 42, null); // true
-        checkUSCIdExists(9876543210L, null); // true
-        checkUSCIdExists((long) 0, null); // false
-
-        authenticate("Sapra@usc.edu", "lollz", null); // true
-        authenticate("Vk17@usc.edu", "badPassword", null); // false
-        authenticate("Madman@usc.edu", "$2a$12$t4deXBfmcv7JNCSxZ3RGOe2rgqUCRZUibSxzRjN5N.ZCbwYZozvO2", null); // true
-
+        updateCapacity("Fluor Tower", 90, null);
     }
 
     // CheckInOut
@@ -152,7 +145,6 @@ public class FirebaseTest extends AppCompatActivity {
         });
     }
 
-    //TODO Nishant
     public static void checkUSCIdExists(Long uscID, ProgressBar circle) {
         db.collection("Accounts")
                 .whereEqualTo("uscID", uscID).get()
@@ -176,7 +168,6 @@ public class FirebaseTest extends AppCompatActivity {
                 });
     }
 
-    //TODO Nishant
     public static void authenticate(String email, String password, ProgressBar circle) {
         db.collection("Accounts")
                 .whereEqualTo("email", email)
@@ -202,8 +193,29 @@ public class FirebaseTest extends AppCompatActivity {
     }
 
     // Update
-    public static void updateCapacity(String buildingName, int newCapacity) {
-
+    public static void updateCapacity(String buildingName, int newCapacity, ProgressBar circle) {
+        db.collection("Buildings")
+                .whereEqualTo("name", buildingName)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful() && !task.getResult().isEmpty()) {
+                    for (QueryDocumentSnapshot qds: task.getResult()) {
+                        db.collection("Buildings")
+                                .document(qds.getId())
+                                .update("capacity", newCapacity)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Log.d("UPDATE", buildingName + " updated capacity " + newCapacity);
+                                        }
+                                    }
+                                });
+                    }
+                }
+            }
+        });
     }
 
     public static void updateCapacities(HashMap<String, Integer> newCapacities) {
