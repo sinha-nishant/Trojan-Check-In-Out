@@ -32,8 +32,16 @@ public class StudentSignUpStart extends AppCompatActivity {
                 password = passwordInput.getText().toString();
 
                 //used for popups to user
-                showToast(email);
-                showToast(password);
+                //showToast(email);
+                //showToast(password);
+                if(email.length() == 0 || password.length() == 0)
+                    showToast("Email or Password is blank");
+                else if(email.length() < 8 || !email.substring(email.length()-8).equals("@usc.edu"))
+                    showToast("Invalid Email");
+                else
+                {
+                    //go to next activity
+                }
             }
     });
 

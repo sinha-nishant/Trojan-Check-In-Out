@@ -10,7 +10,7 @@
         android:id="@+id/textView4"
         android:layout_width="170dp"
         android:layout_height="116dp"
-        android:text="Please fill in email and create password for your account"
+        android:text="(Student) Please fill in email and create password for your account"
         app:layout_constraintBottom_toTopOf="@+id/studentSignUpEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

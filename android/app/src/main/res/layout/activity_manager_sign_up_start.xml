@@ -7,10 +7,48 @@
     tools:context=".ManagerSignUpStart">
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textView4"
+        android:layout_width="170dp"
+        android:layout_height="116dp"
+        android:text="(Manager) Please fill in email and create password for your account"
+        app:layout_constraintBottom_toTopOf="@+id/managerSignUpEmailAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/managerSignUpEmailAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Manager"
-        tools:layout_editor_absoluteX="153dp"
-        tools:layout_editor_absoluteY="358dp" />
+        android:ems="10"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.24000001" />
+
+    <EditText
+        android:id="@+id/managerSignUpPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/managerSignUpEmailAddress"
+        app:layout_constraintVertical_bias="0.26" />
+
+    <Button
+        android:id="@+id/managerEmailPassSubmitButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/managerSignUpPassword" />
 </androidx.constraintlayout.widget.ConstraintLayout>
