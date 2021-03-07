@@ -4,7 +4,12 @@ package com.example.app;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.nfc.cardemulation.HostApduService;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.Animation;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.common.BitMatrix;
@@ -48,12 +53,12 @@ public class Building {
     public String getQrCodeURL(){
         return qrCodeURL;
     }
-    public List<StudentAccount> getStudents(){
+    public List<StudentAccount> getStudents(EditText buildingparam, ProgressBar circle){
 
         if(!this.students.isEmpty()){//if we have list of ids then extract students from firebase
             Log.d("Inside getStudents", students.toString());
 
-            FirebaseTest.getStudents(this,students);
+            FirebaseTest.getStudents(this,students,buildingparam,circle);
 
         }
 
@@ -64,8 +69,18 @@ public class Building {
         return this.students_accounts;
     }
     //setters
-    public  void setAccounts(List<StudentAccount> new_accounts){
+    public  void setAccounts(List<StudentAccount> new_accounts, EditText buildingparam, ProgressBar circle_thing){
         this.students_accounts=new_accounts;
+        buildingparam.setText(this.students_accounts.toString());
+       // circle_thing.setVisibility(View.GONE);
+        circle_thing.stopNestedScroll();
+
+
+
+
+
+
+
         Log.d("Inside SetAccount ", students_accounts.toString());
 
     }

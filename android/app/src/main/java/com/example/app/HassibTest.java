@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
@@ -24,6 +25,7 @@ public class HassibTest extends AppCompatActivity {
     private EditText buildingName;
     private Button btnQrCode;
     private ImageView qrimage;
+private ProgressBar circle_thing;
 
 
 
@@ -43,19 +45,25 @@ public class HassibTest extends AppCompatActivity {
         buildingName = findViewById(R.id.etBuildingName);
         btnQrCode = findViewById(R.id.btnLogin);
         qrimage = findViewById(R.id.imageView);
+        circle_thing= findViewById(R.id.etprogressBar);
+
         Building build = new Building();
         ArrayList<Long> account_ids = new ArrayList<>();
 
         account_ids.add(9876543210L);
         account_ids.add(2642001000L);
         account_ids.add(8588804678L);
+
         build.setStudents(account_ids);
-        build.getStudents();
-        if(build.getStudentsAcc()!=null){
-            buildingName.setText(build.getStudentsAcc().toString());
-        }else{
-            buildingName.setText("returned null");
-        }
+
+        build.getStudents(buildingName, circle_thing);
+
+//        while(build.getStudentsAcc()==null){}
+//        if(build.getStudentsAcc()==null){
+//            buildingName.setText("returned null");
+//        }else{
+//            buildingName.setText(build.getStudentsAcc().toString());
+//        }
 
         eLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,5 +101,6 @@ public class HassibTest extends AppCompatActivity {
         }
 
     }
+
 
 }

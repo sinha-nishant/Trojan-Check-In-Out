@@ -18,6 +18,15 @@ public class Account {
         this.profilePicture=profilePicture;
         this.isManager=type;
     }
+
+    public Account(String firstName, String lastName, String email, String hashedPw, Boolean isManager) {
+        this.firstName=firstName;
+        this.lastName=lastName;
+        this.email=email;
+        this.password= password;
+        this.isManager=isManager;
+    }
+
     public void setPassword(String newPassword) {
         this.password = newPassword;
     }

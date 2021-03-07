@@ -14,6 +14,8 @@ import androidx.annotation.NonNull;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -89,7 +91,7 @@ public class FirebaseTest extends AppCompatActivity {
     }
 
     // DataRetriever
-    public static List<StudentAccount> getStudents(Building b, List<Long> studentIDs) {
+    public static List<StudentAccount> getStudents(Building b, List<Long> studentIDs/*, EditText buildingparam, ProgressBar circle*/) {
         CollectionReference accounts = db.collection("Accounts");
         Query query = accounts.whereIn("uscID", studentIDs);
         Log.d("Inside firebase", "hello");
@@ -117,9 +119,10 @@ public class FirebaseTest extends AppCompatActivity {
 
                         // call callback function
 
-                        b.setAccounts(students);
+                       /*b.setAccounts(students,buildingparam,circle);
                         Integer sizee = students.size();
-                        Log.d("Length of students", sizee.toString());
+//                        buildingparam.setText(students.toString());
+                        Log.d("Length of students", sizee.toString());*/
 
 
                     }
