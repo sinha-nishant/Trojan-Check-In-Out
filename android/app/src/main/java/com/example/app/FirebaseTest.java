@@ -146,15 +146,6 @@ public class FirebaseTest extends AppCompatActivity {
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                try {
-                    Tasks.await(task);
-                } catch (ExecutionException e) {
-                    Log.d("ExecutionException", "BROKE AF PROGRAM 0");
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    Log.d("InterruptedException", "BROKE AF PROGRAM 1");
-                    e.printStackTrace();
-                }
                 if (task.isSuccessful()) {
                     if(!task.getResult().isEmpty()) {
 //                        ((TextView) findViewById(R.id.textBox)).setText("Email exists!");
@@ -179,13 +170,14 @@ public class FirebaseTest extends AppCompatActivity {
         return exists;
     }
 
-    //Nishant
+    //TODO Nishant
     public static Boolean checkUSCIdExists(Integer uscID) {
         return false;
     }
 
-    //Nishant
+    //TODO Nishant
     public static Boolean authenticate(String email, String password) {
+        db.collection("Accounts").where
         return false;
     }
 
