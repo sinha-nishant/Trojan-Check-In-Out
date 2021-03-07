@@ -1,12 +1,16 @@
 package com.example.app;
 
+import android.view.View;
+import android.widget.ProgressBar;
+
 public class Account {
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String profilePicture;
-    private String password;
-    private Boolean isManager;
+    protected String firstName;
+    protected String lastName;
+    protected String email;
+    protected String profilePicture;
+    protected String password;
+    protected Boolean isManager;
+    protected static Boolean deleteSuccess;
 
     public Account() {};
 
@@ -35,11 +39,10 @@ public class Account {
         this.profilePicture= url;
     }
 
-    public Boolean delete(){
-        //update with GraphQL
-        Boolean isSuccess=true;
-        //isSuccess=Update.deleteAccount(this.email); //GraphQL function call
-        return isSuccess;
+    public Boolean delete(ProgressBar bar){
+        //Todo
+//       FirebaseTest.deleteAccount(this.email,bar);
+       return deleteSuccess;
 
     }
 
@@ -65,5 +68,15 @@ public class Account {
 
     public Boolean getIsManager(){
         return isManager;
+    }
+
+    public static void setDeleteSuccess(Boolean outcome, ProgressBar bar) {
+        deleteSuccess = outcome;
+        bar.setVisibility(View.GONE);
+        bar.stopNestedScroll();
+    }
+
+    public Boolean getDeleteSuccess(){
+        return deleteSuccess;
     }
 }

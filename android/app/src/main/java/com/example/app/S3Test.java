@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.amplifyframework.AmplifyException;
@@ -124,59 +125,44 @@ public class S3Test extends AppCompatActivity {
     }
 
     public void upload(View v){
-        Log.i("upload", "in upload");
-        TextView tv= (TextView)findViewById(R.id.uri);
-        String uri =tv.getText().toString();
-        Log.i("upload", "uri= "+uri);
-        Uri myUri= Uri.parse(uri);
-        if(myUri==null){
-            Log.i("upload", "uri did not get parsed");
-        }
-       else{
-            Log.i("upload", "uri parsed= "+myUri.getPath());
-        }
-        try {
-            InputStream exampleInputStream = getContentResolver().openInputStream(Uri.parse(uri));
-            if(exampleInputStream==null){
-                Log.i("upload", "stream is null");
-            }
-            else{
-                Log.i("upload", "stream is valid");
-            }
-//            CreateAccount ca= new CreateAccount("Mike", "Scott","DunderMifflin@usc.edu","ahhh",exampleInputStream,true);
-//            CreateAccount ca= new CreateAccount("Hritik", "Sapra","Sapra@usc.edu","lollz",exampleInputStream,false, Long.valueOf("9876543210"),"CSCI");
-//            CreateAccount ca= new CreateAccount("Virat", "Kohli","Vk17@usc.edu","winner",exampleInputStream,true);
-//            CreateAccount ca= new CreateAccount("Rohit", "Sharma","Hitman@usc.edu","reckless",exampleInputStream,false, Long.valueOf("2642001000"),"BUAD");
-//            CreateAccount ca= new CreateAccount("Rishab", "Pant","Madman@usc.edu","ComeOnAsh",exampleInputStream,true);
-            CreateAccount ca= new CreateAccount("Washington", "Sundar","96@usc.edu","Solid",exampleInputStream,false, Long.valueOf("8588804678"),"MechEng");
-
-            Log.i("upload", "finished creating account");
-        } catch (FileNotFoundException e) {
-            Log.i("upload", "error in uri parsing");
-        }
+//        Log.i("upload", "in upload");
+//        TextView tv= (TextView)findViewById(R.id.uri);
+//        String uri =tv.getText().toString();
+//        Log.i("upload", "uri= "+uri);
+//        Uri myUri= Uri.parse(uri);
+//        ProgressBar circle_thing =(ProgressBar)findViewById(R.id.progressBar4);
+//        if(myUri==null){
+//            Log.i("upload", "uri did not get parsed");
+//        }
+//       else{
+//            Log.i("upload", "uri parsed= "+myUri.getPath());
+//        }
+//        try {
+//            InputStream exampleInputStream = getContentResolver().openInputStream(Uri.parse(uri));
+//            if(exampleInputStream==null){
+//                Log.i("upload", "stream is null");
+//            }
+//            else{
+//                Log.i("upload", "stream is valid");
+//            }
+////            CreateAccount ca= new CreateAccount("Mike", "Scott","DunderMifflin@usc.edu","ahhh",exampleInputStream,true);
+////            CreateAccount ca= new CreateAccount("Hritik", "Sapra","Sapra@usc.edu","lollz",exampleInputStream,false, Long.valueOf("9876543210"),"CSCI");
+////            CreateAccount ca= new CreateAccount("Virat", "Kohli","Vk17@usc.edu","winner",exampleInputStream,true);
+////            CreateAccount ca= new CreateAccount("Rohit", "Sharma","Hitman@usc.edu","reckless",exampleInputStream,false, Long.valueOf("2642001000"),"BUAD");
+////            CreateAccount ca= new CreateAccount("Rishab", "Pant","Madman@usc.edu","ComeOnAsh",exampleInputStream,true);
+//            CreateAccount ca= new CreateAccount("Washington", "Sundar","96@usc.edu","Solid",exampleInputStream,false, Long.valueOf("8588804678"),"MechEng",circle_thing);
+//
+//            Log.i("upload", "finished creating account");
+//        } catch (FileNotFoundException e) {
+//            Log.i("upload", "error in uri parsing");
+//        }
+        ProgressBar circle_thing =(ProgressBar)findViewById(R.id.progressBar4);
+        CreateAccount ca= new CreateAccount("ABC", "DEF", "ABCDEF@usc.edu","lolzz",true,circle_thing);
 
     }
 
     public void changeImage(View v){
-//        ImageView IVPreviewImage= findViewById(R.id.IVPreviewImage);
-//        Uri uri=  Uri.parse("https://trojan-check-in-and-out183928-dev173416-dev.s3-us-west-2.amazonaws.com/public/Derulo%40usc.edu.png");
-//        IVPreviewImage.setImageURI(uri);
 
-//        ImageView IVPreviewImage= findViewById(R.id.IVPreviewImage);
-//        String urlString=  "https://trojan-check-in-and-out183928-dev173416-dev.s3-us-west-2.amazonaws.com/public/IMG_2405.JPG";
-//
-//        Bitmap bm = null;
-//        try {
-//            URL url = new URL(urlString);
-//
-//
-//            URLConnection conn = url.openConnection();
-//            InputStream stream = conn.getInputStream();
-//            bm = BitmapFactory.decodeStream(stream);
-//        } catch(IOException e) {
-//            System.out.println(e);
-//        }
-//        IVPreviewImage.setImageBitmap(bm);
         ImageView IVPreviewImage= findViewById(R.id.IVPreviewImage);
         String url=  "https://trojan-check-in-and-out183928-dev173416-dev.s3-us-west-2.amazonaws.com/public/IMG_2405.JPG";
         Glide.with(this).load(url).into(IVPreviewImage);

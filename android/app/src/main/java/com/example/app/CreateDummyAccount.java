@@ -26,6 +26,6 @@ public class CreateDummyAccount extends AppCompatActivity {
 //            Log.i("upload", "stream is valid");
 //        }
 
-        CreateAccount ca= new CreateAccount("Washington", "Sundar","96@usc.edu","Solid", false);
+//        CreateAccount ca= new CreateAccount("Washington", "Sundar","96@usc.edu","Solid", false);
     }
 }

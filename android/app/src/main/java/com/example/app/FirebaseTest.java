@@ -187,14 +187,14 @@ public class FirebaseTest extends AppCompatActivity {
                         Log.d("EXIST", "Email " + email + " exists!");
 
                         // call callback function
-                        CreateAccount.setEmailAccepted(false);
+                        CreateAccount.setEmailAccepted(false,circle);
                     }
 
                     else {
                         Log.d("EXIST", "Email " + email + " does not exist!");
 
                         // call callback function
-                        CreateAccount.setEmailAccepted(true);
+                        CreateAccount.setEmailAccepted(true,circle);
                     }
                 }
             }
@@ -304,6 +304,7 @@ public class FirebaseTest extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
                                     Log.d("TEST", "Deleted Account");
+
                                 }
                             }
                         });
