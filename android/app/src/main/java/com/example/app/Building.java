@@ -17,10 +17,11 @@ public class Building {
     private String name;
     private Integer capacity;
     private Integer occupancy;
-    private List<Integer> students;//list of uscId
+    private List<Long> students;//list of uscId
+    private List<StudentAccount> students_accounts;//list of uscId
     private String qrCodeURL;
 
-    public Building(String building_name, Integer max_capacity, Integer current_occupancy,String image_location ,List<Integer> students_in_building){
+    public Building(String building_name, Integer max_capacity, Integer current_occupancy,String image_location ,List<Long> students_in_building){
         name=building_name;
         capacity=max_capacity;
         occupancy=current_occupancy;
@@ -29,7 +30,7 @@ public class Building {
             students=students_in_building;
         }
         else{
-            students = new ArrayList<Integer>();
+            students = new ArrayList<Long>();
         }
     }
     public Building(){}
@@ -48,13 +49,26 @@ public class Building {
         return qrCodeURL;
     }
     public List<StudentAccount> getStudents(){
-        List<StudentAccount> students_from_firebase = new ArrayList<StudentAccount>();
-        if(!students.isEmpty()){//if we have list of ids then extract students from firebase
-            students_from_firebase = FirebaseTest.getStudents(students);
+
+        if(!this.students.isEmpty()){//if we have list of ids then extract students from firebase
+            Log.d("Inside getStudents", students.toString());
+
+            FirebaseTest.getStudents(this,students);
+
         }
-        return students_from_firebase;
+
+        Log.d("Returning from getStudents", students.toString());
+        return this.students_accounts;
+    }
+    public List<StudentAccount> getStudentsAcc(){
+        return this.students_accounts;
     }
     //setters
+    public  void setAccounts(List<StudentAccount> new_accounts){
+        this.students_accounts=new_accounts;
+        Log.d("Inside SetAccount ", students_accounts.toString());
+
+    }
     public void setName(String new_name){
         name=new_name;
     }
@@ -67,8 +81,9 @@ public class Building {
     public void setQrCodeURL(String url){
         qrCodeURL=url;
     }
-    public void setStudents(List<Integer> student_ids){
-        students=student_ids;
+    public void setStudents(List<Long> student_ids){
+        this.students=student_ids;
+        Log.d("Inside setStudents size is: ",((Integer) this.students.size()).toString());
     }
 
 

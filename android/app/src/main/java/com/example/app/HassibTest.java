@@ -15,6 +15,8 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
+import java.util.ArrayList;
+
 public class HassibTest extends AppCompatActivity {
     private EditText eEmail;
     private EditText ePassword;
@@ -28,8 +30,12 @@ public class HassibTest extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hassib_test);
+
+
+
 
         eEmail = findViewById(R.id.etEmail);
         ePassword = findViewById(R.id.etPassword);
@@ -37,6 +43,20 @@ public class HassibTest extends AppCompatActivity {
         buildingName = findViewById(R.id.etBuildingName);
         btnQrCode = findViewById(R.id.btnLogin);
         qrimage = findViewById(R.id.imageView);
+        Building build = new Building();
+        ArrayList<Long> account_ids = new ArrayList<>();
+
+        account_ids.add(9876543210L);
+        account_ids.add(2642001000L);
+        account_ids.add(8588804678L);
+        build.setStudents(account_ids);
+        build.getStudents();
+        if(build.getStudentsAcc()!=null){
+            buildingName.setText(build.getStudentsAcc().toString());
+        }else{
+            buildingName.setText("returned null");
+        }
+
         eLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

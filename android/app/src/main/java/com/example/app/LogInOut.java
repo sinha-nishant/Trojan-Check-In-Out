@@ -6,8 +6,10 @@ import android.util.Log;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
 public class LogInOut {
-    public LogInOut(){
-
+    private boolean login=false;
+    public LogInOut(){}
+    public void isCorrectLogin(boolean login_success){
+        login=login_success;
     }
     public boolean LogIn(String email, String password){
         String bcryptHashString = BCrypt.withDefaults().hashToString(12, password.toCharArray());

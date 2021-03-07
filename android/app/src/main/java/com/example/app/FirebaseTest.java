@@ -89,9 +89,11 @@ public class FirebaseTest extends AppCompatActivity {
     }
 
     // DataRetriever
-    public static List<StudentAccount> getStudents(List<Integer> studentIDs) {
+    public static List<StudentAccount> getStudents(Building b, List<Long> studentIDs) {
         CollectionReference accounts = db.collection("Accounts");
         Query query = accounts.whereIn("uscID", studentIDs);
+        Log.d("Inside firebase", "hello");
+
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -107,13 +109,19 @@ public class FirebaseTest extends AppCompatActivity {
 
                         for (StudentAccount sa: students) {
                             Log.d("TEST", sa.toString());
-                            if (sa.getActivity() != null) {
+                            if (sa.getActivity() != null && sa.getActivity().size()!=0) {
                                 Log.d("TEST", sa.getActivity().get(0).getBuildingName());
                                 Log.d("TEST", sa.getActivity().get(0).getCheckInTime().toString());
                             }
                         }
 
                         // call callback function
+
+                        b.setAccounts(students);
+                        Integer sizee = students.size();
+                        Log.d("Length of students", sizee.toString());
+
+
                     }
 
                 }
