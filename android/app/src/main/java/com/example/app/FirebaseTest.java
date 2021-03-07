@@ -39,7 +39,8 @@ public class FirebaseTest extends AppCompatActivity {
 
     // FOR TESTING PURPOSES
     public void test(View v) {
-        updateCapacity("Fluor Tower", 90, null);
+        getBuilding("Fluor Tower", null);
+        getAllBuildings(null);
     }
 
     // CheckInOut
@@ -82,6 +83,61 @@ public class FirebaseTest extends AppCompatActivity {
     }
 
     // DataRetriever
+    public static void getBuilding(String buildingName, ProgressBar circle) {
+        db.collection("Buildings").whereEqualTo("name", buildingName).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                    DocumentSnapshot ds = task.getResult().getDocuments().get(0);
+                    Building building = (Building) ds.toObject(Building.class);
+                    List<Long> students = new ArrayList<>();
+                    if (((List<Long>) ds.get("students")) == null) {
+                        Log.d("BUILDING", "NULL " + ds.get("students"));
+                    }
+                    else {
+                        for (Long uscID: (List<Long>) ds.get("students")) {
+                            Log.d("BUILDING", "ITERATED");
+                            students.add(uscID);
+                        }
+                    }
+                    building.setStudents(students);
+                    Log.d("BUILDING", building.toString());
+                }
+
+                // callback
+            }
+        });
+    }
+
+    public static void getAllBuildings(ProgressBar circle) {
+        db.collection("Buildings").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                    List<Building> buildings = new ArrayList<>();
+                    for (QueryDocumentSnapshot qds: task.getResult()) {
+                        buildings.add((Building) qds.toObject(Building.class));
+                        List<Long> students = new ArrayList<>();
+                        if (((List<Long>) qds.get("students")) == null) {
+                            Log.d("BUILDING", "NULL " + qds.get("students"));
+                        }
+                        else {
+                            for (Long uscID: (List<Long>) qds.get("students")) {
+                                Log.d("BUILDING", "ITERATED");
+                                students.add(uscID);
+                            }
+                        }
+
+                        buildings.get(buildings.size() -  1).setStudents(students);
+                        Log.d("BUILDING", buildings.get(buildings.size() -  1).toString());
+                    }
+
+                    // callback function
+                }
+            }
+        });
+    }
+
     public static void getStudents(Building b, List<Long> studentIDs, EditText buildingparam, ProgressBar circle) {
         CollectionReference accounts = db.collection("Accounts");
         Query query = accounts.whereIn("uscID", studentIDs);

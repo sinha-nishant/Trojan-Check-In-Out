@@ -75,12 +75,6 @@ public class Building {
         circle_thing.setVisibility(View.GONE);
         circle_thing.stopNestedScroll();
 
-
-
-
-
-
-
         Log.d("Inside SetAccount ", students_accounts.toString());
 
     }
@@ -96,11 +90,10 @@ public class Building {
     public void setQrCodeURL(String url){
         qrCodeURL=url;
     }
-    public void setStudents(List<Long> student_ids){
-        this.students=student_ids;
-        Log.d("Inside setStudents size is: ",((Integer) this.students.size()).toString());
+    public void setStudents(List<Long> students){
+        this.students=students;
+//        Log.d("Inside setStudents size is: ",((Integer) this.students.size()).toString());
     }
-
 
     public boolean checkIn(StudentAccount student){
         return true;
@@ -109,7 +102,14 @@ public class Building {
         return true;
     }
 
-
-
-
+    public String toString() {
+        Integer numStudents;
+        if (this.students == null) {
+            numStudents = 0;
+        }
+        else {
+            numStudents = this.students.size();
+        }
+        return this.name + " capacity: " + this.capacity + " current: " + numStudents;
+    }
 }
