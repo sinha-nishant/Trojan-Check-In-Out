@@ -7,12 +7,12 @@ import java.io.InputStream;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
 public class CreateAccount {
-    public static Boolean emailAccepted;//possible error with firbase connection
+    public static Boolean emailAccepted;//possible error with firebase connection
     public static Boolean createAccountAccepted = true;
     public CreateAccount(String firstName, String lastName, String email, String pw, Boolean isManager){
         Log.i("CreateAccount","in create account");
 
-        FirebaseTest.checkEmailExists(email);
+//        FirebaseTest.checkEmailExists(email); Nish: commented
 //        check value of 'accepted'
         if(emailAccepted==false){
             return;
@@ -41,7 +41,7 @@ public class CreateAccount {
     public CreateAccount(String firstName, String lastName, String email, String pw,InputStream url, Boolean isManager){
         Log.i("CreateAccount","in create account");
 
-        FirebaseTest.checkEmailExists(email);
+//        FirebaseTest.checkEmailExists(email); Nish: commented
 //        check value of 'accepted'
         if(emailAccepted==false){
             return;
@@ -50,7 +50,7 @@ public class CreateAccount {
         String picUrl=AWSLink(email);
         String hashedPw = BCrypt.withDefaults().hashToString(12, pw.toCharArray());
         Account a= new Account(firstName,lastName,email,hashedPw,picUrl,isManager);
-        FirebaseTest.createAccount(a);
+//        FirebaseTest.createAccount(a); Nish: commented
         if(createAccountAccepted==false){
             return;
         }
@@ -75,7 +75,7 @@ public class CreateAccount {
         Log.i("CreateAccount","in create account");
 //        FirebaseTest fb= new FirebaseTest();
 //        fb.checkEmailExists(email);
-        FirebaseTest.checkEmailExists(email);
+//        FirebaseTest.checkEmailExists(email); Nish: commented
         if(emailAccepted==false){
             return;
         }

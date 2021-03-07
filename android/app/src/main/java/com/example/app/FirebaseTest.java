@@ -6,10 +6,8 @@ import android.os.Bundle;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import androidx.annotation.NonNull;
 
@@ -17,11 +15,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -33,7 +29,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 public class FirebaseTest extends AppCompatActivity {
 
-    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,18 +39,18 @@ public class FirebaseTest extends AppCompatActivity {
 
     // FOR TESTING PURPOSES
     public void test(View v) {
-        StudentAccount a = new StudentAccount();
-        a.setMajor("BBA");
-        a.setUscID((long) 100);
-        a.setProfilePicture("somePic.jpg");
-        a.setPassword("somePass");
-        createAccount(a);
+        checkUSCIdExists((long) 42, null); // true
+        checkUSCIdExists(9876543210L, null); // true
+        checkUSCIdExists((long) 0, null); // false
 
-//        FirebaseTest.deleteAccount("someEmail@usc.edu");
+        authenticate("Sapra@usc.edu", "lollz", null); // true
+        authenticate("Vk17@usc.edu", "badPassword", null); // false
+        authenticate("Madman@usc.edu", "$2a$12$t4deXBfmcv7JNCSxZ3RGOe2rgqUCRZUibSxzRjN5N.ZCbwYZozvO2", null); // true
+
     }
 
     // CheckInOut
-    public static void checkIn (int uscID, StudentActivity sa) {
+    public static void checkIn (Long uscID, StudentActivity sa) {
         CollectionReference accounts = db.collection("Accounts");
         Query studentQuery = accounts.whereEqualTo("uscID", uscID);
         studentQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -88,12 +84,12 @@ public class FirebaseTest extends AppCompatActivity {
         });
     }
 
-    public static void checkOut(int uscID, String buildingName, LocalDateTime checkOutTime) {
+    public static void checkOut(Long uscID, String buildingName, LocalDateTime checkOutTime) {
 
     }
 
     // DataRetriever
-    public static List<StudentAccount> getStudents(Building b, List<Long> studentIDs, EditText buildingparam, ProgressBar circle) {
+    public static void getStudents(Building b, List<Long> studentIDs, EditText buildingparam, ProgressBar circle) {
         CollectionReference accounts = db.collection("Accounts");
         Query query = accounts.whereIn("uscID", studentIDs);
         Log.d("Inside firebase", "hello");
@@ -120,27 +116,18 @@ public class FirebaseTest extends AppCompatActivity {
                         }
 
                         // call callback function
-
                        b.setAccounts(students,buildingparam,circle);
 //                        Integer sizee = students.size();
 //                        buildingparam.setText(students.toString());
 //                        Log.d("Length of students", sizee.toString());
-
-
                     }
 
                 }
             }
         });
-
-        // DO NOT USE THIS VALUE
-        // IMPLEMENT A CALLBACK FUNCTION
-        return null;
     }
 
-    // WORKS
-    public static Boolean checkEmailExists(String email) {
-        Boolean exists = false;
+    public static void checkEmailExists(String email, ProgressBar circle) {
         CollectionReference accounts = db.collection("Accounts");
         Query query = accounts.whereEqualTo("email", email);
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -148,37 +135,70 @@ public class FirebaseTest extends AppCompatActivity {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     if(!task.getResult().isEmpty()) {
-//                        ((TextView) findViewById(R.id.textBox)).setText("Email exists!");
-                        Log.d("EXIST", "Email exists!");
+                        Log.d("EXIST", "Email " + email + " exists!");
 
-                        // call callback function with param true
+                        // call callback function
                         CreateAccount.setEmailAccepted(false);
                     }
 
                     else {
-//                        ((TextView) findViewById(R.id.textBox)).setText("Email does not exist!");
-                        Log.d("EXIST", "Email does not exist");
+                        Log.d("EXIST", "Email " + email + " does not exist!");
 
-                        // call callback function with param false
+                        // call callback function
                         CreateAccount.setEmailAccepted(true);
                     }
                 }
             }
         });
-        // DO NOT USE THIS VALUE
-        // IMPLEMENT A CALLBACK FUNCTION
-        return exists;
     }
 
     //TODO Nishant
-    public static Boolean checkUSCIdExists(Integer uscID) {
-        return false;
+    public static void checkUSCIdExists(Long uscID, ProgressBar circle) {
+        db.collection("Accounts")
+                .whereEqualTo("uscID", uscID).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if(!task.getResult().isEmpty()) {
+                                Log.d("EXIST", "uscID " + uscID + " exists!");
+
+                                // call callback function
+                            }
+
+                            else {
+                                Log.d("EXIST", "uscID " + uscID + " does not exist!");
+
+                                // call callback function
+                            }
+                        }
+                    }
+                });
     }
 
     //TODO Nishant
-    public static Boolean authenticate(String email, String password) {
-        db.collection("Accounts").where
-        return false;
+    public static void authenticate(String email, String password, ProgressBar circle) {
+        db.collection("Accounts")
+                .whereEqualTo("email", email)
+                .whereEqualTo("password", password).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    if(!task.getResult().isEmpty()) {
+                        Log.d("AUTHENTICATE", email + " Auth successful!");
+
+                        // call callback function
+                    }
+
+                    else {
+                        Log.d("AUTHENTICATE", email + " Auth failed!");
+
+                        // call callback function
+                    }
+                }
+            }
+        });
     }
 
     // Update

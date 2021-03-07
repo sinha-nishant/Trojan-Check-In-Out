@@ -15,15 +15,15 @@
         <activity android:name=".ManagerSignUpStart"></activity>
         <activity android:name=".StudentSignUpStart" />
         <activity android:name=".SignUpPage" />
-        <activity
-            android:name=".activity_manager_home"
-            android:label="@string/title_activity_manager_home">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+<!--        <activity-->
+<!--            android:name=".activity_manager_home"-->
+<!--            android:label="@string/title_activity_manager_home">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
         <!--
  COMMENTED OUT BY MARKUS TO REMOVE ERRORS-->
 <!--        <activity-->
