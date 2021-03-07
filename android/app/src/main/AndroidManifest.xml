@@ -25,7 +25,18 @@
             </intent-filter>
         </activity>
         <!--
- COMMENTED OUT BY MARKUS TO REMOVE ERRORS
+ COMMENTED OUT BY MARKUS TO REMOVE ERRORS-->
+<!--        <activity-->
+<!--            android:name=".activity_manager_home"-->
+<!--            android:label="@string/title_activity_manager_home">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
+
+        <!-- COMMENTED OUT BY MARKUS TO REMOVE ERRORS
         <uses-library
             android:name="com.google.android.wearable"
             android:required="true" />
@@ -46,6 +57,7 @@
         <activity android:name=".JohnTest" />
         <activity android:name=".FirebaseTest" />
         <activity android:name=".S3Test" />
+        <activity android:name=".CreateDummyAccount" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

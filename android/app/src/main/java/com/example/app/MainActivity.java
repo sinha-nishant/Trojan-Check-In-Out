@@ -8,7 +8,6 @@ import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +42,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void changeAngad(View v){
         Intent i= new Intent(this,AngadTest.class);
+        startActivity(i);
+    }
+
+    public void changeCreateDummy(View v) {
+        Intent i= new Intent(this, CreateDummyAccount.class);
         startActivity(i);
     }
 }

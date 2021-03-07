@@ -15,20 +15,17 @@ public class CreateDummyAccount extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_dummy_account);
-
-
-
     }
-    public void CreateAcc(View v){
-        /* Commented by John to avoid Errors
-        InputStream exampleInputStream = getContentResolver().openInputStream(Uri.parse(uri));
-        if(exampleInputStream==null){
-            Log.i("upload", "stream is null");
-        }
-        else{
-            Log.i("upload", "stream is valid");
-        }
+
+    public void createAcc(View v){
+//        InputStream exampleInputStream = getContentResolver().openInputStream(Uri.parse(uri));
+//        if(exampleInputStream==null){
+//            Log.i("upload", "stream is null");
+//        }
+//        else{
+//            Log.i("upload", "stream is valid");
+//        }
+
         CreateAccount ca= new CreateAccount("Washington", "Sundar","96@usc.edu","Solid", false);
-        */
     }
 }

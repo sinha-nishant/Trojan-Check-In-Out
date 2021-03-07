@@ -59,11 +59,11 @@ private ProgressBar circle_thing;
         build.getStudents(buildingName, circle_thing);
 
 //        while(build.getStudentsAcc()==null){}
-//        if(build.getStudentsAcc()==null){
-//            buildingName.setText("returned null");
-//        }else{
-//            buildingName.setText(build.getStudentsAcc().toString());
-//        }
+        if(build.getStudentsAcc()==null){
+            buildingName.setText("returned null");
+        }else{
+            buildingName.setText(build.getStudentsAcc().toString());
+        }
 
         eLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +83,7 @@ private ProgressBar circle_thing;
         });
 
     }
+
     public void QRCodeBtn(View view){
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         try{

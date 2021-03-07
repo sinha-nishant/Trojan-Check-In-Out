@@ -72,7 +72,7 @@ public class Building {
     public  void setAccounts(List<StudentAccount> new_accounts, EditText buildingparam, ProgressBar circle_thing){
         this.students_accounts=new_accounts;
         buildingparam.setText(this.students_accounts.toString());
-       // circle_thing.setVisibility(View.GONE);
+        circle_thing.setVisibility(View.GONE);
         circle_thing.stopNestedScroll();
 
 

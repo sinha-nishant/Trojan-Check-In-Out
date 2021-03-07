@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import androidx.annotation.NonNull;
 
@@ -20,6 +21,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -91,7 +93,7 @@ public class FirebaseTest extends AppCompatActivity {
     }
 
     // DataRetriever
-    public static List<StudentAccount> getStudents(Building b, List<Long> studentIDs/*, EditText buildingparam, ProgressBar circle*/) {
+    public static List<StudentAccount> getStudents(Building b, List<Long> studentIDs, EditText buildingparam, ProgressBar circle) {
         CollectionReference accounts = db.collection("Accounts");
         Query query = accounts.whereIn("uscID", studentIDs);
         Log.d("Inside firebase", "hello");
@@ -119,10 +121,10 @@ public class FirebaseTest extends AppCompatActivity {
 
                         // call callback function
 
-                       /*b.setAccounts(students,buildingparam,circle);
-                        Integer sizee = students.size();
+                       b.setAccounts(students,buildingparam,circle);
+//                        Integer sizee = students.size();
 //                        buildingparam.setText(students.toString());
-                        Log.d("Length of students", sizee.toString());*/
+//                        Log.d("Length of students", sizee.toString());
 
 
                     }
@@ -144,6 +146,15 @@ public class FirebaseTest extends AppCompatActivity {
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                try {
+                    Tasks.await(task);
+                } catch (ExecutionException e) {
+                    Log.d("ExecutionException", "BROKE AF PROGRAM 0");
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    Log.d("InterruptedException", "BROKE AF PROGRAM 1");
+                    e.printStackTrace();
+                }
                 if (task.isSuccessful()) {
                     if(!task.getResult().isEmpty()) {
 //                        ((TextView) findViewById(R.id.textBox)).setText("Email exists!");

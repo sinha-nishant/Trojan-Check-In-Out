@@ -7,8 +7,8 @@ import java.io.InputStream;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
 public class CreateAccount {
-    public static Boolean emailAccepted=true;//possible error with firbase connection
-    public static Boolean createAccountAccepted=true;
+    public static Boolean emailAccepted;//possible error with firbase connection
+    public static Boolean createAccountAccepted = true;
     public CreateAccount(String firstName, String lastName, String email, String pw, Boolean isManager){
         Log.i("CreateAccount","in create account");
 
@@ -33,7 +33,7 @@ public class CreateAccount {
         Log.i("account",a.getLastName());
         Log.i("account",a.getEmail());
         Log.i("account",a.getPassword());
-        Log.i("account",a.getProfilePicture());
+//        Log.i("account",a.getProfilePicture());
         Log.i("account", String.valueOf(isManager));
 //        FirebaseTest.createAccount(a);
 //        accepted=true;
