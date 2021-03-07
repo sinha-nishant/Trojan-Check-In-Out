@@ -2,10 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.app">
 
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-
-    <uses-feature android:name="android.hardware.type.watch" />
-
+    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- <uses-feature android:name="android.hardware.type.watch" /> -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -15,6 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.App">
+        <activity android:name=".ManagerSignUpStart"></activity>
+        <activity android:name=".StudentSignUpStart" />
+        <activity android:name=".SignUpPage" />
         <activity
             android:name=".activity_manager_home"
             android:label="@string/title_activity_manager_home">
@@ -24,7 +24,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- COMMENTED OUT BY MARKUS TO REMOVE ERRORS
+        <!--
+ COMMENTED OUT BY MARKUS TO REMOVE ERRORS
         <uses-library
             android:name="com.google.android.wearable"
             android:required="true" />
@@ -33,12 +34,12 @@
                Set to true if your app is Standalone, that is, it does not require the handheld
                app to run.
         -->
-        <!-- COMMENTED OUT BY MARKUS TO REMOVE ERRORS
+        <!--
+ COMMENTED OUT BY MARKUS TO REMOVE ERRORS
         <meta-data
             android:name="com.google.android.wearable.standalone"
             android:value="true" />
         -->
-
         <activity android:name=".AngadTest" />
         <activity android:name=".HassibTest" />
         <activity android:name=".MarkusTest" />

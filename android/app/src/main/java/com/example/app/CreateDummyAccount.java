@@ -20,6 +20,7 @@ public class CreateDummyAccount extends AppCompatActivity {
 
     }
     public void CreateAcc(View v){
+        /* Commented by John to avoid Errors
         InputStream exampleInputStream = getContentResolver().openInputStream(Uri.parse(uri));
         if(exampleInputStream==null){
             Log.i("upload", "stream is null");
@@ -28,5 +29,6 @@ public class CreateDummyAccount extends AppCompatActivity {
             Log.i("upload", "stream is valid");
         }
         CreateAccount ca= new CreateAccount("Washington", "Sundar","96@usc.edu","Solid", false);
+        */
     }
 }
