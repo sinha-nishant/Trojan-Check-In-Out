@@ -58,7 +58,7 @@ public class Building {
         if(!this.students.isEmpty()){//if we have list of ids then extract students from firebase
             Log.d("Inside getStudents", students.toString());
 
-            FirebaseTest.getStudents(this,students); //edited by John to prevent errors
+            FirebaseTest.getStudents(this,students,buildingparam,circle); 
 
         }
 
