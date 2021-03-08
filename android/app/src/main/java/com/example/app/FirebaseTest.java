@@ -38,11 +38,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
 
     // FOR TESTING PURPOSES
     public void test(View v) {
-        StudentActivity sa = new StudentActivity();
-        sa.setBuildingName("Leventhal School of Accounting");
-//        checkIn(8588804678L, sa);
-        //Arjun: commentated this out since it does not conform to the new parameters
-//        checkOut(8588804678L, sa, new Date());
+        
     }
 
     // CheckInOut - TO FIX: DOESN'T UPDATE OCCUPANCY YET
@@ -289,6 +285,8 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                 if (task.isSuccessful()) {
                     if(!task.getResult().isEmpty()) {
                         Log.d("AUTHENTICATE", email + " Auth successful!");
+                        Long uscID = (Long) task.getResult().getDocuments().get(0).get("uscID");
+                        Log.d("ID", String.valueOf(uscID));
 
                         // call callback function
                     }
