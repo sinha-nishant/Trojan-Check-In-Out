@@ -246,7 +246,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
         });
     }
 
-    // Update
+    // Update Capacity
     public static void updateCapacity(String buildingName, int newCapacity, ProgressBar circle) {
         FirestoreConnector.getDB().collection("Buildings")
                 .whereEqualTo("name", buildingName)
@@ -314,11 +314,45 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
 
     //Angad Sood
     public static void updatePassword(String email, String newPassword) {
-
+        FirestoreConnector.getDB().collection("Accounts").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful() && !task.getResult().isEmpty()){
+                    for(QueryDocumentSnapshot qds: task.getResult()){
+                        FirestoreConnector.getDB().collection("Accounts").document(qds.getId()).update("password", newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()){
+                                    Log.d("UPDATE","Updated Password");
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
     }
 
-    //Angad Sood
-    public static void updateMajor(int uscID, String newMajor) {
+    //Update major
+    public static void updateMajor(long uscID, String newMajor) {
+        FirestoreConnector.getDB().collection("Accounts").whereEqualTo("uscID", uscID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful() && !task.getResult().isEmpty()){
+                    for(QueryDocumentSnapshot qds: task.getResult()){
+                        FirestoreConnector.getDB().collection("Accounts").document(qds.getId()).update("newMajor", newMajor).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()){
+                                    Log.d("UPDATE","Updated Major");
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+
 
     }
 }
