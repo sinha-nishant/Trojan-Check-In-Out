@@ -4,8 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +23,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -38,8 +37,10 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
 
     // FOR TESTING PURPOSES
     public void test(View v) {
-        getBuilding("Fluor Tower", null);
-        getAllBuildings(null);
+        StudentActivity sa = new StudentActivity();
+        sa.setBuildingName("Leventhal School of Accounting");
+//        checkIn(8588804678L, sa);
+        checkOut(8588804678L, sa, new Date());
     }
 
     // CheckInOut - TO FIX: DOESN'T UPDATE OCCUPANCY YET
@@ -81,8 +82,55 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
         });
     }
 
-    public static void checkOut(Long uscID, String buildingName, LocalDateTime checkOutTime) {
+    public static void checkOut(Long uscID, StudentActivity sa, Date checkOutTime) {
+        FirestoreConnector.getDB().collection("Accounts")
+                .whereEqualTo("uscID", uscID)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                    DocumentReference account = task.getResult().getDocuments().get(0).getReference();
 
+                    StudentActivity newSA = new StudentActivity(
+                            sa.getBuildingName(),
+                            sa.getCheckInTime(),
+                            checkOutTime
+                    );
+                    account.update(
+                            "activity", FieldValue.arrayRemove(sa),
+                            "activity", FieldValue.arrayUnion(newSA))
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                FirestoreConnector.getDB().collection("Buildings")
+                                        .whereEqualTo("name", sa.getBuildingName())
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                                                    DocumentReference building = task.getResult().getDocuments().get(0).getReference();
+                                                    Map<String, Object> updates = new HashMap<>();
+                                                    updates.put("occupancy", FieldValue.increment(-1));
+                                                    updates.put("students", FieldValue.arrayRemove(uscID));
+                                                    building.update(updates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if (task.isSuccessful()) {
+                                                                Log.d("CHECKOUT", "checked out successfully!");
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        });
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 
     // DataRetriever
@@ -144,7 +192,6 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
     public static void getStudents(Building b, List<Long> studentIDs, EditText buildingparam, ProgressBar circle) {
         CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
         Query query = accounts.whereIn("uscID", studentIDs);
-        Log.d("Inside firebase", "hello");
 
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -152,26 +199,15 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                 if (task.isSuccessful()) {
                     if(!task.getResult().isEmpty()) {
                         List<DocumentSnapshot> studentDocuments = task.getResult().getDocuments();
-                        List<StudentAccount> students = new ArrayList<StudentAccount>();
+                        List<StudentAccount> students = new ArrayList<>();
                         for (DocumentSnapshot ds: studentDocuments) {
                             StudentAccount studentAccount = ds.toObject(StudentAccount.class);
                             studentAccount.setUscID((Long) ds.get("uscID"));
                             students.add(studentAccount);
                         }
 
-                        for (StudentAccount sa: students) {
-                            Log.d("TEST", sa.toString());
-                            if (sa.getActivity() != null && sa.getActivity().size()!=0) {
-                                Log.d("TEST", sa.getActivity().get(0).getBuildingName());
-                                Log.d("TEST", sa.getActivity().get(0).getCheckInTime().toString());
-                            }
-                        }
-
                         // call callback function
                        b.setAccounts(students,buildingparam,circle);
-//                        Integer sizee = students.size();
-//                        buildingparam.setText(students.toString());
-//                        Log.d("Length of students", sizee.toString());
                     }
 
                 }
