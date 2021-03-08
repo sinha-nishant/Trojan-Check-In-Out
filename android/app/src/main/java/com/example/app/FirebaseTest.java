@@ -27,9 +27,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-public class FirebaseTest extends AppCompatActivity {
-
-    private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
+public class FirebaseTest extends AppCompatActivity implements FirestoreConnector {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +43,7 @@ public class FirebaseTest extends AppCompatActivity {
 
     // CheckInOut
     public static void checkIn (Long uscID, StudentActivity sa) {
-        CollectionReference accounts = db.collection("Accounts");
+        CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
         Query studentQuery = accounts.whereEqualTo("uscID", uscID);
         studentQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -56,7 +54,7 @@ public class FirebaseTest extends AppCompatActivity {
                             accounts.document(document.getId()).update("activity", FieldValue.arrayUnion(sa));
                         }
 
-                        CollectionReference buildings = db.collection("Buildings");
+                        CollectionReference buildings = FirestoreConnector.getDB().collection("Buildings");
                         Query buildingQuery = buildings.whereEqualTo("name", sa.getBuildingName());
                         buildingQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
@@ -84,7 +82,7 @@ public class FirebaseTest extends AppCompatActivity {
 
     // DataRetriever
     public static void getBuilding(String buildingName, ProgressBar circle) {
-        db.collection("Buildings").whereEqualTo("name", buildingName).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        FirestoreConnector.getDB().collection("Buildings").whereEqualTo("name", buildingName).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful() && !task.getResult().isEmpty()) {
@@ -110,7 +108,7 @@ public class FirebaseTest extends AppCompatActivity {
     }
 
     public static void getAllBuildings(ProgressBar circle) {
-        db.collection("Buildings").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        FirestoreConnector.getDB().collection("Buildings").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful() && !task.getResult().isEmpty()) {
@@ -139,7 +137,7 @@ public class FirebaseTest extends AppCompatActivity {
     }
 
     public static void getStudents(Building b, List<Long> studentIDs, EditText buildingparam, ProgressBar circle) {
-        CollectionReference accounts = db.collection("Accounts");
+        CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
         Query query = accounts.whereIn("uscID", studentIDs);
         Log.d("Inside firebase", "hello");
 
@@ -177,7 +175,7 @@ public class FirebaseTest extends AppCompatActivity {
     }
 
     public static void checkEmailExists(String email, ProgressBar circle) {
-        CollectionReference accounts = db.collection("Accounts");
+        CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
         Query query = accounts.whereEqualTo("email", email);
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -202,7 +200,7 @@ public class FirebaseTest extends AppCompatActivity {
     }
 
     public static void checkUSCIdExists(Long uscID, ProgressBar circle) {
-        db.collection("Accounts")
+        FirestoreConnector.getDB().collection("Accounts")
                 .whereEqualTo("uscID", uscID).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -225,7 +223,7 @@ public class FirebaseTest extends AppCompatActivity {
     }
 
     public static void authenticate(String email, String password, ProgressBar circle) {
-        db.collection("Accounts")
+        FirestoreConnector.getDB().collection("Accounts")
                 .whereEqualTo("email", email)
                 .whereEqualTo("password", password).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -250,14 +248,14 @@ public class FirebaseTest extends AppCompatActivity {
 
     // Update
     public static void updateCapacity(String buildingName, int newCapacity, ProgressBar circle) {
-        db.collection("Buildings")
+        FirestoreConnector.getDB().collection("Buildings")
                 .whereEqualTo("name", buildingName)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful() && !task.getResult().isEmpty()) {
                     for (QueryDocumentSnapshot qds: task.getResult()) {
-                        db.collection("Buildings")
+                        FirestoreConnector.getDB().collection("Buildings")
                                 .document(qds.getId())
                                 .update("capacity", newCapacity)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -279,7 +277,7 @@ public class FirebaseTest extends AppCompatActivity {
     }
 
     public static void createAccount(Account a) {
-        db.collection("Accounts").add(a).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+        FirestoreConnector.getDB().collection("Accounts").add(a).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
                 if (task.isSuccessful()) {
@@ -294,12 +292,12 @@ public class FirebaseTest extends AppCompatActivity {
     }
 
     public static void deleteAccount(String email) {
-        db.collection("Accounts").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        FirestoreConnector.getDB().collection("Accounts").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot qds: task.getResult()) {
-                        db.collection("Accounts").document(qds.getId()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        FirestoreConnector.getDB().collection("Accounts").document(qds.getId()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
