@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 
@@ -41,7 +42,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
         getAllBuildings(null);
     }
 
-    // CheckInOut
+    // CheckInOut - TO FIX: DOESN'T UPDATE OCCUPANCY YET
     public static void checkIn (Long uscID, StudentActivity sa) {
         CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
         Query studentQuery = accounts.whereEqualTo("uscID", uscID);
@@ -61,8 +62,12 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (task.isSuccessful()) {
                                     if (!task.getResult().isEmpty()) {
+                                        Map<String, Object> updates = new HashMap<>();
+                                        updates.put("occupancy",FieldValue.increment(1));
+                                        updates.put("students", FieldValue.arrayUnion(uscID));
                                         for (QueryDocumentSnapshot document: task.getResult()) {
-                                            buildings.document(document.getId()).update("students", FieldValue.arrayUnion(uscID));
+                                            buildings.document(document.getId())
+                                                    .update(updates);
                                         }
 
                                         // call callback function
@@ -335,24 +340,33 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
 
     //Update major
     public static void updateMajor(long uscID, String newMajor) {
-        FirestoreConnector.getDB().collection("Accounts").whereEqualTo("uscID", uscID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful() && !task.getResult().isEmpty()){
-                    for(QueryDocumentSnapshot qds: task.getResult()){
-                        FirestoreConnector.getDB().collection("Accounts").document(qds.getId()).update("newMajor", newMajor).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if(task.isSuccessful()){
-                                    Log.d("UPDATE","Updated Major");
-                                }
+        FirestoreConnector.getDB().collection("Accounts").whereEqualTo("uscID", uscID).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                            for (QueryDocumentSnapshot qds : task.getResult()) {
+                                FirestoreConnector.getDB().collection("Accounts")
+                                        .document(qds.getId())
+                                        .update("major", newMajor)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Log.d("UPDATE", "Updated Major");
+                                                }
+                                            }
+                                        });
                             }
-                        });
+                        }
                     }
-                }
-            }
-        });
+                });
 
 
     }
+
+    //Search
+    public static void search(Long uscID){};
+
 }
+
