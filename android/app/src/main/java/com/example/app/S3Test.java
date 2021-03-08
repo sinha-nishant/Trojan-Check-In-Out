@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.amplifyframework.AmplifyException;
@@ -19,6 +20,7 @@ import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
 import com.bumptech.glide.Glide;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
@@ -41,6 +43,7 @@ public class S3Test extends AppCompatActivity {
     // One Preview Image
     ImageView IVPreviewImage;
 
+
     // constant to compare
     // the activity result code
     int SELECT_PICTURE = 200;
@@ -61,6 +64,12 @@ public class S3Test extends AppCompatActivity {
         // register the UI widgets with their appropriate IDs
         BSelectImage = findViewById(R.id.BSelectImage);
         IVPreviewImage = findViewById(R.id.IVPreviewImage);
+//        RelativeLayout layout;
+//        layout= findViewById(R.id.progress);
+//        Snackbar snackbar= Snackbar.make(layout,"in snackbar",Snackbar.LENGTH_LONG);
+//        snackbar.show();
+//        snackbar.setText("updated text");
+//        snackbar.show();
 
         // handle the Choose Image button to trigger
         // the image chooser function

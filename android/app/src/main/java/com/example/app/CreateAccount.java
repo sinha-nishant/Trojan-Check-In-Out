@@ -9,17 +9,15 @@ import java.io.InputStream;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
 public class CreateAccount {
-    public static Boolean emailAccepted;//possible error with firebase connection
-    public static Boolean createAccountAccepted;
+    public static Boolean emailAccepted=true;//possible error with firebase connection
+    public static Boolean createAccountAccepted=true;
     public CreateAccount(String firstName, String lastName, String email, String pw, Boolean isManager, ProgressBar bar){
         Log.i("CreateAccount","in create account");
 
 //        FirebaseTest.checkEmailExists(email); Nish: commented
 //        check value of 'accepted'
         FirebaseTest.checkEmailExists(email,bar);
-//        while(bar.getVisibility()!=View.GONE){
-//
-//        }
+
         if(emailAccepted==null){
             Log.i("progressbar","didnt work");
         }
@@ -32,12 +30,12 @@ public class CreateAccount {
 
 
 
-        String hashedPw = BCrypt.withDefaults().hashToString(12, pw.toCharArray());
-        Account a= new Account(firstName,lastName,email,hashedPw,isManager);
-        FirebaseTest.createAccount(a);
-        if(createAccountAccepted==false){
-            return;
-        }
+//        String hashedPw = BCrypt.withDefaults().hashToString(12, pw.toCharArray());
+//        Account a= new Account(firstName,lastName,email,hashedPw,isManager);
+//        FirebaseTest.createAccount(a);
+//        if(createAccountAccepted==false){
+//            return;
+//        }
 
 
 
@@ -178,7 +176,7 @@ public class CreateAccount {
     public static void setEmailAccepted(Boolean accepted,ProgressBar bar) {
         emailAccepted = accepted;
         bar.setVisibility(View.GONE);
-        bar.stopNestedScroll();
+//        bar.stopNestedScroll();
     }
 
     public static void setCreateAccountAccepted(Boolean accepted) {

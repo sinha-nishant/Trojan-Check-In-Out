@@ -3,6 +3,8 @@ package com.example.app;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.google.android.material.snackbar.Snackbar;
+
 public class Account {
     protected String firstName;
     protected String lastName;
@@ -39,10 +41,10 @@ public class Account {
         this.profilePicture= url;
     }
 
-    public Boolean delete(ProgressBar bar){
+    public void delete(ProgressBar bar, Snackbar snackbar){
         //Todo
-//       FirebaseTest.deleteAccount(this.email,bar);
-       return deleteSuccess;
+       FirebaseTest.deleteAccount(this.email,bar,snackbar);
+
 
     }
 
@@ -70,10 +72,19 @@ public class Account {
         return isManager;
     }
 
-    public static void setDeleteSuccess(Boolean outcome, ProgressBar bar) {
+    public static void setDeleteSuccess(Boolean outcome, ProgressBar bar,Snackbar snackbar) {
         deleteSuccess = outcome;
         bar.setVisibility(View.GONE);
         bar.stopNestedScroll();
+        if(deleteSuccess ==true){
+            snackbar.setText("Successfully deleted account");
+        }
+        else{
+            snackbar.setText("Error. Could not delete account successfully");
+        }
+        snackbar.show();
+
+
     }
 
     public Boolean getDeleteSuccess(){

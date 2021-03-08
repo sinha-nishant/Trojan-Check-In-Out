@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -40,11 +41,13 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
         StudentActivity sa = new StudentActivity();
         sa.setBuildingName("Leventhal School of Accounting");
 //        checkIn(8588804678L, sa);
-        checkOut(8588804678L, sa, new Date());
+        //Arjun: commentated this out since it does not conform to the new parameters
+//        checkOut(8588804678L, sa, new Date());
     }
 
     // CheckInOut - TO FIX: DOESN'T UPDATE OCCUPANCY YET
-    public static void checkIn (Long uscID, StudentActivity sa) {
+    // Arjun: Updated paramaters to allow for callback
+    public static void checkIn (Long uscID, StudentActivity sa,ProgressBar progressbar,Snackbar snackbar) {
         CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
         Query studentQuery = accounts.whereEqualTo("uscID", uscID);
         studentQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -72,7 +75,14 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                                         }
 
                                         // call callback function
+                                        //Arjun added callback
+                                        StudentAccount.setCheckInSuccess(true,progressbar,snackbar);
+
                                     }
+                                }
+                                else{
+                                    //Arjun added callback
+                                    StudentAccount.setCheckInSuccess(false,progressbar,snackbar);
                                 }
                             }
                         });
@@ -81,8 +91,8 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
             }
         });
     }
-
-    public static void checkOut(Long uscID, StudentActivity sa, Date checkOutTime) {
+    //Arjun updated params and added callback
+    public static void checkOut(Long uscID, StudentActivity sa, Date checkOutTime,ProgressBar progressbar,Snackbar snackbar) {
         FirestoreConnector.getDB().collection("Accounts")
                 .whereEqualTo("uscID", uscID)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -119,6 +129,12 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                                                         public void onComplete(@NonNull Task<Void> task) {
                                                             if (task.isSuccessful()) {
                                                                 Log.d("CHECKOUT", "checked out successfully!");
+                                                                //Arjun added callback
+                                                                StudentAccount.setCheckOutSuccess(true,progressbar,snackbar);
+                                                            }
+                                                            else{
+                                                                //Arjun added callback
+                                                                StudentAccount.setCheckOutSuccess(false,progressbar,snackbar);
                                                             }
                                                         }
                                                     });
@@ -332,7 +348,8 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
         });
     }
 
-    public static void deleteAccount(String email) {
+    //updated by Arjun. Added progress bar and snackbar params since call back needs it
+    public static void deleteAccount(String email, ProgressBar progressbar, Snackbar snackbar) {
         FirestoreConnector.getDB().collection("Accounts").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -343,7 +360,13 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
                                     Log.d("TEST", "Deleted Account");
+                                    //callback added by Arjun
+                                    Account.setDeleteSuccess(true,progressbar,snackbar);
 
+                                }
+                                else{
+                                    //callback added by Arjun
+                                    Account.setDeleteSuccess(false,progressbar,snackbar);
                                 }
                             }
                         });
@@ -375,7 +398,8 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
     }
 
     //Update major
-    public static void updateMajor(long uscID, String newMajor) {
+    //updated params and added callback
+    public static void updateMajor(long uscID, String newMajor,ProgressBar progressbar,Snackbar snackbar ) {
         FirestoreConnector.getDB().collection("Accounts").whereEqualTo("uscID", uscID).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -390,6 +414,12 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
                                                     Log.d("UPDATE", "Updated Major");
+                                                    //Arjun added callback
+                                                    StudentAccount.setMajorSuccess(true,progressbar,snackbar);
+                                                }
+                                                else{
+                                                    //Arjun added callback
+                                                    StudentAccount.setMajorSuccess(false,progressbar,snackbar);
                                                 }
                                             }
                                         });
