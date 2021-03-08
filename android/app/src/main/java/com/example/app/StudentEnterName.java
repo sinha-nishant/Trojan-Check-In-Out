@@ -9,25 +9,27 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class StudentSignUpStart extends AppCompatActivity {
+public class StudentEnterName extends AppCompatActivity {
 
-    String email, password;
-    EditText emailInput;
-    EditText passwordInput;
+    String fName, lName;
+    EditText firstNameInput;
+    EditText lastNameInput;
     Button submitButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_sign_up_start);
+        setContentView(R.layout.activity_student_enter_name);
+
+        firstNameInput = (EditText) findViewById(R.id.studentFirstName);
+        lastNameInput = (EditText) findViewById(R.id.studentLastName);
+        /*
 
         //Get the bundle
-        //Bundle bundle = getIntent().getExtras();
-        //Extract the data…
-        //String stuff = bundle.getString(“stuff”);
+        Bundle bundle = getIntent().getExtras();
 
-        emailInput = (EditText) findViewById(R.id.studentSignUpEmailAddress);
-        passwordInput = (EditText) findViewById(R.id.studentSignUpPassword);
+        //Extract the data…
+        String stuff = bundle.getString(“stuff”);
 
         submitButton = (Button) findViewById(R.id.studentEmailPassSubmitButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -50,12 +52,13 @@ public class StudentSignUpStart extends AppCompatActivity {
                     openNameStudent(email, password);
                 }
             }
-    });
+        });
+         */
 
     }
     private void showToast(String text)
     {
-        Toast.makeText(StudentSignUpStart.this, text, Toast.LENGTH_SHORT).show();
+        Toast.makeText(StudentEnterName.this, text, Toast.LENGTH_SHORT).show();
     }
     public void openNameStudent(String email, String password) {
         Intent i = new Intent(this, StudentEnterName.class);
