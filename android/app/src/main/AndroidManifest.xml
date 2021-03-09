@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- <uses-feature android:name="android.hardware.type.watch" /> -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -12,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.App">
-        <activity android:name=".StudentEnterName"></activity>
+        <activity android:name=".StudentEnterID"></activity>
+        <activity android:name=".StudentUploadPhoto" />
+        <activity android:name=".StudentEnterName" />
         <activity android:name=".ManagerSignUpStart" />
         <activity android:name=".StudentSignUpStart" />
         <activity android:name=".SignUpPage" /> <!-- <activity -->
@@ -23,7 +26,7 @@
         <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
         <!-- </intent-filter> -->
         <!-- </activity> -->
-        <!--  COMMENTED OUT BY MARKUS TO REMOVE ERRORS -->
+        <!-- COMMENTED OUT BY MARKUS TO REMOVE ERRORS -->
         <!-- <activity -->
         <!-- android:name=".activity_manager_home" -->
         <!-- android:label="@string/title_activity_manager_home"> -->

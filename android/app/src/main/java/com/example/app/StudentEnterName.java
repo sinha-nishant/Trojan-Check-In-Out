@@ -23,24 +23,24 @@ public class StudentEnterName extends AppCompatActivity {
 
         firstNameInput = (EditText) findViewById(R.id.studentFirstName);
         lastNameInput = (EditText) findViewById(R.id.studentLastName);
-        /*
 
         //Get the bundle
-        Bundle bundle = getIntent().getExtras();
+        // Bundle bundle = getIntent().getExtras();
 
         //Extract the data…
-        String stuff = bundle.getString(“stuff”);
+        // String stuff = bundle.getString(“stuff”);
 
-        submitButton = (Button) findViewById(R.id.studentEmailPassSubmitButton);
+        submitButton = (Button) findViewById(R.id.nameButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                email = emailInput.getText().toString();
-                password = passwordInput.getText().toString();
+                fName = firstNameInput.getText().toString();
+                lName = lastNameInput.getText().toString();
 
                 //used for popups to user
                 //showToast(email);
                 //showToast(password);
+                /*
                 if(email.length() == 0 || password.length() == 0)
                     showToast("Email or Password is blank");
                 else if(email.length() < 8 || !email.substring(email.length()-8).equals("@usc.edu"))
@@ -51,17 +51,18 @@ public class StudentEnterName extends AppCompatActivity {
                     //go to next activity
                     openNameStudent(email, password);
                 }
+                */
+                openID("email", "pass");
             }
         });
-         */
 
     }
     private void showToast(String text)
     {
         Toast.makeText(StudentEnterName.this, text, Toast.LENGTH_SHORT).show();
     }
-    public void openNameStudent(String email, String password) {
-        Intent i = new Intent(this, StudentEnterName.class);
+    public void openID(String email, String password) {
+        Intent i = new Intent(this, StudentEnterID.class);
         Bundle bundle = new Bundle();
         bundle.putString("email", email);
         bundle.putString("password", password);
