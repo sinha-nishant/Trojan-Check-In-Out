@@ -1,5 +1,6 @@
 package com.example.app;
 
+import android.app.AlertDialog;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -41,9 +42,9 @@ public class Account {
         this.profilePicture= url;
     }
 
-    public void delete(ProgressBar bar, Snackbar snackbar){
-        //Todo
-       FirebaseTest.deleteAccount(this.email,bar,snackbar);
+    public void delete(ProgressBar bar, AlertDialog alert){
+
+       FirebaseTest.deleteAccount(this.email,bar,alert);
 
 
     }
@@ -72,17 +73,17 @@ public class Account {
         return isManager;
     }
 
-    public static void setDeleteSuccess(Boolean outcome, ProgressBar bar,Snackbar snackbar) {
+    public static void setDeleteSuccess(Boolean outcome, ProgressBar bar, AlertDialog alert) {
         deleteSuccess = outcome;
         bar.setVisibility(View.GONE);
         bar.stopNestedScroll();
         if(deleteSuccess ==true){
-            snackbar.setText("Successfully deleted account");
+            alert.setMessage("Successfully deleted account");
         }
         else{
-            snackbar.setText("Error. Could not delete account successfully");
+            alert.setMessage("Error. Could not delete account successfully");
         }
-        snackbar.show();
+        alert.show();
 
 
     }

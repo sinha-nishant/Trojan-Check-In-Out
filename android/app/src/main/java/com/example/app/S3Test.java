@@ -1,5 +1,6 @@
 package com.example.app;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -166,7 +167,10 @@ public class S3Test extends AppCompatActivity {
 //            Log.i("upload", "error in uri parsing");
 //        }
         ProgressBar circle_thing =(ProgressBar)findViewById(R.id.progressBar4);
-        CreateAccount ca= new CreateAccount("ABC", "DEF", "ABCDEF@usc.edu","lolzz",true,circle_thing);
+//        Snackbar bar= Snackbar.make(findViewById(R.id.progress),"",Snackbar.LENGTH_LONG);
+
+//        AlertDialog dialog=
+ //        CreateAccount ca= new CreateAccount("ABC", "DEF", "ABCDEF@usc.edu","lolzz",true,circle_thing,bar);
 
     }
 
