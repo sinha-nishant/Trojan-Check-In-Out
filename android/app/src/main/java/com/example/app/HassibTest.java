@@ -1,10 +1,13 @@
-package com.example.app;
+ package com.example.app;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,16 +29,15 @@ public class HassibTest extends AppCompatActivity {
     private Button btnQrCode;
     private ImageView qrimage;
 private ProgressBar circle_thing;
-
-
-
+public static final String shared_pref = "sharedPrefs";
+public static final String emailEntry = "email";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hassib_test);
-
+        LoadData();
 
 
 
@@ -47,23 +49,6 @@ private ProgressBar circle_thing;
         qrimage = findViewById(R.id.imageView);
         circle_thing= findViewById(R.id.etprogressBar);
 
-        Building build = new Building();
-        ArrayList<Long> account_ids = new ArrayList<>();
-
-        account_ids.add(9876543210L);
-        account_ids.add(2642001000L);
-        account_ids.add(8588804678L);
-
-        build.setStudents(account_ids);
-
-        build.getStudents(buildingName, circle_thing);
-
-//        while(build.getStudentsAcc()==null){}
-        if(build.getStudentsAcc()==null){
-            buildingName.setText("returned null");
-        }else{
-            buildingName.setText(build.getStudentsAcc().toString());
-        }
 
         eLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,15 +60,21 @@ private ProgressBar circle_thing;
                 {
                     Toast.makeText(HassibTest.this, "Enter all fields with text", Toast.LENGTH_SHORT).show();
                 }else{
-                    LogInOut login = new LogInOut();
-                    boolean success_login=login.LogIn(inputEmail,inputPass);
+
+                    LogInOut.LogIn(inputEmail,inputPass,circle_thing,getApplicationContext());
                 }
 
             }
         });
 
-    }
 
+    }
+    public void LoadData(){
+        SharedPreferences sharedPreferences = getSharedPreferences(shared_pref,MODE_PRIVATE);
+        String test_retrieve_email = sharedPreferences.getString(emailEntry,"");
+        //load id
+        Log.d("Saved email is : ", test_retrieve_email);
+    }
     public void QRCodeBtn(View view){
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         try{

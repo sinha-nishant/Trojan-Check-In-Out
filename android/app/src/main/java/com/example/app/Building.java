@@ -25,7 +25,7 @@ public class Building {
     private Integer capacity;
     private Integer occupancy;
     private List<Long> students_ids;//list of uscId
-    private List<StudentAccount> students_accounts;//list of uscId
+    private List<StudentAccount> students_accounts;//list of student accounts
     private String qrCodeURL;
 
     public Building(String building_name, Integer max_capacity, Integer current_occupancy,String image_location ,List<Long> students_in_building){
@@ -67,8 +67,11 @@ public class Building {
         Log.d("Returning from getStudents", students_ids.toString());
         return this.students_accounts;
     }
-    public List<StudentAccount> getStudentsAcc(){
+    public List<StudentAccount> getStudents_accounts(){
         return this.students_accounts;
+    }
+    public List<Long> getStudents_ids(){
+        return this.students_ids;
     }
     //setters
     public  void setAccounts(List<StudentAccount> new_accounts, EditText buildingparam, ProgressBar circle_thing){
@@ -92,16 +95,18 @@ public class Building {
     public void setQrCodeURL(String url){
         qrCodeURL=url;
     }
-    public void setStudents(List<Long> students){
+    public void setStudents_ids(List<Long> students){
         this.students_ids=students;
-//        Log.d("Inside setStudents size is: ",((Integer) this.students.size()).toString());
+    }
+    public void setStudents_accounts(List<StudentAccount> students){
+        this.students_accounts=students;
     }
 
-    public boolean checkIn(StudentAccount student, Test callback){
-        //call firebase check in
-        //maybe pass a callback that if sucess will do the following:
-            //do whatever is necessary to send a pop up message with the capacity if full
-
+//    public boolean checkIn(StudentAccount student, Test callback){
+//        call firebase check in
+//        maybe pass a callback that if sucess will do the following:
+//            do whatever is necessary to send a pop up message with the capacity if full
+//
 //       Test callbackk = new Test(){
 //           public void callback(Building b, StudentAccount s){
 //               b.students_ids.add(123123123L);
@@ -113,20 +118,20 @@ public class Building {
 //       };
 //StudentActivity sa = new StudentActivity();
 //       FirebaseTest.checkIn(student.getUscID(), sa, callbackk);
-        return true;
-    }
-    public boolean checkOut(StudentAccount student){
-        return true;
-    }
-
-    public String toString() {
-        Integer numStudents;
-        if (this.students_ids == null) {
-            numStudents = 0;
-        }
-        else {
-            numStudents = this.students_ids.size();
-        }
-        return this.name + " capacity: " + this.capacity + " current: " + numStudents;
-    }
+//        return true;
+//    }
+//    public boolean checkOut(StudentAccount student){
+//        return true;
+//    }
+//
+//    public String toString() {
+//        Integer numStudents;
+//        if (this.students_ids == null) {
+//            numStudents = 0;
+//        }
+//        else {
+//            numStudents = this.students_ids.size();
+//        }
+//        return this.name + " capacity: " + this.capacity + " current: " + numStudents;
+//    }
 }

@@ -2,6 +2,7 @@ package com.example.app;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import java.util.ArrayList;
@@ -27,6 +28,8 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import at.favre.lib.crypto.bcrypt.BCrypt;
 
 public class FirebaseTest extends AppCompatActivity implements FirestoreConnector {
 
@@ -163,7 +166,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                             students.add(uscID);
                         }
                     }
-                    building.setStudents(students);
+                    building.setStudents_ids(students);
                     Log.d("BUILDING", building.toString());
                 }
 
@@ -191,7 +194,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                             }
                         }
 
-                        buildings.get(buildings.size() -  1).setStudents(students);
+                        buildings.get(buildings.size() -  1).setStudents_ids(students);
                         Log.d("BUILDING", buildings.get(buildings.size() -  1).toString());
                     }
 
@@ -275,10 +278,11 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                 });
     }
 
-    public static void authenticate(String email, String password, ProgressBar circle) {
+    public static void authenticate(String email, String password, ProgressBar circle, Context con) {
+
         FirestoreConnector.getDB().collection("Accounts")
                 .whereEqualTo("email", email)
-                .whereEqualTo("password", password).get()
+                .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -287,14 +291,24 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                         Log.d("AUTHENTICATE", email + " Auth successful!");
                         Long uscID = (Long) task.getResult().getDocuments().get(0).get("uscID");
                         Log.d("ID", String.valueOf(uscID));
+                        String hashedPW = (String) task.getResult().getDocuments().get(0).get("password");
 
                         // call callback function
+                        BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), hashedPW);
+                        if(result.verified){
+                            LogInOut.LogInSuccess(email,circle,con);
+                        }
+                        else{
+                            LogInOut.LogInFail(circle);
+                        }
+
                     }
 
                     else {
                         Log.d("AUTHENTICATE", email + " Auth failed!");
 
                         // call callback function
+                        LogInOut.LogInFail(circle);
                     }
                 }
             }
