@@ -1,8 +1,10 @@
 package com.example.app;
 
-import androidx.appcompat.app.AlertDialog;
+
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -31,6 +33,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 public class S3Test extends AppCompatActivity {
+     
 
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
@@ -135,42 +138,74 @@ public class S3Test extends AppCompatActivity {
     }
 
     public void upload(View v){
-//        Log.i("upload", "in upload");
-//        TextView tv= (TextView)findViewById(R.id.uri);
-//        String uri =tv.getText().toString();
-//        Log.i("upload", "uri= "+uri);
-//        Uri myUri= Uri.parse(uri);
+
+        Log.i("upload", "in upload");
+        TextView tv= (TextView)findViewById(R.id.uri);
+        String uri =tv.getText().toString();
+        Log.i("upload", "uri= "+uri);
+        Uri myUri= Uri.parse(uri);
+        InputStream exampleInputStream=null;
+        int last_dot= uri.toString().lastIndexOf(".");
+        String Extension = uri.toString().substring(last_dot);
+        Log.i("Image",uri.toString().substring(last_dot));
 //        ProgressBar circle_thing =(ProgressBar)findViewById(R.id.progressBar4);
-//        if(myUri==null){
-//            Log.i("upload", "uri did not get parsed");
-//        }
-//       else{
-//            Log.i("upload", "uri parsed= "+myUri.getPath());
-//        }
-//        try {
-//            InputStream exampleInputStream = getContentResolver().openInputStream(Uri.parse(uri));
-//            if(exampleInputStream==null){
-//                Log.i("upload", "stream is null");
-//            }
-//            else{
-//                Log.i("upload", "stream is valid");
-//            }
-////            CreateAccount ca= new CreateAccount("Mike", "Scott","DunderMifflin@usc.edu","ahhh",exampleInputStream,true);
-////            CreateAccount ca= new CreateAccount("Hritik", "Sapra","Sapra@usc.edu","lollz",exampleInputStream,false, Long.valueOf("9876543210"),"CSCI");
-////            CreateAccount ca= new CreateAccount("Virat", "Kohli","Vk17@usc.edu","winner",exampleInputStream,true);
-////            CreateAccount ca= new CreateAccount("Rohit", "Sharma","Hitman@usc.edu","reckless",exampleInputStream,false, Long.valueOf("2642001000"),"BUAD");
-////            CreateAccount ca= new CreateAccount("Rishab", "Pant","Madman@usc.edu","ComeOnAsh",exampleInputStream,true);
+        if(myUri==null){
+            Log.i("upload", "uri did not get parsed");
+        }
+       else{
+            Log.i("upload", "uri parsed= "+myUri.getPath());
+        }
+        try {
+            exampleInputStream = getContentResolver().openInputStream(Uri.parse(uri));
+            if(exampleInputStream==null){
+                Log.i("upload", "stream is null");
+            }
+            else{
+                Log.i("upload", "stream is valid");
+            }
+//            CreateAccount ca= new CreateAccount("Mike", "Scott","DunderMifflin@usc.edu","ahhh",exampleInputStream,true);
+//            CreateAccount ca= new CreateAccount("Hritik", "Sapra","Sapra@usc.edu","lollz",exampleInputStream,false, Long.valueOf("9876543210"),"CSCI");
+//            CreateAccount ca= new CreateAccount("Virat", "Kohli","Vk17@usc.edu","winner",exampleInputStream,true);
+//            CreateAccount ca= new CreateAccount("Rohit", "Sharma","Hitman@usc.edu","reckless",exampleInputStream,false, Long.valueOf("2642001000"),"BUAD");
+//            CreateAccount ca= new CreateAccount("Rishab", "Pant","Madman@usc.edu","ComeOnAsh",exampleInputStream,true);
 //            CreateAccount ca= new CreateAccount("Washington", "Sundar","96@usc.edu","Solid",exampleInputStream,false, Long.valueOf("8588804678"),"MechEng",circle_thing);
-//
+
 //            Log.i("upload", "finished creating account");
-//        } catch (FileNotFoundException e) {
-//            Log.i("upload", "error in uri parsing");
-//        }
+        } catch (FileNotFoundException e) {
+            Log.i("upload", "error in uri parsing");
+        }
         ProgressBar circle_thing =(ProgressBar)findViewById(R.id.progressBar4);
 //        Snackbar bar= Snackbar.make(findViewById(R.id.progress),"",Snackbar.LENGTH_LONG);
 
-//        AlertDialog dialog=
- //        CreateAccount ca= new CreateAccount("ABC", "DEF", "ABCDEF@usc.edu","lolzz",true,circle_thing,bar);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Dialog box works");
+        builder.setTitle("Status");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Yes",
+                        new DialogInterface
+                                .OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which)
+                            {
+
+                                // When the user click yes button
+                                // then app will close
+                                finish();
+                            }
+                        });
+        AlertDialog alertDialog = builder.create();
+
+//        CreateAccount ca= new CreateAccount("Cristiano", "Ronaldo", "Ron@usc.edu","goat",true,circle_thing,alertDialog);
+//        CreateAccount ca= new CreateAccount("Lio", "Messi", "Messi@usc.edu","BEST EVER",false,Long.valueOf("1234567890"),"balling",circle_thing,alertDialog);
+
+//        CreateAccount ca= new CreateAccount("Marcus", "Rashford", "Rashy@usc.edu","PACE",exampleInputStream,true,circle_thing,alertDialog);
+//        CreateAccount ca= new CreateAccount("Bruno", "Penandes", "Magnifico@usc.edu","peno",exampleInputStream,false,Long.valueOf("1234567890"),"goals/assists",circle_thing,alertDialog);
+
+//        CreateAccount ca= new CreateAccount("Erling", "Haaland", "Norway@usc.edu","Goals",exampleInputStream,Extension,true,circle_thing,alertDialog);
+        CreateAccount ca= new CreateAccount("Kylian", "Mbappe", "NinjaTurtle@usc.edu","winner",exampleInputStream,Extension,false,Long.valueOf("1234567890"),"Ballon Dor",circle_thing,alertDialog);
+
 
     }
 

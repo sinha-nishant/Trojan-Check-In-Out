@@ -387,7 +387,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
     }
 
     // Arjun: overloaded func to allow for sync call to create account with pic
-    public static void checkEmailExists(String email, ProgressBar circle, AlertDialog alert, Account acc, InputStream stream) {
+    public static void checkEmailExists(String email, ProgressBar circle, AlertDialog alert, Account acc, InputStream stream,String Extension) {
         CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
         Query query = accounts.whereEqualTo("email", email);
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -410,7 +410,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
 
                         // call callback function
 //                        CreateAccount.setEmailAccepted(true,circle);
-                        FirebaseTest.createAccount(acc,circle,alert,stream);
+                        FirebaseTest.createAccount(acc,circle,alert,stream,Extension);
                     }
                 }
             }
@@ -513,23 +513,35 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
             public void onComplete(@NonNull Task<DocumentReference> task) {
                 if (task.isSuccessful()) {
                     Log.d("TEST", "Account Added to DB");
+                    Log.d("Create",a.getFirstName());
+                    Log.d("Create",a.getLastName());
+                    Log.d("Create",a.getPassword());
+                    Log.d("Create",a.getEmail());
+                    Log.d("Create",a.getIsManager().toString());
                     CreateAccount.setCreateAccountAccepted(true, progressbar,alert);
                 }
                 else{
+                    Log.d("Err", "failed to set up");
                     CreateAccount.setCreateAccountAccepted(false,progressbar,alert);
                 }
             }
         });
     }
     //Arjun : create account with pic
-    public static void createAccount(Account a,ProgressBar progressbar, AlertDialog alert, InputStream stream) {
+    public static void createAccount(Account a,ProgressBar progressbar, AlertDialog alert, InputStream stream,String Extension) {
         FirestoreConnector.getDB().collection("Accounts").add(a).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
                 if (task.isSuccessful()) {
                     Log.d("TEST", "Account Added to DB");
                     uploadPhoto up= new uploadPhoto();
-                    up.upload(stream,a.getEmail());
+                    up.upload(stream,a.getEmail(),Extension);
+                    Log.d("Create",a.getFirstName());
+                    Log.d("Create",a.getLastName());
+                    Log.d("Create",a.getPassword());
+                    Log.d("Create",a.getEmail());
+                    Log.d("Create",a.getIsManager().toString());
+                    Log.d("Create",a.getProfilePicture());
                     CreateAccount.setCreateAccountAccepted(true, progressbar,alert);
                 }
                 else{
