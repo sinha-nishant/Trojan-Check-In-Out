@@ -51,7 +51,7 @@ public class StudentAccount extends Account {
 
     public void delete(MutableLiveData<Boolean> delete_success){
     Date time = new Date();
-    if(this.activity!=null){
+    if(this.activity!=null&&this.activity.size()!=0){
         int last= this.activity.size()-1;
         StudentActivity act=activity.get(last);
         if(act.getCheckOutTime()==null){

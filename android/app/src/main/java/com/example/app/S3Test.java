@@ -98,7 +98,7 @@ public class S3Test extends AppCompatActivity {
                     //stop progress bar
                     circle_thing.setVisibility(View.GONE);
                     //switch page
-                    alertDialog.setMessage("Created correctly");
+                    alertDialog.setMessage("worked correctly");
                     alertDialog.show();
 
 
@@ -106,8 +106,8 @@ public class S3Test extends AppCompatActivity {
                     //stop progress bar
                     circle_thing.setVisibility(View.GONE);
                     //Generate popupmessage
-                    Log.d("Create", "Failed to create");
-                    alertDialog.setMessage("Failed to create");
+                    Log.d("Create", "Failed to work");
+                    alertDialog.setMessage("Failed to work");
                     alertDialog.show();
                 }
             }
@@ -169,19 +169,31 @@ public class S3Test extends AppCompatActivity {
     }
 
     public void upload(View v){
-        Boolean with_image=false;
-        if(with_image==true){
-            upload_with_image();
-            return;
-        }
 
 
-//        CreateAccount ca= new CreateAccount("Lebron", "James", "LBJ@basketball.com","blocked",true,create_success);
-//        CreateAccount ca= new CreateAccount("Anthony", "Davis", "AD@basketball.com","brow",false,Long.valueOf("1234567890"),"monster",create_success);
+
 
 
     }
 
+    public void manger_nopic_delete(){
+        Account a= new Account("Testing","delete","delete@gmail.com","$2a$12$V6BidSy9OtVWWCh6/cVj1O1hPZccvMUW5duW1pVUDZXPl4IB76sVe",true);
+        a.delete(create_success);
+
+    }
+
+    public void student_pic_delete(){
+        Account a = new StudentAccount("tre","young","yeet@basketball.com","$2a$12$SKSpA5/C47szgrva82A6lO/44MV6pMLxE785T6VTkHPFODMAdrkGq","https://trojan-check-in-and-out183928-dev173416-dev.s3-us-west-2.amazonaws.com/public/yeet%40basketball.com.JPEG",false);
+        a.delete(create_success);
+    }
+
+    public void upload_without_image(){
+
+//                    CreateAccount ca= new CreateAccount("Lebron", "James", "LBJ@basketball.com","blocked",true,create_success);
+//        CreateAccount ca= new CreateAccount("Anthony", "Davis", "AD@basketball.com","brow",false,Long.valueOf("1234567890"),"monster",create_success);
+        CreateAccount ca= new CreateAccount("Testing", "delete", "delete@gmail.com","del",true,create_success);
+
+    }
 
     public void upload_with_image(){
         Log.i("upload", "in upload");
@@ -216,6 +228,7 @@ public class S3Test extends AppCompatActivity {
 //        CreateAccount ca= new CreateAccount("Ben", "Simmons", "Benny@basketball.edu","threes",exampleInputStream, Extension,true,create_success);
 //        CreateAccount ca= new CreateAccount("Joel", "Embiid", "troll@basketball.com","flop",exampleInputStream,Extension,false,Long.valueOf("8694251037"),"dunk",create_success);
 //        CreateAccount ca= new CreateAccount("Luca", "Doncic", "Wonderkid@basketball.com","clutch",exampleInputStream,Extension,false,Long.valueOf("8694251037"),"funny",create_success);
+          CreateAccount ca= new CreateAccount("tre", "young", "yeet@basketball.com","logo",exampleInputStream,Extension,false,Long.valueOf("8694251037"),"skills",create_success);
 
     }
 
