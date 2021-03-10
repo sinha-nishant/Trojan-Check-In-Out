@@ -6,14 +6,47 @@
     android:layout_height="match_parent"
     tools:context=".StudentEnterID">
 
-    <Button
-        android:id="@+id/signup"
+    <EditText
+        android:id="@+id/studentID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Go to Photo"
+        android:ems="10"
+        android:hint="USC ID"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/studentMajor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/studentMajor"
+        android:layout_width="267dp"
+        android:layout_height="32dp"
+        android:entries="@array/majors_array"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/signup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/studentMajor" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please Select Your Major"
+        app:layout_constraintBottom_toTopOf="@+id/studentMajor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/studentID"
+        app:layout_constraintVertical_bias="0.85" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
