@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.lifecycle.MutableLiveData;
+
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
 public class LogInOut {
@@ -15,7 +17,7 @@ public class LogInOut {
     public void isCorrectLogin(boolean login_success){
         login=login_success;
     }
-    public static void LogIn(String email, String password, ProgressBar loading_circle,Context con){
+    public static void LogIn(String email, String password, MutableLiveData<Boolean> login_success ){
         //hash password ]
         //send hash password and email to firebase to authenticate
         // callback
@@ -24,24 +26,9 @@ public class LogInOut {
             //if not sucessful present a popup that says username or password incorrect and stop progress bar
         String bcryptHashString = BCrypt.withDefaults().hashToString(12, password.toCharArray());
         Log.d("TEST", "Hashed: " + bcryptHashString);
-         FirebaseTest.authenticate(email,password,loading_circle,con);
+         FirebaseTest.authenticate(email,password,login_success);
     }
-    public static void LogInSuccess(String email, ProgressBar loading_circle, Context con){
 
-        //store email
-        SaveData(con, email);
-        //stop progress bar
-        loading_circle.setVisibility(View.GONE);
-        //switch page
-
-    }
-    public static void LogInFail(ProgressBar loading_circle){
-        //stop progress bar
-        loading_circle.setVisibility(View.GONE);
-        //Generate popupmessage
-        Log.d("Login Attempt: ", "Failed");
-
-    }
     public static void SaveData(Context con,String userEmail){
         SharedPreferences sharedPreferences = con.getSharedPreferences(HassibTest.shared_pref,con.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();

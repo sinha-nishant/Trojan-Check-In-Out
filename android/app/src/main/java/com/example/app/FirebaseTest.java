@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 
 import android.util.Log;
 import android.view.View;
@@ -440,7 +441,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                 });
     }
 
-    public static void authenticate(String email, String password, ProgressBar circle, Context con) {
+    public static void authenticate(String email, String password, MutableLiveData<Boolean> login_success) {
 
         FirestoreConnector.getDB().collection("Accounts")
                 .whereEqualTo("email", email)
@@ -458,10 +459,10 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                         // call callback function
                         BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), hashedPW);
                         if(result.verified){
-                            LogInOut.LogInSuccess(email,circle,con);
+                            login_success.setValue(true);
                         }
                         else{
-                            LogInOut.LogInFail(circle);
+                            login_success.setValue(false);
                         }
 
                     }
@@ -470,7 +471,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                         Log.d("AUTHENTICATE", email + " Auth failed!");
 
                         // call callback function
-                        LogInOut.LogInFail(circle);
+                        login_success.setValue(false);
                     }
                 }
             }

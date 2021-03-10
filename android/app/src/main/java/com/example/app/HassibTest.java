@@ -1,6 +1,8 @@
  package com.example.app;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -20,8 +22,11 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
 import java.util.ArrayList;
+import java.util.Observable;
 
-public class HassibTest extends AppCompatActivity {
+import javax.annotation.Nullable;
+
+ public class HassibTest extends AppCompatActivity {
     private EditText eEmail;
     private EditText ePassword;
     private Button eLogin;
@@ -31,16 +36,13 @@ public class HassibTest extends AppCompatActivity {
 private ProgressBar circle_thing;
 public static final String shared_pref = "sharedPrefs";
 public static final String emailEntry = "email";
-
+private MutableLiveData<Boolean> login_success = new MutableLiveData<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hassib_test);
-        LoadData();
-
-
-
+//        LoadData();
         eEmail = findViewById(R.id.etEmail);
         ePassword = findViewById(R.id.etPassword);
         eLogin = findViewById(R.id.btnLogin);
@@ -49,19 +51,36 @@ public static final String emailEntry = "email";
         qrimage = findViewById(R.id.imageView);
         circle_thing= findViewById(R.id.etprogressBar);
 
+        final Observer<Boolean> b_ob = new Observer<Boolean>(){
+            @Override
+            public void onChanged(@Nullable final Boolean b){
+                if(b){
+                    //store email
+                    SaveData();
+                    //stop progress bar
+                    circle_thing.setVisibility(View.GONE);
+                    //switch page
 
+                }else{
+                    //stop progress bar
+                    circle_thing.setVisibility(View.GONE);
+                    //Generate popupmessage
+                    Log.d("Login Attempt: ", "Failed");
+                }
+            }
+
+        };
+        login_success.observe(this, b_ob);
         eLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 String inputEmail = eEmail.getText().toString();
                 String inputPass = ePassword.getText().toString();
                 if(inputEmail.isEmpty() || inputPass.isEmpty())
                 {
                     Toast.makeText(HassibTest.this, "Enter all fields with text", Toast.LENGTH_SHORT).show();
                 }else{
-
-                    LogInOut.LogIn(inputEmail,inputPass,circle_thing,getApplicationContext());
+                    LogInOut.LogIn(inputEmail,inputPass, login_success);
                 }
 
             }
@@ -69,6 +88,13 @@ public static final String emailEntry = "email";
 
 
     }
+     public  void SaveData(){
+         SharedPreferences sharedPreferences = getSharedPreferences(shared_pref,MODE_PRIVATE);
+         SharedPreferences.Editor editor = sharedPreferences.edit();
+         editor.putString(emailEntry,eEmail.getText().toString());
+         editor.apply();
+         LoadData();
+     }
     public void LoadData(){
         SharedPreferences sharedPreferences = getSharedPreferences(shared_pref,MODE_PRIVATE);
         String test_retrieve_email = sharedPreferences.getString(emailEntry,"");
