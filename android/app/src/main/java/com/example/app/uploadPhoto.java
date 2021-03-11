@@ -12,7 +12,7 @@ public class uploadPhoto {
     }
 
 
-    public void upload(InputStream uri,String email,String Extension){
+    public static void upload(InputStream uri,String email,String Extension){
         Log.i("uploadPhoto","in upload photo");
         String key=email+Extension;
             Amplify.Storage.uploadInputStream(

@@ -525,8 +525,9 @@ public static void createAccount(Account a,MutableLiveData<Boolean> create_succe
             public void onComplete(@NonNull Task<DocumentReference> task) {
                 if (task.isSuccessful()) {
                     Log.d("TEST", "Account Added to DB");
-                    uploadPhoto up= new uploadPhoto();
-                    up.upload(stream,a.getEmail(),Extension);
+//                    uploadPhoto up= new uploadPhoto();
+//                    up.upload(stream,a.getEmail(),Extension);
+                    uploadPhoto.upload(stream,a.getEmail(),Extension);
                     Log.d("Create",a.getFirstName());
                     Log.d("Create",a.getLastName());
                     Log.d("Create",a.getPassword());
@@ -577,7 +578,7 @@ public static void createAccount(Account a,MutableLiveData<Boolean> create_succe
     }
 
     //Angad Sood
-    public static void updatePassword(String email, String newPassword) {
+    public static void updatePassword(String email, String newPassword,MutableLiveData<Boolean>success) {
         FirestoreConnector.getDB().collection("Accounts").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -588,6 +589,10 @@ public static void createAccount(Account a,MutableLiveData<Boolean> create_succe
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
                                     Log.d("UPDATE","Updated Password");
+                                    success.setValue(true);
+                                }
+                                else{
+                                    success.setValue(false);
                                 }
                             }
                         });

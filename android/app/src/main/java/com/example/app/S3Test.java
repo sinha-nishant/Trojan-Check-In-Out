@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -169,11 +170,7 @@ public class S3Test extends AppCompatActivity {
     }
 
     public void upload(View v){
-
-
-
-
-
+        upload_with_image();
     }
 
     public void manger_nopic_delete(){
@@ -187,11 +184,17 @@ public class S3Test extends AppCompatActivity {
         a.delete(create_success);
     }
 
+    public void updatePW(){
+        CreateAccount ca= new CreateAccount("Update", "Password", "updatepw@gmail.com","pw",true,create_success);
+        UpdatePassword up= new UpdatePassword("updatepw@gmail.com","updatedpw",create_success);
+    }
+
     public void upload_without_image(){
 
 //                    CreateAccount ca= new CreateAccount("Lebron", "James", "LBJ@basketball.com","blocked",true,create_success);
 //        CreateAccount ca= new CreateAccount("Anthony", "Davis", "AD@basketball.com","brow",false,Long.valueOf("1234567890"),"monster",create_success);
-        CreateAccount ca= new CreateAccount("Testing", "delete", "delete@gmail.com","del",true,create_success);
+//        CreateAccount ca= new CreateAccount("Testing", "delete", "delete@gmail.com","del",true,create_success);
+//        CreateAccount ca= new CreateAccount("Update", "Password", "updatepw@gmail.com","pw",true,create_success);
 
     }
 
@@ -228,12 +231,15 @@ public class S3Test extends AppCompatActivity {
 //        CreateAccount ca= new CreateAccount("Ben", "Simmons", "Benny@basketball.edu","threes",exampleInputStream, Extension,true,create_success);
 //        CreateAccount ca= new CreateAccount("Joel", "Embiid", "troll@basketball.com","flop",exampleInputStream,Extension,false,Long.valueOf("8694251037"),"dunk",create_success);
 //        CreateAccount ca= new CreateAccount("Luca", "Doncic", "Wonderkid@basketball.com","clutch",exampleInputStream,Extension,false,Long.valueOf("8694251037"),"funny",create_success);
-          CreateAccount ca= new CreateAccount("tre", "young", "yeet@basketball.com","logo",exampleInputStream,Extension,false,Long.valueOf("8694251037"),"skills",create_success);
+//          CreateAccount ca= new CreateAccount("tre", "young", "yeet@basketball.com","logo",exampleInputStream,Extension,false,Long.valueOf("8694251037"),"skills",create_success);
+
+//        CreateAccount ca= new CreateAccount("Malcolm", "Brogdon", "freethrow@basketball.com","assits",exampleInputStream,Extension,false,Long.valueOf("8694251037"),"funny",create_success);
+          CreateAccount ca= new CreateAccount("Miles", "Turner", "denied@basketball.com","block",exampleInputStream,Extension,false,Long.valueOf("8694251037"),"rejections",create_success);
+
 
     }
 
     public void changeImage(View v){
-
         ImageView IVPreviewImage= findViewById(R.id.IVPreviewImage);
         String url=  "https://trojan-check-in-and-out183928-dev173416-dev.s3-us-west-2.amazonaws.com/public/IMG_2405.JPG";
         Glide.with(this).load(url).into(IVPreviewImage);
