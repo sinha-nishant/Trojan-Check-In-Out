@@ -1,5 +1,6 @@
 package com.example.app;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -20,14 +21,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -36,15 +41,43 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 
 public class FirebaseTest extends AppCompatActivity implements FirestoreConnector {
 
+    public TextView textBox;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_firebase_test);
+        textBox = findViewById(R.id.textBox);
     }
 
     // FOR TESTING PURPOSES
     public void test(View v) {
-        
+        getBuildingOccupanciesRealtime();
+    }
+
+    public void getBuildingOccupanciesRealtime() {
+        FirestoreConnector.getDB().collection("Buildings").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    Log.d("OCCUPANCY", "realtime occupancy failed");
+                }
+
+                else {
+                  if (value != null && !value.isEmpty()) {
+                      Log.d("OCCUPANCY", "received occupancy update");
+                      DocumentChange dc = value.getDocumentChanges().get(0);
+                      String name = (String) dc.getDocument().get("name");
+                      String occupancy = String.valueOf(dc.getDocument().get("occupancy"));
+                      textBox.setText(String.format("%s: %s", name, occupancy));
+                  }
+
+                  else {
+                      Log.d("OCCUPANCY", "no realtime changes");
+                  }
+                }
+            }
+        });
     }
 
     // CheckInOut - TO FIX: DOESN'T UPDATE OCCUPANCY YET
