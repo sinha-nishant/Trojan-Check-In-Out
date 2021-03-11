@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.google.android.material.snackbar.Snackbar;
 
 public class Account {
@@ -13,7 +15,7 @@ public class Account {
     protected String profilePicture;
     protected String password;
     protected Boolean isManager;
-    protected static Boolean deleteSuccess;
+
 
     public Account() {};
 
@@ -42,9 +44,10 @@ public class Account {
         this.profilePicture= url;
     }
 
-    public void delete(ProgressBar bar, AlertDialog alert){
 
-       FirebaseTest.deleteAccount(this.email,bar,alert);
+    public void delete(MutableLiveData<Boolean> delete_success){
+
+        FirebaseTest.deleteAccount(this.email,delete_success);
 
 
     }
@@ -73,22 +76,5 @@ public class Account {
         return isManager;
     }
 
-    public static void setDeleteSuccess(Boolean outcome, ProgressBar bar, AlertDialog alert) {
-        deleteSuccess = outcome;
-        bar.setVisibility(View.GONE);
-        bar.stopNestedScroll();
-        if(deleteSuccess ==true){
-            alert.setMessage("Successfully deleted account");
-        }
-        else{
-            alert.setMessage("Error. Could not delete account successfully");
-        }
-        alert.show();
 
-
-    }
-
-    public Boolean getDeleteSuccess(){
-        return deleteSuccess;
-    }
 }

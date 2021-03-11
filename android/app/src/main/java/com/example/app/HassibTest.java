@@ -36,6 +36,8 @@ import javax.annotation.Nullable;
 private ProgressBar circle_thing;
 public static final String shared_pref = "sharedPrefs";
 public static final String emailEntry = "email";
+public static final String idEntry = "uscid";
+public static Long uscid;
 private MutableLiveData<Boolean> login_success = new MutableLiveData<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,14 +94,17 @@ private MutableLiveData<Boolean> login_success = new MutableLiveData<>();
          SharedPreferences sharedPreferences = getSharedPreferences(shared_pref,MODE_PRIVATE);
          SharedPreferences.Editor editor = sharedPreferences.edit();
          editor.putString(emailEntry,eEmail.getText().toString());
+         editor.putLong(idEntry,uscid);
          editor.apply();
          LoadData();
      }
     public void LoadData(){
         SharedPreferences sharedPreferences = getSharedPreferences(shared_pref,MODE_PRIVATE);
         String test_retrieve_email = sharedPreferences.getString(emailEntry,"");
+        Long test_retrieve_id = sharedPreferences.getLong(idEntry,0);
         //load id
         Log.d("Saved email is : ", test_retrieve_email);
+        Log.d("Saved ID is : ", test_retrieve_id.toString());
     }
     public void QRCodeBtn(View view){
         QRCodeWriter qrCodeWriter = new QRCodeWriter();

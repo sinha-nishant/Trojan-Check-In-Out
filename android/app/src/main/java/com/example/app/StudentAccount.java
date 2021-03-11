@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -15,9 +17,7 @@ public class StudentAccount extends Account {
     private Long uscID;
     private String major;
     private List<StudentActivity> activity;
-    private static Boolean majorSuccess;
-    private static Boolean checkInSuccess;
-    private static Boolean checkOutSuccess;
+
 
     public StudentAccount() {};
 
@@ -48,42 +48,49 @@ public class StudentAccount extends Account {
         this.major=major;
     }
 
-    public void delete(ProgressBar progressbar, AlertDialog alert){
-        Date time = new Date();
-        if(this.activity!=null){
-            int last= this.activity.size()-1;
-            StudentActivity act=activity.get(last);
-            if(act.getCheckOutTime()==null){
-                FirebaseTest.checkOut(uscID,act,time,progressbar,alert,this.email);
-            }
-            else{
-                FirebaseTest.deleteAccount(email,progressbar,alert);
-            }
+
+    public void delete(MutableLiveData<Boolean> delete_success){
+    Date time = new Date();
+    if(this.activity!=null&&this.activity.size()!=0){
+        int last= this.activity.size()-1;
+        StudentActivity act=activity.get(last);
+        if(act.getCheckOutTime()==null){
+            FirebaseTest.checkOut(uscID,act,time,delete_success,this.email);
         }
         else{
-            FirebaseTest.deleteAccount(email,progressbar,alert);
+            FirebaseTest.deleteAccount(email,delete_success);
         }
-
-
-
+    }
+    else{
+        FirebaseTest.deleteAccount(email,delete_success);
     }
 
 
-    public void setMajor(String newMajor,ProgressBar progressBar,AlertDialog alert)
+
+}
+
+
+
+
+    public void setMajor(String newMajor,MutableLiveData<Boolean> success)
     {
-        FirebaseTest.updateMajor(uscID,newMajor,progressBar,alert);
+        FirebaseTest.updateMajor(uscID,newMajor,success);
 
     }
 
-    public void checkIN(StudentActivity act,ProgressBar progressbar,AlertDialog alert){
-        FirebaseTest.checkIn(uscID,act,progressbar,alert);
+
+
+    public void checkIN(StudentActivity act,MutableLiveData<Boolean> success){
+        FirebaseTest.checkIn(uscID,act,success);
 
     }
 
-    public void checkOut(String buildingName, Date checkOutTime,ProgressBar progressbar,AlertDialog alert){
+
+
+    public void checkOut(String buildingName, Date checkOutTime,MutableLiveData<Boolean>success){
         int last= this.activity.size()-1;
         StudentActivity sa= this.activity.get(last);
-        FirebaseTest.getBuilding(buildingName,progressbar,alert,uscID,sa,checkOutTime);
+        FirebaseTest.getBuilding(buildingName,success,uscID,sa,checkOutTime);
 
     }
 
@@ -107,67 +114,6 @@ public class StudentAccount extends Account {
         return this.getFirstName() + " " + this.getLastName() + " " + this.getUscID() + " " + this.getEmail();
     }
 
-    public static void setDeleteSuccess(Boolean outcome,ProgressBar progressbar,AlertDialog alert) {
-        deleteSuccess = outcome;
-        progressbar.setVisibility(View.GONE);
-        progressbar.stopNestedScroll();
-        if(deleteSuccess ==true){
-            alert.setMessage("Successfully deleted account");
-        }
-        else{
-            alert.setMessage("Error. Could not delete account successfully");
-        }
-        alert.show();
-    }
-    public Boolean getDeleteSuccess(){
-        return deleteSuccess;
-    }
-    public static void setMajorSuccess(Boolean outcome,ProgressBar progressbar,AlertDialog alert) {
-        majorSuccess = outcome;
-        progressbar.setVisibility(View.GONE);
-        progressbar.stopNestedScroll();
-        if(majorSuccess ==true){
-            alert.setMessage("Successfully updated your major");
-        }
-        else{
-            alert.setMessage("Error. Could not update major successfully");
-        }
-        alert.show();
-    }
-    public Boolean getMajorSuccess(){
-        return majorSuccess;
-    }
-    public static void setCheckInSuccess(Boolean outcome,ProgressBar progressbar,AlertDialog alert) {
-        checkInSuccess = outcome;
-        progressbar.setVisibility(View.GONE);
-        progressbar.stopNestedScroll();
-        if(checkInSuccess ==true){
-            alert.setMessage("Check in was successful");
-        }
-        else{
-            alert.setMessage("Error. Could not successfully check you in");
-        }
-        alert.show();
-    }
-    public Boolean getCheckInSuccess(){
-        return checkInSuccess;
-    }
 
-    public static void setCheckOutSuccess(Boolean outcome,ProgressBar progressbar,AlertDialog alert) {
-        checkOutSuccess = outcome;
-        progressbar.setVisibility(View.GONE);
-        progressbar.stopNestedScroll();
-        if(checkOutSuccess==true){
-            alert.setMessage("Check out was successful");
-        }
-        else{
-            alert.setMessage("Error. Could not successfully check you out");
-        }
-        alert.show();
-
-    }
-    public Boolean getCheckOutSuccess(){
-        return checkOutSuccess;
-    }
 
 }
