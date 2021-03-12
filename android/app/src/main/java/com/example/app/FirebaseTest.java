@@ -191,7 +191,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
 
 
     //Arjun added another checkout function to deal with student account delete
-    public static void checkOut(Long uscID, StudentActivity sa, Date checkOutTime, MutableLiveData<Boolean> success, String email) {
+    public static void checkOut(Long uscID, StudentActivity sa, Date checkOutTime, MutableLiveData<Integer> success, String email) {
         FirestoreConnector.getDB().collection("Accounts")
                 .whereEqualTo("uscID", uscID)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -234,7 +234,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                                                                     }
                                                                     else{
                                                                         //Arjun added callback
-                                                                          success.setValue(false);
+                                                                          success.setValue(0);
                                                                     }
                                                                 }
                                                             });
@@ -370,7 +370,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
 
 
     // Arjun: overloaded func to allow for sync call to create account with not pic
-    public static void checkEmailExists(String email,Account acc,MutableLiveData<Boolean> create_success) {
+    public static void checkEmailExists(String email,Account acc,MutableLiveData<Integer> create_success) {
         CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
         Query query = accounts.whereEqualTo("email", email);
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -381,7 +381,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                         Log.d("EXIST", "Email " + email + " exists!");
 
                         // call callback function
-                        create_success.setValue(false);
+                        create_success.setValue(0);
                     }
 
                     else {
@@ -397,7 +397,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
     }
 
     // Arjun: overloaded func to allow for sync call to create account with pic
-    public static void checkEmailExists(String email, MutableLiveData<Boolean> success, Account acc, InputStream stream,String Extension) {
+    public static void checkEmailExists(String email, MutableLiveData<Integer> success, Account acc, InputStream stream,String Extension) {
         CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
         Query query = accounts.whereEqualTo("email", email);
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -409,7 +409,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
 
                         // call callback function
 
-                        success.setValue(false);
+                        success.setValue(0);
                     }
 
                     else {
@@ -496,7 +496,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
     }
 
 //Create account with no pic
-public static void createAccount(Account a,MutableLiveData<Boolean> create_success) {
+public static void createAccount(Account a,MutableLiveData<Integer> create_success) {
     FirestoreConnector.getDB().collection("Accounts").add(a).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
         @Override
         public void onComplete(@NonNull Task<DocumentReference> task) {
@@ -508,18 +508,18 @@ public static void createAccount(Account a,MutableLiveData<Boolean> create_succe
                 Log.d("Create",a.getEmail());
                 Log.d("Create",a.getIsManager().toString());
 
-                create_success.setValue(true);
+                create_success.setValue(2);
             }
             else{
                 Log.d("Err", "failed to set up");
 
-                create_success.setValue(false);
+                create_success.setValue(1);
             }
         }
     });
 }
     //Arjun : create account with pic
-    public static void createAccount(Account a,MutableLiveData<Boolean> success, InputStream stream,String Extension) {
+    public static void createAccount(Account a,MutableLiveData<Integer> success, InputStream stream,String Extension) {
         FirestoreConnector.getDB().collection("Accounts").add(a).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
@@ -535,11 +535,11 @@ public static void createAccount(Account a,MutableLiveData<Boolean> create_succe
                     Log.d("Create",a.getIsManager().toString());
                     Log.d("Create",a.getProfilePicture());
 
-                    success.setValue(true);
+                    success.setValue(2);
                 }
                 else{
 
-                    success.setValue(false);
+                    success.setValue(1);
                 }
             }
         });
@@ -548,7 +548,7 @@ public static void createAccount(Account a,MutableLiveData<Boolean> create_succe
 
 
     //updated by Arjun. Added progress bar and snackbar params since call back needs it
-    public static void deleteAccount(String email, MutableLiveData<Boolean> delete_success) {
+    public static void deleteAccount(String email, MutableLiveData<Integer> delete_success) {
         FirestoreConnector.getDB().collection("Accounts").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -561,13 +561,13 @@ public static void createAccount(Account a,MutableLiveData<Boolean> create_succe
                                     Log.d("TEST", "Deleted Account");
                                     //callback added by Arjun
 
-                                    delete_success.setValue(true);
+                                    delete_success.setValue(2);
 
                                 }
                                 else{
                                     //callback added by Arjun
 
-                                    delete_success.setValue(false);
+                                    delete_success.setValue(1);
                                 }
                             }
                         });

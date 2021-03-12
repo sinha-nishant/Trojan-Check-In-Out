@@ -49,7 +49,7 @@ public class StudentAccount extends Account {
     }
 
 
-    public void delete(MutableLiveData<Boolean> delete_success){
+    public void delete(MutableLiveData<Integer> delete_success){
     Date time = new Date();
     if(this.activity!=null&&this.activity.size()!=0){
         int last= this.activity.size()-1;

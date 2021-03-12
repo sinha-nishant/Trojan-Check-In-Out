@@ -55,7 +55,7 @@ public class S3Test extends AppCompatActivity {
     // the activity result code
     int SELECT_PICTURE = 200;
 
-    private MutableLiveData<Boolean> create_success = new MutableLiveData<>();
+    private final MutableLiveData<Integer> create_success = new MutableLiveData<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,25 +90,37 @@ public class S3Test extends AppCompatActivity {
                 });
         alertDialog = builder.create();
 
-        final Observer<Boolean> obs = new Observer<Boolean>(){
+        final Observer<Integer> obs = new Observer<Integer>(){
             @Override
-            public void onChanged(@Nullable final Boolean b){
-                if(b){
+            public void onChanged(@Nullable final Integer b){
+                if(b==null){
+                    alertDialog.setMessage("Failed to work");
+                    alertDialog.show();
+                    return;
+                }
+                if(b==0){
 //                    //store email
 //                    SaveData();
                     //stop progress bar
                     circle_thing.setVisibility(View.GONE);
                     //switch page
-                    alertDialog.setMessage("worked correctly");
+                    alertDialog.setMessage("Error. This Email already exists.");
                     alertDialog.show();
 
 
-                }else{
+                }
+                else if(b==1){
+                    circle_thing.setVisibility(View.GONE);
+                    //switch page
+                    alertDialog.setMessage("Error. Failed to create your account successfully");
+                    alertDialog.show();
+                }
+                else{
                     //stop progress bar
                     circle_thing.setVisibility(View.GONE);
                     //Generate popupmessage
-                    Log.d("Create", "Failed to work");
-                    alertDialog.setMessage("Failed to work");
+                    Log.d("Create", "success");
+                    alertDialog.setMessage("Succeeded in creatng your account");
                     alertDialog.show();
                 }
             }
@@ -175,18 +187,18 @@ public class S3Test extends AppCompatActivity {
 
     public void manger_nopic_delete(){
         Account a= new Account("Testing","delete","delete@gmail.com","$2a$12$V6BidSy9OtVWWCh6/cVj1O1hPZccvMUW5duW1pVUDZXPl4IB76sVe",true);
-        a.delete(create_success);
+//        a.delete(create_success);
 
     }
 
     public void student_pic_delete(){
         Account a = new StudentAccount("tre","young","yeet@basketball.com","$2a$12$SKSpA5/C47szgrva82A6lO/44MV6pMLxE785T6VTkHPFODMAdrkGq","https://trojan-check-in-and-out183928-dev173416-dev.s3-us-west-2.amazonaws.com/public/yeet%40basketball.com.JPEG",false);
-        a.delete(create_success);
+//        a.delete(create_success);
     }
 
     public void updatePW(){
-        CreateAccount ca= new CreateAccount("Update", "Password", "updatepw@gmail.com","pw",true,create_success);
-        UpdatePassword up= new UpdatePassword("updatepw@gmail.com","updatedpw",create_success);
+//        CreateAccount ca= new CreateAccount("Update", "Password", "updatepw@gmail.com","pw",true,create_success);
+//        UpdatePassword up= new UpdatePassword("updatepw@gmail.com","updatedpw",create_success);
     }
 
     public void upload_without_image(){
@@ -195,6 +207,10 @@ public class S3Test extends AppCompatActivity {
 //        CreateAccount ca= new CreateAccount("Anthony", "Davis", "AD@basketball.com","brow",false,Long.valueOf("1234567890"),"monster",create_success);
 //        CreateAccount ca= new CreateAccount("Testing", "delete", "delete@gmail.com","del",true,create_success);
 //        CreateAccount ca= new CreateAccount("Update", "Password", "updatepw@gmail.com","pw",true,create_success);
+//        CreateAccount ca= new CreateAccount("Chris", "Paul", "CP3@gmail.com","cp3",true,create_success);
+//          CreateAccount ca= new CreateAccount("Blake", "Griffin", "Blake@basketball.com","dunk",false,Long.valueOf("1234567890"),"monster",create_success);
+
+
 
     }
 
@@ -234,7 +250,9 @@ public class S3Test extends AppCompatActivity {
 //          CreateAccount ca= new CreateAccount("tre", "young", "yeet@basketball.com","logo",exampleInputStream,Extension,false,Long.valueOf("8694251037"),"skills",create_success);
 
 //        CreateAccount ca= new CreateAccount("Malcolm", "Brogdon", "freethrow@basketball.com","assits",exampleInputStream,Extension,false,Long.valueOf("8694251037"),"funny",create_success);
-          CreateAccount ca= new CreateAccount("Miles", "Turner", "denied@basketball.com","block",exampleInputStream,Extension,false,Long.valueOf("8694251037"),"rejections",create_success);
+//          CreateAccount ca= new CreateAccount("Miles", "Turner", "denied@basketball.com","block",exampleInputStream,Extension,false,Long.valueOf("8694251037"),"rejections",create_success);
+//        CreateAccount ca= new CreateAccount("Kyle", "Kuzma", "Kuz@basketball.com","assists",exampleInputStream,Extension,false,Long.valueOf("8694251037"),"funny",create_success);
+//          CreateAccount ca= new CreateAccount("Wilf", "Zaha", "Zaha@fball.com","skills",exampleInputStream,Extension,false,Long.valueOf("8694251037"),"rejections",create_success);
 
 
     }

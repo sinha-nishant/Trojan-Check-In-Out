@@ -45,7 +45,7 @@ public class Account {
     }
 
 
-    public void delete(MutableLiveData<Boolean> delete_success){
+    public void delete(MutableLiveData<Integer> delete_success){
 
         FirebaseTest.deleteAccount(this.email,delete_success);
 
