@@ -61,20 +61,16 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (error != null) {
                     Log.d("OCCUPANCY", "realtime occupancy failed");
-                }
-
-                else {
-                  if (value != null && !value.isEmpty()) {
-                      Log.d("OCCUPANCY", "received occupancy update");
-                      DocumentChange dc = value.getDocumentChanges().get(0);
-                      String name = (String) dc.getDocument().get("name");
-                      String occupancy = String.valueOf(dc.getDocument().get("occupancy"));
-                      textBox.setText(String.format("%s: %s", name, occupancy));
-                  }
-
-                  else {
-                      Log.d("OCCUPANCY", "no realtime changes");
-                  }
+                } else {
+                    if (value != null && !value.isEmpty()) {
+                        Log.d("OCCUPANCY", "received occupancy update");
+                        DocumentChange dc = value.getDocumentChanges().get(0);
+                        String name = (String) dc.getDocument().get("name");
+                        String occupancy = String.valueOf(dc.getDocument().get("occupancy"));
+                        textBox.setText(String.format("%s: %s", name, occupancy));
+                    } else {
+                        Log.d("OCCUPANCY", "no realtime changes");
+                    }
                 }
             }
         });
@@ -82,7 +78,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
 
     // CheckInOut - TO FIX: DOESN'T UPDATE OCCUPANCY YET
     // Arjun: Updated paramaters to allow for callback
-    public static void checkIn (Long uscID, StudentActivity sa,MutableLiveData<Boolean> success) {
+    public static void checkIn(Long uscID, StudentActivity sa, MutableLiveData<Boolean> success) {
         CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
         Query studentQuery = accounts.whereEqualTo("uscID", uscID);
         studentQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -90,7 +86,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     if (!task.getResult().isEmpty()) {
-                        for (QueryDocumentSnapshot document: task.getResult()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
                             accounts.document(document.getId()).update("activity", FieldValue.arrayUnion(sa));
                         }
 
@@ -102,9 +98,9 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                                 if (task.isSuccessful()) {
                                     if (!task.getResult().isEmpty()) {
                                         Map<String, Object> updates = new HashMap<>();
-                                        updates.put("occupancy",FieldValue.increment(1));
+                                        updates.put("occupancy", FieldValue.increment(1));
                                         updates.put("students", FieldValue.arrayUnion(uscID));
-                                        for (QueryDocumentSnapshot document: task.getResult()) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
                                             buildings.document(document.getId())
                                                     .update(updates);
                                         }
@@ -115,8 +111,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                                         success.setValue(true);
 
                                     }
-                                }
-                                else{
+                                } else {
                                     //Arjun added callback
 //
                                     success.setValue(false);
@@ -129,7 +124,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
         });
     }
 
-    public static void checkOut(Long uscID, StudentActivity sa, Date checkOutTime,MutableLiveData<Integer> success) {
+    public static void checkOut(Long uscID, StudentActivity sa, Date checkOutTime, MutableLiveData<Integer> success) {
         FirestoreConnector.getDB().collection("Accounts")
                 .whereEqualTo("uscID", uscID)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -169,8 +164,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                                                                         //Arjun added callback
 //
                                                                         success.setValue(2);
-                                                                    }
-                                                                    else{
+                                                                    } else {
                                                                         //Arjun added callback
 //
                                                                         success.setValue(1);
@@ -187,7 +181,6 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
             }
         });
     }
-
 
 
     //Arjun added another checkout function to deal with student account delete
@@ -230,11 +223,10 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                                                                         Log.d("CHECKOUT", "checked out successfully!");
                                                                         //Arjun added callback
 //
-                                                                        FirebaseTest.deleteAccount(email,success);
-                                                                    }
-                                                                    else{
+                                                                        FirebaseTest.deleteAccount(email, success);
+                                                                    } else {
                                                                         //Arjun added callback
-                                                                          success.setValue(0);
+                                                                        success.setValue(0);
                                                                     }
                                                                 }
                                                             });
@@ -260,9 +252,8 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                     List<Long> students = new ArrayList<>();
                     if (((List<Long>) ds.get("students")) == null) {
                         Log.d("BUILDING", "NULL " + ds.get("students"));
-                    }
-                    else {
-                        for (Long uscID: (List<Long>) ds.get("students")) {
+                    } else {
+                        for (Long uscID : (List<Long>) ds.get("students")) {
                             Log.d("BUILDING", "ITERATED");
                             students.add(uscID);
                         }
@@ -277,9 +268,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
     }
 
 
-
-
-    public static void getBuilding(String buildingName, MutableLiveData<Integer> success,Long id,StudentActivity sa,Date time) {
+    public static void getBuilding(String buildingName, MutableLiveData<Integer> success, Long id, StudentActivity sa, Date time) {
         FirestoreConnector.getDB().collection("Buildings").whereEqualTo("name", buildingName).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -289,9 +278,8 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                     List<Long> students = new ArrayList<>();
                     if (((List<Long>) ds.get("students")) == null) {
                         Log.d("BUILDING", "NULL " + ds.get("students"));
-                    }
-                    else {
-                        for (Long uscID: (List<Long>) ds.get("students")) {
+                    } else {
+                        for (Long uscID : (List<Long>) ds.get("students")) {
                             Log.d("BUILDING", "ITERATED");
                             students.add(uscID);
                         }
@@ -300,11 +288,11 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                     Log.d("BUILDING", building.toString());
 
                     //callback
-                    FirebaseTest.checkOut(id,sa,time,success);
+                    FirebaseTest.checkOut(id, sa, time, success);
                 }
 
                 // callback
-                else{
+                else {
                     success.setValue(0);
                 }
             }
@@ -317,21 +305,20 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful() && !task.getResult().isEmpty()) {
                     List<Building> buildings = new ArrayList<>();
-                    for (QueryDocumentSnapshot qds: task.getResult()) {
+                    for (QueryDocumentSnapshot qds : task.getResult()) {
                         buildings.add((Building) qds.toObject(Building.class));
                         List<Long> students = new ArrayList<>();
                         if (((List<Long>) qds.get("students")) == null) {
                             Log.d("BUILDING", "NULL " + qds.get("students"));
-                        }
-                        else {
-                            for (Long uscID: (List<Long>) qds.get("students")) {
+                        } else {
+                            for (Long uscID : (List<Long>) qds.get("students")) {
                                 Log.d("BUILDING", "ITERATED");
                                 students.add(uscID);
                             }
                         }
 
-                        buildings.get(buildings.size() -  1).setStudents_ids(students);
-                        Log.d("BUILDING", buildings.get(buildings.size() -  1).toString());
+                        buildings.get(buildings.size() - 1).setStudents_ids(students);
+                        Log.d("BUILDING", buildings.get(buildings.size() - 1).toString());
                     }
 
                     // callback function
@@ -348,17 +335,17 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    if(!task.getResult().isEmpty()) {
+                    if (!task.getResult().isEmpty()) {
                         List<DocumentSnapshot> studentDocuments = task.getResult().getDocuments();
                         List<StudentAccount> students = new ArrayList<>();
-                        for (DocumentSnapshot ds: studentDocuments) {
+                        for (DocumentSnapshot ds : studentDocuments) {
                             StudentAccount studentAccount = ds.toObject(StudentAccount.class);
                             studentAccount.setUscID((Long) ds.get("uscID"));
                             students.add(studentAccount);
                         }
 
                         // call callback function
-                       b.setAccounts(students,buildingparam,circle);
+                        b.setAccounts(students, buildingparam, circle);
                     }
 
                 }
@@ -367,29 +354,25 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
     }
 
 
-
-
     // Arjun: overloaded func to allow for sync call to create account with not pic
-    public static void checkEmailExists(String email,Account acc,MutableLiveData<Integer> create_success) {
+    public static void checkEmailExists(String email, Account acc, MutableLiveData<Integer> create_success) {
         CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
         Query query = accounts.whereEqualTo("email", email);
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    if(!task.getResult().isEmpty()) {
+                    if (!task.getResult().isEmpty()) {
                         Log.d("EXIST", "Email " + email + " exists!");
 
                         // call callback function
                         create_success.setValue(0);
-                    }
-
-                    else {
+                    } else {
                         Log.d("EXIST", "Email " + email + " does not exist!");
 
                         // call callback function
 
-                        FirebaseTest.createAccount(acc,create_success);
+                        FirebaseTest.createAccount(acc, create_success);
                     }
                 }
             }
@@ -397,34 +380,31 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
     }
 
     // Arjun: overloaded func to allow for sync call to create account with pic
-    public static void checkEmailExists(String email, MutableLiveData<Integer> success, Account acc, InputStream stream,String Extension) {
+    public static void checkEmailExists(String email, MutableLiveData<Integer> success, Account acc, InputStream stream, String Extension) {
         CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
         Query query = accounts.whereEqualTo("email", email);
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    if(!task.getResult().isEmpty()) {
+                    if (!task.getResult().isEmpty()) {
                         Log.d("EXIST", "Email " + email + " exists!");
 
                         // call callback function
 
                         success.setValue(0);
-                    }
-
-                    else {
+                    } else {
                         Log.d("EXIST", "Email " + email + " does not exist!");
 
                         // call callback function
 //                        CreateAccount.setEmailAccepted(true,circle);
 
-                        FirebaseTest.createAccount(acc,success,stream,Extension);
+                        FirebaseTest.createAccount(acc, success, stream, Extension);
                     }
                 }
             }
         });
     }
-
 
 
     public static void authenticate(String email, String password, MutableLiveData<Boolean> login_success) {
@@ -433,36 +413,33 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                 .whereEqualTo("email", email)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    if(!task.getResult().isEmpty()) {
-                        Log.d("AUTHENTICATE", email + " Auth successful!");
-                        Long uscID = (Long) task.getResult().getDocuments().get(0).get("uscID");
-                        Log.d("ID", String.valueOf(uscID));
-                        String hashedPW = (String) task.getResult().getDocuments().get(0).get("password");
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (!task.getResult().isEmpty()) {
+                                Log.d("AUTHENTICATE", email + " Auth successful!");
+                                Long uscID = (Long) task.getResult().getDocuments().get(0).get("uscID");
+                                Log.d("ID", String.valueOf(uscID));
+                                String hashedPW = (String) task.getResult().getDocuments().get(0).get("password");
 
-                        // call callback function
-                        BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), hashedPW);
-                        if(result.verified){
-                            HassibTest.uscid=uscID;
-                            login_success.setValue(true);
+                                // call callback function
+                                BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), hashedPW);
+                                if (result.verified) {
+                                    HassibTest.uscid = uscID;
+                                    login_success.setValue(true);
+                                } else {
+                                    login_success.setValue(false);
+                                }
+
+                            } else {
+                                Log.d("AUTHENTICATE", email + " Auth failed!");
+
+                                // call callback function
+                                login_success.setValue(false);
+                            }
                         }
-                        else{
-                            login_success.setValue(false);
-                        }
-
                     }
-
-                    else {
-                        Log.d("AUTHENTICATE", email + " Auth failed!");
-
-                        // call callback function
-                        login_success.setValue(false);
-                    }
-                }
-            }
-        });
+                });
     }
 
     // Update Capacity
@@ -472,8 +449,8 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful() && !task.getResult().isEmpty()) {
-                    for (QueryDocumentSnapshot qds: task.getResult()) {
+                if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                    for (QueryDocumentSnapshot qds : task.getResult()) {
                         FirestoreConnector.getDB().collection("Buildings")
                                 .document(qds.getId())
                                 .update("capacity", newCapacity)
@@ -495,31 +472,31 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
 
     }
 
-//Create account with no pic
-public static void createAccount(Account a,MutableLiveData<Integer> create_success) {
-    FirestoreConnector.getDB().collection("Accounts").add(a).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-        @Override
-        public void onComplete(@NonNull Task<DocumentReference> task) {
-            if (task.isSuccessful()) {
-                Log.d("TEST", "Account Added to DB");
-                Log.d("Create",a.getFirstName());
-                Log.d("Create",a.getLastName());
-                Log.d("Create",a.getPassword());
-                Log.d("Create",a.getEmail());
-                Log.d("Create",a.getIsManager().toString());
+    //Create account with no pic
+    public static void createAccount(Account a, MutableLiveData<Integer> create_success) {
+        FirestoreConnector.getDB().collection("Accounts").add(a).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+                if (task.isSuccessful()) {
+                    Log.d("TEST", "Account Added to DB");
+                    Log.d("Create", a.getFirstName());
+                    Log.d("Create", a.getLastName());
+                    Log.d("Create", a.getPassword());
+                    Log.d("Create", a.getEmail());
+                    Log.d("Create", a.getIsManager().toString());
 
-                create_success.setValue(2);
-            }
-            else{
-                Log.d("Err", "failed to set up");
+                    create_success.setValue(2);
+                } else {
+                    Log.d("Err", "failed to set up");
 
-                create_success.setValue(1);
+                    create_success.setValue(1);
+                }
             }
-        }
-    });
-}
+        });
+    }
+
     //Arjun : create account with pic
-    public static void createAccount(Account a,MutableLiveData<Integer> success, InputStream stream,String Extension) {
+    public static void createAccount(Account a, MutableLiveData<Integer> success, InputStream stream, String Extension) {
         FirestoreConnector.getDB().collection("Accounts").add(a).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
@@ -527,17 +504,16 @@ public static void createAccount(Account a,MutableLiveData<Integer> create_succe
                     Log.d("TEST", "Account Added to DB");
 //                    uploadPhoto up= new uploadPhoto();
 //                    up.upload(stream,a.getEmail(),Extension);
-                    uploadPhoto.upload(stream,a.getEmail(),Extension);
-                    Log.d("Create",a.getFirstName());
-                    Log.d("Create",a.getLastName());
-                    Log.d("Create",a.getPassword());
-                    Log.d("Create",a.getEmail());
-                    Log.d("Create",a.getIsManager().toString());
-                    Log.d("Create",a.getProfilePicture());
+                    uploadPhoto.upload(stream, a.getEmail(), Extension);
+                    Log.d("Create", a.getFirstName());
+                    Log.d("Create", a.getLastName());
+                    Log.d("Create", a.getPassword());
+                    Log.d("Create", a.getEmail());
+                    Log.d("Create", a.getIsManager().toString());
+                    Log.d("Create", a.getProfilePicture());
 
                     success.setValue(2);
-                }
-                else{
+                } else {
 
                     success.setValue(1);
                 }
@@ -546,14 +522,13 @@ public static void createAccount(Account a,MutableLiveData<Integer> create_succe
     }
 
 
-
     //updated by Arjun. Added progress bar and snackbar params since call back needs it
     public static void deleteAccount(String email, MutableLiveData<Integer> delete_success) {
         FirestoreConnector.getDB().collection("Accounts").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot qds: task.getResult()) {
+                    for (QueryDocumentSnapshot qds : task.getResult()) {
                         FirestoreConnector.getDB().collection("Accounts").document(qds.getId()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
@@ -563,8 +538,7 @@ public static void createAccount(Account a,MutableLiveData<Integer> create_succe
 
                                     delete_success.setValue(2);
 
-                                }
-                                else{
+                                } else {
                                     //callback added by Arjun
 
                                     delete_success.setValue(1);
@@ -578,20 +552,19 @@ public static void createAccount(Account a,MutableLiveData<Integer> create_succe
     }
 
     //Angad Sood
-    public static void updatePassword(String email, String newPassword,MutableLiveData<Boolean>success) {
+    public static void updatePassword(String email, String newPassword, MutableLiveData<Boolean> success) {
         FirestoreConnector.getDB().collection("Accounts").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful() && !task.getResult().isEmpty()){
-                    for(QueryDocumentSnapshot qds: task.getResult()){
+                if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                    for (QueryDocumentSnapshot qds : task.getResult()) {
                         FirestoreConnector.getDB().collection("Accounts").document(qds.getId()).update("password", newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                if(task.isSuccessful()){
-                                    Log.d("UPDATE","Updated Password");
+                                if (task.isSuccessful()) {
+                                    Log.d("UPDATE", "Updated Password");
                                     success.setValue(true);
-                                }
-                                else{
+                                } else {
                                     success.setValue(false);
                                 }
                             }
@@ -604,7 +577,7 @@ public static void createAccount(Account a,MutableLiveData<Integer> create_succe
 
     //Update major
     //updated params and added callback
-    public static void updateMajor(long uscID, String newMajor,MutableLiveData<Boolean> success ) {
+    public static void updateMajor(long uscID, String newMajor, MutableLiveData<Boolean> success) {
         FirestoreConnector.getDB().collection("Accounts").whereEqualTo("uscID", uscID).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -622,8 +595,7 @@ public static void createAccount(Account a,MutableLiveData<Integer> create_succe
                                                     //Arjun added callback
 
                                                     success.setValue(true);
-                                                }
-                                                else{
+                                                } else {
 
                                                     success.setValue(false);
                                                 }
@@ -638,7 +610,22 @@ public static void createAccount(Account a,MutableLiveData<Integer> create_succe
     }
 
     //Search
-    public static void search(Long uscID){};
+    public static void search(Long uscID) {
+        FirestoreConnector.getDB().collection("Accounts").whereEqualTo("uscID", uscID).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                            DocumentSnapshot ds = task.getResult().getDocuments().get(0);
+                            Account account = (Account) ds.toObject(Account.class);
+                            Log.d("ACCOUNT", account.toString());
+                        }
+                        //Account not found
+                        else if (task.getResult().isEmpty()) {
+                            Log.d("ACCOUNT", "NOT FOUND");
+                        }
 
+                    }
+                });
+    }
 }
-
