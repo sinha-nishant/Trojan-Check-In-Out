@@ -129,7 +129,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
         });
     }
 
-    public static void checkOut(Long uscID, StudentActivity sa, Date checkOutTime,MutableLiveData<Boolean> success) {
+    public static void checkOut(Long uscID, StudentActivity sa, Date checkOutTime,MutableLiveData<Integer> success) {
         FirestoreConnector.getDB().collection("Accounts")
                 .whereEqualTo("uscID", uscID)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -168,12 +168,12 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                                                                         Log.d("CHECKOUT", "checked out successfully!");
                                                                         //Arjun added callback
 //
-                                                                        success.setValue(true);
+                                                                        success.setValue(2);
                                                                     }
                                                                     else{
                                                                         //Arjun added callback
 //
-                                                                        success.setValue(false);
+                                                                        success.setValue(1);
                                                                     }
                                                                 }
                                                             });
@@ -279,7 +279,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
 
 
 
-    public static void getBuilding(String buildingName, MutableLiveData<Boolean> success,Long id,StudentActivity sa,Date time) {
+    public static void getBuilding(String buildingName, MutableLiveData<Integer> success,Long id,StudentActivity sa,Date time) {
         FirestoreConnector.getDB().collection("Buildings").whereEqualTo("name", buildingName).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -305,7 +305,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
 
                 // callback
                 else{
-                    success.setValue(false);
+                    success.setValue(0);
                 }
             }
         });
