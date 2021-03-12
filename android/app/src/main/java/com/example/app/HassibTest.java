@@ -41,8 +41,21 @@ public static Long uscid;
 private MutableLiveData<Boolean> login_success = new MutableLiveData<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+//        SharedPreferences sharedPreferences = getSharedPreferences(HassibTest.shared_pref,MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putString(HassibTest.emailEntry,"");
+//        editor.putLong(HassibTest.idEntry,0L);
+//        editor.apply();
+//        sharedPreferences = getSharedPreferences(HassibTest.shared_pref,MODE_PRIVATE);
+//        Long test_retrieve_id = sharedPreferences.getLong(HassibTest.idEntry,0);
+//        if(test_retrieve_id!=0L){
+//            setContentView(R.layout.activity_hassib_test);
+//        }else{
+//            setContentView(R.layout.activity_firebase_test);
+//        }
         super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_firebase_test);
+
         setContentView(R.layout.activity_hassib_test);
 //        LoadData();
         eEmail = findViewById(R.id.etEmail);
