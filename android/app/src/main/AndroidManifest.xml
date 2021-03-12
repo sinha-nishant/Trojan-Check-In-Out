@@ -13,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.App">
-        <activity android:name=".StudentEnterID"></activity>
+        <activity android:name=".ManagerHomeEdit"></activity>
+        <activity android:name=".ManagerSearch" />
+        <activity android:name=".StudentEnterID" />
         <activity android:name=".StudentUploadPhoto" />
         <activity android:name=".StudentEnterName" />
         <activity android:name=".ManagerSignUpStart" />
