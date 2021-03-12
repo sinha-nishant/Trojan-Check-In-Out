@@ -619,6 +619,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                             DocumentSnapshot ds = task.getResult().getDocuments().get(0);
                             Account account = (Account) ds.toObject(Account.class);
                             Log.d("ACCOUNT", account.toString());
+                            //if needed check out AngadTest class for implementation details
                         }
                         //Account not found
                         else if (task.getResult().isEmpty()) {
