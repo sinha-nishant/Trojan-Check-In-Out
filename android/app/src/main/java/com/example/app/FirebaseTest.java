@@ -52,7 +52,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
 
     // FOR TESTING PURPOSES
     public void test(View v) {
-        getBuildingsRealtime();
+        checkUSCidExists(1L);
     }
 
     public void getBuildingsRealtime() {
@@ -71,6 +71,30 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                         textBox.setText(String.format("%s: %s, %s", name, occupancy,capacity));
                     } else {
                         Log.d("Building Update", "no realtime changes");
+                    }
+                }
+            }
+        });
+    }
+
+    public static void checkUSCidExists(Long uscID) {
+        CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
+        Query query = accounts.whereEqualTo("uscID", uscID);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    if (!task.getResult().isEmpty()) {
+                        Log.d("EXIST", "USC ID " + uscID + " exists!");
+
+                        // call callback function
+//                        create_success.setValue(0);
+                    } else {
+                        Log.d("EXIST", "USC ID " + uscID + " does not exist!");
+
+                        // call callback function
+
+//                        FirebaseTest.createAccount(acc, create_success);
                     }
                 }
             }
