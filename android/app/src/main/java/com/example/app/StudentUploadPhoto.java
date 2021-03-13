@@ -9,6 +9,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class StudentUploadPhoto extends AppCompatActivity {
@@ -17,6 +18,7 @@ public class StudentUploadPhoto extends AppCompatActivity {
 
     ImageView uploadImage;
     Button bUploadImage;
+    ProgressBar studentProgress;
     private static final int RESULT_LOAD_IMAGE = 1;
 
     @Override
@@ -25,6 +27,7 @@ public class StudentUploadPhoto extends AppCompatActivity {
         setContentView(R.layout.activity_student_upload_photo);
 
         uploadImage = (ImageView)findViewById(R.id.imageToUpload);
+        studentProgress = (ProgressBar)findViewById(R.id.progressBarStudentPhoto);
         //To Backend: What data y'all get:
         Bundle bundle = getIntent().getExtras();
 
