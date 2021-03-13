@@ -120,6 +120,7 @@ private MutableLiveData<Boolean> login_success = new MutableLiveData<>();
         Log.d("Saved ID is : ", test_retrieve_id.toString());
     }
     public void QRCodeBtn(View view){
+
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         try{
             BitMatrix bitMatrix = qrCodeWriter.encode(buildingName.getText().toString(), BarcodeFormat.QR_CODE, 200,200);

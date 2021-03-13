@@ -39,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
         Intent i= new Intent(this,HassibTest.class);
         startActivity(i);
     }
+    public void changeHassib2(View v){
+        Intent i= new Intent(this,QRScanTest.class);
+        startActivity(i);
+    }
 
     public void changeAngad(View v){
         Intent i= new Intent(this,AngadTest.class);

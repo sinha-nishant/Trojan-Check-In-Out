@@ -52,24 +52,25 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
 
     // FOR TESTING PURPOSES
     public void test(View v) {
-        getBuildingOccupanciesRealtime();
+        getBuildingsRealtime();
     }
 
-    public void getBuildingOccupanciesRealtime() {
+    public void getBuildingsRealtime() {
         FirestoreConnector.getDB().collection("Buildings").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (error != null) {
-                    Log.d("OCCUPANCY", "realtime occupancy failed");
+                    Log.d("Building Update", "realtime failed");
                 } else {
                     if (value != null && !value.isEmpty()) {
-                        Log.d("OCCUPANCY", "received occupancy update");
+                        Log.d("Building Update", "received update");
                         DocumentChange dc = value.getDocumentChanges().get(0);
                         String name = (String) dc.getDocument().get("name");
                         String occupancy = String.valueOf(dc.getDocument().get("occupancy"));
-                        textBox.setText(String.format("%s: %s", name, occupancy));
+                        String capacity = String.valueOf(dc.getDocument().get("capacity"));
+                        textBox.setText(String.format("%s: %s, %s", name, occupancy,capacity));
                     } else {
-                        Log.d("OCCUPANCY", "no realtime changes");
+                        Log.d("Building Update", "no realtime changes");
                     }
                 }
             }
