@@ -1,15 +1,33 @@
 package com.example.app;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.amplifyframework.AmplifyException;
+import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
+import com.amplifyframework.core.Amplify;
+import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
+
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
+import javax.annotation.Nullable;
 
 public class StudentUploadPhoto extends AppCompatActivity {
 
@@ -17,14 +35,110 @@ public class StudentUploadPhoto extends AppCompatActivity {
 
     ImageView uploadImage;
     Button bUploadImage;
+    ProgressBar studentProgress;
+    AlertDialog alertDialog;
+    Uri selectedImage;
+    Boolean ImageSet=false;
     private static final int RESULT_LOAD_IMAGE = 1;
+    private final MutableLiveData<Integer> create_success = new MutableLiveData<>();
+    int SELECT_PICTURE = 200;
+    public static final String shared_pref = "sharedPrefs";
+    public static final String emailEntry = "email";
+    public static final String idEntry = "uscid";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_upload_photo);
 
+        try {
+            Amplify.addPlugin(new AWSCognitoAuthPlugin());
+            Amplify.addPlugin(new AWSS3StoragePlugin());
+            Amplify.configure(getApplicationContext());
+        } catch (AmplifyException e) {
+            Log.i("MyAmplifyApp", "could not add plugins ");
+        }
+
+
+
         uploadImage = (ImageView)findViewById(R.id.imageToUpload);
+        studentProgress = (ProgressBar)findViewById(R.id.progressBarStudentPhoto);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Status of Action");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Yes",
+                new DialogInterface
+                        .OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                                        int which)
+                    {
+
+                        // When the user click yes button
+                        // then app will close
+//                        finish();
+                        if(ImageSet==true){
+                            openProfile();
+                        }
+                    }
+                });
+        alertDialog = builder.create();
+
+        final Observer<Integer> obs = new Observer<Integer>(){
+            @Override
+            public void onChanged(@Nullable final Integer b){
+                if(b==null){
+                    alertDialog.setMessage("Failed to work");
+                    alertDialog.show();
+                    return;
+                }
+                if(b==0){
+//                    //store email
+//                    SaveData();
+                    //stop progress bar
+                    studentProgress.setVisibility(View.GONE);
+                    //switch page
+                    alertDialog.setMessage("Error. This Email already exists.");
+                    alertDialog.show();
+
+
+
+                }
+                else if(b==1){
+                    studentProgress.setVisibility(View.GONE);
+                    //switch page
+                    alertDialog.setMessage("Error. Failed to create your account successfully");
+                    alertDialog.show();
+
+                }
+                else{
+                    //stop progress bar
+                    studentProgress.setVisibility(View.GONE);
+                    //Generate popupmessage
+                    Log.d("Create", "success");
+
+
+                    //persisting the email and id data
+                    SharedPreferences sharedPreferences = getSharedPreferences(shared_pref,MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString(emailEntry,email);
+                    editor.putLong(idEntry,Long.parseLong(id));
+                    editor.apply();
+
+                    alertDialog.setMessage("Succeeded in creatng your account");
+                    alertDialog.show();
+
+                }
+            }
+
+        };
+        create_success.observe(this, obs);
+
+
         //To Backend: What data y'all get:
         Bundle bundle = getIntent().getExtras();
 
@@ -39,37 +153,63 @@ public class StudentUploadPhoto extends AppCompatActivity {
                 + major + " " + email + "\nPass: " + password);
         //End data
 
-        uploadImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(galleryIntent, RESULT_LOAD_IMAGE);
-            }
-        });
-
         bUploadImage = (Button)findViewById(R.id.uploadImageButton);
+
+
+        // handle the Choose Image button to trigger
+        // the image chooser function
         bUploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //BACKEND: probably here is where you want to upload to database, wait until upload
-                //is complete
-                showToast("Success!");
-                //go back to John's page, would normally be profile
-                openProfile();
+                imageChooser();
             }
         });
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        StudentUploadPhoto.super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null)
-        {
-            Uri selectedImage = data.getData();
-            uploadImage.setImageURI(selectedImage);
+    // this function is triggered when
+    // the Select Image Button is clicked
+    void imageChooser() {
+
+        // create an instance of the
+        // intent of the type image
+        Intent i = new Intent();
+        i.setType("image/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+
+        // pass the constant to compare it
+        // with the returned requestCode
+        startActivityForResult(Intent.createChooser(i, "Select Picture"), SELECT_PICTURE);
+    }
+
+    // this function is triggered when user
+    // selects the image from the imageChooser
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+
+            // compare the resultCode with the
+            // SELECT_PICTURE constant
+            if (requestCode == SELECT_PICTURE) {
+                // Get the url of the image from data
+                selectedImage = data.getData();
+                if (null != selectedImage) {
+                    // update the preview image in the layout
+                    uploadImage.setImageURI(selectedImage);
+                    ImageSet = true;
+
+
+
+                }
+
+            }
         }
     }
+
+
+
+
+
 
     private void showToast(String text)
     {
@@ -85,6 +225,40 @@ public class StudentUploadPhoto extends AppCompatActivity {
         i.putExtras(bundle);
          */
         startActivity(i);
+    }
+
+
+
+
+    public void submit(View v){
+        if(ImageSet==false){
+            alertDialog.setMessage("Please choose an Image");
+            alertDialog.show();
+            return;
+        }
+
+        String uri =selectedImage.toString();
+//        Uri myUri= selectedImage;
+        InputStream exampleInputStream=null;
+        int last_dot= uri.toString().lastIndexOf(".");
+        String Extension = uri.toString().substring(last_dot);
+        Log.i("Image",uri.toString().substring(last_dot));
+
+        try {
+            exampleInputStream = getContentResolver().openInputStream(Uri.parse(uri));
+            if(exampleInputStream==null){
+                Log.i("upload", "stream is null");
+            }
+            else{
+                Log.i("upload", "stream is valid");
+            }
+
+
+        } catch (FileNotFoundException e) {
+            Log.i("upload", "error in uri parsing");
+        }
+        CreateAccount.Create(fName, lName, email,password,exampleInputStream,Extension,false,Long.valueOf(id),major,create_success);
+
     }
 }
 
