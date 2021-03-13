@@ -65,6 +65,7 @@ private MutableLiveData<Boolean> login_success = new MutableLiveData<>();
         btnQrCode = findViewById(R.id.btnLogin);
         qrimage = findViewById(R.id.imageView);
         circle_thing= findViewById(R.id.etprogressBar);
+        circle_thing.setVisibility(View.GONE);
 
         final Observer<Boolean> b_ob = new Observer<Boolean>(){
             @Override
