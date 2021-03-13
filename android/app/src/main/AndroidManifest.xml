@@ -5,8 +5,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- <uses-feature android:name="android.hardware.type.watch" /> -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA"/>
-
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -15,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.App">
-        <activity android:name=".QRScanTest"/>
+        <activity android:name=".LogInPage"></activity>
+        <activity android:name=".QRScanTest" />
         <activity android:name=".ManagerHomeEdit" />
         <activity android:name=".ManagerSearch" />
         <activity android:name=".StudentEnterID" />

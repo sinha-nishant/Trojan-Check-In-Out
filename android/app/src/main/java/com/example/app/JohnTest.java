@@ -9,6 +9,7 @@ import android.widget.Button;
 
 public class JohnTest extends AppCompatActivity {
     private Button signupButton;
+    private Button loginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,10 +23,22 @@ public class JohnTest extends AppCompatActivity {
                 openSignUp();
             }
         });
+
+        loginButton = (Button) findViewById(R.id.Login);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openLogIn();
+            }
+        });
     }
 
     public void openSignUp() {
         Intent i = new Intent(this, SignUpPage.class);
+        startActivity(i);
+    }
+    public void openLogIn() {
+        Intent i = new Intent(this, LogInPage.class);
         startActivity(i);
     }
 }
