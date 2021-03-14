@@ -74,7 +74,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
         });
     }
 
-    public static void checkUSCidExists(Long uscID) {
+    public static void checkUSCidExists(Long uscID, Account acc, MutableLiveData<Integer> success) {
         CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
         Query query = accounts.whereEqualTo("uscID", uscID);
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -86,18 +86,48 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
 
                         // call callback function
 //                        create_success.setValue(0);
+                        success.setValue(2);
+
                     } else {
                         Log.d("EXIST", "USC ID " + uscID + " does not exist!");
 
                         // call callback function
 
-//                        FirebaseTest.createAccount(acc, create_success);
+                        FirebaseTest.createAccount(acc, success);
+
                     }
                 }
             }
         });
     }
 
+
+    public static void checkUSCidExists(Long uscID, Account acc, MutableLiveData<Integer> success,InputStream stream, String Extension) {
+        CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
+        Query query = accounts.whereEqualTo("uscID", uscID);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    if (!task.getResult().isEmpty()) {
+                        Log.d("EXIST", "USC ID " + uscID + " exists!");
+
+                        // call callback function
+//                        create_success.setValue(0);
+                        success.setValue(2);
+
+                    } else {
+                        Log.d("EXIST", "USC ID " + uscID + " does not exist!");
+
+                        // call callback function
+
+                        FirebaseTest.createAccount(acc, success,stream,Extension);
+
+                    }
+                }
+            }
+        });
+    }
     // Arjun: Updated paramaters to allow for callback
     public static void checkIn(Long uscID, StudentActivity sa, MutableLiveData<Boolean> success) {
         CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
@@ -373,7 +403,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
 
 
     // Arjun: overloaded func to allow for sync call to create account with not pic
-    public static void checkEmailExists(String email, Account acc, MutableLiveData<Integer> create_success) {
+    public static void checkEmailExists(String email, Account acc, MutableLiveData<Integer> create_success,Boolean isManager) {
         CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
         Query query = accounts.whereEqualTo("email", email);
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -389,7 +419,15 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                         Log.d("EXIST", "Email " + email + " does not exist!");
 
                         // call callback function
-                        FirebaseTest.createAccount(acc, create_success);
+//                        FirebaseTest.createAccount(acc, create_success);
+                        if(isManager){
+                            FirebaseTest.createAccount(acc, create_success);
+                        }
+                        else{
+                            Long id= ((StudentAccount)acc).getUscID();
+                            FirebaseTest.checkUSCidExists(id,acc,create_success);
+                        }
+
                     }
                 }
             }
@@ -397,7 +435,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
     }
 
     // Arjun: overloaded func to allow for sync call to create account with pic
-    public static void checkEmailExists(String email, MutableLiveData<Integer> success, Account acc, InputStream stream, String Extension) {
+    public static void checkEmailExists(String email, MutableLiveData<Integer> success, Account acc, InputStream stream, String Extension,Boolean isManager) {
         CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
         Query query = accounts.whereEqualTo("email", email);
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -414,8 +452,15 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
 
                         // call callback function
 //                        CreateAccount.setEmailAccepted(true,circle);
+                        if(isManager){
+                            FirebaseTest.createAccount(acc, success, stream, Extension);
+                        }
+                        else{
+                            Long id= ((StudentAccount)acc).getUscID();
+                            FirebaseTest.checkUSCidExists(id,acc,success,stream,Extension);
+                        }
 
-                        FirebaseTest.createAccount(acc, success, stream, Extension);
+
                     }
                 }
             }
@@ -496,7 +541,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                 if (task.isSuccessful()) {
                     Log.d("CREATE", "Account Added to DB");
                     Log.d("CREATE", a.toString());
-                    create_success.setValue(2);
+                    create_success.setValue(3);
 
                 } else {
                     Log.d("Err", "failed to set up");
@@ -518,7 +563,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                     uploadPhoto.upload(stream, a.getEmail(), Extension);
                     Log.d("CREATE", a.toString());
 
-                    success.setValue(2);
+                    success.setValue(3);
 
                 } else {
                     success.setValue(1);

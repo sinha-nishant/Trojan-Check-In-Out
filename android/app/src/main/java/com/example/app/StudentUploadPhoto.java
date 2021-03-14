@@ -115,6 +115,13 @@ public class StudentUploadPhoto extends AppCompatActivity {
                     alertDialog.show();
 
                 }
+                else if(b==2){
+                    studentProgress.setVisibility(View.GONE);
+                    //switch page
+                    alertDialog.setMessage("Error. This ID already exists");
+                    alertDialog.show();
+
+                }
                 else{
                     //stop progress bar
                     studentProgress.setVisibility(View.GONE);

@@ -25,7 +25,7 @@ public class CreateAccount {
 
         String hashedPw = BCrypt.withDefaults().hashToString(12, pw.toCharArray());
         Account a= new Account(firstName,lastName,email,hashedPw,isManager);
-        FirebaseTest.checkEmailExists(email,a,create_success);
+        FirebaseTest.checkEmailExists(email,a,create_success,true);
 
 
     }
@@ -35,7 +35,7 @@ public class CreateAccount {
 
         String hashedPw = BCrypt.withDefaults().hashToString(12, pw.toCharArray());
         Account a = new StudentAccount(firstName,lastName,email,hashedPw,id,major,isManager);
-        FirebaseTest.checkEmailExists(email,a,success);
+        FirebaseTest.checkEmailExists(email,a,success,false);
 
     }
     public static void Create(String firstName, String lastName, String email, String pw, InputStream url, String Extension, Boolean isManager, MutableLiveData<Integer> success){
@@ -44,7 +44,7 @@ public class CreateAccount {
         String picUrl=AWSLink(email,Extension);
         String hashedPw = BCrypt.withDefaults().hashToString(12, pw.toCharArray());
         Account a = new StudentAccount(firstName,lastName,email,hashedPw,picUrl,isManager);
-        FirebaseTest.checkEmailExists(email,success,a,url,Extension);
+        FirebaseTest.checkEmailExists(email,success,a,url,Extension,true);
 
     }
 
@@ -54,7 +54,7 @@ public class CreateAccount {
         String picUrl=AWSLink(email,Extension);
         String hashedPw = BCrypt.withDefaults().hashToString(12, pw.toCharArray());
         Account a = new StudentAccount(firstName,lastName,email,hashedPw,picUrl,id,major,isManager);
-        FirebaseTest.checkEmailExists(email,success,a,url,Extension);
+        FirebaseTest.checkEmailExists(email,success,a,url,Extension,false);
 
     }
 
