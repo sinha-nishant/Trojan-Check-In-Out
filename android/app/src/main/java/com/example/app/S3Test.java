@@ -6,15 +6,20 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -169,6 +174,13 @@ public class S3Test extends AppCompatActivity {
             if (requestCode == SELECT_PICTURE) {
                 // Get the url of the image from data
                 Uri selectedImageUri = data.getData();
+//                String s = getRealPathFromURI_API19(this,selectedImageUri);
+////                editText1.setText(s);
+//                if(s==null||s==""){
+//                    s="doesnt work";
+//                }
+//                Log.d("Picture Path", s);
+//                Log.d("Picture Path", "path executed");
                 if (null != selectedImageUri) {
                     // update the preview image in the layout
                     IVPreviewImage.setImageURI(selectedImageUri);
@@ -224,6 +236,7 @@ public class S3Test extends AppCompatActivity {
         String Extension = uri.toString().substring(last_dot);
         Log.i("Image",uri.toString().substring(last_dot));
 
+
         if(myUri==null){
             Log.i("upload", "uri did not get parsed");
         }
@@ -252,15 +265,47 @@ public class S3Test extends AppCompatActivity {
 //          CreateAccount ca= new CreateAccount("Miles", "Turner", "denied@basketball.com","block",exampleInputStream,Extension,false,Long.valueOf("8694251037"),"rejections",create_success);
 //        CreateAccount ca= new CreateAccount("Kyle", "Kuzma", "Kuz@basketball.com","assists",exampleInputStream,Extension,false,Long.valueOf("8694251037"),"funny",create_success);
 //          CreateAccount ca= new CreateAccount("Wilf", "Zaha", "Zaha@fball.com","skills",exampleInputStream,Extension,false,Long.valueOf("8694251037"),"rejections",create_success);
-            CreateAccount.Create("Randy", "Orton", "RKO@fball.com","outofnowhere",exampleInputStream,Extension,false,Long.valueOf("8694251037"),"meme",create_success);
+            CreateAccount.Create("Manish", "Pandee", "MP44@fball.com","outofnowhere",exampleInputStream,Extension,false,Long.valueOf("8694252921"),"meme",create_success);
 
     }
 
     public void changeImage(View v){
         ImageView IVPreviewImage= findViewById(R.id.IVPreviewImage);
-        String url=  "https://trojan-check-in-and-out183928-dev173416-dev.s3-us-west-2.amazonaws.com/public/IMG_2405.JPG";
+        String url=  "https://trojan-check-in-and-out183928-dev173416-dev.s3-us-west-2.amazonaws.com/public/djdkfvgd%40usc.edu";
         Glide.with(this).load(url).into(IVPreviewImage);
     }
 
+
+
+    public static String getRealPathFromURI_API19(Context context, Uri uri) {
+        String filePath = "";
+        if (uri.getHost().contains("com.android.providers.media")) {
+            // Image pick from recent
+            String wholeID = DocumentsContract.getDocumentId(uri);
+
+            // Split at colon, use second item in the array
+            String id = wholeID.split(":")[1];
+
+            String[] column = {MediaStore.Images.Media.DATA};
+
+            // where id is equal to
+            String sel = MediaStore.Images.Media._ID + "=?";
+
+            Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    column, sel, new String[]{id}, null);
+
+            int columnIndex = cursor.getColumnIndex(column[0]);
+
+            if (cursor.moveToFirst()) {
+                filePath = cursor.getString(columnIndex);
+            }
+            cursor.close();
+            return filePath;
+        } else {
+            // image pick from gallery
+            return  "";
+        }
+
+    }
 
 }

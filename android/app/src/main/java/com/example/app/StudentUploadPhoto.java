@@ -81,9 +81,10 @@ public class StudentUploadPhoto extends AppCompatActivity {
                         // When the user click yes button
                         // then app will close
 //                        finish();
-                        if(ImageSet==true){
-                            openProfile();
-                        }
+//                        if(ImageSet==true){
+//                            openProfile();
+//                        }
+                        openProfile();
                     }
                 });
         alertDialog = builder.create();
@@ -200,6 +201,9 @@ public class StudentUploadPhoto extends AppCompatActivity {
             if (requestCode == SELECT_PICTURE) {
                 // Get the url of the image from data
                 selectedImage = data.getData();
+//                String test_Ext= MimeTypeMap.getFileExtensionFromUrl(selectedImage.toString());
+//                Log.i("Extension",test_Ext);
+                Log.i("Image",selectedImage.toString());
                 if (null != selectedImage) {
                     // update the preview image in the layout
                     uploadImage.setImageURI(selectedImage);
@@ -239,8 +243,9 @@ public class StudentUploadPhoto extends AppCompatActivity {
 
     public void submit(View v){
         if(ImageSet==false){
-            alertDialog.setMessage("Please choose an Image");
-            alertDialog.show();
+//            alertDialog.setMessage("Please choose an Image");
+//            alertDialog.show();
+            CreateAccount.Create(fName, lName, email,password,false,create_success);
             return;
         }
 
@@ -248,8 +253,12 @@ public class StudentUploadPhoto extends AppCompatActivity {
 //        Uri myUri= selectedImage;
         InputStream exampleInputStream=null;
         int last_dot= uri.toString().lastIndexOf(".");
-        String Extension = uri.toString().substring(last_dot);
-        Log.i("Image",uri.toString().substring(last_dot));
+//        String Extension = uri.toString().substring(last_dot);
+//        Log.i("Image",uri.toString());
+//        Log.i("Image",uri.toString().substring(last_dot));
+        String Extension="";
+//        String test_Ext= MimeTypeMap.getFileExtensionFromUrl(Extension);
+//        Log.i("Extension",test_Ext);
 
         try {
             exampleInputStream = getContentResolver().openInputStream(Uri.parse(uri));

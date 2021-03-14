@@ -111,7 +111,8 @@ public class StudentAccount extends Account {
     }
 
     public String toString() {
-        return this.getFirstName() + " " + this.getLastName() + " " + this.getUscID() + " " + this.getEmail();
+        return this.getFirstName() + " " + this.getLastName() + " " + this.getUscID() + " " + this.getEmail()+" "+this.getMajor()+" "
+                +this.getPassword()+" "+this.getProfilePicture();
     }
 
 
