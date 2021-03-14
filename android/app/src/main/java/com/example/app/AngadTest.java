@@ -2,6 +2,7 @@ package com.example.app;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -12,9 +13,16 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class AngadTest extends AppCompatActivity implements FirestoreConnector {
@@ -96,20 +104,69 @@ public class AngadTest extends AppCompatActivity implements FirestoreConnector {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful() && !task.getResult().isEmpty()) {
                             DocumentSnapshot ds = task.getResult().getDocuments().get(0);
-                            Account account = (Account) ds.toObject(Account.class);
+                            StudentAccount account = (StudentAccount) ds.toObject(StudentAccount.class);
+                            account.setUscID((Long) ds.get("uscID"));
                             Log.d("ACCOUNT", account.toString());
-                            layItOut.setText(account.email);
+                            layItOut.setText(account.getActivity().get(0).getBuildingName());
+                            //if needed check out AngadTest class for implementation details
                         }
                         //Account not found
                         else if (task.getResult().isEmpty()) {
                             Log.d("ACCOUNT", "NOT FOUND");
-
                         }
-
 
                     }
                 });
     }
+
+
+    public static void checkIn(Long uscID,StudentActivity sa) {
+        CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
+        Query studentQuery = accounts.whereEqualTo("uscID", uscID);
+        studentQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    if (!task.getResult().isEmpty()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            accounts.document(document.getId()).update("activity", FieldValue.arrayUnion(sa));
+                        }
+
+                        CollectionReference buildings = FirestoreConnector.getDB().collection("Buildings");
+                        Query buildingQuery = buildings.whereEqualTo("name", sa.getBuildingName());
+                        buildingQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    if (!task.getResult().isEmpty()) {
+                                        Map<String, Object> updates = new HashMap<>();
+                                        updates.put("occupancy", FieldValue.increment(1));
+                                        updates.put("students", FieldValue.arrayUnion(uscID));
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            buildings.document(document.getId())
+                                                    .update(updates);
+                                        }
+
+                                        // call callback function
+                                        //Arjun added callback
+//
+
+
+                                    }
+                                } else {
+                                    //Arjun added callback
+//
+
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
+
+
 
 
 
