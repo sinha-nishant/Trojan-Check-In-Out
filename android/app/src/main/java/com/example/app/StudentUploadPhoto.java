@@ -84,7 +84,7 @@ public class StudentUploadPhoto extends AppCompatActivity {
 //                        if(ImageSet==true){
 //                            openProfile();
 //                        }
-                        openProfile();
+                        openProfile();//check if created and redirect
                     }
                 });
         alertDialog = builder.create();
@@ -137,7 +137,7 @@ public class StudentUploadPhoto extends AppCompatActivity {
                     editor.putLong(idEntry,Long.parseLong(id));
                     editor.apply();
 
-                    alertDialog.setMessage("Succeeded in creatng your account");
+                    alertDialog.setMessage("Succeeded in creating your account");
                     alertDialog.show();
 
                 }
