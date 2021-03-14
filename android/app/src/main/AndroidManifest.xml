@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.App">
-        <activity android:name=".LogInPage"/>
+        <activity android:name=".ManagerName"></activity>
+        <activity android:name=".LogInPage" />
         <activity android:name=".QRScanTest" />
         <activity android:name=".ManagerHomeEdit" />
         <activity android:name=".ManagerSearch" />
@@ -24,7 +25,6 @@
         <activity android:name=".ManagerSignUpStart" />
         <activity android:name=".StudentSignUpStart" />
         <activity android:name=".SignUpPage" />
-
         <activity android:name=".AngadTest" />
         <activity android:name=".HassibTest" />
         <activity android:name=".MarkusTest" />

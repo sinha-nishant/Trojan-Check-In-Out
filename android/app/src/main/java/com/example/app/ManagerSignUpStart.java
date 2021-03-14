@@ -2,6 +2,7 @@ package com.example.app;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -42,6 +43,7 @@ public class ManagerSignUpStart extends AppCompatActivity {
                 else
                 {
                     //go to next activity
+                    openNameManager(email, password);
                 }
             }
         });
@@ -50,5 +52,14 @@ public class ManagerSignUpStart extends AppCompatActivity {
     private void showToast(String text)
     {
         Toast.makeText(ManagerSignUpStart.this, text, Toast.LENGTH_SHORT).show();
+    }
+
+    public void openNameManager(String email, String password) {
+        Intent i = new Intent(this, ManagerName.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("email", email);
+        bundle.putString("password", password);
+        i.putExtras(bundle);
+        startActivity(i);
     }
 }
