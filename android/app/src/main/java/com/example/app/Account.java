@@ -1,6 +1,7 @@
 package com.example.app;
 
 import android.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -76,5 +77,15 @@ public class Account {
         return isManager;
     }
 
-
+    public String toString() {
+        return String.format(
+                "First Name: %s\nLast Name: %s\nPassword: %s\nEmail: %s\nIsManager: %b\nProfile Pic: %s",
+                this.getFirstName(),
+                this.getLastName(),
+                this.getPassword(),
+                this.getEmail(),
+                this.getIsManager(),
+                this.getProfilePicture()
+        );
+    }
 }

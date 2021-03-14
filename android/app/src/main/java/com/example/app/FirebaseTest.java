@@ -3,8 +3,6 @@ package com.example.app;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlertDialog;
-import android.content.Context;
 import android.os.Bundle;
 
 import java.io.InputStream;
@@ -25,7 +23,6 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
@@ -52,7 +49,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
 
     // FOR TESTING PURPOSES
     public void test(View v) {
-        checkUSCidExists(1L);
+        search(1L);
     }
 
     public void getBuildingsRealtime() {
@@ -101,7 +98,6 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
         });
     }
 
-    // CheckInOut - TO FIX: DOESN'T UPDATE OCCUPANCY YET
     // Arjun: Updated paramaters to allow for callback
     public static void checkIn(Long uscID, StudentActivity sa, MutableLiveData<Boolean> success) {
         CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
@@ -132,13 +128,11 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
 
                                         // call callback function
                                         //Arjun added callback
-//
                                         success.setValue(true);
 
                                     }
                                 } else {
                                     //Arjun added callback
-//
                                     success.setValue(false);
                                 }
                             }
@@ -186,12 +180,11 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                                                                 public void onComplete(@NonNull Task<Void> task) {
                                                                     if (task.isSuccessful()) {
                                                                         Log.d("CHECKOUT", "checked out successfully!");
+
                                                                         //Arjun added callback
-//
                                                                         success.setValue(2);
                                                                     } else {
                                                                         //Arjun added callback
-//
                                                                         success.setValue(1);
                                                                     }
                                                                 }
@@ -246,8 +239,8 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                                                                 public void onComplete(@NonNull Task<Void> task) {
                                                                     if (task.isSuccessful()) {
                                                                         Log.d("CHECKOUT", "checked out successfully!");
+
                                                                         //Arjun added callback
-//
                                                                         FirebaseTest.deleteAccount(email, success);
                                                                     } else {
                                                                         //Arjun added callback
@@ -396,7 +389,6 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                         Log.d("EXIST", "Email " + email + " does not exist!");
 
                         // call callback function
-
                         FirebaseTest.createAccount(acc, create_success);
                     }
                 }
@@ -416,7 +408,6 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                         Log.d("EXIST", "Email " + email + " exists!");
 
                         // call callback function
-
                         success.setValue(0);
                     } else {
                         Log.d("EXIST", "Email " + email + " does not exist!");
@@ -503,17 +494,12 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
                 if (task.isSuccessful()) {
-                    Log.d("TEST", "Account Added to DB");
-                    Log.d("Create", a.getFirstName());
-                    Log.d("Create", a.getLastName());
-                    Log.d("Create", a.getPassword());
-                    Log.d("Create", a.getEmail());
-                    Log.d("Create", a.getIsManager().toString());
-
+                    Log.d("CREATE", "Account Added to DB");
+                    Log.d("CREATE", a.toString());
                     create_success.setValue(2);
+
                 } else {
                     Log.d("Err", "failed to set up");
-
                     create_success.setValue(1);
                 }
             }
@@ -526,20 +512,15 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
                 if (task.isSuccessful()) {
-                    Log.d("TEST", "Account Added to DB");
+                    Log.d("CREATE", "Account Added to DB");
 //                    uploadPhoto up= new uploadPhoto();
 //                    up.upload(stream,a.getEmail(),Extension);
                     uploadPhoto.upload(stream, a.getEmail(), Extension);
-                    Log.d("Create", a.getFirstName());
-                    Log.d("Create", a.getLastName());
-                    Log.d("Create", a.getPassword());
-                    Log.d("Create", a.getEmail());
-                    Log.d("Create", a.getIsManager().toString());
-                    Log.d("Create", a.getProfilePicture());
+                    Log.d("CREATE", a.toString());
 
                     success.setValue(2);
-                } else {
 
+                } else {
                     success.setValue(1);
                 }
             }
@@ -559,13 +540,13 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
                                     Log.d("TEST", "Deleted Account");
-                                    //callback added by Arjun
 
+                                    //callback added by Arjun
                                     delete_success.setValue(2);
 
                                 } else {
-                                    //callback added by Arjun
 
+                                    //callback added by Arjun
                                     delete_success.setValue(1);
                                 }
                             }
@@ -617,8 +598,8 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
                                                     Log.d("UPDATE", "Updated Major");
-                                                    //Arjun added callback
 
+                                                    //Arjun added callback
                                                     success.setValue(true);
                                                 } else {
 
@@ -630,8 +611,6 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                         }
                     }
                 });
-
-
     }
 
     //Search
