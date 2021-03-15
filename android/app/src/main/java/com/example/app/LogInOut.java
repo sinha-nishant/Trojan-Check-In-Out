@@ -35,11 +35,16 @@ public class LogInOut {
         editor.putString(HassibTest.emailEntry,userEmail);
         editor.putLong(HassibTest.idEntry,uscid);
         editor.apply();
+//        LoadData(con);
     }
     public static void LoadData(Context con){
         SharedPreferences sharedPreferences = con.getSharedPreferences(HassibTest.shared_pref,con.MODE_PRIVATE);
         String test_retrieve_email = sharedPreferences.getString(HassibTest.emailEntry,"");
-//        Log.d("Saved email is : ", test_retrieve_email);
+        Log.d("Saved email is : ", test_retrieve_email);
+
+        Long test_retrieve_id = sharedPreferences.getLong(HassibTest.idEntry,0);
+        Log.d("Saved id is : ", test_retrieve_id.toString());
+
     }
     public static void LogOut(Context con){
         //clear all sharedpreferences strings

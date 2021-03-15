@@ -28,6 +28,7 @@ public class LogInPage extends AppCompatActivity {
     ProgressBar studentProgress;
     AlertDialog alertDialog;
 
+    private static Long id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,12 @@ public class LogInPage extends AppCompatActivity {
                     {
 
                         //change to different page
+                        if(success!=null){
+                            if(success.getValue()==true){
+                                openProfileStudent();
+                            }
+                            
+                        }
                     }
                 });
         alertDialog = builder.create();
@@ -67,8 +74,9 @@ public class LogInPage extends AppCompatActivity {
                     studentProgress.setVisibility(View.GONE);
                     alertDialog.setMessage("Succeeded in Logging In");
                     alertDialog.show();
-                    //should  use LoginOut.SaveDate or directly use shared prefesces here to save email and uscid(student id, or 0L)
-                    //open profile page here 
+                    LogInOut.SaveData(LogInPage.this,email,id);
+
+
 
 
 
@@ -92,7 +100,7 @@ public class LogInPage extends AppCompatActivity {
                 LogInOut.LogIn(email,password,success);
 
                 //BACKEND: IF THIS EMAIL IS A STUDENT ACCOUNT,
-                openProfileStudent();
+//                openProfileStudent();
                 //MARKUS: Manager Profile here
             }
         });
@@ -110,4 +118,10 @@ public class LogInPage extends AppCompatActivity {
         i.putExtras(bundle);
         startActivity(i);
     }
+
+    public static void setId(Long uscid){
+        id=uscid;
+    }
+
+
 }
