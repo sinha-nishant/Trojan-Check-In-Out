@@ -85,16 +85,13 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                         Log.d("EXIST", "USC ID " + uscID + " exists!");
 
                         // call callback function
-//                        create_success.setValue(0);
                         success.setValue(2);
 
                     } else {
                         Log.d("EXIST", "USC ID " + uscID + " does not exist!");
 
                         // call callback function
-
                         FirebaseTest.createAccount(acc, success);
-
                     }
                 }
             }
@@ -113,16 +110,13 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                         Log.d("EXIST", "USC ID " + uscID + " exists!");
 
                         // call callback function
-//                        create_success.setValue(0);
                         success.setValue(2);
 
                     } else {
                         Log.d("EXIST", "USC ID " + uscID + " does not exist!");
 
                         // call callback function
-
                         FirebaseTest.createAccount(acc, success,stream,Extension);
-
                     }
                 }
             }
@@ -157,12 +151,10 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                                         }
 
                                         // call callback function
-                                        //Arjun added callback
                                         success.setValue(true);
 
                                     }
                                 } else {
-                                    //Arjun added callback
                                     success.setValue(false);
                                 }
                             }
@@ -453,7 +445,6 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                         Log.d("EXIST", "Email " + email + " does not exist!");
 
                         // call callback function
-//                        CreateAccount.setEmailAccepted(true,circle);
                         if(isManager){
                             FirebaseTest.createAccount(acc, success, stream, Extension);
                         }
@@ -461,8 +452,6 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                             Long id= ((StudentAccount)acc).getUscID();
                             FirebaseTest.checkUSCidExists(id,acc,success,stream,Extension);
                         }
-
-
                     }
                 }
             }
@@ -570,10 +559,8 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
             public void onComplete(@NonNull Task<DocumentReference> task) {
                 if (task.isSuccessful()) {
                     Log.d("CREATE", "Account Added to DB");
-//                    uploadPhoto up= new uploadPhoto();
-//                    up.upload(stream,a.getEmail(),Extension);
+
                     uploadPhoto.upload(stream, a.getEmail(), Extension);
-//                    Log.d("CREATE", a.toString());
                     if(a.getIsManager()==false){
                         Log.d("CREATE", a.toString());
                     }
@@ -665,7 +652,6 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                                                     //Arjun added callback
                                                     success.setValue(true);
                                                 } else {
-
                                                     success.setValue(false);
                                                 }
                                             }
@@ -688,13 +674,11 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                             account.setUscID((Long) ds.get("uscID"));
                             Log.d("ACCOUNT", account.toString());
                             student.setValue(account);
-                            //if needed check out AngadTest class for implementation details
                         }
                         //Account not found
                         else if (task.getResult().isEmpty()) {
                             Log.d("ACCOUNT", "NOT FOUND");
                         }
-
                     }
                 });
     }
