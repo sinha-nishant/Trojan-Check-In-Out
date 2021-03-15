@@ -107,7 +107,11 @@ public class AngadTest extends AppCompatActivity implements FirestoreConnector {
                             StudentAccount account = (StudentAccount) ds.toObject(StudentAccount.class);
                             account.setUscID((Long) ds.get("uscID"));
                             Log.d("ACCOUNT", account.toString());
-                            layItOut.setText(account.getActivity().get(0).getBuildingName());
+                            String buildingNames="";
+                            for(StudentActivity sd:account.getActivity()){
+                                buildingNames+=sd.getBuildingName()+"\n";
+                            }
+                            layItOut.setText(buildingNames);
                             //if needed check out AngadTest class for implementation details
                         }
                         //Account not found
@@ -185,7 +189,9 @@ public class AngadTest extends AppCompatActivity implements FirestoreConnector {
             public void onClick(View view) {
                 password = passwordInput.getText().toString();
                 uscID = Long.parseLong(uscIDInput.getText().toString());
+               // checkIn(uscID,new StudentActivity("Sood's building",new Date(),null));
                 search(uscID);
+
 
             }
         });
