@@ -131,11 +131,12 @@ public class StudentUploadPhoto extends AppCompatActivity {
 
 
                     //persisting the email and id data
-                    SharedPreferences sharedPreferences = getSharedPreferences(shared_pref,MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString(emailEntry,email);
-                    editor.putLong(idEntry,Long.parseLong(id));
-                    editor.apply();
+//                    SharedPreferences sharedPreferences = getSharedPreferences(shared_pref,MODE_PRIVATE);
+//                    SharedPreferences.Editor editor = sharedPreferences.edit();
+//                    editor.putString(emailEntry,email);
+//                    editor.putLong(idEntry,Long.parseLong(id));
+//                    editor.apply();
+                    LogInOut.SaveData(StudentUploadPhoto.this,email,Long.valueOf(id));
 
                     alertDialog.setMessage("Succeeded in creating your account");
                     alertDialog.show();

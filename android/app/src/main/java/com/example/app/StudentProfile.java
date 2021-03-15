@@ -29,7 +29,7 @@ public class   StudentProfile extends AppCompatActivity {
         id= bundle.getString("uscID");
 
         profileF = new StudentProfileFragment(email,id);
-        menuF = new StudentProfileMenu(email);
+        menuF = new StudentProfileMenu(email,id);
 
         fl = (FrameLayout) findViewById(R.id.fl_fragment);
 

@@ -62,4 +62,6 @@ public class LogInOut {
         Long test_retrieve_id = sharedPreferences.getLong(HassibTest.idEntry,0);
         return test_retrieve_id.toString();
     }
+    //Todo
+    //could we just store email and id as static variables here and just call it from here instead of writing load data everytime
 }
