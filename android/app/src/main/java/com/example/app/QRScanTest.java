@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer;
 
 import android.Manifest;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -57,6 +58,7 @@ public class QRScanTest extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     // do whatever reflects wireframe the best(such as switching pages
+                                    goToStudentProfile();
                                 }
                             });
                     checkInOutMessage=builder.create();
@@ -69,6 +71,7 @@ public class QRScanTest extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     // do whatever reflects wireframe the best(such as switching pages
+                                    goToStudentProfile();
                                 }
                             });
                     checkInOutMessage=builder.create();
@@ -89,6 +92,7 @@ public class QRScanTest extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     // do whatever reflects wireframe the best(such as switching pages
+                                    goToStudentProfile();
                                 }
                             });
                     checkInOutMessage=builder.create();
@@ -101,6 +105,7 @@ public class QRScanTest extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     // do whatever reflects wireframe the best(such as switching pages
+                                    goToStudentProfile();
                                 }
                             });
                     checkInOutMessage=builder.create();
@@ -128,6 +133,7 @@ public class QRScanTest extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     // do whatever reflects wireframe the best(such as switching pages
+                                    goToStudentProfile();
                                 }
                             });
                     checkInOutMessage=builder.create();
@@ -165,6 +171,7 @@ public class QRScanTest extends AppCompatActivity {
                                      @Override
                                      public void onClick(DialogInterface dialog, int which) {
                                          // do whatever reflects wireframe the best(such as switching pages
+                                         goToStudentProfile();
                                      }
                                  });
                          checkInOutMessage=builder.create();
@@ -240,5 +247,11 @@ public class QRScanTest extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         mCodeScanner.startPreview();
+    }
+
+    public void goToStudentProfile() {
+        //What unique identifier will be used to draw up profile page? Email?
+        Intent i = new Intent(this, StudentProfile.class);
+        startActivity(i);
     }
 }
