@@ -1,5 +1,6 @@
 package com.example.app;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.net.URI;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link StudentProfileFragment#newInstance} factory method to
@@ -20,8 +23,9 @@ import android.widget.TextView;
  */
 public class StudentProfileFragment extends Fragment {
 
-    private String str_name;
+    private String str_name, str_email, str_id, str_major;
     private TextView name;
+    private Uri profilepic;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,6 +38,10 @@ public class StudentProfileFragment extends Fragment {
 
     public StudentProfileFragment() {
         // Required empty public constructor
+    }
+
+    public StudentProfileFragment(String email) {
+        str_email = email;
     }
 
     /**
@@ -61,8 +69,12 @@ public class StudentProfileFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-        str_name = "John";
+        //TO BACKEND: use str_email to make your database call, and fill in these fields:
+        str_name = "John Paine";
+        str_major = "Computer Science";
+        str_id = "9980170306";
+        //profilepic = null;
+        //END BACKEND
     }
 
     @Override
@@ -78,5 +90,14 @@ public class StudentProfileFragment extends Fragment {
 
         name = (TextView)(getView().findViewById(R.id.tvProfileName));
         name.setText("Welcome, " + str_name);
+
+        name = (TextView)(getView().findViewById(R.id.textView13));
+        name.setText("USC ID: " + str_id);
+
+        name = (TextView)(getView().findViewById(R.id.textView14));
+        name.setText("Email: " + str_email);
+
+        name = (TextView)(getView().findViewById(R.id.textView15));
+        name.setText("Major: " + str_major);
     }
 }

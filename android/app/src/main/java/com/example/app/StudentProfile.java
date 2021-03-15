@@ -16,13 +16,17 @@ public class StudentProfile extends AppCompatActivity {
     Button profileB, menuB;
     FrameLayout fl;
     FragmentManager fm;
+    String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_profile);
 
-        profileF = new StudentProfileFragment();
+        Bundle bundle = getIntent().getExtras();
+        email = bundle.getString("email");
+
+        profileF = new StudentProfileFragment(email);
         menuF = new StudentProfileMenu();
 
         fl = (FrameLayout) findViewById(R.id.fl_fragment);

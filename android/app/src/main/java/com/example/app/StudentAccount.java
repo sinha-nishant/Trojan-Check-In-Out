@@ -90,8 +90,8 @@ public class StudentAccount extends Account {
     public void checkOut(String buildingName, Date checkOutTime,MutableLiveData<Integer>success){
         int last= this.activity.size()-1;
         StudentActivity sa= this.activity.get(last);
-        FirebaseTest.getBuilding(buildingName,success,uscID,sa,checkOutTime);
-
+        //FirebaseTest.getBuilding(buildingName,success,uscID,sa,checkOutTime);
+        //Commented out by John for build error
     }
 
     public Long getUscID(){

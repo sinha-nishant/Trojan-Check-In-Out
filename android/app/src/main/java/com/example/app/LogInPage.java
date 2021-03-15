@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -87,16 +88,10 @@ public class LogInPage extends AppCompatActivity {
                 email = emailInput.getText().toString();
                 password = passwordInput.getText().toString();
                 LogInOut.LogIn(email,password,success);
-//                if(true) //do some backend checking here
-//                {
-//                    //go to next activity
-//                    showToast("Login verified and suceeded");
-//                }
-//                else if(false)
-//                {
-//                    showToast("You are not a registered user. Please sign up first");
-//                }
 
+                //BACKEND: IF THIS EMAIL IS A STUDENT ACCOUNT,
+                openProfileStudent();
+                //MARKUS: Manager Profile here
             }
         });
 
@@ -104,5 +99,13 @@ public class LogInPage extends AppCompatActivity {
     private void showToast(String text)
     {
         Toast.makeText(LogInPage.this, text, Toast.LENGTH_SHORT).show();
+    }
+
+    public void openProfileStudent() {
+        Intent i = new Intent(this, StudentProfile.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("email", email);
+        i.putExtras(bundle);
+        startActivity(i);
     }
 }
