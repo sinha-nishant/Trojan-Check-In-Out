@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: "Build Android project"
-      uses: vgaidarji/android-github-actions-build@v1.0.1
-      with:
-        args: "./gradlew assembleDebug"
+    - name: Checkout the code
+      uses: actions/checkout@v2
+    - name: Build the App
+      run: ./gradlew build
