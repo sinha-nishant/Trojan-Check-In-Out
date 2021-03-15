@@ -488,7 +488,6 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                                 // call callback function
                                 BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), hashedPW);
                                 if (result.verified) {
-                                    HassibTest.uscid = uscID;
                                     login_success.setValue(true);
                                 } else {
                                     login_success.setValue(false);
