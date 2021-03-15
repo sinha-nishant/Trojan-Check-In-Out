@@ -50,4 +50,16 @@ public class LogInOut {
         //clear all sharedpreferences strings
         SaveData(con,"",0L);
     }
+
+    public static String getEmail(Context con){
+        SharedPreferences sharedPreferences = con.getSharedPreferences(HassibTest.shared_pref,con.MODE_PRIVATE);
+        String test_retrieve_email = sharedPreferences.getString(HassibTest.emailEntry,"");
+        return test_retrieve_email;
+    }
+
+    public static String getID(Context con){
+        SharedPreferences sharedPreferences = con.getSharedPreferences(HassibTest.shared_pref,con.MODE_PRIVATE);
+        Long test_retrieve_id = sharedPreferences.getLong(HassibTest.idEntry,0);
+        return test_retrieve_id.toString();
+    }
 }

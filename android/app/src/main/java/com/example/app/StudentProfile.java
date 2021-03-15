@@ -10,13 +10,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
-public class StudentProfile extends AppCompatActivity {
+public class   StudentProfile extends AppCompatActivity {
 
     Fragment profileF, menuF;
     Button profileB, menuB;
     FrameLayout fl;
     FragmentManager fm;
     String email;
+    String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +26,9 @@ public class StudentProfile extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         email = bundle.getString("email");
+        id= bundle.getString("uscID");
 
-        profileF = new StudentProfileFragment(email);
+        profileF = new StudentProfileFragment(email,id);
         menuF = new StudentProfileMenu(email);
 
         fl = (FrameLayout) findViewById(R.id.fl_fragment);

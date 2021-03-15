@@ -71,10 +71,15 @@ public class LogInPage extends AppCompatActivity {
             public void onChanged(@Nullable final Boolean b){
 
                 if(b){
+//                    if(id==null){
+//                        id=69L;
+//                    }
+                    LogInOut.SaveData(LogInPage.this,email,id);
+//                    Log.d("ID","visibleb here val"+id.toString());
                     studentProgress.setVisibility(View.GONE);
                     alertDialog.setMessage("Succeeded in Logging In");
                     alertDialog.show();
-                    LogInOut.SaveData(LogInPage.this,email,id);
+//                    LogInOut.SaveData(LogInPage.this,email,id);
 
 
 
@@ -115,8 +120,20 @@ public class LogInPage extends AppCompatActivity {
         Intent i = new Intent(this, StudentProfile.class);
         Bundle bundle = new Bundle();
         bundle.putString("email", email);
+        if(id!=null){
+            bundle.putString("uscID", id.toString());
+        }
         i.putExtras(bundle);
         startActivity(i);
+
+
+
+//        if(id==null){
+//            Log.d("ID","ID is null");
+//        }
+//        else{
+//            Log.d("ID","ID is "+ id.toString());
+//        }
     }
 
     public static void setId(Long uscid){
