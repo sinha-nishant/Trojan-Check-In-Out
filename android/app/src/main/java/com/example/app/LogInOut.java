@@ -29,12 +29,12 @@ public class LogInOut {
          FirebaseTest.authenticate(email,password,login_success);
     }
 
-    public static void SaveData(Context con,String userEmail){
+    public static void SaveData(Context con,String userEmail, Long uscid){
         SharedPreferences sharedPreferences = con.getSharedPreferences(HassibTest.shared_pref,con.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(HassibTest.emailEntry,userEmail);
+        editor.putLong(HassibTest.idEntry,uscid);
         editor.apply();
-        LoadData(con);
     }
     public static void LoadData(Context con){
         SharedPreferences sharedPreferences = con.getSharedPreferences(HassibTest.shared_pref,con.MODE_PRIVATE);
@@ -43,6 +43,6 @@ public class LogInOut {
     }
     public static void LogOut(Context con){
         //clear all sharedpreferences strings
-        SaveData(con,"");
+        SaveData(con,"",0L);
     }
 }
