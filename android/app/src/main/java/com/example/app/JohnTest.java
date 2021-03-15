@@ -34,7 +34,8 @@ public class JohnTest extends AppCompatActivity {
     }
 
     public void openSignUp() {
-        Intent i = new Intent(this, SignUpPage.class);
+        //Intent i = new Intent(this, SignUpPage.class);
+        Intent i = new Intent(this, StudentProfile.class);
         startActivity(i);
     }
     public void openLogIn() {
