@@ -1,12 +1,18 @@
 package com.example.app;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,11 +27,15 @@ public class StudentProfileMenu extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    Button btnQR, btnHistory, btnSignOut, btnDelete;
+    String email;
 
     public StudentProfileMenu() {
         // Required empty public constructor
+    }
+
+    public StudentProfileMenu(String em) {
+        email = em;
     }
 
     /**
@@ -49,10 +59,6 @@ public class StudentProfileMenu extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -62,4 +68,70 @@ public class StudentProfileMenu extends Fragment {
         return inflater.inflate(R.layout.fragment_student_profile_menu, container, false);
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        btnQR = (Button)getView().findViewById(R.id.studentMenuQR);
+        btnQR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openQR();
+            }
+        });
+
+        btnHistory = (Button)getView().findViewById(R.id.studentMenuHistory);
+        btnHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openStudentHistory(email);
+            }
+        });
+
+        btnSignOut = (Button)getView().findViewById(R.id.studentMenuLogOut);
+        btnSignOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //DO BACKEND WORK
+                openHomePage();
+            }
+        });
+
+        btnDelete = (Button)getView().findViewById(R.id.studentMenuDelete);
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //DO BACKEND WORK TO DELETE ACCOUNT
+                //Ask User to confirm
+                openHomePage();
+            }
+        });
+    }
+    public void openQR() {
+        Intent i = new Intent(getActivity(), QRScanTest.class);
+        /*
+        Bundle bundle = new Bundle();
+        bundle.putString("email", email);
+        i.putExtras(bundle);
+        */
+        startActivity(i);
+    }
+
+    public void openStudentHistory(String email) {
+        Intent i = new Intent(getActivity(), StudentHistory.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("email", email);
+        i.putExtras(bundle);
+        startActivity(i);
+    }
+
+    public void openHomePage() {
+        Intent i = new Intent(getActivity(), JohnTest.class);
+        /*
+        Bundle bundle = new Bundle();
+        bundle.putString("email", email);
+        i.putExtras(bundle);
+        */
+        startActivity(i);
+    }
 }

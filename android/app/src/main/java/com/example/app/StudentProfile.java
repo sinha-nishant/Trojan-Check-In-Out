@@ -27,7 +27,7 @@ public class StudentProfile extends AppCompatActivity {
         email = bundle.getString("email");
 
         profileF = new StudentProfileFragment(email);
-        menuF = new StudentProfileMenu();
+        menuF = new StudentProfileMenu(email);
 
         fl = (FrameLayout) findViewById(R.id.fl_fragment);
 

@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.App">
-        <activity android:name=".StudentProfile"></activity>
+        <activity android:name=".StudentHistory"></activity>
+        <activity android:name=".StudentProfile" />
         <activity android:name=".ManagerName" />
         <activity android:name=".LogInPage" />
         <activity android:name=".QRScanTest" />
