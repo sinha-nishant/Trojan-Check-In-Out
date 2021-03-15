@@ -67,6 +67,8 @@ public class LogInPage extends AppCompatActivity {
                     studentProgress.setVisibility(View.GONE);
                     alertDialog.setMessage("Succeeded in Logging In");
                     alertDialog.show();
+                    //should  use LoginOut.SaveDate or directly use shared prefesces here to save email and uscid(student id, or 0L)
+                    //open profile page here 
 
 
 
