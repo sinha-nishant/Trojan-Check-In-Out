@@ -49,7 +49,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
 
     // FOR TESTING PURPOSES
     public void test(View v) {
-        search(1L);
+//        search(1L);
     }
 
     public void getBuildingsRealtime() {
@@ -673,7 +673,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
     }
 
     //Search
-    public static void search(Long uscID) {
+    public static void search(Long uscID,MutableLiveData<StudentAccount> student) {
         FirestoreConnector.getDB().collection("Accounts").whereEqualTo("uscID", uscID).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -683,6 +683,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                             StudentAccount account = (StudentAccount) ds.toObject(StudentAccount.class);
                             account.setUscID((Long) ds.get("uscID"));
                             Log.d("ACCOUNT", account.toString());
+                            student.setValue(account);
                             //if needed check out AngadTest class for implementation details
                         }
                         //Account not found

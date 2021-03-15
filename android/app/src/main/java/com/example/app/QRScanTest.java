@@ -197,13 +197,9 @@ public class QRScanTest extends AppCompatActivity {
                     public void run() {
                         //Long uscID, StudentActivity sa, MutableLiveData<Boolean> success
                         SharedPreferences sharedPreferences = getSharedPreferences(HassibTest.shared_pref,MODE_PRIVATE);
-                        String retrieve_email = sharedPreferences.getString(HassibTest.emailEntry,"");
+                        Long retrieve_id = sharedPreferences.getLong(HassibTest.idEntry,0L);
                         postScanResult=result;
-                        //getStudent needs to be implmented before uncommenting below
-                       //function signature FirebaseTest.getStudent(String email,MutableLiveData<StudentAccount> student_account )
-                        // FirebaseTest.getStudent(retrieve_email, studentMLD)
-
-
+                         FirebaseTest.search(retrieve_id, studentMLD);
                     }
                 });
             }
