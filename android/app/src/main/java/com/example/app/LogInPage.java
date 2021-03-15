@@ -43,60 +43,10 @@ public class LogInPage extends AppCompatActivity {
 
         studentProgress = (ProgressBar)findViewById(R.id.progressBar2);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setTitle("Status of Action");
-        builder.setCancelable(false);
-        builder.setPositiveButton("Yes",
-                new DialogInterface
-                        .OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog,
-                                        int which)
-                    {
-
-                        //change to different page
-                        if(success!=null){
-                            if(success.getValue()==true){
-                                openProfileStudent();
-                            }
-                            
-                        }
-                    }
-                });
-        alertDialog = builder.create();
-        final Observer<Boolean> obs = new Observer<Boolean>(){
-            @Override
-            public void onChanged(@Nullable final Boolean b){
-
-                if(b){
-//                    if(id==null){
-//                        id=69L;
-//                    }
-                    LogInOut.SaveData(LogInPage.this,email,id);
-//                    Log.d("ID","visibleb here val"+id.toString());
-                    studentProgress.setVisibility(View.GONE);
-                    alertDialog.setMessage("Succeeded in Logging In");
-                    alertDialog.show();
-//                    LogInOut.SaveData(LogInPage.this,email,id);
+        DialogInit();
+        MutableInit();
 
 
-
-
-
-
-                }
-                else{
-                    studentProgress.setVisibility(View.GONE);
-                    alertDialog.setMessage("Invalid Credentials");
-                    alertDialog.show();
-
-                }
-            }
-
-        };
-        success.observe(this, obs);
         submitLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,16 +78,65 @@ public class LogInPage extends AppCompatActivity {
 
 
 
-//        if(id==null){
-//            Log.d("ID","ID is null");
-//        }
-//        else{
-//            Log.d("ID","ID is "+ id.toString());
-//        }
     }
 
     public static void setId(Long uscid){
         id=uscid;
+    }
+
+    public void DialogInit(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Status of Action");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Yes",
+                new DialogInterface
+                        .OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                                        int which)
+                    {
+
+                        //change to different page
+                        if(success!=null){
+                            if(success.getValue()==true){
+                                openProfileStudent();
+                                //need to check between accounts
+                            }
+
+                        }
+                    }
+                });
+        alertDialog = builder.create();
+    }
+
+    public void MutableInit(){
+        final Observer<Boolean> obs = new Observer<Boolean>(){
+            @Override
+            public void onChanged(@Nullable final Boolean b){
+
+                if(b){
+
+                    LogInOut.SaveData(LogInPage.this,email,id);
+
+                    studentProgress.setVisibility(View.GONE);
+                    alertDialog.setMessage("Succeeded in Logging In");
+                    alertDialog.show();
+
+
+
+                }
+                else{
+                    studentProgress.setVisibility(View.GONE);
+                    alertDialog.setMessage("Invalid Credentials");
+                    alertDialog.show();
+
+                }
+            }
+
+        };
+        success.observe(this, obs);
     }
 
 

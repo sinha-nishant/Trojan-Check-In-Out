@@ -74,65 +74,9 @@ public class StudentProfileMenu extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
-        builder.setTitle("Status of Action");
-        builder.setCancelable(false);
-        builder.setPositiveButton("Yes",
-                new DialogInterface
-                        .OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog,
-                                        int which)
-                    {
-//                        if(alertDialog==true){
-//                            openHomePage();
-//                        }
-                        openHomePage();
-
-                    }
-                });
-        alertDialog = builder.create();
-        final Observer<StudentAccount> obs = new Observer<StudentAccount>(){
-            @Override
-            public void onChanged(@javax.annotation.Nullable final StudentAccount sa){
-                if(sa==null){
-                    return;
-                }
-                else{
-                    Log.d("student","student found");
-                }
-
-            }
-
-        };
-        student.observe(this, obs);
-
-        final Observer<Integer> obs2 = new Observer<Integer>(){
-            @Override
-            public void onChanged(@javax.annotation.Nullable final Integer result){
-                if(result==null){
-                    return;
-                }
-                if(result==0){
-                    alertDialog.setMessage("We could not check you out of your last building. Delete failed");
-                    alertDialog.show();
-                }
-                else if(result==1){
-                    alertDialog.setMessage("Unsuccessful in deleting your account");
-                    alertDialog.show();
-                }
-                else{
-                    alertDialog.setMessage("Successful in deleting your account");
-                    alertDialog.show();
-                    LogInOut.LogOut(getContext());
-                }
-
-            }
-
-        };
-        delete_success.observe(this, obs2);
+        DialogInit();
+        MutableStudent();
+        MutableBoolean();
 
         FirebaseTest.search(Long.valueOf(uscID),student);
     }
@@ -212,5 +156,70 @@ public class StudentProfileMenu extends Fragment {
         i.putExtras(bundle);
         */
         startActivity(i);
+    }
+
+    public void DialogInit(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        builder.setTitle("Status of Action");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Yes",
+                new DialogInterface
+                        .OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                                        int which)
+                    {
+
+                        openHomePage();
+
+                    }
+                });
+        alertDialog = builder.create();
+    }
+
+    public void MutableStudent(){
+        final Observer<StudentAccount> obs = new Observer<StudentAccount>(){
+            @Override
+            public void onChanged(@javax.annotation.Nullable final StudentAccount sa){
+                if(sa==null){
+                    return;
+                }
+                else{
+                    Log.d("student","student found");
+                }
+
+            }
+
+        };
+        student.observe(this, obs);
+    }
+
+    public void MutableBoolean(){
+        final Observer<Integer> obs2 = new Observer<Integer>(){
+            @Override
+            public void onChanged(@javax.annotation.Nullable final Integer result){
+                if(result==null){
+                    return;
+                }
+                if(result==0){
+                    alertDialog.setMessage("We could not check you out of your last building. Delete failed");
+                    alertDialog.show();
+                }
+                else if(result==1){
+                    alertDialog.setMessage("Unsuccessful in deleting your account");
+                    alertDialog.show();
+                }
+                else{
+                    alertDialog.setMessage("Successful in deleting your account");
+                    alertDialog.show();
+                    LogInOut.LogOut(getContext());
+                }
+
+            }
+
+        };
+        delete_success.observe(this, obs2);
     }
 }

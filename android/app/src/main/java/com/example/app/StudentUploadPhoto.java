@@ -39,12 +39,9 @@ public class StudentUploadPhoto extends AppCompatActivity {
     AlertDialog alertDialog;
     Uri selectedImage;
     Boolean ImageSet=false;
-    private static final int RESULT_LOAD_IMAGE = 1;
     private final MutableLiveData<Integer> create_success = new MutableLiveData<>();
     int SELECT_PICTURE = 200;
-    public static final String shared_pref = "sharedPrefs";
-    public static final String emailEntry = "email";
-    public static final String idEntry = "uscid";
+
 
 
     @Override
@@ -52,100 +49,13 @@ public class StudentUploadPhoto extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_upload_photo);
 
-        try {
-            Amplify.addPlugin(new AWSCognitoAuthPlugin());
-            Amplify.addPlugin(new AWSS3StoragePlugin());
-            Amplify.configure(getApplicationContext());
-        } catch (AmplifyException e) {
-            Log.i("MyAmplifyApp", "could not add plugins ");
-        }
-
-
+        AmplifyInit();
 
         uploadImage = (ImageView)findViewById(R.id.imageToUpload);
         studentProgress = (ProgressBar)findViewById(R.id.progressBarStudentPhoto);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setTitle("Status of Action");
-        builder.setCancelable(false);
-        builder.setPositiveButton("Yes",
-                new DialogInterface
-                        .OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog,
-                                        int which)
-                    {
-
-                        // When the user click yes button
-                        // then app will close
-//                        finish();
-//                        if(ImageSet==true){
-//                            openProfile();
-//                        }
-                        openProfile();//check if created and redirect
-                    }
-                });
-        alertDialog = builder.create();
-
-        final Observer<Integer> obs = new Observer<Integer>(){
-            @Override
-            public void onChanged(@Nullable final Integer b){
-                if(b==null){
-                    alertDialog.setMessage("Failed to work");
-                    alertDialog.show();
-                    return;
-                }
-                if(b==0){
-//                    //store email
-//                    SaveData();
-                    //stop progress bar
-                    studentProgress.setVisibility(View.GONE);
-                    //switch page
-                    alertDialog.setMessage("Error. This Email already exists.");
-                    alertDialog.show();
-
-
-
-                }
-                else if(b==1){
-                    studentProgress.setVisibility(View.GONE);
-                    //switch page
-                    alertDialog.setMessage("Error. Failed to create your account successfully");
-                    alertDialog.show();
-
-                }
-                else if(b==2){
-                    studentProgress.setVisibility(View.GONE);
-                    //switch page
-                    alertDialog.setMessage("Error. This ID already exists");
-                    alertDialog.show();
-
-                }
-                else{
-                    //stop progress bar
-                    studentProgress.setVisibility(View.GONE);
-                    //Generate popupmessage
-                    Log.d("Create", "success");
-
-
-                    //persisting the email and id data
-//                    SharedPreferences sharedPreferences = getSharedPreferences(shared_pref,MODE_PRIVATE);
-//                    SharedPreferences.Editor editor = sharedPreferences.edit();
-//                    editor.putString(emailEntry,email);
-//                    editor.putLong(idEntry,Long.parseLong(id));
-//                    editor.apply();
-                    LogInOut.SaveData(StudentUploadPhoto.this,email,Long.valueOf(id));
-
-                    alertDialog.setMessage("Succeeded in creating your account");
-                    alertDialog.show();
-
-                }
-            }
-
-        };
-        create_success.observe(this, obs);
+        DialogInit();
+        MutableInit();
 
 
         //To Backend: What data y'all get:
@@ -202,14 +112,11 @@ public class StudentUploadPhoto extends AppCompatActivity {
             if (requestCode == SELECT_PICTURE) {
                 // Get the url of the image from data
                 selectedImage = data.getData();
-//                String test_Ext= MimeTypeMap.getFileExtensionFromUrl(selectedImage.toString());
-//                Log.i("Extension",test_Ext);
                 Log.i("Image",selectedImage.toString());
                 if (null != selectedImage) {
                     // update the preview image in the layout
                     uploadImage.setImageURI(selectedImage);
                     ImageSet = true;
-
 
 
                 }
@@ -243,22 +150,17 @@ public class StudentUploadPhoto extends AppCompatActivity {
 
     public void submit(View v){
         if(ImageSet==false){
-//            alertDialog.setMessage("Please choose an Image");
-//            alertDialog.show();
+            showToast(fName + " " + lName + " (" + id + ")\n"
+                    + major + " " + email + "\nPass: " + password+" ////");
             CreateAccount.Create(fName, lName, email,password,false,create_success);
             return;
         }
 
         String uri =selectedImage.toString();
-//        Uri myUri= selectedImage;
         InputStream exampleInputStream=null;
         int last_dot= uri.toString().lastIndexOf(".");
-//        String Extension = uri.toString().substring(last_dot);
-//        Log.i("Image",uri.toString());
-//        Log.i("Image",uri.toString().substring(last_dot));
+
         String Extension="";
-//        String test_Ext= MimeTypeMap.getFileExtensionFromUrl(Extension);
-//        Log.i("Extension",test_Ext);
 
         try {
             exampleInputStream = getContentResolver().openInputStream(Uri.parse(uri));
@@ -275,6 +177,87 @@ public class StudentUploadPhoto extends AppCompatActivity {
         }
         CreateAccount.Create(fName, lName, email,password,exampleInputStream,Extension,false,Long.valueOf(id),major,create_success);
 
+    }
+
+
+    public void AmplifyInit(){
+        try {
+            Amplify.addPlugin(new AWSCognitoAuthPlugin());
+            Amplify.addPlugin(new AWSS3StoragePlugin());
+            Amplify.configure(getApplicationContext());
+        } catch (AmplifyException e) {
+            Log.i("MyAmplifyApp", "could not add plugins ");
+        }
+    }
+
+    public void DialogInit(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Status of Action");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Yes",
+                new DialogInterface
+                        .OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                                        int which)
+                    {
+                        openProfile();
+                    }
+                });
+        alertDialog = builder.create();
+    }
+
+    public void MutableInit(){
+        final Observer<Integer> obs = new Observer<Integer>(){
+            @Override
+            public void onChanged(@Nullable final Integer b){
+                if(b==null){
+                    alertDialog.setMessage("Failed to work");
+                    alertDialog.show();
+                    return;
+                }
+                if(b==0){
+
+                    studentProgress.setVisibility(View.GONE);
+                    alertDialog.setMessage("Error. This Email already exists.");
+                    alertDialog.show();
+
+
+
+                }
+                else if(b==1){
+                    studentProgress.setVisibility(View.GONE);
+                    //switch page
+                    alertDialog.setMessage("Error. Failed to create your account successfully");
+                    alertDialog.show();
+
+                }
+                else if(b==2){
+                    studentProgress.setVisibility(View.GONE);
+                    //switch page
+                    alertDialog.setMessage("Error. This ID already exists");
+                    alertDialog.show();
+
+                }
+                else{
+                    //stop progress bar
+                    studentProgress.setVisibility(View.GONE);
+                    //Generate popupmessage
+                    Log.d("Create", "success");
+
+
+                    LogInOut.SaveData(StudentUploadPhoto.this,email,Long.valueOf(id));
+
+                    alertDialog.setMessage("Succeeded in creating your account");
+                    alertDialog.show();
+
+                }
+            }
+
+        };
+        create_success.observe(this, obs);
     }
 }
 
