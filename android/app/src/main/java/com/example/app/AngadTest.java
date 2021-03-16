@@ -111,6 +111,8 @@ public class AngadTest extends AppCompatActivity implements FirestoreConnector {
                             for(StudentActivity sd:account.getActivity()){
                                 buildingNames+=sd.getBuildingName()+"\n";
                             }
+                            buildingNames+="Profile Pic: (will show if exists)"+"\n";
+                            buildingNames+=account.getProfilePicture();
                             layItOut.setText(buildingNames);
                             //if needed check out AngadTest class for implementation details
                         }
