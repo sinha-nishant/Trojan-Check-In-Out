@@ -25,6 +25,7 @@ import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -44,6 +45,7 @@ public class StudentProfileFragment extends Fragment {
     Button uploadButton;
     MutableLiveData<StudentAccount> student= new MutableLiveData<>();
     MutableLiveData<Boolean> upload_success= new MutableLiveData<>();
+    MutableLiveData<Boolean> Firebase_success= new MutableLiveData<>();
     int SELECT_PICTURE = 200;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -98,6 +100,7 @@ public class StudentProfileFragment extends Fragment {
         DialogInit();
 
         MutableBoolean();
+        MutableFirebase();
 
         FirebaseTest.search(Long.valueOf(str_id),student);
 
@@ -261,8 +264,12 @@ public class StudentProfileFragment extends Fragment {
                     name.setText("Major: " + str_major);
                     if(sa.getProfilePicture()!=null){
                         profilepic =Uri.parse(sa.getProfilePicture());
+                        Log.d("URI",profilepic.toString());
                         img= (ImageView)(getView().findViewById(R.id.imageView2));
-                        Glide.with(getActivity()).load(profilepic.toString()).into(img);
+                        Glide.with(getActivity()).load(profilepic.toString()).diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .skipMemoryCache(true).into(img);
+                        Log.d("URI",profilepic.toString());
+
                     }
                     uploadButton=(Button)(getView().findViewById(R.id.SelectImg));
                     uploadButton.setOnClickListener(new View.OnClickListener() {
@@ -290,10 +297,11 @@ public class StudentProfileFragment extends Fragment {
                     if(img==null){
                         Log.d("Check", "img is null");
                     }
-                    img= (ImageView)(getView().findViewById(R.id.imageView2));
-                    Glide.with(getActivity()).load(profilepic.toString()).into(img);
-                    alertDialog.setMessage("updated image successfully");
-                    alertDialog.show();
+//                    img= (ImageView)(getView().findViewById(R.id.imageView2));
+//                    Glide.with(getActivity()).load(profilepic.toString()).into(img);
+//                    alertDialog.setMessage("updated image successfully");
+//                    alertDialog.show();
+                    FirebaseTest.updatePhoto(str_email,Firebase_success);
                 }
                 else{
                     alertDialog.setMessage("Error. Could not upload change profile picture");
@@ -304,6 +312,35 @@ public class StudentProfileFragment extends Fragment {
 
         };
         upload_success.observe(this, obs2);
+    }
+
+    public void MutableFirebase(){
+        final Observer<Boolean> obs3 = new Observer<Boolean>(){
+            @Override
+            public void onChanged(@javax.annotation.Nullable final Boolean b){
+                if(b){
+                    if(profilepic==null){
+                        Log.d("Check", "profile pic is null");
+                    }
+                    if(img==null){
+                        Log.d("Check", "img is null");
+                    }
+                    img= (ImageView)(getView().findViewById(R.id.imageView2));
+                    Glide.with(getActivity()).load(profilepic.toString()).diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .skipMemoryCache(true).into(img);
+                    alertDialog.setMessage("updated image successfully");
+                    alertDialog.show();
+                }
+                else{
+                    alertDialog.setMessage("Error. Could not update profile Picture");
+                    alertDialog.show();
+                }
+
+            }
+
+        };
+        Firebase_success.observe(this, obs3);
+
     }
 
 }
