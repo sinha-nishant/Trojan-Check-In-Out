@@ -150,17 +150,14 @@ public class StudentUploadPhoto extends AppCompatActivity {
 
     public void submit(View v){
         if(ImageSet==false){
-            showToast(fName + " " + lName + " (" + id + ")\n"
-                    + major + " " + email + "\nPass: " + password+" ////");
-            CreateAccount.Create(fName, lName, email,password,false,create_success);
+//            CreateAccount.Create(fName, lName, email,password,false,create_success);
+            CreateAccount.CreateStudent(fName,lName,email,password,Long.valueOf(id),major,create_success);
             return;
         }
 
         String uri =selectedImage.toString();
         InputStream exampleInputStream=null;
-        int last_dot= uri.toString().lastIndexOf(".");
 
-        String Extension="";
 
         try {
             exampleInputStream = getContentResolver().openInputStream(Uri.parse(uri));
@@ -175,7 +172,7 @@ public class StudentUploadPhoto extends AppCompatActivity {
         } catch (FileNotFoundException e) {
             Log.i("upload", "error in uri parsing");
         }
-        CreateAccount.Create(fName, lName, email,password,exampleInputStream,Extension,false,Long.valueOf(id),major,create_success);
+        CreateAccount.CreateStudent(fName, lName, email,password,exampleInputStream,Long.valueOf(id),major,create_success);
 
     }
 

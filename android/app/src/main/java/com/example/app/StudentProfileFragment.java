@@ -165,7 +165,7 @@ public class StudentProfileFragment extends Fragment {
 
                     String uri =profilepic.toString();
                     InputStream exampleInputStream=null;
-                    String Extension="";
+
 
 
                     try {
@@ -181,7 +181,20 @@ public class StudentProfileFragment extends Fragment {
                     } catch (FileNotFoundException e) {
                         Log.i("upload", "error in uri parsing");
                     }
-                    uploadPhoto.upload(exampleInputStream,str_email,Extension,upload_success);
+                    if(str_email!=null){
+                        Log.i("photo",str_email);
+                    }
+                    else{
+                        Log.i("photo","email is null");
+                    }
+
+                    if(upload_success!=null){
+                        Log.i("photo",upload_success.toString());
+                    }
+                    else{
+                        Log.i("photo","mutable null");
+                    }
+                    uploadPhoto.upload(exampleInputStream,str_email,upload_success);
 
 
                 }
@@ -271,6 +284,13 @@ public class StudentProfileFragment extends Fragment {
             @Override
             public void onChanged(@javax.annotation.Nullable final Boolean b){
                 if(b){
+                    if(profilepic==null){
+                        Log.d("Check", "profile pic is null");
+                    }
+                    if(img==null){
+                        Log.d("Check", "img is null");
+                    }
+                    img= (ImageView)(getView().findViewById(R.id.imageView2));
                     Glide.with(getActivity()).load(profilepic.toString()).into(img);
                     alertDialog.setMessage("updated image successfully");
                     alertDialog.show();

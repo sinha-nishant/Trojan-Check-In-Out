@@ -4,10 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.amplifyframework.AmplifyException;
+import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
+import com.amplifyframework.core.Amplify;
+import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
 
 public class ManagerName extends AppCompatActivity {
 
@@ -57,4 +63,14 @@ public class ManagerName extends AppCompatActivity {
     {
         Toast.makeText(ManagerName.this, text, Toast.LENGTH_SHORT).show();
     }
+    public void AmplifyInit(){
+        try {
+            Amplify.addPlugin(new AWSCognitoAuthPlugin());
+            Amplify.addPlugin(new AWSS3StoragePlugin());
+            Amplify.configure(getApplicationContext());
+        } catch (AmplifyException e) {
+            Log.i("MyAmplifyApp", "could not add plugins ");
+        }
+    }
+
 }

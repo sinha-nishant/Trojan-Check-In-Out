@@ -14,9 +14,9 @@ public class uploadPhoto {
     }
 
 
-    public static void upload(InputStream uri,String email,String Extension){
+    public static void upload(InputStream uri,String email){
         Log.i("uploadPhoto","in upload photo");
-        String key=email+Extension;
+        String key=email;
             Amplify.Storage.uploadInputStream(
             key,
             uri,
@@ -26,9 +26,9 @@ public class uploadPhoto {
 
     }
 
-    public static void upload(InputStream uri, String email, String Extension, MutableLiveData<Boolean> success){
+    public static void upload(InputStream uri, String email, MutableLiveData<Boolean> success){
         Log.i("uploadPhoto","in upload photo");
-        String key=email+Extension;
+        String key=email;
         Amplify.Storage.uploadInputStream(
                 key,
                 uri,

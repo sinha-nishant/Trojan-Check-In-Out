@@ -99,7 +99,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
     }
 
 
-    public static void checkUSCidExists(Long uscID, Account acc, MutableLiveData<Integer> success,InputStream stream, String Extension) {
+    public static void checkUSCidExists(Long uscID, Account acc, MutableLiveData<Integer> success,InputStream stream) {
         CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
         Query query = accounts.whereEqualTo("uscID", uscID);
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -116,7 +116,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                         Log.d("EXIST", "USC ID " + uscID + " does not exist!");
 
                         // call callback function
-                        FirebaseTest.createAccount(acc, success,stream,Extension);
+                        FirebaseTest.createAccount(acc, success,stream);
                     }
                 }
             }
@@ -435,7 +435,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
     }
 
     // Arjun: overloaded func to allow for sync call to create account with pic
-    public static void checkEmailExists(String email, MutableLiveData<Integer> success, Account acc, InputStream stream, String Extension,Boolean isManager) {
+    public static void checkEmailExists(String email, MutableLiveData<Integer> success, Account acc, InputStream stream,Boolean isManager) {
         CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
         Query query = accounts.whereEqualTo("email", email);
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -452,11 +452,11 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
 
                         // call callback function
                         if(isManager){
-                            FirebaseTest.createAccount(acc, success, stream, Extension);
+                            FirebaseTest.createAccount(acc, success, stream);
                         }
                         else{
                             Long id= ((StudentAccount)acc).getUscID();
-                            FirebaseTest.checkUSCidExists(id,acc,success,stream,Extension);
+                            FirebaseTest.checkUSCidExists(id,acc,success,stream);
                         }
                     }
                 }
@@ -559,14 +559,14 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
     }
 
     //Arjun : create account with pic
-    public static void createAccount(Account a, MutableLiveData<Integer> success, InputStream stream, String Extension) {
+    public static void createAccount(Account a, MutableLiveData<Integer> success, InputStream stream) {
         FirestoreConnector.getDB().collection("Accounts").add(a).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
                 if (task.isSuccessful()) {
                     Log.d("CREATE", "Account Added to DB");
 
-                    uploadPhoto.upload(stream, a.getEmail(), Extension);
+                    uploadPhoto.upload(stream, a.getEmail());
                     if(a.getIsManager()==false){
                         Log.d("CREATE", a.toString());
                     }

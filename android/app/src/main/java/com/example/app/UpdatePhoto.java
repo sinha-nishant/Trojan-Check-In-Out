@@ -10,8 +10,8 @@ public class UpdatePhoto {
 
     }
 
-    public static void Update(String email, InputStream stream,String Extension, MutableLiveData<Boolean> success){
-        uploadPhoto.upload(stream,email,Extension,success);
+    public static void Update(String email, InputStream stream, MutableLiveData<Boolean> success){
+        uploadPhoto.upload(stream,email,success);
     }
 
 }

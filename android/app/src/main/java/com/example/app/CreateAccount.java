@@ -20,47 +20,47 @@ public class CreateAccount {
 
     }
 
-    public static void Create(String firstName, String lastName, String email, String pw, Boolean isManager, MutableLiveData<Integer> create_success){
+    public static void CreateManager(String firstName, String lastName, String email, String pw, MutableLiveData<Integer> create_success){
         Log.i("CreateAccount","in create account");
 
         String hashedPw = BCrypt.withDefaults().hashToString(12, pw.toCharArray());
-        Account a= new Account(firstName,lastName,email,hashedPw,isManager);
+        Account a= new Account(firstName,lastName,email,hashedPw,true);
         FirebaseTest.checkEmailExists(email,a,create_success,true);
 
 
     }
 
-    public static void Create(String firstName, String lastName, String email, String pw, Boolean isManager,Long id, String major,MutableLiveData<Integer> success){
+    public static void CreateStudent(String firstName, String lastName, String email, String pw,Long id, String major,MutableLiveData<Integer> success){
         Log.i("CreateAccount","in create account");
 
         String hashedPw = BCrypt.withDefaults().hashToString(12, pw.toCharArray());
-        Account a = new StudentAccount(firstName,lastName,email,hashedPw,id,major,isManager);
+        Account a = new StudentAccount(firstName,lastName,email,hashedPw,id,major,false);
         FirebaseTest.checkEmailExists(email,a,success,false);
 
     }
-    public static void Create(String firstName, String lastName, String email, String pw, InputStream url, String Extension, Boolean isManager, MutableLiveData<Integer> success){
+    public static void CreateManager(String firstName, String lastName, String email, String pw, InputStream url, MutableLiveData<Integer> success){
         Log.i("CreateAccount","in create account");
 
-        String picUrl=AWSLink(email,Extension);
+        String picUrl=AWSLink(email);
         String hashedPw = BCrypt.withDefaults().hashToString(12, pw.toCharArray());
-        Account a = new StudentAccount(firstName,lastName,email,hashedPw,picUrl,isManager);
-        FirebaseTest.checkEmailExists(email,success,a,url,Extension,true);
+        Account a = new StudentAccount(firstName,lastName,email,hashedPw,picUrl,true);
+        FirebaseTest.checkEmailExists(email,success,a,url,true);
 
     }
 
-    public static void Create(String firstName, String lastName, String email, String pw,InputStream url,String Extension ,Boolean isManager,Long id, String major,MutableLiveData<Integer> success){
+    public static void CreateStudent(String firstName, String lastName, String email, String pw,InputStream url,Long id, String major,MutableLiveData<Integer> success){
         Log.i("CreateAccount","in create account");
 
-        String picUrl=AWSLink(email,Extension);
+        String picUrl=AWSLink(email);
         String hashedPw = BCrypt.withDefaults().hashToString(12, pw.toCharArray());
-        Account a = new StudentAccount(firstName,lastName,email,hashedPw,picUrl,id,major,isManager);
-        FirebaseTest.checkEmailExists(email,success,a,url,Extension,false);
+        Account a = new StudentAccount(firstName,lastName,email,hashedPw,picUrl,id,major,true);
+        FirebaseTest.checkEmailExists(email,success,a,url,false);
 
     }
 
-    public static String AWSLink(String email,String Extension){
+    public static String AWSLink(String email){
         String domain="https://trojan-check-in-and-out183928-dev173416-dev.s3-us-west-2.amazonaws.com/public/";
-        return domain+email.replaceFirst("@","%40")+Extension;
+        return domain+email.replaceFirst("@","%40");
     }
 
 

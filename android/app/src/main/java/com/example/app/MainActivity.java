@@ -14,10 +14,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    public void changeS3(View v){
-        Intent i= new Intent(this,S3Test.class);
-        startActivity(i);
-    }
+
 
     public void changeFirebase(View v){
         Intent i= new Intent(this,FirebaseTest.class);

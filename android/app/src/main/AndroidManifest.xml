@@ -32,7 +32,6 @@
         <activity android:name=".MarkusTest" />
         <activity android:name=".JohnTest" />
         <activity android:name=".FirebaseTest" />
-        <activity android:name=".S3Test" />
         <activity android:name=".CreateDummyAccount" />
         <activity android:name=".MainActivity">
             <intent-filter>
