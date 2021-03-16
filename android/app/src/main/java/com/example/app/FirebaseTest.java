@@ -49,10 +49,10 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
 
     // FOR TESTING PURPOSES
     public void test(View v) {
-//        search(1L);
+//       getBuildingsRealtime();
     }
 
-    public void getBuildingsRealtime() {
+    public void getBuildingsRealtime(MutableLiveData<Building> buildingMLD) {
         FirestoreConnector.getDB().collection("Buildings").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -66,6 +66,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                         String occupancy = String.valueOf(dc.getDocument().get("occupancy"));
                         String capacity = String.valueOf(dc.getDocument().get("capacity"));
                         textBox.setText(String.format("%s: %s, %s", name, occupancy,capacity));
+//                        buildingMLD.setValue(building);
                     } else {
                         Log.d("Building Update", "no realtime changes");
                     }

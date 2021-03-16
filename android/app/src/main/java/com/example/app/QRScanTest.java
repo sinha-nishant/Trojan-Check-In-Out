@@ -155,15 +155,14 @@ public class QRScanTest extends AppCompatActivity {
                  }else{
                      //get last index which indicates most recent activity
                      StudentActivity  sa = sa_list.get(sa_list.size()-1);
-                     if(sa.getCheckOutTime()==null && sa.getBuildingName().toLowerCase()==postScanResult.getText().toString().toLowerCase() ){ //if null and scans same building then checkout student and display checkout success
+                     if(sa.getCheckOutTime()==null && sa.getBuildingName().equals(postScanResult.getText().toString())){ //if null and scans same building then checkout student and display checkout success
                          //call checkout from checkout services or can call firebasecheckout directly
                          Date checkOutDate = new Date();
                          SharedPreferences sharedPreferences = getSharedPreferences(HassibTest.shared_pref,MODE_PRIVATE);
                          Long retrieveID = sharedPreferences.getLong(HassibTest.idEntry,0L);
-                         sa.setCheckOutTime(checkOutDate);
                          FirebaseTest.checkOut(retrieveID,sa,checkOutDate,checkOutMLD);
 
-                     }else if(sa.getCheckOutTime()==null && sa.getBuildingName().toLowerCase()!=postScanResult.getText().toString().toLowerCase() ){ //if null and scans a different building then direct to check out of last building
+                     }else if(sa.getCheckOutTime()==null && !sa.getBuildingName().equals(postScanResult.getText().toString()) ){ //if null and scans a different building then direct to check out of last building
                          //set values(such as message, and button to redirect if necessary) of alert dialog and show it to user
                          builder.setTitle("Check In Failure")
                                  .setMessage("Please check out of "+ sa.getBuildingName()+" before checking in again.")
