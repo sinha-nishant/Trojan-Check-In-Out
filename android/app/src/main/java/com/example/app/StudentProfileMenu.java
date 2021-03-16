@@ -132,11 +132,10 @@ public class StudentProfileMenu extends Fragment {
     }
     public void openQR() {
         Intent i = new Intent(getActivity(), QRScanTest.class);
-        /*
         Bundle bundle = new Bundle();
         bundle.putString("email", email);
+        bundle.putString("uscID", uscID);
         i.putExtras(bundle);
-        */
         startActivity(i);
     }
 

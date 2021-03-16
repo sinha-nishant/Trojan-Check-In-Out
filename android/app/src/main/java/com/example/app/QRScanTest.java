@@ -43,10 +43,17 @@ public class QRScanTest extends AppCompatActivity {
     private AlertDialog.Builder builder;
     private Result postScanResult;
 
+    private String email, id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_q_r_scan_test);
+
+        Bundle bundle = getIntent().getExtras();
+        email = bundle.getString("email");
+        id = bundle.getString("uscID");
+
         builder = new AlertDialog.Builder(this);
         final Observer<Boolean> checkOutObserver = new Observer<Boolean>(){
             @Override
@@ -250,6 +257,10 @@ public class QRScanTest extends AppCompatActivity {
 
     public void goToStudentProfile() {
         Intent i = new Intent(this, StudentProfile.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("email", email);
+        bundle.putString("uscID", id);
+        i.putExtras(bundle);
         startActivity(i);
     }
 }
