@@ -668,6 +668,36 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                 });
     }
 
+    //updated params and added callback
+    public static void updatePhoto(String email, MutableLiveData<Boolean> success) {
+        FirestoreConnector.getDB().collection("Accounts").whereEqualTo("email", email).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                            for (QueryDocumentSnapshot qds : task.getResult()) {
+                                FirestoreConnector.getDB().collection("Accounts")
+                                        .document(qds.getId())
+                                        .update("profilePicture", CreateAccount.AWSLink(email))
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Log.d("UPDATE", "Updated Photo");
+
+                                                    //Arjun added callback
+                                                    success.setValue(true);
+                                                } else {
+                                                    success.setValue(false);
+                                                }
+                                            }
+                                        });
+                            }
+                        }
+                    }
+                });
+    }
+
     //Search
     public static void search(Long uscID,MutableLiveData<StudentAccount> student) {
         FirestoreConnector.getDB().collection("Accounts").whereEqualTo("uscID", uscID).get()
