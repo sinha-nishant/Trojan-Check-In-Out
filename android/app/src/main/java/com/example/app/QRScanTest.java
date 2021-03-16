@@ -250,7 +250,6 @@ public class QRScanTest extends AppCompatActivity {
     }
 
     public void goToStudentProfile() {
-        //What unique identifier will be used to draw up profile page? Email?
         Intent i = new Intent(this, StudentProfile.class);
         startActivity(i);
     }
