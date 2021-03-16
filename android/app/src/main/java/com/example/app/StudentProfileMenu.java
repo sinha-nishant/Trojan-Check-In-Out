@@ -104,7 +104,7 @@ public class StudentProfileMenu extends Fragment {
         btnHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openStudentHistory(email);
+                openStudentHistory(email,uscID);
             }
         });
 
@@ -140,10 +140,11 @@ public class StudentProfileMenu extends Fragment {
         startActivity(i);
     }
 
-    public void openStudentHistory(String email) {
+    public void openStudentHistory(String email,String id) {
         Intent i = new Intent(getActivity(), StudentHistory.class);
         Bundle bundle = new Bundle();
         bundle.putString("email", email);
+        bundle.putString("uscID",id);
         i.putExtras(bundle);
         startActivity(i);
     }
