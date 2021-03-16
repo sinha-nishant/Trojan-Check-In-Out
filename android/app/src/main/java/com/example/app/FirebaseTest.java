@@ -224,7 +224,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
 
 
     //Arjun added another checkout function to deal with student account delete
-    public static void checkOut(Long uscID, StudentActivity sa, Date checkOutTime, MutableLiveData<Integer> success, String email) {
+    public static void checkOut(Long uscID, StudentActivity sa, Date checkOutTime, MutableLiveData<Integer> success, String email,Boolean isDelete) {
         FirestoreConnector.getDB().collection("Accounts")
                 .whereEqualTo("uscID", uscID)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -263,7 +263,13 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                                                                         Log.d("CHECKOUT", "checked out successfully!");
 
                                                                         //Arjun added callback
-                                                                        FirebaseTest.deleteAccount(email, success);
+                                                                        if(isDelete){
+                                                                            FirebaseTest.deleteAccount(email, success);
+                                                                        }
+                                                                        else{
+                                                                            success.setValue(2);
+                                                                        }
+
                                                                     } else {
                                                                         //Arjun added callback
                                                                         success.setValue(0);

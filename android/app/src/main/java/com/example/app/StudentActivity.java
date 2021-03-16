@@ -43,4 +43,9 @@ public class StudentActivity {
     public void setBuildingName(String buildingName) {
         this.buildingName = buildingName;
     }
+
+    public String toString()
+    {
+        return this.buildingName + " (" + this.checkInTime.toString() + " - " + this.checkOutTime.toString() + ")";
+    }
 }

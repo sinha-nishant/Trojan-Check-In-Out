@@ -40,6 +40,7 @@ public class JohnTest extends AppCompatActivity {
     }
     public void openLogIn() {
         Intent i = new Intent(this, LogInPage.class);
+        //Intent i = new Intent(this, StudentHistory.class);
         startActivity(i);
     }
 }
