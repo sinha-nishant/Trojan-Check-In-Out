@@ -43,7 +43,7 @@ public class CreateAccount {
 
         String picUrl=AWSLink(email);
         String hashedPw = BCrypt.withDefaults().hashToString(12, pw.toCharArray());
-        Account a = new StudentAccount(firstName,lastName,email,hashedPw,picUrl,true);
+        Account a = new Account(firstName,lastName,email,hashedPw,picUrl,true);
         FirebaseTest.checkEmailExists(email,success,a,url,true);
 
     }

@@ -543,7 +543,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                 if (task.isSuccessful()) {
                     Log.d("CREATE", "Account Added to DB");
 //                    Log.d("CREATE", a.toString());
-                    if(a.getIsManager()==false){
+                    if(a.getIsManager()==true){
                         Log.d("CREATE", a.toString());
                     }
                     else{
@@ -568,8 +568,9 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                     Log.d("CREATE", "Account Added to DB");
 
                     uploadPhoto.upload(stream, a.getEmail());
-                    if(a.getIsManager()==false){
+                    if(a.getIsManager()==true){
                         Log.d("CREATE", a.toString());
+                        Log.d("CREATE", "Manager acc");
                     }
                     else{
                         Log.d("CREATE", ((StudentAccount)a).toString());
