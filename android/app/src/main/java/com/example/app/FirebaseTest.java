@@ -699,7 +699,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                 });
     }
 
-    //Search
+    //Search for account using uscID
     public static void search(Long uscID,MutableLiveData<StudentAccount> student) {
         FirestoreConnector.getDB().collection("Accounts").whereEqualTo("uscID", uscID).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -716,6 +716,28 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                         else if (task.getResult().isEmpty()) {
                             Log.d("ACCOUNT", "NOT FOUND");
                         }
+                    }
+                });
+    }
+
+    //search for account using email
+    public void search(String email) {
+        FirestoreConnector.getDB().collection("Accounts").whereEqualTo("email", email).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                            DocumentSnapshot ds = task.getResult().getDocuments().get(0);
+                            StudentAccount account = (StudentAccount) ds.toObject(StudentAccount.class);
+                            account.setUscID((Long) ds.get("uscID"));
+                            Log.d("ACCOUNT", account.toString());
+                            //if needed check out AngadTest class for implementation details
+                        }
+                        //Account not found
+                        else if (task.getResult().isEmpty()) {
+                            Log.d("ACCOUNT", "NOT FOUND");
+                        }
+
                     }
                 });
     }
