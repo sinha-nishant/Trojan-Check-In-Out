@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.Query;
@@ -33,6 +34,8 @@ public class AngadTest extends AppCompatActivity implements FirestoreConnector {
     String profilePicture;
     boolean isManager;
     long uscID;
+    String major;
+    Boolean type;
 
 
     EditText passwordInput;
@@ -40,6 +43,29 @@ public class AngadTest extends AppCompatActivity implements FirestoreConnector {
     public TextView layItOut;
 
     Button submitButton;
+
+    public static void createAccount(Account a, MutableLiveData<Integer> create_success) {
+        FirestoreConnector.getDB().collection("Accounts").add(a).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+                if (task.isSuccessful()) {
+                    Log.d("CREATE", "Account Added to DB");
+//                    Log.d("CREATE", a.toString());
+                    if(a.getIsManager()==false){
+                        Log.d("CREATE", a.toString());
+                    }
+                    else{
+                        Log.d("CREATE", ((StudentAccount)a).toString());
+                    }
+                    create_success.setValue(3);
+
+                } else {
+                    Log.d("Err", "failed to set up");
+                    create_success.setValue(1);
+                }
+            }
+        });
+    }
 
 
 
@@ -97,8 +123,8 @@ public class AngadTest extends AppCompatActivity implements FirestoreConnector {
 
     }
 
-    public void search(Long uscID) {
-        FirestoreConnector.getDB().collection("Accounts").whereEqualTo("uscID", uscID).get()
+    public void search(String email) {
+        FirestoreConnector.getDB().collection("Accounts").whereEqualTo("email", email).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -185,14 +211,18 @@ public class AngadTest extends AppCompatActivity implements FirestoreConnector {
         uscIDInput = (EditText) findViewById(R.id.uscIDInput);
         layItOut = (TextView) findViewById(R.id.TextMulti);
 
+
         submitButton = (Button) findViewById(R.id.changeMajor);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 password = passwordInput.getText().toString();
-                uscID = Long.parseLong(uscIDInput.getText().toString());
+                email = uscIDInput.getText().toString();
                // checkIn(uscID,new StudentActivity("Sood's building",new Date(),null));
-                search(uscID);
+                search(email);
+                //StudentAccount std = new StudentAccount("firstName", "lastName", "email", "password",
+                        //password, uscID, "major", false);
+                //createAccount(std,new MutableLiveData<Integer>());
 
 
             }

@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amplifyframework.AmplifyException;
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
@@ -92,6 +93,7 @@ public class StudentProfileFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         //TO BACKEND: use str_email to make your database call, and fill in these fields:
+        Log.i("Views","in onCreated");
         AmplifyInit();
 
 
@@ -112,7 +114,9 @@ public class StudentProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Log.i("Views","in onCreatedView");
         return inflater.inflate(R.layout.fragment_student_profile, container, false);
+
     }
 
     @Override
@@ -130,6 +134,15 @@ public class StudentProfileFragment extends Fragment {
 
         name = (TextView)(getView().findViewById(R.id.textView15));
         name.setText("Major: " + str_major);
+
+
+        img= (ImageView)(getView().findViewById(R.id.imageView2));
+        if(profilepic!=null){
+            Glide.with(getActivity()).load(profilepic.toString()).diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true).into(img);
+        }
+
+        Log.i("Views","in onViewCreated");
     }
 
 

@@ -80,6 +80,20 @@ public class LogInPage extends AppCompatActivity {
 
     }
 
+    public void openProfileManager() {
+        Intent i = new Intent(this, ManagerSearch.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("email", email);
+//        if(id!=null){
+//            bundle.putString("uscID", id.toString());
+//        }
+        i.putExtras(bundle);
+        startActivity(i);
+
+
+
+    }
+
     public static void setId(Long uscid){
         id=uscid;
     }
@@ -101,7 +115,13 @@ public class LogInPage extends AppCompatActivity {
                         //change to different page
                         if(success!=null){
                             if(success.getValue()==true){
-                                openProfileStudent();
+                                if(id==0){
+                                    openProfileManager();
+                                }
+                                else{
+                                    openProfileStudent();
+                                }
+
                                 //need to check between accounts
                             }
 
