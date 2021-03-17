@@ -15,7 +15,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -53,37 +52,18 @@ public class QRScanTest extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         email = bundle.getString("email");
         id = bundle.getString("uscID");
-
+        loadingCircle = findViewById(R.id.progresBar);
+        loadingCircle.setVisibility(View.INVISIBLE);
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs",MODE_PRIVATE);
+        Long retrieveID = sharedPreferences.getLong("uscid",0L);
         builder = new AlertDialog.Builder(this);
         final Observer<Boolean> checkOutObserver = new Observer<Boolean>(){
             @Override
             public void onChanged(@Nullable final Boolean success){
                 if(success){ //student is checked in  display checkin message
-                    builder.setTitle("Check Out Success")
-                            .setMessage("You are now checked out!")
-                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // do whatever reflects wireframe the best(such as switching pages
-                                    goToStudentProfile();
-                                }
-                            });
-                    checkInOutMessage=builder.create();
-                    //stop loading bar
-                    checkInOutMessage.show();
+                    setBuilder("Check Out Success", "You are now checked out!");
                 }else { //wasn't able to check in student
-                    builder.setTitle("Check Out Failure")
-                            .setMessage("Something went wrong with our database. Please try again later.")
-                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // do whatever reflects wireframe the best(such as switching pages
-                                    goToStudentProfile();
-                                }
-                            });
-                    checkInOutMessage=builder.create();
-                    //stop loading bar
-                    checkInOutMessage.show();
+                    setBuilder("Check Out Failure", "Something went wrong with our database. Please try again later.");
                 }
 
             }
@@ -93,31 +73,9 @@ public class QRScanTest extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable final Boolean success){
                 if(success){ //student is checked in  display checkin message
-                    builder.setTitle("Check In Success")
-                            .setMessage("You are now checked in! Don't forget to check out once you leave the building.")
-                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // do whatever reflects wireframe the best(such as switching pages
-                                    goToStudentProfile();
-                                }
-                            });
-                    checkInOutMessage=builder.create();
-                    //stop loading bar
-                    checkInOutMessage.show();
+                    setBuilder("Check In Success", "You are now checked in! Don't forget to check out once you leave the building.");
                 }else { //wasn't able to check in student
-                    builder.setTitle("Check In Failure")
-                            .setMessage("Something went wrong with our database. Please try again later.")
-                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // do whatever reflects wireframe the best(such as switching pages
-                                    goToStudentProfile();
-                                }
-                            });
-                    checkInOutMessage=builder.create();
-                    //stop loading bar
-                    checkInOutMessage.show();
+                    setBuilder("Check In Failure","Something went wrong with our database. Please try again later.");
                 }
 
             }
@@ -127,24 +85,9 @@ public class QRScanTest extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable final Building scannedBuilding){
                 if(scannedBuilding.getOccupancy()<scannedBuilding.getCapacity()){ //if not null and scanned building occupancy isn't full then checkin and display checkin message
-                    Date checkindate = new Date();
-                    SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs",MODE_PRIVATE);
-                    Long retrieveID = sharedPreferences.getLong("uscid",0L);
-                    StudentActivity sa = new StudentActivity(postScanResult.getText().toString(),checkindate,null );
-                    FirebaseTest.checkIn(retrieveID,sa,checkInMLD);
+                    CheckInOut.checkIn(checkInMLD,postScanResult.getText().toString(),retrieveID);
                 }else { //if not null and scanned building full then just display capacity full message with the capacity
-                    builder.setTitle("Check In Failure")
-                            .setMessage("The building has reached its full capacity of "+scannedBuilding.getCapacity().toString()+" students.")
-                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // do whatever reflects wireframe the best(such as switching pages
-                                    goToStudentProfile();
-                                }
-                            });
-                    checkInOutMessage=builder.create();
-                    //stop loading bar
-                    checkInOutMessage.show();
+                   setBuilder("Check In Failure","The building has reached its full capacity of "+scannedBuilding.getCapacity().toString()+" students.");
                 }
 
             }
@@ -163,25 +106,10 @@ public class QRScanTest extends AppCompatActivity {
                      StudentActivity  sa = sa_list.get(sa_list.size()-1);
                      if(sa.getCheckOutTime()==null && sa.getBuildingName().equals(postScanResult.getText().toString())){ //if null and scans same building then checkout student and display checkout success
                          //call checkout from checkout services or can call firebasecheckout directly
-                         Date checkOutDate = new Date();
-                         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs",MODE_PRIVATE);
-                         Long retrieveID = sharedPreferences.getLong("uscid",0L);
-                         FirebaseTest.checkOut(retrieveID,sa,checkOutDate,checkOutMLD);
-
+                         CheckInOut.checkOut(checkOutMLD,sa,retrieveID);
                      }else if(sa.getCheckOutTime()==null && !sa.getBuildingName().equals(postScanResult.getText().toString()) ){ //if null and scans a different building then direct to check out of last building
                          //set values(such as message, and button to redirect if necessary) of alert dialog and show it to user
-                         builder.setTitle("Check In Failure")
-                                 .setMessage("Please check out of "+ sa.getBuildingName()+" before checking in again.")
-                                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                     @Override
-                                     public void onClick(DialogInterface dialog, int which) {
-                                         // do whatever reflects wireframe the best(such as switching pages
-                                         goToStudentProfile();
-                                     }
-                                 });
-                         checkInOutMessage=builder.create();
-                         //stop loading bar
-                         checkInOutMessage.show();
+                         setBuilder("Check In Failure","Please check out of "+ sa.getBuildingName()+" before checking in again.");
                      }else if(sa.getCheckOutTime()!=null){
                          //would have to call getbuilding and send another callback
                          FirebaseTest.getBuilding(postScanResult.getText().toString(),buildingMLD);
@@ -201,17 +129,15 @@ public class QRScanTest extends AppCompatActivity {
         mCodeScanner.setAutoFocusEnabled(true);
         mCodeScanner.setTouchFocusEnabled(true);
         mCodeScanner.setDecodeCallback(new DecodeCallback() {
-
             @Override
             public void onDecoded(@NonNull final Result result) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         //Long uscID, StudentActivity sa, MutableLiveData<Boolean> success
-                        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs",MODE_PRIVATE);
-                        Long retrieve_id = sharedPreferences.getLong("uscid",0L);
+                        loadingCircle.setVisibility(View.VISIBLE);
                         postScanResult=result;
-                         FirebaseTest.search(retrieve_id, studentMLD);
+                         FirebaseTest.search(retrieveID, studentMLD);
                     }
                 });
             }
@@ -252,6 +178,22 @@ public class QRScanTest extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         mCodeScanner.startPreview();
+    }
+
+    public void setBuilder(String title, String message){
+        loadingCircle.setVisibility(View.GONE);
+        builder.setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do whatever reflects wireframe the best(such as switching pages
+                        goToStudentProfile();
+                    }
+                });
+        checkInOutMessage=builder.create();
+        //stop loading bar
+        checkInOutMessage.show();
     }
 
     public void goToStudentProfile() {
