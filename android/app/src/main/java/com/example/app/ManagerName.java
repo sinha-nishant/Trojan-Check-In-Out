@@ -265,10 +265,23 @@ public class ManagerName extends AppCompatActivity {
                     public void onClick(DialogInterface dialog,
                                         int which)
                     {
-//                        openProfile();
+                        if(create_success.getValue()>=3){
+                            openProfile();
+                        }
+
                     }
                 });
         alertDialog = builder.create();
+    }
+
+
+    public void openProfile() {
+        //What unique identifier will be used to draw up profile page? Email?
+        Intent i = new Intent(this, ManagerSearch.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("email", email);
+        i.putExtras(bundle);
+        startActivity(i);
     }
 
 
