@@ -126,11 +126,10 @@ public class QRScanTest extends AppCompatActivity {
         final Observer<Building> buildingObserver = new Observer<Building>(){
             @Override
             public void onChanged(@Nullable final Building scannedBuilding){
-
                 if(scannedBuilding.getOccupancy()<scannedBuilding.getCapacity()){ //if not null and scanned building occupancy isn't full then checkin and display checkin message
                     Date checkindate = new Date();
-                    SharedPreferences sharedPreferences = getSharedPreferences(HassibTest.shared_pref,MODE_PRIVATE);
-                    Long retrieveID = sharedPreferences.getLong(HassibTest.idEntry,0L);
+                    SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs",MODE_PRIVATE);
+                    Long retrieveID = sharedPreferences.getLong("uscid",0L);
                     StudentActivity sa = new StudentActivity(postScanResult.getText().toString(),checkindate,null );
                     FirebaseTest.checkIn(retrieveID,sa,checkInMLD);
                 }else { //if not null and scanned building full then just display capacity full message with the capacity
@@ -165,8 +164,8 @@ public class QRScanTest extends AppCompatActivity {
                      if(sa.getCheckOutTime()==null && sa.getBuildingName().equals(postScanResult.getText().toString())){ //if null and scans same building then checkout student and display checkout success
                          //call checkout from checkout services or can call firebasecheckout directly
                          Date checkOutDate = new Date();
-                         SharedPreferences sharedPreferences = getSharedPreferences(HassibTest.shared_pref,MODE_PRIVATE);
-                         Long retrieveID = sharedPreferences.getLong(HassibTest.idEntry,0L);
+                         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs",MODE_PRIVATE);
+                         Long retrieveID = sharedPreferences.getLong("uscid",0L);
                          FirebaseTest.checkOut(retrieveID,sa,checkOutDate,checkOutMLD);
 
                      }else if(sa.getCheckOutTime()==null && !sa.getBuildingName().equals(postScanResult.getText().toString()) ){ //if null and scans a different building then direct to check out of last building
@@ -209,8 +208,8 @@ public class QRScanTest extends AppCompatActivity {
                     @Override
                     public void run() {
                         //Long uscID, StudentActivity sa, MutableLiveData<Boolean> success
-                        SharedPreferences sharedPreferences = getSharedPreferences(HassibTest.shared_pref,MODE_PRIVATE);
-                        Long retrieve_id = sharedPreferences.getLong(HassibTest.idEntry,0L);
+                        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs",MODE_PRIVATE);
+                        Long retrieve_id = sharedPreferences.getLong("uscid",0L);
                         postScanResult=result;
                          FirebaseTest.search(retrieve_id, studentMLD);
                     }

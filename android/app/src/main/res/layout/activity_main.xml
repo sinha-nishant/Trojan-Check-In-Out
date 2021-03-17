@@ -59,7 +59,7 @@
         android:id="@+id/button4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="changeHassib2"
+        android:onClick="changeHassib"
         android:text="@string/HR"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
