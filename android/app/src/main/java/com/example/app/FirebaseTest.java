@@ -145,7 +145,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                                     if (!task.getResult().isEmpty()) {
                                         Map<String, Object> updates = new HashMap<>();
                                         updates.put("occupancy", FieldValue.increment(1));
-                                        updates.put("students", FieldValue.arrayUnion(uscID));
+                                        updates.put("students_ids", FieldValue.arrayUnion(uscID));
                                         for (QueryDocumentSnapshot document : task.getResult()) {
                                             buildings.document(document.getId())
                                                     .update(updates);
