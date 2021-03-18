@@ -64,21 +64,21 @@ private MutableLiveData<Boolean> login_success = new MutableLiveData<>();
 
         setContentView(R.layout.activity_hassib_test);
 //        LoadData();
-        AmplifyInit();
-        MutableLiveData<ArrayList<Building>> buildingMLD = new  MutableLiveData<>();
-        final Observer<ArrayList<Building>> buildingObserver = new Observer<ArrayList<Building>>(){
-            @Override
-            public void onChanged(@Nullable final ArrayList<Building> allBuildings){
-               for(int i =0;i<allBuildings.size();i++){
-                   Bitmap bitmap = QRGeneration.GetBitMap( allBuildings.get(i).getName());
-                   InputStream iS = QRGeneration.BitMapToInputStream(bitmap);
-                   uploadPhoto.upload(iS, allBuildings.get(i).getName().replaceAll("\\s", ""));
-               }
-
-            }
-        };
-        buildingMLD.observe(this, buildingObserver);
-        FirebaseTest.getAllBuildings(buildingMLD);
+//        AmplifyInit();
+//        MutableLiveData<ArrayList<Building>> buildingMLD = new  MutableLiveData<>();
+//        final Observer<ArrayList<Building>> buildingObserver = new Observer<ArrayList<Building>>(){
+//            @Override
+//            public void onChanged(@Nullable final ArrayList<Building> allBuildings){
+//               for(int i =0;i<allBuildings.size();i++){
+//                   Bitmap bitmap = QRGeneration.GetBitMap( allBuildings.get(i).getName());
+//                   InputStream iS = QRGeneration.BitMapToInputStream(bitmap);
+//                   uploadPhoto.upload(iS, allBuildings.get(i).getName().replaceAll("\\s", ""));
+//               }
+//
+//            }
+//        };
+//        buildingMLD.observe(this, buildingObserver);
+//        FirebaseTest.getAllBuildings(buildingMLD);
         eEmail = findViewById(R.id.etEmail);
         ePassword = findViewById(R.id.etPassword);
         eLogin = findViewById(R.id.btnLogin);

@@ -3,6 +3,7 @@ package com.example.app;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -77,8 +78,9 @@ public class StudentProfileMenu extends Fragment {
         DialogInit();
         MutableStudent();
         MutableBoolean();
-
-        FirebaseTest.search(Long.valueOf(uscID),student);
+        SharedPreferences sp=  getContext().getSharedPreferences("sharedPrefs",getActivity().MODE_PRIVATE);
+        Long id = sp.getLong("uscid",0L);
+        FirebaseTest.search(id,student);
     }
 
     @Override
