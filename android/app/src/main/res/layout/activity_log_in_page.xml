@@ -45,8 +45,10 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextPasswordLogin"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="167dp" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextEmailLogin" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

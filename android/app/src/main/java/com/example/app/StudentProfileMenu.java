@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -43,6 +44,7 @@ public class StudentProfileMenu extends Fragment {
     Button btnQR, btnHistory, btnSignOut, btnDelete;
     String email;
     String uscID;
+    private ProgressBar pb;
 
     public StudentProfileMenu() {
         // Required empty public constructor
@@ -74,6 +76,8 @@ public class StudentProfileMenu extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        pb= (ProgressBar) getActivity().findViewById(R.id.progressBar6);
+        pb.setVisibility(View.GONE);
 
         DialogInit();
         MutableStudent();
@@ -115,7 +119,9 @@ public class StudentProfileMenu extends Fragment {
             @Override
             public void onClick(View v) {
                 //DO BACKEND WORK
+                pb.setVisibility(View.VISIBLE);
                 LogInOut.LogOut(getContext());
+                pb.setVisibility(View.GONE);
                 openHomePage();
             }
         });
@@ -126,6 +132,7 @@ public class StudentProfileMenu extends Fragment {
             public void onClick(View v) {
                 //DO BACKEND WORK TO DELETE ACCOUNT
                 //Ask User to confirm
+                pb.setVisibility(View.VISIBLE);
                 StudentAccount sa= student.getValue();
                 sa.delete(delete_success);
 //                openHomePage();
@@ -214,9 +221,11 @@ public class StudentProfileMenu extends Fragment {
                     alertDialog.show();
                 }
                 else{
+                    pb.setVisibility(View.GONE);
                     alertDialog.setMessage("Successful in deleting your account");
                     alertDialog.show();
                     LogInOut.LogOut(getContext());
+
                 }
 
             }

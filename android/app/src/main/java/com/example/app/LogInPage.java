@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import javax.annotation.Nullable;
 
-public class LogInPage extends AppCompatActivity {
+public class  LogInPage extends AppCompatActivity {
 
     String email, password;
     EditText emailInput;
@@ -42,6 +42,7 @@ public class LogInPage extends AppCompatActivity {
         submitLoginButton = (Button) findViewById(R.id.btnLogin2);
 
         studentProgress = (ProgressBar)findViewById(R.id.progressBar2);
+        studentProgress.setVisibility(View.GONE);
 
         DialogInit();
         MutableInit();
@@ -52,6 +53,7 @@ public class LogInPage extends AppCompatActivity {
             public void onClick(View v) {
                 email = emailInput.getText().toString();
                 password = passwordInput.getText().toString();
+                studentProgress.setVisibility(View.VISIBLE);
                 LogInOut.LogIn(email,password,success);
 
                 //BACKEND: IF THIS EMAIL IS A STUDENT ACCOUNT,
@@ -138,7 +140,7 @@ public class LogInPage extends AppCompatActivity {
             public void onChanged(@Nullable final Boolean b){
 
                 if(b){
-
+                    studentProgress.setVisibility(View.GONE);
                     LogInOut.SaveData(LogInPage.this,email,id);
 
                     studentProgress.setVisibility(View.GONE);

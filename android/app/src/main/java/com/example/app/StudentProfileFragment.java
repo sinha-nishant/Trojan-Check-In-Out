@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +44,7 @@ public class StudentProfileFragment extends Fragment {
     private TextView name;
     private Uri profilepic;
     private AlertDialog alertDialog;
+    private ProgressBar pb;
     ImageView img;
     Button uploadButton;
     MutableLiveData<StudentAccount> student= new MutableLiveData<>();
@@ -96,7 +98,8 @@ public class StudentProfileFragment extends Fragment {
         //TO BACKEND: use str_email to make your database call, and fill in these fields:
         Log.i("Views","in onCreated");
         AmplifyInit();
-
+        pb= (ProgressBar) getActivity().findViewById(R.id.progressBar6);
+//        pb.setVisibility(View.GONE);
 
         MutableStudent();
 
@@ -106,7 +109,9 @@ public class StudentProfileFragment extends Fragment {
         MutableFirebase();
         SharedPreferences sp=  getContext().getSharedPreferences("sharedPrefs",getActivity().MODE_PRIVATE);
         Long id = sp.getLong("uscid",0L);
-
+        //keep shared pref access here
+//        pb= (ProgressBar) getActivity().findViewById(R.id.progressBar6);
+//        pb.setVisibility(View.GONE);
         FirebaseTest.search(id,student);
 
 
@@ -213,6 +218,7 @@ public class StudentProfileFragment extends Fragment {
                     else{
                         Log.i("photo","mutable null");
                     }
+                    pb.setVisibility(View.VISIBLE);
                     uploadPhoto.upload(exampleInputStream,str_email,upload_success);
 
 
@@ -285,13 +291,16 @@ public class StudentProfileFragment extends Fragment {
                         Glide.with(getActivity()).load(profilepic.toString()).diskCacheStrategy(DiskCacheStrategy.NONE)
                                 .skipMemoryCache(true).into(img);
                         Log.d("URI",profilepic.toString());
+                        pb.setVisibility(View.GONE);
 
                     }
                     uploadButton=(Button)(getView().findViewById(R.id.SelectImg));
                     uploadButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+
                             imageChooser();
+
                         }
                     });
                 }
@@ -344,6 +353,7 @@ public class StudentProfileFragment extends Fragment {
                     img= (ImageView)(getView().findViewById(R.id.imageView2));
                     Glide.with(getActivity()).load(profilepic.toString()).diskCacheStrategy(DiskCacheStrategy.NONE)
                             .skipMemoryCache(true).into(img);
+                    pb.setVisibility(View.GONE);
                     alertDialog.setMessage("updated image successfully");
                     alertDialog.show();
                 }

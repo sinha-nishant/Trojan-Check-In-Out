@@ -53,6 +53,7 @@ public class ManagerName extends AppCompatActivity {
         firstNameInput = (EditText) findViewById(R.id.managerFirstName);
         lastNameInput = (EditText) findViewById(R.id.managerLastName);
         studentProgress= (ProgressBar)findViewById(R.id.progressBar5);
+        studentProgress.setVisibility(View.GONE);
 
         //Get the bundle
         Bundle bundle = getIntent().getExtras();
@@ -115,6 +116,7 @@ public class ManagerName extends AppCompatActivity {
                     showToast("First or last name is blank");
                     return;
                 }
+                studentProgress.setVisibility(View.VISIBLE);
                 submit();
 
             }

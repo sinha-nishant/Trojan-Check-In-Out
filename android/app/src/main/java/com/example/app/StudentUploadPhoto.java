@@ -53,6 +53,7 @@ public class StudentUploadPhoto extends AppCompatActivity {
 
         uploadImage = (ImageView)findViewById(R.id.imageToUpload);
         studentProgress = (ProgressBar)findViewById(R.id.progressBarStudentPhoto);
+        studentProgress.setVisibility(View.GONE);
 
         DialogInit();
         MutableInit();
@@ -149,6 +150,7 @@ public class StudentUploadPhoto extends AppCompatActivity {
 
 
     public void submit(View v){
+        studentProgress.setVisibility(View.VISIBLE);
         if(ImageSet==false){
 //            CreateAccount.Create(fName, lName, email,password,false,create_success);
             CreateAccount.CreateStudent(fName,lName,email,password,Long.valueOf(id),major,create_success);
