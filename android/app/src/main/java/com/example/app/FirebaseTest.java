@@ -395,7 +395,6 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                         }
 
                         // call callback function
-                        b.setAccounts(students, buildingparam, circle);
                     }
 
                 }

@@ -11,6 +11,8 @@ import android.view.animation.Animation;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
@@ -25,7 +27,6 @@ public class Building {
     private Integer capacity;
     private Integer occupancy;
     private List<Long> students_ids;//list of uscId
-    private List<StudentAccount> students_accounts;//list of student accounts
     private String qrCodeURL;
 
     public Building(String building_name, Integer max_capacity, Integer current_occupancy,String image_location ,List<Long> students_in_building){
@@ -55,51 +56,29 @@ public class Building {
     public String getQrCodeURL(){
         return qrCodeURL;
     }
-    public List<StudentAccount> getStudents(EditText buildingparam, ProgressBar circle){
+    public List<StudentAccount> getStudents(){
 
-        if(!this.students_ids.isEmpty()){//if we have list of ids then extract students from firebase
-            Log.d("Inside getStudents", students_ids.toString());
-
-            FirebaseTest.getStudents(this,students_ids,buildingparam,circle);
-
-        }
-
-        Log.d("Returning from getStudents", students_ids.toString());
-        return this.students_accounts;
-    }
-    public List<StudentAccount> getStudents_accounts(){
-        return this.students_accounts;
+        return new ArrayList<StudentAccount>();
     }
     public List<Long> getStudents_ids(){
         return this.students_ids;
     }
     //setters
-    public  void setAccounts(List<StudentAccount> new_accounts, EditText buildingparam, ProgressBar circle_thing){
-        this.students_accounts=new_accounts;
-        buildingparam.setText(this.students_accounts.toString());
-        circle_thing.setVisibility(View.GONE);
-        circle_thing.stopNestedScroll();
 
-        Log.d("Inside SetAccount ", students_accounts.toString());
-
+    public void setName(String name){
+        this.name=name;
     }
-    public void setName(String new_name){
-        name=new_name;
+    public void setCapacity(Integer capacity){
+        this.capacity=capacity;
     }
-    public void setCapacity(Integer new_capacity){
-        capacity=new_capacity;
-    }
-    public void setOccupancy(Integer new_occ){
-        occupancy=new_occ;
+    public void setOccupancy(Integer occupancy){
+        this.occupancy=occupancy;
     }
     public void setQrCodeURL(String url){
         qrCodeURL=url;
     }
-    public void setStudents_ids(List<Long> students){
-        this.students_ids=students;
-    }
-    public void setStudents_accounts(List<StudentAccount> students){
-        this.students_accounts=students;
+    public void setStudents_ids(List<Long> students_ids){
+        this.students_ids=students_ids;
     }
 
 //    public boolean checkIn(StudentAccount student, Test callback){

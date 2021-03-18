@@ -48,11 +48,13 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
 
+
     // added
     implementation 'com.google.mlkit:barcode-scanning:16.1.1'
     implementation 'com.budiyev.android:code-scanner:2.1.0'
     implementation 'com.amplifyframework:aws-storage-s3:1.16.13'
     implementation 'com.amplifyframework:aws-auth-cognito:1.16.13'
+    implementation 'com.firebaseui:firebase-ui-firestore:7.1.1'
     //implementation 'com.android.support:design:26.1.0'
     // Amplify core dependency
     implementation 'com.amplifyframework:core:1.16.15'
