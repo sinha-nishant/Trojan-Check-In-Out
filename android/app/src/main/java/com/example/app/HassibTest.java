@@ -76,13 +76,14 @@ private FirestoreRecyclerAdapter firestoreRecyclerAdapter;
 
             @Override
             protected void onBindViewHolder(@NonNull BuildingViewHolder holder, int position, @NonNull Building model) {
-                String buildingText = "Building Name: "+model.getName();
-                String occupancyText = "Occupancy: "+model.getOccupancy();
-                String capacityText = "Capacity: "+model.getCapacity();
+                String buildingText = model.getName();
+                String occupancyText = "Occupancy: "+model.getOccupancy()+"/"+model.getCapacity();
+//                String capacityText = "Capacity: "+model.getCapacity();
                 holder.qrImage.setImageBitmap(QRGeneration.GetBitMap(model.getName().toString()));
+
                 holder.buildingName.setText(buildingText);
                 holder.occupancy.setText(occupancyText);
-                holder.capacity.setText(capacityText);
+//                holder.capacity.setText(capacityText);
 
             }
         };
@@ -117,13 +118,13 @@ private FirestoreRecyclerAdapter firestoreRecyclerAdapter;
         private ImageView qrImage;
         private TextView buildingName;
         private TextView occupancy;
-        private TextView capacity;
+//        private TextView capacity;
          public BuildingViewHolder(@NonNull View itemView) {
              super(itemView);
              qrImage=itemView.findViewById(R.id.qrImageView);
              buildingName = itemView.findViewById(R.id.buildingName);
              occupancy = itemView.findViewById(R.id.buildingOccupancy);
-             capacity = itemView.findViewById(R.id.buildingCapacity);
+//             capacity = itemView.findViewById(R.id.buildingCapacity);
 
          }
      }
