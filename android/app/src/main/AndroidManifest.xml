@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.App">
-        <activity android:name=".activity_manager_home_v2"></activity>
+        <activity android:name=".activity_manager_home"/>
         <activity android:name=".StudentHistory" />
         <activity android:name=".StudentProfile" />
         <activity android:name=".ManagerName" />
