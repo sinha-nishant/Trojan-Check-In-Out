@@ -48,7 +48,6 @@ public class QRScanTest extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_q_r_scan_test);
-
         Bundle bundle = getIntent().getExtras();
         email = bundle.getString("email");
         id = bundle.getString("uscID");
@@ -137,7 +136,7 @@ public class QRScanTest extends AppCompatActivity {
                         //Long uscID, StudentActivity sa, MutableLiveData<Boolean> success
                         loadingCircle.setVisibility(View.VISIBLE);
                         postScanResult=result;
-                         FirebaseTest.search(retrieveID, studentMLD);
+                        FirebaseTest.search(retrieveID, studentMLD);
                     }
                 });
             }

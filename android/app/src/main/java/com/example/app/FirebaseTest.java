@@ -348,7 +348,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
         });
     }
 
-    public static void getAllBuildings(ProgressBar circle) {
+    public static void getAllBuildings(MutableLiveData<ArrayList<Building>> buildingMLD) {
         FirestoreConnector.getDB().collection("Buildings").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -371,6 +371,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                     }
 
                     // callback function
+                    buildingMLD.setValue((ArrayList<Building>)buildings);
                 }
             }
         });

@@ -13,7 +13,6 @@ public class uploadPhoto {
 
     }
 
-
     public static void upload(InputStream uri,String email){
         Log.i("uploadPhoto","in upload photo");
         String key=email;

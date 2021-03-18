@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,10 +18,15 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.amplifyframework.AmplifyException;
+import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
+import com.amplifyframework.core.Amplify;
+import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Observable;
 
@@ -58,6 +64,21 @@ private MutableLiveData<Boolean> login_success = new MutableLiveData<>();
 
         setContentView(R.layout.activity_hassib_test);
 //        LoadData();
+        AmplifyInit();
+        MutableLiveData<ArrayList<Building>> buildingMLD = new  MutableLiveData<>();
+        final Observer<ArrayList<Building>> buildingObserver = new Observer<ArrayList<Building>>(){
+            @Override
+            public void onChanged(@Nullable final ArrayList<Building> allBuildings){
+               for(int i =0;i<allBuildings.size();i++){
+                   Bitmap bitmap = QRGeneration.GetBitMap( allBuildings.get(i).getName());
+                   InputStream iS = QRGeneration.BitMapToInputStream(bitmap);
+                   uploadPhoto.upload(iS, allBuildings.get(i).getName().replaceAll("\\s", ""));
+               }
+
+            }
+        };
+        buildingMLD.observe(this, buildingObserver);
+        FirebaseTest.getAllBuildings(buildingMLD);
         eEmail = findViewById(R.id.etEmail);
         ePassword = findViewById(R.id.etPassword);
         eLogin = findViewById(R.id.btnLogin);
@@ -139,6 +160,15 @@ private MutableLiveData<Boolean> login_success = new MutableLiveData<>();
         }
 
     }
+     public void AmplifyInit(){
+         try {
+             Amplify.addPlugin(new AWSCognitoAuthPlugin());
+             Amplify.addPlugin(new AWSS3StoragePlugin());
+             Amplify.configure(getApplicationContext());
+         } catch (AmplifyException e) {
+             Log.i("MyAmplifyApp", "could not add plugins ");
+         }
+     }
 
 
 }
