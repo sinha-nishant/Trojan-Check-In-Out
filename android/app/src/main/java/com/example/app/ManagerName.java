@@ -279,7 +279,7 @@ public class ManagerName extends AppCompatActivity {
 
     public void openProfile() {
         //What unique identifier will be used to draw up profile page? Email?
-        Intent i = new Intent(this, ManagerSearch.class);
+        Intent i = new Intent(this, activity_manager_home.class);
         Bundle bundle = new Bundle();
         bundle.putString("email", email);
         i.putExtras(bundle);
