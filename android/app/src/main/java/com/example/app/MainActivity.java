@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void changeMarkus(View v){
-        Intent i= new Intent(this,activity_manager_home_v2.class);
+        Intent i= new Intent(this,activity_manager_home.class);
         startActivity(i);
     }
 
