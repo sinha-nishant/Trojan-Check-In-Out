@@ -86,10 +86,10 @@ public class Building {
     public void setName(String new_name){
         name=new_name;
     }
-    public void setCapacity(int new_capacity){
+    public void setCapacity(Integer new_capacity){
         capacity=new_capacity;
     }
-    public void setOccupancy(int new_occ){
+    public void setOccupancy(Integer new_occ){
         occupancy=new_occ;
     }
     public void setQrCodeURL(String url){

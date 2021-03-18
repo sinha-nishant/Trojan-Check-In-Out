@@ -46,6 +46,9 @@ public class StudentActivity {
 
     public String toString()
     {
+        if(checkOutTime==null){
+            return this.buildingName + " (" + this.checkInTime.toString() + ")";
+        }
         return this.buildingName + " (" + this.checkInTime.toString() + " - " + this.checkOutTime.toString() + ")";
     }
 }

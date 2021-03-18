@@ -72,6 +72,7 @@ public class LogInPage extends AppCompatActivity {
         bundle.putString("email", email);
         if(id!=null){
             bundle.putString("uscID", id.toString());
+            Log.d("ID","working");
         }
         i.putExtras(bundle);
         startActivity(i);
