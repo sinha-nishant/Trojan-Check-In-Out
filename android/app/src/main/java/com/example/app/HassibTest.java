@@ -60,7 +60,7 @@ private FirestoreRecyclerAdapter firestoreRecyclerAdapter;
         mFirestoreData = findViewById(R.id.recyclerList);
 
         //Query
-        Query query = fireStore.collection("Buildings");
+        Query query = fireStore.collection("Buildings").orderBy("name");
 
 
 
@@ -77,33 +77,17 @@ private FirestoreRecyclerAdapter firestoreRecyclerAdapter;
             @Override
             protected void onBindViewHolder(@NonNull BuildingViewHolder holder, int position, @NonNull Building model) {
                 String buildingText = model.getName();
-                String occupancyText = "Occupancy: "+model.getOccupancy()+"/"+model.getCapacity();
-//                String capacityText = "Capacity: "+model.getCapacity();
+                String occupancyText = String.format("Occupancy: %d/%d", model.getOccupancy(), model.getCapacity());
                 holder.qrImage.setImageBitmap(QRGeneration.GetBitMap(model.getName().toString()));
-
                 holder.buildingName.setText(buildingText);
                 holder.occupancy.setText(occupancyText);
-                if (model.getOccupancy().equals(model.getCapacity())) {
-                    holder.occupancy.setTextColor(Color.RED);
-                }
-
-//                holder.capacity.setText(capacityText);
-
             }
         };
          mFirestoreData.setHasFixedSize(true);
          mFirestoreData.setLayoutManager(new LinearLayoutManager(this));
          mFirestoreData.setAdapter(firestoreRecyclerAdapter);
 
-
-
         //View Holder
-
-
-
-
-
-
     }
 
      @Override
@@ -128,8 +112,6 @@ private FirestoreRecyclerAdapter firestoreRecyclerAdapter;
              qrImage=itemView.findViewById(R.id.qrImageView);
              buildingName = itemView.findViewById(R.id.buildingName);
              occupancy = itemView.findViewById(R.id.buildingOccupancy);
-//             capacity = itemView.findViewById(R.id.buildingCapacity);
-
          }
      }
 //     public  void SaveData(){
