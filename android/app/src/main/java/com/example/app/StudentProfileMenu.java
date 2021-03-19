@@ -25,6 +25,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link StudentProfileMenu#newInstance} factory method to
@@ -38,11 +42,15 @@ public class StudentProfileMenu extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     MutableLiveData<StudentAccount> student= new MutableLiveData<>();
     MutableLiveData<Integer> delete_success= new MutableLiveData<>();
+    private MutableLiveData<StudentAccount> studentMLD = new MutableLiveData<>();
+    private MutableLiveData<Boolean> checkOutMLD = new MutableLiveData<>();
+
 
     AlertDialog alertDialog;
+    AlertDialog alertDialogCheckOut;
 
     // TODO: Rename and change types of parameters
-    Button btnQR, btnHistory, btnSignOut, btnDelete;
+    Button btnQR, btnHistory, btnSignOut, btnDelete,checkOutBtn;
     String email;
     String uscID;
     private ProgressBar pb;
@@ -79,10 +87,10 @@ public class StudentProfileMenu extends Fragment {
         super.onCreate(savedInstanceState);
         pb= (ProgressBar) getActivity().findViewById(R.id.progressBar6);
         pb.setVisibility(View.GONE);
-
         DialogInit();
         MutableStudent();
         MutableBoolean();
+        MutableCheck();
         SharedPreferences sp=  getContext().getSharedPreferences("sharedPrefs",getActivity().MODE_PRIVATE);
         Long id = sp.getLong("uscid",0L);
         FirebaseTest.search(id,student);
@@ -98,7 +106,13 @@ public class StudentProfileMenu extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        checkOutBtn =  (Button)getView().findViewById(R.id.button19);
+        checkOutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               manualCheckOut();
+            }
+        });
         btnQR = (Button)getView().findViewById(R.id.studentMenuQR);
         btnQR.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -205,6 +219,83 @@ public class StudentProfileMenu extends Fragment {
         };
         student.observe(this, obs);
     }
+    public void MutableCheck(){
+        final Observer<Boolean> checkOutObserver = new Observer<Boolean>(){
+            @Override
+            public void onChanged(@javax.annotation.Nullable final Boolean success){
+                if(success){ //student is checked in  display checkin message
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("Check Out Success")
+                            .setMessage( "You are now checked out!")
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            });
+                    alertDialogCheckOut=builder.create();
+                    //stop loading bar
+                    alertDialogCheckOut.show();
+                }else { //wasn't able to check in student
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("Check Out Failure")
+                            .setMessage( "Something went wrong with our database. Please try again later.")
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            });
+                    alertDialogCheckOut=builder.create();
+                    //stop loading bar
+                    alertDialogCheckOut.show();
+                }
+            }
+        };
+        checkOutMLD.observe(this, checkOutObserver);
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("sharedPrefs",MODE_PRIVATE);
+        Long retrieveID = sharedPreferences.getLong("uscid",0L);
+
+        final Observer<StudentAccount> studentAccountObserver = new Observer<StudentAccount>(){
+            @Override
+            public void onChanged(@javax.annotation.Nullable final StudentAccount student){
+                // check last index of studentactivity list
+                List<StudentActivity> sa_list = student.getActivity();
+                if(!sa_list.isEmpty()) {//no activity so check in if occupancy isn't full
+                    StudentActivity  sa = sa_list.get(sa_list.size()-1);
+                    if(sa.getCheckOutTime()==null && sa.getCheckInTime()!=null){//student can check out
+                        CheckInOut.checkOut(checkOutMLD,sa,retrieveID);
+                    }
+                    else{
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        builder.setTitle("Check Out Failure")
+                                .setMessage( "You are not checked into a building right now.")
+                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                });
+                        alertDialogCheckOut=builder.create();
+                        //stop loading bar
+                        alertDialogCheckOut.show();
+                    }
+                }else{
+                    //display alert saying you are not checked into building
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("Check Out Failure")
+                            .setMessage( "You are not checked into a building right now.")
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            });
+                    alertDialogCheckOut=builder.create();
+                    //stop loading bar
+                    alertDialogCheckOut.show();
+                }
+            }
+        };
+        studentMLD.observe(this,studentAccountObserver);
+    }
 
     public void MutableBoolean(){
         final Observer<Integer> obs2 = new Observer<Integer>(){
@@ -235,7 +326,14 @@ public class StudentProfileMenu extends Fragment {
         delete_success.observe(this, obs2);
     }
 
-    public void manualCheckOut(View v){
+    public void manualCheckOut(){
+        //only do checkout logic
+        //still get building and get student activity
+        //only check if the checkout time is null and perform checkout logic
+        //otherwise display alertdialog saying you aren't checked into building
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("sharedPrefs",MODE_PRIVATE);
+        Long retrieveID = sharedPreferences.getLong("uscid",0L);
+        FirebaseTest.search(retrieveID, studentMLD);
 
     }
 }
