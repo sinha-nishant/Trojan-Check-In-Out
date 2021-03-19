@@ -291,9 +291,10 @@ public class StudentProfileFragment extends Fragment {
                         Glide.with(getActivity()).load(profilepic.toString()).diskCacheStrategy(DiskCacheStrategy.NONE)
                                 .skipMemoryCache(true).into(img);
                         Log.d("URI",profilepic.toString());
-                        pb.setVisibility(View.GONE);
 
                     }
+                    pb.setVisibility(View.GONE);
+
                     uploadButton=(Button)(getView().findViewById(R.id.SelectImg));
                     uploadButton.setOnClickListener(new View.OnClickListener() {
                         @Override
