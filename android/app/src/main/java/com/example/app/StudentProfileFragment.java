@@ -109,9 +109,6 @@ public class StudentProfileFragment extends Fragment {
         MutableFirebase();
         SharedPreferences sp=  getContext().getSharedPreferences("sharedPrefs",getActivity().MODE_PRIVATE);
         Long id = sp.getLong("uscid",0L);
-        //keep shared pref access here
-//        pb= (ProgressBar) getActivity().findViewById(R.id.progressBar6);
-//        pb.setVisibility(View.GONE);
         FirebaseTest.search(id,student);
 
 

@@ -670,7 +670,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
     }
 
     //search for account using email
-    public void search(String email) {
+    public static void search(String email,MutableLiveData<Account> manager) {
         FirestoreConnector.getDB().collection("Accounts").whereEqualTo("email", email).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -680,10 +680,12 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                             Account account = (Account) ds.toObject(Account.class);
                             Log.d("ACCOUNT", account.toString());
                             //if needed check out AngadTest class for implementation details
+                            manager.setValue(account);
                         }
                         //Account not found
                         else if (task.getResult().isEmpty()) {
                             Log.d("ACCOUNT", "NOT FOUND");
+
                         }
 
                     }

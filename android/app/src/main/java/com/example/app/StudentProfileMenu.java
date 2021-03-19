@@ -38,6 +38,7 @@ public class StudentProfileMenu extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     MutableLiveData<StudentAccount> student= new MutableLiveData<>();
     MutableLiveData<Integer> delete_success= new MutableLiveData<>();
+
     AlertDialog alertDialog;
 
     // TODO: Rename and change types of parameters
