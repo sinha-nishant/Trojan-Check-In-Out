@@ -52,29 +52,6 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
 //       getBuildingsRealtime();
     }
 
-    public void getBuildingsRealtime(MutableLiveData<Building> buildingMLD) {
-        FirestoreConnector.getDB().collection("Buildings").addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (error != null) {
-                    Log.d("Building Update", "realtime failed");
-                } else {
-                    if (value != null && !value.isEmpty()) {
-                        Log.d("Building Update", "received update");
-                        DocumentChange dc = value.getDocumentChanges().get(0);
-                        String name = (String) dc.getDocument().get("name");
-                        String occupancy = String.valueOf(dc.getDocument().get("occupancy"));
-                        String capacity = String.valueOf(dc.getDocument().get("capacity"));
-                        textBox.setText(String.format("%s: %s, %s", name, occupancy,capacity));
-//                        buildingMLD.setValue(building);
-                    } else {
-                        Log.d("Building Update", "no realtime changes");
-                    }
-                }
-            }
-        });
-    }
-
     public static void checkUSCidExists(Long uscID, Account acc, MutableLiveData<Integer> success) {
         CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
         Query query = accounts.whereEqualTo("uscID", uscID);
@@ -343,35 +320,6 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                 // callback
                 else {
                     success.setValue(false);
-                }
-            }
-        });
-    }
-
-    public static void getAllBuildings(MutableLiveData<ArrayList<Building>> buildingMLD) {
-        FirestoreConnector.getDB().collection("Buildings").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                    List<Building> buildings = new ArrayList<>();
-                    for (QueryDocumentSnapshot qds : task.getResult()) {
-                        buildings.add((Building) qds.toObject(Building.class));
-                        List<Long> students = new ArrayList<>();
-                        if (((List<Long>) qds.get("students")) == null) {
-                            Log.d("BUILDING", "NULL " + qds.get("students"));
-                        } else {
-                            for (Long uscID : (List<Long>) qds.get("students")) {
-                                Log.d("BUILDING", "ITERATED");
-                                students.add(uscID);
-                            }
-                        }
-
-                        buildings.get(buildings.size() - 1).setStudents_ids(students);
-                        Log.d("BUILDING", buildings.get(buildings.size() - 1).toString());
-                    }
-
-                    // callback function
-                    buildingMLD.setValue((ArrayList<Building>)buildings);
                 }
             }
         });
@@ -729,8 +677,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful() && !task.getResult().isEmpty()) {
                             DocumentSnapshot ds = task.getResult().getDocuments().get(0);
-                            StudentAccount account = (StudentAccount) ds.toObject(StudentAccount.class);
-                            account.setUscID((Long) ds.get("uscID"));
+                            Account account = (Account) ds.toObject(Account.class);
                             Log.d("ACCOUNT", account.toString());
                             //if needed check out AngadTest class for implementation details
                         }

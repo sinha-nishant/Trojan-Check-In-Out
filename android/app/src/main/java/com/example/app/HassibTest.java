@@ -83,6 +83,10 @@ private FirestoreRecyclerAdapter firestoreRecyclerAdapter;
 
                 holder.buildingName.setText(buildingText);
                 holder.occupancy.setText(occupancyText);
+                if (model.getOccupancy().equals(model.getCapacity())) {
+                    holder.occupancy.setTextColor(Color.RED);
+                }
+
 //                holder.capacity.setText(capacityText);
 
             }
