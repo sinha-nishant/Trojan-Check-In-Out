@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -113,6 +114,11 @@ private FirestoreRecyclerAdapter firestoreRecyclerAdapter;
              buildingName = itemView.findViewById(R.id.buildingName);
              occupancy = itemView.findViewById(R.id.buildingOccupancy);
          }
+     }
+
+     public void openManagerProfile(View v){
+         Intent i = new Intent(this, ManagerProfile_v2.class);
+         startActivity(i);
      }
 //     public  void SaveData(){
 //         SharedPreferences sharedPreferences = getSharedPreferences(shared_pref,MODE_PRIVATE);

@@ -319,4 +319,10 @@ public class ManagerProfile_v2 extends AppCompatActivity {
         delete_success.observe(this, obs3);
     }
 
+
+    public void openBuildings(View v){
+        Intent i = new Intent(this, HassibTest.class);
+        startActivity(i);
+    }
+
 }

@@ -234,4 +234,8 @@ public class StudentProfileMenu extends Fragment {
         };
         delete_success.observe(this, obs2);
     }
+
+    public void manualCheckOut(View v){
+
+    }
 }

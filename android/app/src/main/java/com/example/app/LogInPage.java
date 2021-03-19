@@ -84,7 +84,7 @@ public class  LogInPage extends AppCompatActivity {
     }
 
     public void openProfileManager() {
-        Intent i = new Intent(this, activity_manager_home.class);
+        Intent i = new Intent(this, ManagerProfile_v2.class);
         Bundle bundle = new Bundle();
         bundle.putString("email", email);
 //        if(id!=null){
