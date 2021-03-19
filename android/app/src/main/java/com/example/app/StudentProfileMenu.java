@@ -44,7 +44,7 @@ public class StudentProfileMenu extends Fragment {
     MutableLiveData<Integer> delete_success= new MutableLiveData<>();
     private MutableLiveData<StudentAccount> studentMLD = new MutableLiveData<>();
     private MutableLiveData<Boolean> checkOutMLD = new MutableLiveData<>();
-
+    Boolean isDelete= false;
 
     AlertDialog alertDialog;
     AlertDialog alertDialogCheckOut;
@@ -148,8 +148,10 @@ public class StudentProfileMenu extends Fragment {
                 //DO BACKEND WORK TO DELETE ACCOUNT
                 //Ask User to confirm
                 pb.setVisibility(View.VISIBLE);
-                StudentAccount sa= student.getValue();
-                sa.delete(delete_success);
+                isDelete=true;
+                FirebaseTest.search(Long.valueOf(uscID),student);
+//                StudentAccount sa= student.getValue();
+//                sa.delete(delete_success);
 //                openHomePage();
             }
         });
@@ -212,6 +214,10 @@ public class StudentProfileMenu extends Fragment {
                 }
                 else{
                     Log.d("student","student found");
+                    if(isDelete==true){
+                        StudentAccount acc= student.getValue();
+                        sa.delete(delete_success);
+                    }
                 }
 
             }

@@ -233,7 +233,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                                                             DocumentReference building = task.getResult().getDocuments().get(0).getReference();
                                                             Map<String, Object> updates = new HashMap<>();
                                                             updates.put("occupancy", FieldValue.increment(-1));
-                                                            updates.put("students", FieldValue.arrayRemove(uscID));
+                                                            updates.put("students_ids", FieldValue.arrayRemove(uscID));
                                                             building.update(updates).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                 @Override
                                                                 public void onComplete(@NonNull Task<Void> task) {
