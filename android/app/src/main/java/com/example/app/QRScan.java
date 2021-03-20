@@ -29,7 +29,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-public class QRScanTest extends AppCompatActivity {
+public class QRScan extends AppCompatActivity {
     private CodeScanner mCodeScanner;
     private static final int RC_PERMISSION = 10;
     private boolean mPermissionGranted;

@@ -7,7 +7,6 @@ import androidx.lifecycle.Observer;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -84,7 +83,7 @@ public class  LogInPage extends AppCompatActivity {
     }
 
     public void openProfileManager() {
-        Intent i = new Intent(this, ManagerProfile_v2.class);
+        Intent i = new Intent(this, ManagerProfile.class);
         Bundle bundle = new Bundle();
         bundle.putString("email", email);
 //        if(id!=null){

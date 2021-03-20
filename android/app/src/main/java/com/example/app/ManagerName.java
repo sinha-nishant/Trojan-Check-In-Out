@@ -74,34 +74,6 @@ public class ManagerName extends AppCompatActivity {
             }
         });
 
-//        submitButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                fName = firstNameInput.getText().toString();
-//                lName = lastNameInput.getText().toString();
-//
-//                //used for popups to user
-//                //showToast(email);
-//                //showToast(password);
-//
-//
-//                profileButton.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        imageChooser();
-//                    }
-//                });
-//                if(fName.length() == 0 || lName.length() == 0)
-//                    showToast("First or last name is blank");
-//                else
-//                {
-//                    showToast(email);
-//                    //TODO Arjun: add data to S3
-//                    //TODO Markus: redirect to Manager Profile, sending email string in bundle
-//                }
-//            }
-//        });
-
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -279,7 +251,7 @@ public class ManagerName extends AppCompatActivity {
 
     public void openProfile() {
         //What unique identifier will be used to draw up profile page? Email?
-        Intent i = new Intent(this, ManagerProfile_v2.class);
+        Intent i = new Intent(this, ManagerProfile.class);
         Bundle bundle = new Bundle();
         bundle.putString("email", email);
         i.putExtras(bundle);

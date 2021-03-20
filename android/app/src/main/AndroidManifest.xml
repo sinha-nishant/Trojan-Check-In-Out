@@ -14,15 +14,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.App">
-        <activity android:name=".ManagerProfile_v2"></activity>
-        <activity android:name=".activity_manager_home" />
-        <activity android:name=".activity_manager_home_v2" />
+        <activity android:name=".ManagerProfile"></activity>
         <activity android:name=".StudentHistory" />
         <activity android:name=".StudentProfile" />
         <activity android:name=".ManagerName" />
         <activity android:name=".LogInPage" />
-        <activity android:name=".QRScanTest" />
-        <activity android:name=".ManagerHomeEdit" />
+        <activity android:name=".QRScan" />
         <activity android:name=".ManagerSearch" />
         <activity android:name=".StudentEnterID" />
         <activity android:name=".StudentUploadPhoto" />
@@ -30,19 +27,15 @@
         <activity android:name=".ManagerSignUpStart" />
         <activity android:name=".StudentSignUpStart" />
         <activity android:name=".SignUpPage" />
-        <activity android:name=".AngadTest" />
-        <activity android:name=".HassibTest" />
-        <activity android:name=".MarkusTest" />
-        <activity android:name=".JohnTest" />
-        <activity android:name=".FirebaseTest" />
-        <activity android:name=".CreateDummyAccount" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".BuildingsOccupancyList" />
+        <activity android:name=".StartPage" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".FirebaseTest" />
     </application>
 
 </manifest>

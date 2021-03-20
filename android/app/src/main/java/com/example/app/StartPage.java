@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class JohnTest extends AppCompatActivity {
+public class StartPage extends AppCompatActivity {
     private Button signupButton;
     private Button loginButton;
 

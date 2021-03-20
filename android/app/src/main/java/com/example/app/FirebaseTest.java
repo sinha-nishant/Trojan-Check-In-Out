@@ -669,6 +669,7 @@ public class FirebaseTest extends AppCompatActivity implements FirestoreConnecto
                 });
     }
 
+
     //search for account using email
     public static void search(String email,MutableLiveData<Account> manager) {
         FirestoreConnector.getDB().collection("Accounts").whereEqualTo("email", email).get()
