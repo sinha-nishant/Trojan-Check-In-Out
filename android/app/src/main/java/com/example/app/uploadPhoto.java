@@ -13,19 +13,19 @@ public class uploadPhoto {
 
     }
 
-    public static void upload(InputStream uri,String email){
+    public static void uploadCreate(InputStream uri,String email,MutableLiveData<Integer>success){
         Log.i("uploadPhoto","in upload photo");
         String key=email;
             Amplify.Storage.uploadInputStream(
             key,
             uri,
-            result -> Log.i("MyAmplifyApp", "Successfully uploaded: " + result.getKey()),
-            storageFailure -> Log.e("MyAmplifyApp", "Upload failed", storageFailure)
+            result -> success.setValue(4),
+            storageFailure -> success.setValue(3)
         );
 
     }
 
-    public static void upload(InputStream uri, String email, MutableLiveData<Boolean> success){
+    public static void uploadUpdate(InputStream uri, String email, MutableLiveData<Boolean> success){
         Log.i("uploadPhoto","in upload photo");
         String key=email;
         Amplify.Storage.uploadInputStream(

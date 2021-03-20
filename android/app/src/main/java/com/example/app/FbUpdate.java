@@ -78,7 +78,7 @@ public class FbUpdate  implements FirestoreConnector{
                 if (task.isSuccessful()) {
                     Log.d("CREATE", "Account Added to DB");
 
-                    uploadPhoto.upload(stream, a.getEmail());
+                    uploadPhoto.uploadCreate(stream, a.getEmail(),success);
                     if(a.getIsManager()==true){
                         Log.d("CREATE", a.toString());
                         Log.d("CREATE", "Manager acc");
@@ -87,7 +87,7 @@ public class FbUpdate  implements FirestoreConnector{
                         Log.d("CREATE", ((StudentAccount)a).toString());
                     }
 
-                    success.setValue(3);
+//                    success.setValue(3);
 
                 } else {
                     success.setValue(1);

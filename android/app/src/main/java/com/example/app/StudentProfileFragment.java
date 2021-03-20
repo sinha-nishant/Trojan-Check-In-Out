@@ -216,7 +216,7 @@ public class StudentProfileFragment extends Fragment {
                         Log.i("photo","mutable null");
                     }
                     pb.setVisibility(View.VISIBLE);
-                    uploadPhoto.upload(exampleInputStream,str_email,upload_success);
+                    uploadPhoto.uploadUpdate(exampleInputStream,str_email,upload_success);
 
 
                 }

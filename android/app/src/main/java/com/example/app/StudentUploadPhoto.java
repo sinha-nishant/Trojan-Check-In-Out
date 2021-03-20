@@ -240,6 +240,13 @@ public class StudentUploadPhoto extends AppCompatActivity {
                     alertDialog.show();
 
                 }
+                else if(b==3){
+                    studentProgress.setVisibility(View.GONE);
+                    //switch page
+                    alertDialog.setMessage("Could not upload image to AWS S3 storage");
+                    alertDialog.show();
+
+                }
                 else{
                     //stop progress bar
                     studentProgress.setVisibility(View.GONE);
