@@ -32,7 +32,7 @@ public class StudentHistory extends AppCompatActivity {
         Bundle bundle= intent.getExtras();
         uscID= Long.valueOf(bundle.getString("uscID"));
         MutableStudent();
-        FirebaseTest.search(uscID,student);
+        FbQuery.search(uscID,student);
 
 
 

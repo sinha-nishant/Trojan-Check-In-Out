@@ -13,10 +13,10 @@ public class CheckInOut {
     public static void checkIn(MutableLiveData<Boolean> checkInMLD, String scanResult, Long uscId){
         Date checkindate = new Date();
         StudentActivity sa = new StudentActivity(scanResult,checkindate,null );
-        FirebaseTest.checkIn(uscId,sa,checkInMLD);
+        FbCheckInOut.checkIn(uscId,sa,checkInMLD);
     }
     public static void checkOut(MutableLiveData<Boolean> checkOutMLD, StudentActivity sa,Long uscId){
         Date checkOutDate = new Date();
-        FirebaseTest.checkOut(uscId,sa,checkOutDate,checkOutMLD);
+        FbCheckInOut.checkOut(uscId,sa,checkOutDate,checkOutMLD);
     }
 }

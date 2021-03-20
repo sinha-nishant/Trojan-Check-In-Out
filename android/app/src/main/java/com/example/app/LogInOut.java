@@ -26,7 +26,7 @@ public class LogInOut {
             //if not sucessful present a popup that says username or password incorrect and stop progress bar
         String bcryptHashString = BCrypt.withDefaults().hashToString(12, password.toCharArray());
         Log.d("TEST", "Hashed: " + bcryptHashString);
-         FirebaseTest.authenticate(email,password,login_success);
+         FbQuery.authenticate(email,password,login_success);
     }
 
     public static void SaveData(Context con,String userEmail, Long uscid){

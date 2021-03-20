@@ -55,14 +55,14 @@ public class StudentAccount extends Account {
         int last= this.activity.size()-1;
         StudentActivity act=activity.get(last);
         if(act.getCheckOutTime()==null){
-            FirebaseTest.checkOut(uscID,act,time,delete_success,this.email,true);
+            FbCheckInOut.checkOut(uscID,act,time,delete_success,this.email,true);
         }
         else{
-            FirebaseTest.deleteAccount(email,delete_success);
+            FbUpdate.deleteAccount(email,delete_success);
         }
     }
     else{
-        FirebaseTest.deleteAccount(email,delete_success);
+        FbUpdate.deleteAccount(email,delete_success);
     }
 
 
@@ -74,14 +74,14 @@ public class StudentAccount extends Account {
 
     public void setMajor(String newMajor,MutableLiveData<Boolean> success)
     {
-        FirebaseTest.updateMajor(uscID,newMajor,success);
+        FbUpdate.updateMajor(uscID,newMajor,success);
 
     }
 
 
 
     public void checkIN(StudentActivity act,MutableLiveData<Boolean> success){
-        FirebaseTest.checkIn(uscID,act,success);
+        FbCheckInOut.checkIn(uscID,act,success);
 
     }
 
@@ -90,7 +90,7 @@ public class StudentAccount extends Account {
         int last= this.activity.size()-1;
         StudentActivity sa= this.activity.get(last);
     //        FirebaseTest.getBuilding(buildingName,success,uscID,sa,checkOutTime);
-        FirebaseTest.checkOut(uscID,sa,checkOutTime,success,this.email,false);
+        FbCheckInOut.checkOut(uscID,sa,checkOutTime,success,this.email,false);
         //Commented out by John for build error
     }
 

@@ -62,7 +62,7 @@ public class ManagerProfile extends AppCompatActivity {
         SharedPreferences sp=  activity.getSharedPreferences("sharedPrefs",activity.MODE_PRIVATE);
 
         email= sp.getString("email","");
-        FirebaseTest.search(email, student);
+        FbQuery.search(email, student);
 
 
     }
@@ -231,7 +231,7 @@ public class ManagerProfile extends AppCompatActivity {
                     if(imgView==null){
                         Log.d("Check", "img is null");
                     }
-                    FirebaseTest.updatePhoto(email,Firebase_success);
+                    FbUpdate.updatePhoto(email,Firebase_success);
                 }
                 else{
                     pb.setVisibility(View.GONE);

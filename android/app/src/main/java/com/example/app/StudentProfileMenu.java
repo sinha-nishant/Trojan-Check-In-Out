@@ -93,7 +93,7 @@ public class StudentProfileMenu extends Fragment {
         MutableBoolean();
         SharedPreferences sp=  getContext().getSharedPreferences("sharedPrefs",MODE_PRIVATE);
         Long id = sp.getLong("uscid",0L);
-        FirebaseTest.search(id,student);
+        FbQuery.search(id,student);
     }
 
     @Override
@@ -143,7 +143,7 @@ public class StudentProfileMenu extends Fragment {
                 //Ask User to confirm
                 pb.setVisibility(View.VISIBLE);
                 isDelete=true;
-                FirebaseTest.search(Long.valueOf((uscID)),student);
+                FbQuery.search(Long.valueOf((uscID)),student);
 //                StudentAccount sa= student.getValue();
 //                sa.delete(delete_success);
 //                openHomePage();
@@ -307,7 +307,7 @@ public class StudentProfileMenu extends Fragment {
                     StudentActivity sa = sa_list.get(sa_list.size()-1);
                     Date date = new Date();
                     if(sa.getCheckOutTime()==null){
-                        FirebaseTest.checkOut(student.getUscID(),sa,date,checkOutMLD);
+                        FbCheckInOut.checkOut(student.getUscID(),sa,date,checkOutMLD);
 
 
                     }else{
@@ -342,7 +342,7 @@ public class StudentProfileMenu extends Fragment {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("sharedPrefs",MODE_PRIVATE);
 
         Long retrieveID = sharedPreferences.getLong("uscid",0L);
-        FirebaseTest.search(retrieveID, studentMLD);
+        FbQuery.search(retrieveID, studentMLD);
 
     }
 }

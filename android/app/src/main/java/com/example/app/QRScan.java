@@ -99,7 +99,7 @@ public class QRScan extends AppCompatActivity {
                 // check last index of studentactivity list
                  List<StudentActivity> sa_list = student.getActivity();
                  if(sa_list.isEmpty()) {//no activity so check in if occupancy isn't full
-                     FirebaseTest.getBuilding(postScanResult.getText().toString(),buildingMLD);
+                     FbQuery.getBuilding(postScanResult.getText().toString(),buildingMLD);
                  }else{
                      //get last index which indicates most recent activity
                      StudentActivity  sa = sa_list.get(sa_list.size()-1);
@@ -111,7 +111,7 @@ public class QRScan extends AppCompatActivity {
                          setBuilder("Check In Failure","Please check out of "+ sa.getBuildingName()+" before checking in again.");
                      }else if(sa.getCheckOutTime()!=null){
                          //would have to call getbuilding and send another callback
-                         FirebaseTest.getBuilding(postScanResult.getText().toString(),buildingMLD);
+                         FbQuery.getBuilding(postScanResult.getText().toString(),buildingMLD);
                      }
 
                  }
@@ -136,7 +136,7 @@ public class QRScan extends AppCompatActivity {
                         //Long uscID, StudentActivity sa, MutableLiveData<Boolean> success
                         loadingCircle.setVisibility(View.VISIBLE);
                         postScanResult=result;
-                        FirebaseTest.search(retrieveID, studentMLD);
+                        FbQuery.search(retrieveID, studentMLD);
                     }
                 });
             }

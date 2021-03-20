@@ -109,7 +109,7 @@ public class StudentProfileFragment extends Fragment {
         MutableFirebase();
         SharedPreferences sp=  getContext().getSharedPreferences("sharedPrefs",getActivity().MODE_PRIVATE);
         Long id = sp.getLong("uscid",0L);
-        FirebaseTest.search(id,student);
+        FbQuery.search(id,student);
 
 
         //END BACKEND
@@ -324,7 +324,7 @@ public class StudentProfileFragment extends Fragment {
 //                    Glide.with(getActivity()).load(profilepic.toString()).into(img);
 //                    alertDialog.setMessage("updated image successfully");
 //                    alertDialog.show();
-                    FirebaseTest.updatePhoto(str_email,Firebase_success);
+                    FbUpdate.updatePhoto(str_email,Firebase_success);
                 }
                 else{
                     alertDialog.setMessage("Error. Could not upload change profile picture");

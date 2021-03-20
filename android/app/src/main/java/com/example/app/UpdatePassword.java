@@ -9,6 +9,6 @@ public class UpdatePassword {
     }
 
     public static void UpdatePW(String email, String newPassword, MutableLiveData<Boolean> success){
-        FirebaseTest.updatePassword(email,newPassword, success);
+        FbUpdate.updatePassword(email,newPassword, success);
     }
 }
