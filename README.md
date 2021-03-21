@@ -34,13 +34,14 @@ A similar system implemented on the USC campus is by the USC housing. This syste
 - Pull up our project on android studio
 - In android studio pull up the terminal tab at the bottom of your page. Write the term "amplify init" into the Android Studio terminal
 - Please answer the following questions in the same vain as below (The access ID and Key will be found in credentials.csv in the zip file provided)
-![image](https://user-images.githubusercontent.com/42727780/111911887-49e99a00-8a8d-11eb-8512-f299bfc982e3.png)
 - Note: For the choose environment questions, just press enter. For the default editor question toggle using arrows and press enter once landing on Android Studio. Make Sure to choose AWS access Key option and not the Profile Option. For region, Toggle to us-west-2 and press enter.
+![image](https://user-images.githubusercontent.com/42727780/111911887-49e99a00-8a8d-11eb-8512-f299bfc982e3.png)
+
 
 # You now have everything set up in order to run our app
 
 **Note on how to add images to your emulator**
-- In order to take advantage of the upload profile picture functionality, you will need to have images installed in your emulator. This can be done by dragging and dropping images from your desktop/laptop into the emulator 
+- In order to take advantage of the upload profile picture functionality, you will need to have images installed in your emulator. This can be done by dragging and dropping images from your desktop/laptop into the emulator. You can find the image in the downloads tab of the emulator
 
 
 
