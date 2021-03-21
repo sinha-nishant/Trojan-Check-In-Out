@@ -29,9 +29,10 @@ A similar system implemented on the USC campus is by the USC housing. This syste
 - For Windows enter: curl -sL https://aws-amplify.github.io/amplify-cli/install-win -o install.cmd && install.cmd
 - Once done, you should get a success message on terminal. You can now close the terminal. 
 - Pull up our project on android studio
-- In android studio pull up the terminal tab at the bottom of your page. Write the term "amplify init" into the Android Studio terminal. Please answer the following questions in the same vain as below
+- In android studio pull up the terminal tab at the bottom of your page. Write the term "amplify init" into the Android Studio terminal
+- Please answer the following questions in the same vain as below (The access ID and Key will be found in credentials.csv in the zip file provided)
 ![image](https://user-images.githubusercontent.com/42727780/111911887-49e99a00-8a8d-11eb-8512-f299bfc982e3.png)
-- The access ID and Key will be found in credentials.csv in the zip file provided
+- Note: For the choose environment questions, just press enter. For the default editor question toggle using arrows and press enter once landing on Android Studio. Make Sure to choose AWS access Key option and not the Profile Option. For region, Toggle to us-west-2 and press enter.
 
 # You now have everything set up in order to run our app
 
