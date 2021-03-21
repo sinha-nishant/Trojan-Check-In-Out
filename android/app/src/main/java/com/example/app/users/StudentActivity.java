@@ -1,5 +1,6 @@
 package com.example.app.users;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class StudentActivity {
@@ -46,9 +47,12 @@ public class StudentActivity {
 
     public String toString()
     {
-        if(checkOutTime==null){
-            return this.buildingName + " (" + this.checkInTime.toString() + ")";
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+        String checkIn = format1.format(this.checkInTime);
+        String checkOut = "none";
+        if(checkOutTime!=null){
+            checkOut = format1.format(this.checkOutTime);
         }
-        return this.buildingName + " (" + this.checkInTime.toString() + " - " + this.checkOutTime.toString() + ")";
+        return this.buildingName + "\n\tCheck In Time: " + checkIn + "\n\tCheck Out Time: " + checkOut +"\n";
     }
 }
