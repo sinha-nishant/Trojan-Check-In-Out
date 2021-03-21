@@ -51,6 +51,9 @@ A similar system implemented on the USC campus is by the USC housing. This syste
 - Replace angadProfile with the profile name you set earlier when your are asked for your profile
 - If you do everything right, you should get the same success message in terminal as the provided picture
 
+**Note on how to add images to your emulator**
+- In order to take advantage of the upload profile picture functionality, you will need to have images installed in your emulator. This can be done by dragging and dropping images from your desktop/laptop into the emulator 
+
 # You now have everything set up in order to run our app
 
 
