@@ -65,7 +65,7 @@ public class FbUpdate  implements FirestoreConnector {
                     else{
                         Log.d("CREATE", ((StudentAccount)a).toString());
                     }
-                    create_success.setValue(3);
+                    create_success.setValue(4);
 
                 } else {
                     Log.d("Err", "failed to set up");
