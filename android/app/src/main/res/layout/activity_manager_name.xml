@@ -62,10 +62,11 @@
         android:id="@+id/imageView3"
         android:layout_width="89dp"
         android:layout_height="96dp"
-        android:layout_marginBottom="36dp"
-        app:layout_constraintBottom_toTopOf="@+id/managerLastName"
+        app:layout_constraintBottom_toTopOf="@+id/managerFirstName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.528"
         app:srcCompat="@drawable/profile_blank"
         tools:srcCompat="@drawable/profile_blank" />
 
