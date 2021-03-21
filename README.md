@@ -19,4 +19,13 @@ A similar system implemented on the USC campus is by the USC housing. This syste
 ![image](https://user-images.githubusercontent.com/42727780/111896006-9789e680-8a3c-11eb-9d24-e415ef46b3a6.png)
 - Please make sure to select Android 10.0 only
 - For all emulators used, make sure you use one compatible with API 29
+- 
 **Initializing AWS Amplify**
+
+- You will need to download some plugins and get access to some authorization keys to get access to AWS S3 which we use to store our images. These are the steps to do so:
+- Go to your the command line on your device
+- For mac/Linux enter: curl -sL https://aws-amplify.github.io/amplify-cli/install | bash && $SHELL
+- For Windows enter: curl -sL https://aws-amplify.github.io/amplify-cli/install-win -o install.cmd && install.cmd
+- Once these commands finish executing, enter the term "amplify configure" into the commandline
+- Please insert the these responses to the following questions:
+- 
