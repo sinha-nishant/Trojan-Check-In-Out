@@ -77,19 +77,7 @@ public class StudentAccount extends Account {
 
 
 
-    public void checkIN(StudentActivity act,MutableLiveData<Boolean> success){
-        FbCheckInOut.checkIn(uscID,act,success);
 
-    }
-
-
-    public void checkOut(Date checkOutTime,MutableLiveData<Integer>success){
-        int last= this.activity.size()-1;
-        StudentActivity sa= this.activity.get(last);
-    //        FirebaseTest.getBuilding(buildingName,success,uscID,sa,checkOutTime);
-        FbCheckInOut.checkOut(uscID,sa,checkOutTime,success,this.email,false);
-        //Commented out by John for build error
-    }
 
     public Long getUscID(){
         return this.uscID;
