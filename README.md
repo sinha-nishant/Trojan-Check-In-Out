@@ -7,3 +7,14 @@ The app features a manager account and a student account, both of which are USC-
 The system is useful for fast moving indoor places, as well as places with large numbers of people, such as Trader Joe’s and Target. For fast moving indoor places, humans would inherently be imprecise in keeping track of the people moving in and out at a fast pace, and could create major errors in maintaining the count, thereby jeopardizing the health of the people. For a large number of people, keeping track of the people itself would require multiple enforcers, apart from the process being inconvenient and slow. Both of these problems are solved by the app which requires only one manager, is faster, more secure and, overall, more efficient.
 
 A similar system implemented on the USC campus is by the USC housing. This system uses an IAM (Identity Access Management) server to keep track of all the users living in different buildings. It allows authentication using face and fingerprint. This system is slow and tedious as the amount of time to check in a single user can vary between 3 seconds to 1 minute, and during fire drills a single person might have to wait 30 minutes to get back into the building (after the drill is over). Wearing a mask or gloves would result in longer waiting times. Scaling is even worse, bigger classes and libraries at USC require people to get in and out of buildings instantly, so that they can focus on studying rather than waiting in lines. Trojan Check In/Out is similar, but scalable and faster, as the authentication requires only reading a QR code using the system, so there is no inefficiency of the physical fingerprint scanner or facial scanner. The system also minimizes the amount of workers and physical IAM systems required to be present, thereby, decreasing both the fixed and variable costs.
+
+
+# How to Run our application:
+
+- Unzip the zip file
+- You should see a Trojan-Check-In-Out folder. This contains our app
+- Go to android studio. On the landing page, click on "Open an Existing Project"
+-Find the Trojan-Check-In-Out folder on your device, click into it, then click into the android folder and then press the open button to set this as your project.
+-Once in Android Studio, on the topbar, click on tools-> SDK Manager . You should now be able to see this:
+sdkManager![image](https://user-images.githubusercontent.com/42727780/111896006-9789e680-8a3c-11eb-9d24-e415ef46b3a6.png)
+
