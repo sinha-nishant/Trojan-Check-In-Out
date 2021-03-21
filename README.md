@@ -10,11 +10,13 @@ A similar system implemented on the USC campus is by the USC housing. This syste
 
 
 # How to Run our application:
-
+**General**
 - Unzip the zip file
 - You should see a Trojan-Check-In-Out folder. This contains our app
 - Go to android studio. On the landing page, click on "Open an Existing Project"
 -Find the Trojan-Check-In-Out folder on your device, click into it, then click into the android folder and then press the open button to set this as your project.
 -Once in Android Studio, on the topbar, click on tools-> SDK Manager . You should now be able to see this:
 sdkManager![image](https://user-images.githubusercontent.com/42727780/111896006-9789e680-8a3c-11eb-9d24-e415ef46b3a6.png)
-
+- Please make sure to select Android 10.0 only
+- For all emulators used, make sure you use one compatible with API 29
+**Initializing AWS Amplify**
