@@ -26,5 +26,7 @@ A similar system implemented on the USC campus is by the USC housing. This syste
 - For mac/Linux enter: curl -sL https://aws-amplify.github.io/amplify-cli/install | bash && $SHELL
 - For Windows enter: curl -sL https://aws-amplify.github.io/amplify-cli/install-win -o install.cmd && install.cmd
 - Once these commands finish executing, enter the term "amplify configure" into the commandline
-- Please insert the these responses to the following questions:
+- The following image shows you the entire commandline process:
+<br/>
+![image](https://user-images.githubusercontent.com/42727780/111902688-aab0ac80-8a64-11eb-839b-266e95d2061e.png)
 
