@@ -27,35 +27,14 @@ A similar system implemented on the USC campus is by the USC housing. This syste
 - Go to your the command line on your device
 - For mac/Linux enter: curl -sL https://aws-amplify.github.io/amplify-cli/install | bash && $SHELL
 - For Windows enter: curl -sL https://aws-amplify.github.io/amplify-cli/install-win -o install.cmd && install.cmd
-- Once these commands finish executing, enter the term "amplify configure" into the commandline
-- The following image shows you the entire commandline process:
-![image](https://user-images.githubusercontent.com/42727780/111902753-eb102a80-8a64-11eb-9a86-7359d6e09dc6.png)
-
--When asked to Sign in to your AWS administrator account, press enter. You will be redirected to the following page
-![image](https://user-images.githubusercontent.com/42727780/111902805-2dd20280-8a65-11eb-9dc0-1f965c4e9e2c.png)
-- Please sign in using the email: mitraar@usc.edu and password:Password123
-- Go back to the terminal and answer the questions as follows: region : us-west-2, profile: Enter your name
-- After this you should be redirected back by AWS console to the following page
-![image](https://user-images.githubusercontent.com/42727780/111902947-ce282700-8a65-11eb-80df-1eda17181634.png)
--Please click the next button again and again till you see this
-![image](https://user-images.githubusercontent.com/42727780/111902971-eef07c80-8a65-11eb-9d5d-07680faec1cb.png)
-- Now click on Create user which will result you in seeing this page
-![image](https://user-images.githubusercontent.com/42727780/111903006-12b3c280-8a66-11eb-9271-f2f44fdbb0b9.png)
-- Place take a note of the ID and key
-- go back to the terminal. Enter in your id and access key when prompted to do so
-- Once done, you will be prompted to name your profile. Just name it something easy to remember
 - Once done, you should get a success message on terminal. You can now close the terminal. 
 - Pull up our project on android studio
 - In android studio pull up the terminal tab at the bottom of your page. Write the term "amplify init" into the Android Studio terminal. Please answer the following questions in the same vain as below
-![image](https://user-images.githubusercontent.com/42727780/111903137-c0bf6c80-8a66-11eb-8c49-a8e34474142d.png)
-- Replace angadProfile with the profile name you set earlier when your are asked for your profile
-- If you do everything right, you should get the same success message in terminal as the provided picture
-
-**Note on how to add images to your emulator**
-- In order to take advantage of the upload profile picture functionality, you will need to have images installed in your emulator. This can be done by dragging and dropping images from your desktop/laptop into the emulator 
+![image](https://user-images.githubusercontent.com/42727780/111911887-49e99a00-8a8d-11eb-8512-f299bfc982e3.png)
+- The access ID and Key will be found in credentials.csv in the zip file provided
 
 # You now have everything set up in order to run our app
 
-
-
+**Note on how to add images to your emulator**
+- In order to take advantage of the upload profile picture functionality, you will need to have images installed in your emulator. This can be done by dragging and dropping images from your desktop/laptop into the emulator 
 
