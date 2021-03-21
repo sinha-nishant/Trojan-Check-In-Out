@@ -20,6 +20,9 @@ A similar system implemented on the USC campus is by the USC housing. This syste
 ![image](https://user-images.githubusercontent.com/42727780/111896006-9789e680-8a3c-11eb-9d24-e415ef46b3a6.png)
 - Please make sure to select Android 10.0 only
 - For all emulators used, make sure you use one compatible with API 29
+-- When selecting an emulator, please choose one that supports Google play services. 
+- This is denoted by a playstore icon in the AVD manager
+![image](https://user-images.githubusercontent.com/42727780/111912412-6981c200-8a8f-11eb-8ee5-e3a06bc6b4b0.png)
 
 **Step 2: Initializing AWS Amplify Plugin**
 <br/>
@@ -39,10 +42,6 @@ A similar system implemented on the USC campus is by the USC housing. This syste
 **Note on how to add images to your emulator**
 - In order to take advantage of the upload profile picture functionality, you will need to have images installed in your emulator. This can be done by dragging and dropping images from your desktop/laptop into the emulator 
 
-**Note on emulator use**
-- When selecting an emulator, please choose one that supports Google play services. 
-- This is denoted by a playstore icon in the AVD manager
-![image](https://user-images.githubusercontent.com/42727780/111912412-6981c200-8a8f-11eb-8ee5-e3a06bc6b4b0.png)
 
 
 
