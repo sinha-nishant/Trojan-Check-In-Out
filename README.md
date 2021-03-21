@@ -11,21 +11,22 @@ A similar system implemented on the USC campus is by the USC housing. This syste
 
 # How to Run our application:
 **General**
+<br />
 - Unzip the zip file
 - You should see a Trojan-Check-In-Out folder. This contains our app
 - Go to android studio. On the landing page, click on "Open an Existing Project"
 -Find the Trojan-Check-In-Out folder on your device, click into it, then click into the android folder and then press the open button to set this as your project.
 -Once in Android Studio, on the topbar, click on tools-> SDK Manager . You should now be able to see this:
+<br />
 ![image](https://user-images.githubusercontent.com/42727780/111896006-9789e680-8a3c-11eb-9d24-e415ef46b3a6.png)
 - Please make sure to select Android 10.0 only
-- For all emulators used, make sure you use one compatible with API 29
-- 
+- For all emulators used, make sure you use one compatible with API 29<br />
 **Initializing AWS Amplify**
-
+<br />
 - You will need to download some plugins and get access to some authorization keys to get access to AWS S3 which we use to store our images. These are the steps to do so:
 - Go to your the command line on your device
 - For mac/Linux enter: curl -sL https://aws-amplify.github.io/amplify-cli/install | bash && $SHELL
 - For Windows enter: curl -sL https://aws-amplify.github.io/amplify-cli/install-win -o install.cmd && install.cmd
 - Once these commands finish executing, enter the term "amplify configure" into the commandline
 - Please insert the these responses to the following questions:
-- 
+
