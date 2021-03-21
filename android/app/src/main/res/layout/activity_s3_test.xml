@@ -44,6 +44,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="upload"
+        android:backgroundTint="#980909"
+        android:textColor="#FFC107"
         android:text="Button" />
 
     <Button
@@ -53,6 +55,8 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="65dp"
         android:onClick="changeImage"
+        android:backgroundTint="#980909"
+        android:textColor="#FFC107"
         android:text="Button" />
 
     <ProgressBar

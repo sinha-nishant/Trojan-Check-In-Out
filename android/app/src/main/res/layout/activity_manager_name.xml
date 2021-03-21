@@ -38,6 +38,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Register"
+        android:backgroundTint="#980909"
+        android:textColor="#FFC107"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -50,6 +52,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Choose Picture"
+        android:backgroundTint="#980909"
+        android:textColor="#FFC107"
         app:layout_constraintBottom_toTopOf="@+id/nameButtonM"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -62,7 +66,8 @@
         app:layout_constraintBottom_toTopOf="@+id/managerLastName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:srcCompat="@drawable/profile_blank"
+        tools:srcCompat="@drawable/profile_blank" />
 
     <ProgressBar
         android:id="@+id/progressBar5"

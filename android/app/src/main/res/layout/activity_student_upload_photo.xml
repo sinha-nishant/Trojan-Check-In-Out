@@ -33,6 +33,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Choose Image"
+        android:backgroundTint="#980909"
+        android:textColor="#FFC107"
         app:layout_constraintBottom_toTopOf="@+id/progressBarStudentPhoto"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,6 +58,8 @@
         android:layout_marginTop="48dp"
         android:onClick="submit"
         android:text="Submit"
+        android:backgroundTint="#980909"
+        android:textColor="#FFC107"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/uploadImageButton" />
