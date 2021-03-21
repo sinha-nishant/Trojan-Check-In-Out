@@ -70,8 +70,8 @@ public class StudentUploadPhoto extends AppCompatActivity {
         id = bundle.getString("id");
         major = bundle.getString("major");
 
-        showToast(fName + " " + lName + " (" + id + ")\n"
-                + major + " " + email + "\nPass: " + password);
+        //showToast(fName + " " + lName + " (" + id + ")\n"
+                //+ major + " " + email + "\nPass: " + password);
         //End data
 
         bUploadImage = (Button)findViewById(R.id.uploadImageButton);

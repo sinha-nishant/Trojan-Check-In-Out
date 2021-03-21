@@ -15,8 +15,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.361"
-        app:srcCompat="?attr/actionModeCopyDrawable"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:srcCompat="@drawable/profile_blank"
+        tools:srcCompat="@drawable/profile_blank" />
 
     <TextView
         android:id="@+id/textView5"
