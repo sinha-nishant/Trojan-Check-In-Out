@@ -22,7 +22,7 @@ import java.util.HashMap;
 
 public class FbUpdate  implements FirestoreConnector {
     // Update Capacity
-    public static void updateCapacity(String buildingName, int newCapacity, ProgressBar circle) {
+    public static void updateCapacity(String buildingName, MutableLiveData<Boolean> success, Integer newCapacity) {
         FirestoreConnector.getDB().collection("Buildings")
                 .whereEqualTo("name", buildingName)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -47,7 +47,7 @@ public class FbUpdate  implements FirestoreConnector {
         });
     }
 
-    public static void updateCapacities(HashMap<String, Integer> newCapacities) {
+    public static void updateCapacities(HashMap<String, Integer> newCapacities,MutableLiveData<Boolean> success) {
 
     }
 

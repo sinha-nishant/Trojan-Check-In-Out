@@ -11,11 +11,8 @@ import com.example.app.firebaseDB.FbQuery;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
 public class LogInOut {
-    private boolean login=false;
     public LogInOut(){}
-    public void isCorrectLogin(boolean login_success){
-        login=login_success;
-    }
+
     public static void LogIn(String email, String password, MutableLiveData<Boolean> login_success ){
         //hash password ]
         //send hash password and email to firebase to authenticate
