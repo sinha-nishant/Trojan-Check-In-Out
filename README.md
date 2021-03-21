@@ -39,7 +39,8 @@ A similar system implemented on the USC campus is by the USC housing. This syste
 - In order to take advantage of the upload profile picture functionality, you will need to have images installed in your emulator. This can be done by dragging and dropping images from your desktop/laptop into the emulator 
 
 **Note on emulator use**
-- When selecting an emulator, please choose one that supports Google play services. This is denoted by a playstore icon in the ADV manager
+- When selecting an emulator, please choose one that supports Google play services. 
+- This is denoted by a playstore icon in the AVD manager
 ![image](https://user-images.githubusercontent.com/42727780/111912412-6981c200-8a8f-11eb-8ee5-e3a06bc6b4b0.png)
 
 
