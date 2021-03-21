@@ -136,7 +136,7 @@ public class FbQuery implements FirestoreConnector {
         });
     }
 
-    public static void getStudents(Building b, List<Long> studentIDs, EditText buildingparam, ProgressBar circle) {
+    public static void getStudents(Building b, List<Long> studentIDs,MutableLiveData<List<StudentAccount>> students)  {
         CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
         Query query = accounts.whereIn("uscID", studentIDs);
 
