@@ -21,7 +21,7 @@ A similar system implemented on the USC campus is by the USC housing. This syste
 - Please make sure to select Android 10.0 only
 - For all emulators used, make sure you use one compatible with API 29
 
-**Step 1: Initializing AWS Amplify Plugin**
+**Step 2: Initializing AWS Amplify Plugin**
 <br/>
 - You will need to download some plugins and get access to some authorization keys to get access to AWS S3 which we use to store our images. These are the steps to do so:
 - Go to your the command line on your device
