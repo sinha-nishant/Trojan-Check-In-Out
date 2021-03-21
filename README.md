@@ -10,8 +10,6 @@ A similar system implemented on the USC campus is by the USC housing. This syste
 
 
 # How to Run our application:
-**General**
-<br />
 **Step 1: Setting up app in Android Studio**
 <br/>
 - Unzip the zip file
@@ -36,7 +34,7 @@ A similar system implemented on the USC campus is by the USC housing. This syste
 -When asked to Sign in to your AWS administrator account, press enter. You will be redirected to the following page
 ![image](https://user-images.githubusercontent.com/42727780/111902805-2dd20280-8a65-11eb-9dc0-1f965c4e9e2c.png)
 - Please sign in using the email: mitraar@usc.edu and password:Password123
-- Go back to the terminal and answer the questions as follows: region :- us-west-2, profile:- Enter your name
+- Go back to the terminal and answer the questions as follows: region : us-west-2, profile: Enter your name
 - After this you should be redirected back by AWS console to the following page
 ![image](https://user-images.githubusercontent.com/42727780/111902947-ce282700-8a65-11eb-80df-1eda17181634.png)
 -Please click the next button again and again till you see this
@@ -48,7 +46,7 @@ A similar system implemented on the USC campus is by the USC housing. This syste
 - Once done, you will be prompted to name your profile. Just name it something easy to remember
 - Once done, you should get a success message on terminal. You can now close the terminal. 
 - Pull up our project on android studio
-- In android studio pull up the terminal tab at the bottom of your page. Please answer the following questions in the same vain as below
+- In android studio pull up the terminal tab at the bottom of your page. Write the term "amplify init" into the Android Studio terminal. Please answer the following questions in the same vain as below
 ![image](https://user-images.githubusercontent.com/42727780/111903137-c0bf6c80-8a66-11eb-8c49-a8e34474142d.png)
 - Replace angadProfile with the profile name you set earlier when your are asked for your profile
 - If you do everything right, you should get the same success message in terminal as the provided picture
