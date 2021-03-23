@@ -81,4 +81,7 @@ dependencies {
 
     //hamcrest
     implementation 'org.hamcrest:hamcrest:2.2'
+    // checking activity in expresso
+    androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.2'
+
 }
