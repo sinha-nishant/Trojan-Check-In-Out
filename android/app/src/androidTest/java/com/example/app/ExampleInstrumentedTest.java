@@ -8,7 +8,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import javax.naming.Context;
+//import javax.naming.Context;
 
 import static org.junit.Assert.*;
 

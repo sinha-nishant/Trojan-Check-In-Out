@@ -149,6 +149,7 @@ public class  LogInPage extends AppCompatActivity {
 
                     studentProgress.setVisibility(View.GONE);
                     alertDialog.setMessage("Succeeded in Logging In");
+                    Log.d("firstTest",alertDialog.toString());
                     alertDialog.show();
 
 
@@ -157,6 +158,7 @@ public class  LogInPage extends AppCompatActivity {
                 else{
                     studentProgress.setVisibility(View.GONE);
                     alertDialog.setMessage("Invalid Credentials");
+                    Log.d("firstTest",alertDialog.toString());
                     alertDialog.show();
 
                 }
