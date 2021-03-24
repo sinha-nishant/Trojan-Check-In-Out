@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.test.core.app.ApplicationProvider;
 
+import com.example.app.CreateStudentTest;
 import com.example.app.users.Account;
 import com.example.app.users.StudentAccount;
 import com.google.firebase.FirebaseApp;
@@ -24,19 +25,18 @@ public class checkUsedIdTest {
     public void check() {
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
-        Long uscID=5050505050L;// should be user in an account
-        String emailExpected = "UniqueEmailFtw2@usc.edu";//should be not used in an accpunt yet
+        Long uscID= Long.valueOf(CreateStudentTest.uscID);// should be user in an account
+        String emailExpected = CreateStudentTest.email;//should be not used in an accpunt yet
         Account acc= new StudentAccount("Ch","va",emailExpected,"passing",uscID,"Undeclared",false);
-        MutableLiveData<Integer> student = new MutableLiveData<>();
-        Observer<Integer> saObserver = new Observer<Integer>() {
+        MutableLiveData<Boolean> mld = new MutableLiveData<>();
+        Observer<Boolean> id_obs = new Observer<Boolean>() {
             @Override
-            public void onChanged(Integer num) {
-                assertEquals(num.intValue(),2);
+            public void onChanged(Boolean Success) {
+                assertEquals(Success,false);
             }
         };
-        student.observeForever(saObserver);
-//        FbQuery.search(uscID,student);
-        FbQuery.checkEmailExists(emailExpected,acc,student,false);
+        mld.observeForever(id_obs);
+        FbQuery.checkUSCidExists(uscID,mld);
 
 
         //To get the test to run add this - Firebase takes time to execute the query and the thread

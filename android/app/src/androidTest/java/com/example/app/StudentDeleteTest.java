@@ -53,9 +53,7 @@ public class StudentDeleteTest {
         editor.putString("email",CreateStudentTest.email);
         editor.putLong( "uscid",Long.parseLong(CreateStudentTest.uscID));
         editor.apply();
-//        Intent result = new Intent(targetContext, StudentProfile.class);
-//        result.putExtra("email", "ManagerTest6@usc.edu");
-//        result.putExtra("uscID", "0");
+
     }
 
     @Test

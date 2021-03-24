@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.test.core.app.ApplicationProvider;
 
+import com.example.app.CreateStudentTest;
 import com.example.app.users.Account;
 import com.example.app.users.StudentAccount;
 import com.google.firebase.FirebaseApp;
@@ -23,19 +24,18 @@ public class checkUsedEmailTest {
     public void check() {
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
-        Long uscID=5050505050L;
-        String emailExpected = "checkValidNewAccount@usc.edu";
+        Long uscID= Long.valueOf(CreateStudentTest.uscID);
+        String emailExpected = CreateStudentTest.email;
         Account acc= new StudentAccount("Ch","va",emailExpected,"passing",uscID,"Undeclared",false);
-        MutableLiveData<Integer> student = new MutableLiveData<>();
-        Observer<Integer> saObserver = new Observer<Integer>() {
+        MutableLiveData<Boolean> mld = new MutableLiveData<>();
+        Observer<Boolean> email_obs = new Observer<Boolean>() {
             @Override
-            public void onChanged(Integer num) {
-                assertEquals(num.intValue(),0);
+            public void onChanged(Boolean Success) {
+                assertEquals(Success,false);
             }
         };
-        student.observeForever(saObserver);
-//        FbQuery.search(uscID,student);
-        FbQuery.checkEmailExists(emailExpected,acc,student,false);
+        mld.observeForever(email_obs);
+        FbQuery.checkEmailExists(emailExpected,mld);
 
 
         //To get the test to run add this - Firebase takes time to execute the query and the thread

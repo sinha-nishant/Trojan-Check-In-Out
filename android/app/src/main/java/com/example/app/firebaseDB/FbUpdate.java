@@ -51,8 +51,10 @@ public class FbUpdate  implements FirestoreConnector {
 
     }
 
-    //Create account with no pic
-    public static void createAccount(Account a, MutableLiveData<Integer> create_success) {
+
+
+    //Refactored
+    public static void createAccount(Account a, MutableLiveData<Boolean> create_success) {
         FirestoreConnector.getDB().collection("Accounts").add(a).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
@@ -65,25 +67,25 @@ public class FbUpdate  implements FirestoreConnector {
                     else{
                         Log.d("CREATE", ((StudentAccount)a).toString());
                     }
-                    create_success.setValue(4);
+                    create_success.setValue(true);
 
                 } else {
                     Log.d("Err", "failed to set up");
-                    create_success.setValue(1);
+                    create_success.setValue(false);
                 }
             }
         });
     }
 
-    //Arjun : create account with pic
-    public static void createAccount(Account a, MutableLiveData<Integer> success, InputStream stream) {
+    //Refactored
+    public static void createAccount(Account a, MutableLiveData<Boolean> success, InputStream stream) {
         FirestoreConnector.getDB().collection("Accounts").add(a).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
                 if (task.isSuccessful()) {
                     Log.d("CREATE", "Account Added to DB");
 
-                    uploadPhoto.uploadCreate(stream, a.getEmail(),success);
+                    uploadPhoto.upload(stream, a.getEmail(),success);
                     if(a.getIsManager()==true){
                         Log.d("CREATE", a.toString());
                         Log.d("CREATE", "Manager acc");
@@ -92,10 +94,9 @@ public class FbUpdate  implements FirestoreConnector {
                         Log.d("CREATE", ((StudentAccount)a).toString());
                     }
 
-//                    success.setValue(3);
 
                 } else {
-                    success.setValue(1);
+                    success.setValue(false);
                 }
             }
         });

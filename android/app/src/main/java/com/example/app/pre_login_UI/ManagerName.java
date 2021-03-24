@@ -23,6 +23,7 @@ import com.amplifyframework.core.Amplify;
 import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
 import com.example.app.account_UI.ManagerProfile;
 import com.example.app.R;
+import com.example.app.firebaseDB.FbQuery;
 import com.example.app.log_create.CreateAccount;
 import com.example.app.log_create.LogInOut;
 
@@ -43,9 +44,10 @@ public class ManagerName extends AppCompatActivity {
     Uri selectedImage;
     Boolean ImageSet=false;
     String email,password;
-    ProgressBar studentProgress;
+    ProgressBar pb;
     AlertDialog alertDialog;
-    private final MutableLiveData<Integer> create_success = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> create_success = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> email_success = new MutableLiveData<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +58,8 @@ public class ManagerName extends AppCompatActivity {
         img= (ImageView) findViewById(R.id.imageView3);
         firstNameInput = (EditText) findViewById(R.id.managerFirstName);
         lastNameInput = (EditText) findViewById(R.id.managerLastName);
-        studentProgress= (ProgressBar)findViewById(R.id.progressBar5);
-        studentProgress.setVisibility(View.GONE);
+        pb= (ProgressBar)findViewById(R.id.progressBar5);
+        pb.setVisibility(View.GONE);
 
         //Get the bundle
         Bundle bundle = getIntent().getExtras();
@@ -69,7 +71,8 @@ public class ManagerName extends AppCompatActivity {
         submitButton = (Button) findViewById(R.id.nameButtonM);
         AmplifyInit();
         DialogInit();
-        MutableInit();
+        createMLDInit();
+        emailMLDInit();
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,15 +87,12 @@ public class ManagerName extends AppCompatActivity {
                 fName = firstNameInput.getText().toString();
                 lName = lastNameInput.getText().toString();
 
-                //used for popups to user
-                //showToast(email);
-                //showToast(password);
 
                 if(fName.length() == 0 || lName.length() == 0){
                     showToast("First or last name is blank");
                     return;
                 }
-                studentProgress.setVisibility(View.VISIBLE);
+                pb.setVisibility(View.VISIBLE);
                 submit();
 
             }
@@ -103,7 +103,7 @@ public class ManagerName extends AppCompatActivity {
     {
         Toast.makeText(ManagerName.this, text, Toast.LENGTH_SHORT).show();
     }
-    public void AmplifyInit(){
+    private void AmplifyInit(){
         try {
             Amplify.addPlugin(new AWSCognitoAuthPlugin());
             Amplify.addPlugin(new AWSS3StoragePlugin());
@@ -115,7 +115,7 @@ public class ManagerName extends AppCompatActivity {
 
     // this function is triggered when
     // the Select Image Button is clicked
-    void imageChooser() {
+    private void imageChooser() {
 
         // create an instance of the
         // intent of the type image
@@ -153,8 +153,95 @@ public class ManagerName extends AppCompatActivity {
     }
 
     public void submit(){
-        if(ImageSet==false){
-//            CreateAccount.Create(fName, lName, email,password,false,create_success);
+        FbQuery.checkEmailExists(email,email_success);
+
+    }
+
+   private void createMLDInit(){
+       final Observer<Boolean> create_obs = new Observer<Boolean>(){
+           @Override
+           public void onChanged(@Nullable final Boolean isSuccess){
+               if(isSuccess){
+                   //stop progress bar
+                   pb.setVisibility(View.GONE);
+                   //Generate popupmessage
+                   Log.d("Create", "success");
+
+
+                   LogInOut.SaveData(ManagerName.this,email,0L);
+
+                   alertDialog.setMessage("Succeeded in creating your account");
+                   alertDialog.show();
+               }
+               else{
+                   pb.setVisibility(View.GONE);
+                   //switch page
+                   alertDialog.setMessage("Error. Failed to create your account successfully");
+                   alertDialog.show();
+               }
+
+           }
+
+       };
+       create_success.observe(this, create_obs);
+   }
+
+
+    private void DialogInit(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Status of Action");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Yes",
+                new DialogInterface
+                        .OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                                        int which)
+                    {
+
+                        if(create_success==null||create_success.getValue()==null){
+                            openManagerSignUp();
+                            return;
+                        }
+                        if(create_success.getValue()){
+                            openProfile();
+                        }
+
+                    }
+                });
+        alertDialog = builder.create();
+    }
+
+
+    private void openProfile() {
+        //What unique identifier will be used to draw up profile page? Email?
+        Intent i = new Intent(this, ManagerProfile.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("email", email);
+        i.putExtras(bundle);
+        startActivity(i);
+    }
+
+    private void openManagerSignUp() {
+        //What unique identifier will be used to draw up profile page? Email?
+        Intent i = new Intent(this, ManagerSignUpStart.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("email", email);
+        i.putExtras(bundle);
+        startActivity(i);
+    }
+
+    private void emailMLDInit(){
+        final Observer<Boolean> email_obs = new Observer<Boolean>(){
+            @Override
+            public void onChanged(@Nullable final Boolean isSuccess){
+                if(isSuccess){
+
+
+        if(!ImageSet){
+
             CreateAccount.CreateManager(fName,lName,email,password,create_success);
             return;
         }
@@ -178,88 +265,18 @@ public class ManagerName extends AppCompatActivity {
         }
         CreateAccount.CreateManager(fName, lName, email,password,exampleInputStream,create_success);
 
-    }
-
-    public void MutableInit(){
-        final Observer<Integer> obs = new Observer<Integer>(){
-            @Override
-            public void onChanged(@Nullable final Integer b){
-                if(b==null){
-                    alertDialog.setMessage("Failed to work");
-                    alertDialog.show();
-                    return;
-                }
-                if(b==0){
-
-                    studentProgress.setVisibility(View.GONE);
-                    alertDialog.setMessage("Error. This Email already exists.");
-                    alertDialog.show();
-
-
-
-                }
-                else if(b==1){
-                    studentProgress.setVisibility(View.GONE);
-                    //switch page
-                    alertDialog.setMessage("Error. Failed to create your account successfully");
-                    alertDialog.show();
-
-                }
-                else if(b==2){
-                    studentProgress.setVisibility(View.GONE);
-                    //switch page
-                    alertDialog.setMessage("Error. This ID already exists");
-                    alertDialog.show();
-
                 }
                 else{
-                    //stop progress bar
-                    studentProgress.setVisibility(View.GONE);
-                    //Generate popupmessage
-                    Log.d("Create", "success");
-
-
-                    LogInOut.SaveData(ManagerName.this,email,0L);
-
-                    alertDialog.setMessage("Succeeded in creating your account");
+                    pb.setVisibility(View.GONE);
+                    //switch page
+                    alertDialog.setMessage("This email is already in use");
                     alertDialog.show();
-
                 }
+
             }
 
         };
-        create_success.observe(this, obs);
-    }
-    public void DialogInit(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setTitle("Status of Action");
-        builder.setCancelable(false);
-        builder.setPositiveButton("Yes",
-                new DialogInterface
-                        .OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog,
-                                        int which)
-                    {
-                        if(create_success.getValue()>=3){
-                            openProfile();
-                        }
-
-                    }
-                });
-        alertDialog = builder.create();
-    }
-
-
-    public void openProfile() {
-        //What unique identifier will be used to draw up profile page? Email?
-        Intent i = new Intent(this, ManagerProfile.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("email", email);
-        i.putExtras(bundle);
-        startActivity(i);
+        email_success.observe(this, email_obs);
     }
 
 

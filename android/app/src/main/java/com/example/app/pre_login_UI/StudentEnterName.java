@@ -49,7 +49,7 @@ public class StudentEnterName extends AppCompatActivity {
                 {
                     //don't put info in database yet, keep passing values until completed
                     //go to next activity
-                    showToast(email);
+
                     openID(email, password, fName, lName);
                 }
             }

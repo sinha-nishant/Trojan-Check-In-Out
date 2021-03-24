@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.app.firebaseDB.FbUpdate;
 import com.example.app.users.Account;
 import com.example.app.firebaseDB.FbQuery;
 import com.example.app.users.StudentAccount;
@@ -18,41 +19,41 @@ public class CreateAccount {
 
     }
 
-    public static void CreateManager(String firstName, String lastName, String email, String pw, MutableLiveData<Integer> create_success){
+    public static void CreateManager(String firstName, String lastName, String email, String pw, MutableLiveData<Boolean> success){
         Log.i("CreateAccount","in create account");
 
         String hashedPw = BCrypt.withDefaults().hashToString(12, pw.toCharArray());
         Account a= new Account(firstName,lastName,email,hashedPw,true);
-        FbQuery.checkEmailExists(email,a,create_success,true);
+        FbUpdate.createAccount(a,success);
 
 
     }
 
-    public static void CreateStudent(String firstName, String lastName, String email, String pw,Long id, String major,MutableLiveData<Integer> success){
+    public static void CreateStudent(String firstName, String lastName, String email, String pw,Long id, String major,MutableLiveData<Boolean> success){
         Log.i("CreateAccount","in create account");
 
         String hashedPw = BCrypt.withDefaults().hashToString(12, pw.toCharArray());
         Account a = new StudentAccount(firstName,lastName,email,hashedPw,id,major,false);
-        FbQuery.checkEmailExists(email,a,success,false);
+        FbUpdate.createAccount(a,success);
 
     }
-    public static void CreateManager(String firstName, String lastName, String email, String pw, InputStream url, MutableLiveData<Integer> success){
+    public static void CreateManager(String firstName, String lastName, String email, String pw, InputStream url, MutableLiveData<Boolean> success){
         Log.i("CreateAccount","in create account");
 
         String picUrl=AWSLink(email);
         String hashedPw = BCrypt.withDefaults().hashToString(12, pw.toCharArray());
         Account a = new Account(firstName,lastName,email,hashedPw,picUrl,true);
-        FbQuery.checkEmailExists(email,success,a,url,true);
+        FbUpdate.createAccount(a,success,url);
 
     }
 
-    public static void CreateStudent(String firstName, String lastName, String email, String pw,InputStream url,Long id, String major,MutableLiveData<Integer> success){
+    public static void CreateStudent(String firstName, String lastName, String email, String pw,InputStream url,Long id, String major,MutableLiveData<Boolean> success){
         Log.i("CreateAccount","in create account");
 
         String picUrl=AWSLink(email);
         String hashedPw = BCrypt.withDefaults().hashToString(12, pw.toCharArray());
         Account a = new StudentAccount(firstName,lastName,email,hashedPw,picUrl,id,major,true);
-        FbQuery.checkEmailExists(email,success,a,url,false);
+        FbUpdate.createAccount(a,success,url);
 
     }
 

@@ -46,7 +46,7 @@ public class CreateAccountTest {
         };
         success.observeForever(successObserver);
 
-        FbUpdate.createAccount(a,success);
+//        FbUpdate.createAccount(a,success);
         //To get the test to run add this - Firebase takes time to execute the query and the thread
         //will just run in the background without testing the Firebase database if the code isn't
         //there

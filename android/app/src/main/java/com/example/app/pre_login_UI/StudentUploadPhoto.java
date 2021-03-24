@@ -22,6 +22,8 @@ import com.amplifyframework.core.Amplify;
 import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
 import com.example.app.R;
 import com.example.app.account_UI.StudentProfile;
+import com.example.app.firebaseDB.FbQuery;
+import com.example.app.firebaseDB.FbUpdate;
 import com.example.app.log_create.CreateAccount;
 import com.example.app.log_create.LogInOut;
 
@@ -40,7 +42,10 @@ public class StudentUploadPhoto extends AppCompatActivity {
     AlertDialog alertDialog;
     Uri selectedImage;
     Boolean ImageSet=false;
-    private final MutableLiveData<Integer> create_success = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> create_success = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> email_success = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> id_success = new MutableLiveData<>();
+
     int SELECT_PICTURE = 200;
 
 
@@ -57,7 +62,9 @@ public class StudentUploadPhoto extends AppCompatActivity {
         studentProgress.setVisibility(View.GONE);
 
         DialogInit();
-        MutableInit();
+        createMLDInit();
+        emailMLDInit();
+        idMLDInit();
 
 
         //To Backend: What data y'all get:
@@ -70,9 +77,6 @@ public class StudentUploadPhoto extends AppCompatActivity {
         id = bundle.getString("id");
         major = bundle.getString("major");
 
-        //showToast(fName + " " + lName + " (" + id + ")\n"
-                //+ major + " " + email + "\nPass: " + password);
-        //End data
 
         bUploadImage = (Button)findViewById(R.id.uploadImageButton);
 
@@ -89,7 +93,7 @@ public class StudentUploadPhoto extends AppCompatActivity {
 
     // this function is triggered when
     // the Select Image Button is clicked
-    void imageChooser() {
+    private void imageChooser() {
 
         // create an instance of the
         // intent of the type image
@@ -129,17 +133,19 @@ public class StudentUploadPhoto extends AppCompatActivity {
 
 
 
-
-
-
-    private void showToast(String text)
-    {
-        Toast.makeText(StudentUploadPhoto.this, text, Toast.LENGTH_LONG).show();
-    }
-
-    public void openProfile() {
+    private void openProfile() {
         //What unique identifier will be used to draw up profile page? Email?
         Intent i = new Intent(this, StudentProfile.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("email", email);
+        bundle.putString("uscID",id);
+        i.putExtras(bundle);
+        startActivity(i);
+    }
+
+    private void openSignUp() {
+        //What unique identifier will be used to draw up profile page? Email?
+        Intent i = new Intent(this, StudentSignUpStart.class);
         Bundle bundle = new Bundle();
         bundle.putString("email", email);
         bundle.putString("uscID",id);
@@ -152,8 +158,113 @@ public class StudentUploadPhoto extends AppCompatActivity {
 
     public void submit(View v){
         studentProgress.setVisibility(View.VISIBLE);
+
+        FbQuery.checkEmailExists(email,email_success);
+
+    }
+
+
+    private void AmplifyInit(){
+        try {
+            Amplify.addPlugin(new AWSCognitoAuthPlugin());
+            Amplify.addPlugin(new AWSS3StoragePlugin());
+            Amplify.configure(getApplicationContext());
+        } catch (AmplifyException e) {
+            Log.i("MyAmplifyApp", "could not add plugins ");
+        }
+    }
+
+    private void DialogInit(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Status of Action");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Yes",
+                new DialogInterface
+                        .OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                                        int which)
+                    {
+
+                        if(!email_success.getValue()){
+                            openSignUp();
+                            return;
+                        }
+                        if(!id_success.getValue()){
+                            openSignUp();
+                            return;
+                        }
+                        if(!create_success.getValue()){
+                            openSignUp();
+                            return;
+                        }
+                        openProfile();
+                    }
+                });
+        alertDialog = builder.create();
+    }
+
+    private void createMLDInit(){
+        final Observer<Boolean> create_obs = new Observer<Boolean>(){
+            @Override
+            public void onChanged(@Nullable final Boolean isSuccess){
+                if(isSuccess){
+                    //stop progress bar
+                    studentProgress.setVisibility(View.GONE);
+                    //Generate popupmessage
+                    Log.d("Create", "success");
+
+
+                    LogInOut.SaveData(StudentUploadPhoto.this,email,Long.valueOf(id));
+
+                    alertDialog.setMessage("Succeeded in creating your account");
+                    alertDialog.show();
+                }
+                else{
+                    studentProgress.setVisibility(View.GONE);
+                    //switch page
+                    alertDialog.setMessage("Could not create your account successfully");
+                    alertDialog.show();
+                }
+
+
+            }
+
+        };
+        create_success.observe(this, create_obs);
+    }
+
+    private void emailMLDInit(){
+        final Observer<Boolean> email_obs = new Observer<Boolean>(){
+            @Override
+            public void onChanged(@Nullable final Boolean isSuccess){
+                if(isSuccess){
+
+                    FbQuery.checkUSCidExists(Long.valueOf(id),id_success);
+                }
+                else{
+                    studentProgress.setVisibility(View.GONE);
+                    //switch page
+                    alertDialog.setMessage("This Email is already in use");
+                    alertDialog.show();
+                }
+
+            }
+
+        };
+        email_success.observe(this, email_obs);
+    }
+
+    private void idMLDInit(){
+        final Observer<Boolean> id_obs = new Observer<Boolean>(){
+            @Override
+            public void onChanged(@Nullable final Boolean isSuccess){
+                if(isSuccess){
+
+
         if(ImageSet==false){
-//            CreateAccount.Create(fName, lName, email,password,false,create_success);
             CreateAccount.CreateStudent(fName,lName,email,password,Long.valueOf(id),major,create_success);
             return;
         }
@@ -177,94 +288,18 @@ public class StudentUploadPhoto extends AppCompatActivity {
         }
         CreateAccount.CreateStudent(fName, lName, email,password,exampleInputStream,Long.valueOf(id),major,create_success);
 
-    }
-
-
-    public void AmplifyInit(){
-        try {
-            Amplify.addPlugin(new AWSCognitoAuthPlugin());
-            Amplify.addPlugin(new AWSS3StoragePlugin());
-            Amplify.configure(getApplicationContext());
-        } catch (AmplifyException e) {
-            Log.i("MyAmplifyApp", "could not add plugins ");
-        }
-    }
-
-    public void DialogInit(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setTitle("Status of Action");
-        builder.setCancelable(false);
-        builder.setPositiveButton("Yes",
-                new DialogInterface
-                        .OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog,
-                                        int which)
-                    {
-                        openProfile();
-                    }
-                });
-        alertDialog = builder.create();
-    }
-
-    public void MutableInit(){
-        final Observer<Integer> obs = new Observer<Integer>(){
-            @Override
-            public void onChanged(@Nullable final Integer b){
-                if(b==null){
-                    alertDialog.setMessage("Failed to work");
-                    alertDialog.show();
-                    return;
-                }
-                if(b==0){
-
-                    studentProgress.setVisibility(View.GONE);
-                    alertDialog.setMessage("Error. This Email already exists.");
-                    alertDialog.show();
-
-
-
-                }
-                else if(b==1){
-                    studentProgress.setVisibility(View.GONE);
-                    //switch page
-                    alertDialog.setMessage("Error. Failed to create your account successfully");
-                    alertDialog.show();
-
-                }
-                else if(b==2){
-                    studentProgress.setVisibility(View.GONE);
-                    //switch page
-                    alertDialog.setMessage("Error. This ID already exists");
-                    alertDialog.show();
-
-                }
-                else if(b==3){
-                    studentProgress.setVisibility(View.GONE);
-                    //switch page
-                    alertDialog.setMessage("Could not upload image to AWS S3 storage");
-                    alertDialog.show();
-
                 }
                 else{
-                    //stop progress bar
                     studentProgress.setVisibility(View.GONE);
-                    //Generate popupmessage
-                    Log.d("Create", "success");
-
-
-                    LogInOut.SaveData(StudentUploadPhoto.this,email,Long.valueOf(id));
-
-                    alertDialog.setMessage("Succeeded in creating your account");
+                    //switch page
+                    alertDialog.setMessage("This id is already in use");
                     alertDialog.show();
-
                 }
+
             }
 
         };
-        create_success.observe(this, obs);
+        id_success.observe(this, id_obs);
     }
 }
 

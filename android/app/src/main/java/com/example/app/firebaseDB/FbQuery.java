@@ -28,7 +28,8 @@ import java.util.List;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
 public class FbQuery implements FirestoreConnector {
-    public static void checkUSCidExists(Long uscID, Account acc, MutableLiveData<Integer> success) {
+    //Refactored
+    public static void checkUSCidExists(Long uscID, MutableLiveData<Boolean> success) {
         CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
         Query query = accounts.whereEqualTo("uscID", uscID);
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -39,13 +40,12 @@ public class FbQuery implements FirestoreConnector {
                         Log.d("EXIST", "USC ID " + uscID + " exists!");
 
                         // call callback function
-                        success.setValue(2);
+                        success.setValue(false);
 
                     } else {
                         Log.d("EXIST", "USC ID " + uscID + " does not exist!");
 
-                        // call callback function
-                        FbUpdate.createAccount(acc, success);
+                        success.setValue(true);
                     }
                 }
             }
@@ -53,29 +53,6 @@ public class FbQuery implements FirestoreConnector {
     }
 
 
-    public static void checkUSCidExists(Long uscID, Account acc, MutableLiveData<Integer> success, InputStream stream) {
-        CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
-        Query query = accounts.whereEqualTo("uscID", uscID);
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    if (!task.getResult().isEmpty()) {
-                        Log.d("EXIST", "USC ID " + uscID + " exists!");
-
-                        // call callback function
-                        success.setValue(2);
-
-                    } else {
-                        Log.d("EXIST", "USC ID " + uscID + " does not exist!");
-
-                        // call callback function
-                        FbUpdate.createAccount(acc, success,stream);
-                    }
-                }
-            }
-        });
-    }
     public static void getAllBuildings(MutableLiveData<List<Building>> buildingsMLD) {
         FirestoreConnector.getDB().collection("Buildings").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -189,10 +166,8 @@ public class FbQuery implements FirestoreConnector {
             }
         });
     }
-
-
-    // Arjun: overloaded func to allow for sync call to create account with not pic
-    public static void checkEmailExists(String email, Account acc, MutableLiveData<Integer> create_success,Boolean isManager) {
+    // Refactored
+    public static void checkEmailExists(String email, MutableLiveData<Boolean> success) {
         CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
         Query query = accounts.whereEqualTo("email", email);
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -203,56 +178,16 @@ public class FbQuery implements FirestoreConnector {
                         Log.d("EXIST", "Email " + email + " exists!");
 
                         // call callback function
-                        create_success.setValue(0);
+                        success.setValue(false);
                     } else {
                         Log.d("EXIST", "Email " + email + " does not exist!");
-
-                        // call callback function
-//                        FirebaseTest.createAccount(acc, create_success);
-                        if(isManager){
-                            FbUpdate.createAccount(acc, create_success);
-                        }
-                        else{
-                            Long id= ((StudentAccount)acc).getUscID();
-                            FbQuery.checkUSCidExists(id,acc,create_success);
-                        }
+                        success.setValue(true);
 
                     }
                 }
             }
         });
     }
-
-    // Arjun: overloaded func to allow for sync call to create account with pic
-    public static void checkEmailExists(String email, MutableLiveData<Integer> success, Account acc, InputStream stream,Boolean isManager) {
-        CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
-        Query query = accounts.whereEqualTo("email", email);
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    if (!task.getResult().isEmpty()) {
-                        Log.d("EXIST", "Email " + email + " exists!");
-
-                        // call callback function
-                        success.setValue(0);
-                    } else {
-                        Log.d("EXIST", "Email " + email + " does not exist!");
-
-                        // call callback function
-                        if(isManager){
-                            FbUpdate.createAccount(acc, success, stream);
-                        }
-                        else{
-                            Long id= ((StudentAccount)acc).getUscID();
-                            FbQuery.checkUSCidExists(id,acc,success,stream);
-                        }
-                    }
-                }
-            }
-        });
-    }
-
 
     public static void authenticate(String email, String password, MutableLiveData<Boolean> login_success) {
 

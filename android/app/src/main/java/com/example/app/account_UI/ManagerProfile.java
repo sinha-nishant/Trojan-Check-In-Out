@@ -144,7 +144,7 @@ public class ManagerProfile extends AppCompatActivity {
                         Log.i("photo","mutable null");
                     }
                     pb.setVisibility(View.VISIBLE);
-                    uploadPhoto.uploadUpdate(exampleInputStream,email,upload_success);
+                    uploadPhoto.upload(exampleInputStream,email,upload_success);
 
 
                 }
