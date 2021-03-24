@@ -17,6 +17,7 @@ import androidx.test.rule.ActivityTestRule;
 import com.example.app.R;
 import com.example.app.account_UI.StudentProfile;
 import com.example.app.building.Building;
+import com.example.app.building.BuildingsOccupancyList;
 import com.example.app.firebaseDB.FbQuery;
 import com.google.firebase.FirebaseApp;
 
@@ -55,25 +56,13 @@ public class BuildingsOccupancyListTest {
     public static List<Building>  post_value;
 
     class Sortbyname implements Comparator<Building> {
-        // Used for sorting in ascending order of
-        // name
         public int compare(Building a, Building b)
         {
             return a.getName().compareTo(b.getName());
         }
     }
-
-
     @Test
     public void onStart() {
-        //get the card by finding buildingname using withChild(buildingname)
-        //once we have card try withChild("occuapncy/cap")
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
         MutableLiveData<List<Building>> builingMLD = new MutableLiveData<>();
@@ -88,39 +77,19 @@ public class BuildingsOccupancyListTest {
         FbQuery.getAllBuildings(builingMLD);
 
         try {
-            Thread.sleep(5000);
+            Thread.sleep(4000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         Collections.sort(post_value,new Sortbyname());
-
         for(int i=0;i<post_value.size();i++){
             String occupancymessage = "Occupancy: "+post_value.get(i).getOccupancy().toString()+"/100";
             onView(ViewMatchers.withId(R.id.recyclerList))
                     .perform(RecyclerViewActions
-                            .scrollTo(hasDescendant(withText(post_value.get(i).getName()))))
+                            .scrollToPosition(i))
                     .check(matches(hasDescendant(allOf(withText(post_value.get(i).getName()), hasSibling(withText(occupancymessage))))));
 
         }
-
-
-        //getBuildings
-        //use
-        /* onView(ViewMatchers.withId(R.id.recyclerList))
-                .perform(RecyclerViewActions
-                .scrollTo(hasDescendant(withText(building.GetName()))))
-                .check(matches(hasDescendant(allOf(withText(building.GetName()), hasSibling(withText("Occupancy: "+building.GetOccupancy().toString()+"/100"))))));*/
-
-//        onView(ViewMatchers.withId(R.id.recyclerList))
-//                .perform(RecyclerViewActions
-//                .scrollTo(hasDescendant(withText("Annenberg House"))))
-//                .check(matches(hasDescendant(allOf(withText("Annenberg House"), hasSibling(withText("Occupancy: 89/100"))))));
-//        try{Thread.sleep(2001);}
-//
-//        catch (Exception e){
-//            e.printStackTrace();
-//
-//        }
     }
 
 }
