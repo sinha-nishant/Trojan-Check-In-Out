@@ -1,10 +1,17 @@
 package com.example.app.building;
 
+import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
 import androidx.annotation.ContentView;
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.assertion.ViewAssertions;
@@ -15,12 +22,21 @@ import androidx.test.rule.ActivityTestRule;
 
 import com.example.app.R;
 import com.example.app.account_UI.QRScan;
+import com.example.app.firebaseDB.FbQuery;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.FirebaseApp;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.List;
+import java.util.concurrent.Executor;
+
+import javax.annotation.Nullable;
+
+import kotlinx.coroutines.GlobalScope;
 
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
@@ -45,8 +61,7 @@ import static org.junit.Assert.*;
 public class BuildingsOccupancyListTest {
 
     @Rule
-    public ActivityTestRule<BuildingsOccupancyList> activityRule =
-            new ActivityTestRule(BuildingsOccupancyList.class);
+    public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
 
 
 
@@ -54,25 +69,53 @@ public class BuildingsOccupancyListTest {
     public void onStart() {
         //get the card by finding buildingname using withChild(buildingname)
         //once we have card try withChild("occuapncy/cap")
+        Context context = ApplicationProvider.getApplicationContext();
+        FirebaseApp.initializeApp(context);
+        MutableLiveData<List<Building>> builingMLD = new MutableLiveData<>();
 
-        try{Thread.sleep(2001);}
+        final Observer<List<Building>> observer = new Observer<List<Building>>(){
 
-        catch (Exception e){
+            @Override
+            public void onChanged(@Nullable final List<Building> buildings){
+
+               for(int i=0;i<buildings.size();i++){
+                   String occupancymessage = "Occupancy: "+buildings.get(i).getOccupancy().toString()+"/100";
+                   onView(ViewMatchers.withId(R.id.recyclerList))
+                           .perform(RecyclerViewActions
+                                   .scrollTo(hasDescendant(withText(buildings.get(i).getName()))))
+                           .check(matches(hasDescendant(allOf(withText(buildings.get(i).getName()), hasSibling(withText(occupancymessage))))));
+
+               }
+
+            }
+        };
+        builingMLD.observeForever(observer);
+        FbQuery.getAllBuildings(builingMLD);
+
+        FbQuery.getAllBuildings(builingMLD);
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
             e.printStackTrace();
-
         }
 
-//        onView(ViewMatchers.withId(R.id.recyclerList))
-//                // scrollTo will fail the test if no item matches.
-//                .perform(RecyclerViewActions.scrollTo(
-//                        hasDescendant(allOf(withText("Annenberg House"),
-//                                hasSibling(withText(containsString("Occupancy: 88/100"))),
-//                                isDisplayed()))
-//        ));
 
-        onView(ViewMatchers.withId(R.id.recyclerList))
+        //getBuildings
+        //use
+        /* onView(ViewMatchers.withId(R.id.recyclerList))
                 .perform(RecyclerViewActions
-                .scrollTo(hasDescendant(withText("Annenberg House"))))
-                .check(matches(hasDescendant(allOf(withText("Annenberg House"), hasSibling(withText("Occupancy: 89/100"))))));
+                .scrollTo(hasDescendant(withText(building.GetName()))))
+                .check(matches(hasDescendant(allOf(withText(building.GetName()), hasSibling(withText("Occupancy: "+building.GetOccupancy().toString()+"/100"))))));*/
+
+//        onView(ViewMatchers.withId(R.id.recyclerList))
+//                .perform(RecyclerViewActions
+//                .scrollTo(hasDescendant(withText("Annenberg House"))))
+//                .check(matches(hasDescendant(allOf(withText("Annenberg House"), hasSibling(withText("Occupancy: 89/100"))))));
+//        try{Thread.sleep(2001);}
+//
+//        catch (Exception e){
+//            e.printStackTrace();
+//
+//        }
     }
 }

@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.InputStream;
@@ -75,7 +76,35 @@ public class FbQuery implements FirestoreConnector {
             }
         });
     }
+    public static void getAllBuildings(MutableLiveData<List<Building>> buildingsMLD) {
+        FirestoreConnector.getDB().collection("Buildings").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                    List<Building> buildings = new ArrayList<>();
+                    for (QueryDocumentSnapshot qds : task.getResult()) {
 
+                        buildings.add((Building) qds.toObject(Building.class));
+                        List<Long> students = new ArrayList<>();
+                        if (((List<Long>) qds.get("students")) == null) {
+                            Log.d("BUILDING", "NULL " + qds.get("students"));
+                        } else {
+                            for (Long uscID : (List<Long>) qds.get("students")) {
+                                Log.d("BUILDING", "ITERATED");
+                                students.add(uscID);
+                            }
+                        }
+
+                        buildings.get(buildings.size() - 1).setStudents_ids(students);
+                        Log.d("BUILDING", buildings.get(buildings.size() - 1).toString());
+                        buildingsMLD.setValue(buildings);
+                    }
+
+// callback function
+                }
+            }
+        });
+    }
     // DataRetriever
     public static void getBuilding(String buildingName, MutableLiveData<Building> buildingMLD) {
         FirestoreConnector.getDB().collection("Buildings").whereEqualTo("name", buildingName).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
