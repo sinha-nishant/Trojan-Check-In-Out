@@ -23,8 +23,8 @@ public class SearchTest {
     public void search() {
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
-        Long uscID=8694251037L;
-        String emailExpected = "sancho@usc.edu";
+        Long uscID=4204204269L;
+        String emailExpected = "fname.lname@usc.edu";
         MutableLiveData<StudentAccount> student = new MutableLiveData<>();
         Observer<StudentAccount> saObserver = new Observer<StudentAccount>() {
             @Override

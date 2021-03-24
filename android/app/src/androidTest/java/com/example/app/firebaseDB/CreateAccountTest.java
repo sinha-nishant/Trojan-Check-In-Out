@@ -51,17 +51,7 @@ public class CreateAccountTest {
         //will just run in the background without testing the Firebase database if the code isn't
         //there
         try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        FbUpdate.deleteAccount(email, new MutableLiveData<Integer>());
-        //To get the test to run add this - Firebase takes time to execute the query and the thread
-        //will just run in the background without testing the Firebase database if the code isn't
-        //there
-        try {
-            Thread.sleep(5000);
+            Thread.sleep(15000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

@@ -121,6 +121,7 @@ public class FbUpdate  implements FirestoreConnector {
                                 } else {
 
                                     //callback added by Arjun
+                                    Log.d("TEST","Did not Delete Account");
                                     delete_success.setValue(1);
                                 }
                             }

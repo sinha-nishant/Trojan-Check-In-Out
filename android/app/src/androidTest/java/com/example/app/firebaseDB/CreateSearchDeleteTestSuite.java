@@ -20,7 +20,8 @@ import static org.junit.Assert.assertEquals;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         CreateAccountTest.class,
-        SearchTest.class
+        SearchTest.class,
+        DeleteAccountTest.class
 })
 public class CreateSearchDeleteTestSuite {
 

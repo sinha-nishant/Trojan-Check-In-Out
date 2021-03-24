@@ -24,18 +24,11 @@ public class DeleteAccountTest {
     //is not tested
     public void deleteAccountTest() {
         //values to initialize account
-        String firstName= "Fname";
-        String lastName="Lname";
         String email="fname.lname@usc.edu";
-        String password="pass1234";
-        String profilePicture="";
-        Long uscID = 4204204269L;
-        String major = "CSBA";
-        StudentAccount a = new StudentAccount(firstName,lastName,email,password,profilePicture, uscID,major, false);
 
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
-        Integer intExpected = 4;
+        Integer intExpected = 2;
         MutableLiveData<Integer> success = new MutableLiveData<>();
         Observer<Integer> successObserver = new Observer<Integer>() {
             @Override
@@ -45,22 +38,12 @@ public class DeleteAccountTest {
         };
         success.observeForever(successObserver);
 
-        FbUpdate.createAccount(a,success);
+        FbUpdate.deleteAccount(email,success);
         //To get the test to run add this - Firebase takes time to execute the query and the thread
         //will just run in the background without testing the Firebase database if the code isn't
         //there
         try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        FbUpdate.deleteAccount(email, new MutableLiveData<Integer>());
-        //To get the test to run add this - Firebase takes time to execute the query and the thread
-        //will just run in the background without testing the Firebase database if the code isn't
-        //there
-        try {
-            Thread.sleep(5000);
+            Thread.sleep(15000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
