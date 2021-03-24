@@ -1,50 +1,30 @@
 package com.example.app.blackBox;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.view.View;
-
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.test.core.app.ApplicationProvider;
-import androidx.test.espresso.FailureHandler;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.rule.ActivityTestRule;
-
 import com.example.app.R;
-import com.example.app.account_UI.StudentProfile;
 import com.example.app.building.Building;
 import com.example.app.building.BuildingsOccupancyList;
 import com.example.app.firebaseDB.FbQuery;
 import com.google.firebase.FirebaseApp;
-
-import org.hamcrest.Matcher;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
 import javax.annotation.Nullable;
-
-import static android.content.Context.MODE_PRIVATE;
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.RootMatchers.isDialog;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.hasSibling;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.hamcrest.Matchers.allOf;
-import static org.junit.Assert.*;
 public class BuildingsOccupancyListTest {
 
     @Rule
@@ -63,6 +43,7 @@ public class BuildingsOccupancyListTest {
     }
     @Test
     public void onStart() {
+
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
         MutableLiveData<List<Building>> builingMLD = new MutableLiveData<>();
