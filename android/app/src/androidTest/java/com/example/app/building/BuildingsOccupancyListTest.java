@@ -92,7 +92,6 @@ public class BuildingsOccupancyListTest {
         builingMLD.observeForever(observer);
         FbQuery.getAllBuildings(builingMLD);
 
-        FbQuery.getAllBuildings(builingMLD);
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
