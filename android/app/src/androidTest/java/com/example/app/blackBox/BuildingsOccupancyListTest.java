@@ -1,62 +1,46 @@
-package com.example.app.building;
+package com.example.app.blackBox;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
-import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.view.View;
 
-import androidx.annotation.ContentView;
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ApplicationProvider;
-import androidx.test.espresso.Espresso;
-import androidx.test.espresso.action.ViewActions;
-import androidx.test.espresso.assertion.ViewAssertions;
+import androidx.test.espresso.FailureHandler;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.rule.ActivityTestRule;
 
 import com.example.app.R;
-import com.example.app.account_UI.QRScan;
+import com.example.app.account_UI.StudentProfile;
+import com.example.app.building.Building;
 import com.example.app.firebaseDB.FbQuery;
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.FirebaseApp;
 
+import org.hamcrest.Matcher;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import java.util.List;
-import java.util.concurrent.Executor;
 
 import javax.annotation.Nullable;
 
-import kotlinx.coroutines.GlobalScope;
-
-import static androidx.test.espresso.Espresso.onData;
+import static android.content.Context.MODE_PRIVATE;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.scrollTo;
-import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.assertion.ViewAssertions.selectedDescendantsMatch;
-import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
+import static androidx.test.espresso.matcher.RootMatchers.isDialog;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.hasSibling;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withChild;
-import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.JMock1Matchers.equalTo;
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.*;
 public class BuildingsOccupancyListTest {
 
@@ -117,4 +101,5 @@ public class BuildingsOccupancyListTest {
 //
 //        }
     }
+
 }

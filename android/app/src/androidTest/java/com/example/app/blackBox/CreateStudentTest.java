@@ -1,11 +1,13 @@
-package com.example.app;
+package com.example.app.blackBox;
 
 import android.util.Log;
 import android.view.View;
 
 import androidx.test.espresso.FailureHandler;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
+import com.example.app.R;
 import com.example.app.pre_login_UI.LogInPage;
 import com.example.app.pre_login_UI.StudentSignUpStart;
 
@@ -71,7 +73,7 @@ public class CreateStudentTest {
         Log.d("email",email);
 
 
-        onView(withId(R.id.studentSignUpEmailAddress))
+        onView(ViewMatchers.withId(R.id.studentSignUpEmailAddress))
                 .perform(typeText(generatedString), closeSoftKeyboard());
         onView(withId(R.id.studentSignUpPassword))
                 .perform(typeText("pass"), closeSoftKeyboard());

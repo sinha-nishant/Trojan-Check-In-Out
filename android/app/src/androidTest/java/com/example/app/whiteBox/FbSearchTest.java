@@ -1,4 +1,4 @@
-package com.example.app.firebaseDB;
+package com.example.app.whiteBox;
 
 import android.content.Context;
 
@@ -7,37 +7,34 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.test.core.app.ApplicationProvider;
 
-import com.example.app.CreateStudentTest;
-import com.example.app.users.Account;
+import com.example.app.firebaseDB.FbQuery;
 import com.example.app.users.StudentAccount;
 import com.google.firebase.FirebaseApp;
 
 import org.junit.Rule;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
-public class checkUsedEmailTest {
+public class FbSearchTest {
     @Rule
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
+
     @Test
-    public void check() {
+    public void search() {
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
-        Long uscID= Long.valueOf(CreateStudentTest.uscID);
-        String emailExpected = CreateStudentTest.email;
-        Account acc= new StudentAccount("Ch","va",emailExpected,"passing",uscID,"Undeclared",false);
-        MutableLiveData<Boolean> mld = new MutableLiveData<>();
-        Observer<Boolean> email_obs = new Observer<Boolean>() {
+        Long uscID=4204204269L;
+        String emailExpected = "fname.lname@usc.edu";
+        MutableLiveData<StudentAccount> student = new MutableLiveData<>();
+        Observer<StudentAccount> saObserver = new Observer<StudentAccount>() {
             @Override
-            public void onChanged(Boolean Success) {
-                assertEquals(Success,false);
+            public void onChanged(StudentAccount studentAccount) {
+                assertEquals(emailExpected, studentAccount.getEmail());
             }
         };
-        mld.observeForever(email_obs);
-        FbQuery.checkEmailExists(emailExpected,mld);
-
-
+        student.observeForever(saObserver);
+        FbQuery.search(uscID,student);
         //To get the test to run add this - Firebase takes time to execute the query and the thread
         //will just run in the background without testing the Firebase database if the code isn't
         //there

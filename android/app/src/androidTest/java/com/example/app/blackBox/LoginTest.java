@@ -1,7 +1,8 @@
-package com.example.app;
+package com.example.app.blackBox;
 
 import android.view.View;
 
+import com.example.app.R;
 import com.example.app.pre_login_UI.LogInPage;
 
 
@@ -12,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import androidx.test.espresso.FailureHandler;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
@@ -41,7 +43,7 @@ public class LoginTest {
     @Test
     public void loginSuccess() throws InterruptedException {
 
-        onView(withId(R.id.editTextEmailLogin))// add email to textview
+        onView(ViewMatchers.withId(R.id.editTextEmailLogin))// add email to textview
                 .perform(typeText("sancho@usc.edu"), closeSoftKeyboard());
         onView(withId(R.id.editTextPasswordLogin))//add password to textview
                 .perform(typeText("pass"), closeSoftKeyboard());
@@ -58,8 +60,6 @@ public class LoginTest {
                 fail("Could not find alert");
             }
         }).check(matches(isDisplayed()));
-
-
 
     }
 }

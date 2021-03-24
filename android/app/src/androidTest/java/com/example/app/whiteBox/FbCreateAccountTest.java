@@ -1,4 +1,4 @@
-package com.example.app.firebaseDB;
+package com.example.app.whiteBox;
 
 import android.content.Context;
 
@@ -16,7 +16,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class CreateAccountTest {
+public class FbCreateAccountTest {
     @Rule
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
 

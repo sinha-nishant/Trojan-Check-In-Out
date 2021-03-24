@@ -1,5 +1,9 @@
 package com.example.app;
 
+import com.example.app.blackBox.BuildingsOccupancyListTest;
+import com.example.app.blackBox.CreateStudentTest;
+import com.example.app.blackBox.StudentDeleteTest;
+
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 

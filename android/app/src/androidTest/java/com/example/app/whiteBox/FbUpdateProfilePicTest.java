@@ -1,4 +1,4 @@
-package com.example.app.firebaseDB;
+package com.example.app.whiteBox;
 
 import android.content.Context;
 
@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.test.core.app.ApplicationProvider;
 
+import com.example.app.firebaseDB.FbUpdate;
 import com.example.app.users.StudentAccount;
 import com.google.firebase.FirebaseApp;
 
@@ -15,7 +16,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class UpdateProfilePicTest {
+public class FbUpdateProfilePicTest {
     @Rule
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
 

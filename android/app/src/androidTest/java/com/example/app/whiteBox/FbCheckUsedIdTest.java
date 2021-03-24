@@ -1,4 +1,4 @@
-package com.example.app.firebaseDB;
+package com.example.app.whiteBox;
 
 import android.content.Context;
 
@@ -7,7 +7,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.test.core.app.ApplicationProvider;
 
-import com.example.app.users.StudentAccount;
+import com.example.app.blackBox.CreateStudentTest;
+import com.example.app.firebaseDB.FbQuery;
 import com.google.firebase.FirebaseApp;
 
 import org.junit.Rule;
@@ -15,38 +16,33 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class DeleteAccountTest {
+public class FbCheckUsedIdTest {
+
     @Rule
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
-
     @Test
-    //test to check if the createAccount function works along with a built in deleteAccount that
-    //is not tested
-    public void deleteAccountTest() {
-        //values to initialize account
-        String email="fname.lname@usc.edu";
-
+    public void check() {
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
-        Integer intExpected = 2;
-        MutableLiveData<Integer> success = new MutableLiveData<>();
-        Observer<Integer> successObserver = new Observer<Integer>() {
+        Long uscID= Long.valueOf(CreateStudentTest.uscID);// should be user in an account
+        MutableLiveData<Boolean> mld = new MutableLiveData<>();
+        Observer<Boolean> id_obs = new Observer<Boolean>() {
             @Override
-            public void onChanged(Integer integer) {
-                assertEquals(intExpected,integer);
+            public void onChanged(Boolean Success) {
+                assertEquals(Success,false);
             }
         };
-        success.observeForever(successObserver);
+        mld.observeForever(id_obs);
+        FbQuery.checkUSCidExists(uscID,mld);
 
-        FbUpdate.deleteAccount(email,success);
+
         //To get the test to run add this - Firebase takes time to execute the query and the thread
         //will just run in the background without testing the Firebase database if the code isn't
         //there
         try {
-            Thread.sleep(15000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
     }
 }

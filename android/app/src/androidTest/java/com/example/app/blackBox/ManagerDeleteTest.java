@@ -1,4 +1,4 @@
-package com.example.app;
+package com.example.app.blackBox;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -18,11 +18,13 @@ import androidx.test.InstrumentationRegistry;
 import androidx.test.espresso.FailureHandler;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.espresso.intent.rule.IntentsTestRule;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 
+import com.example.app.R;
 import com.example.app.account_UI.ManagerProfile;
 import com.example.app.account_UI.StudentProfile;
 import com.example.app.account_UI.StudentProfileMenu;
@@ -52,23 +54,6 @@ public class ManagerDeleteTest {
     Intent intent;
     SharedPreferences.Editor preferencesEditor;
 
-//    @Rule
-//    public ActivityTestRule<StudentProfile> mActivityRule = new ActivityTestRule<>(
-//            StudentProfile.class,
-//            true,
-//            false
-//
-//    ); // Activity is not launched immediately
-
-
-//    @Override
-//    protected Intent getActivityIntent() {
-//        Context targetContext = getInstrumentation().getTargetContext();
-//        Intent result = new Intent(targetContext, StudentProfile.class);
-//        result.putExtra("email", "ManagerTest6@usc.edu");
-//        result.putExtra("uscID", "0");
-//        return result;
-//    }
 
     @Rule
     public ActivityTestRule<ManagerProfile> mActivityRule =
@@ -91,18 +76,14 @@ public class ManagerDeleteTest {
         editor.putString("email","ManagerTest6@usc.edu");
         editor.putLong( "uscid",0L);
         editor.apply();
-//        Intent result = new Intent(targetContext, StudentProfile.class);
-//        result.putExtra("email", "ManagerTest6@usc.edu");
-//        result.putExtra("uscID", "0");
     }
 
 
     @Test
     public void deleteSuccess() throws InterruptedException {
-//        mActivityRule.launchActivity(new Intent());
 
         Thread.sleep(5000);// wait 5 seconds for Firebase to bring back account data
-        onView(withId(R.id.button15))//click delete button
+        onView(ViewMatchers.withId(R.id.button15))//click delete button
                 .perform(click());
         Thread.sleep(5000);// wait 5 seconds for Firebase to bring back account data
 

@@ -1,4 +1,4 @@
-package com.example.app.firebaseDB;
+package com.example.app.whiteBox;
 
 import android.content.Context;
 
@@ -7,8 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.test.core.app.ApplicationProvider;
 
-import com.example.app.CreateStudentTest;
-import com.example.app.users.Account;
+import com.example.app.firebaseDB.FbUpdate;
 import com.example.app.users.StudentAccount;
 import com.google.firebase.FirebaseApp;
 
@@ -17,35 +16,38 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class checkUsedIdTest {
-
+public class FbDeleteAccountTest {
     @Rule
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
+
     @Test
-    public void check() {
+    //test to check if the createAccount function works along with a built in deleteAccount that
+    //is not tested
+    public void deleteAccountTest() {
+        //values to initialize account
+        String email="fname.lname@usc.edu";
+
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
-        Long uscID= Long.valueOf(CreateStudentTest.uscID);// should be user in an account
-        String emailExpected = CreateStudentTest.email;//should be not used in an accpunt yet
-        Account acc= new StudentAccount("Ch","va",emailExpected,"passing",uscID,"Undeclared",false);
-        MutableLiveData<Boolean> mld = new MutableLiveData<>();
-        Observer<Boolean> id_obs = new Observer<Boolean>() {
+        Integer intExpected = 2;
+        MutableLiveData<Integer> success = new MutableLiveData<>();
+        Observer<Integer> successObserver = new Observer<Integer>() {
             @Override
-            public void onChanged(Boolean Success) {
-                assertEquals(Success,false);
+            public void onChanged(Integer integer) {
+                assertEquals(intExpected,integer);
             }
         };
-        mld.observeForever(id_obs);
-        FbQuery.checkUSCidExists(uscID,mld);
+        success.observeForever(successObserver);
 
-
+        FbUpdate.deleteAccount(email,success);
         //To get the test to run add this - Firebase takes time to execute the query and the thread
         //will just run in the background without testing the Firebase database if the code isn't
         //there
         try {
-            Thread.sleep(5000);
+            Thread.sleep(15000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
     }
 }

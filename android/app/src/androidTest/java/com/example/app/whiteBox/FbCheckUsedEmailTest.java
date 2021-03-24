@@ -1,4 +1,4 @@
-package com.example.app.firebaseDB;
+package com.example.app.whiteBox;
 
 import android.content.Context;
 
@@ -7,33 +7,34 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.test.core.app.ApplicationProvider;
 
-import com.example.app.users.StudentAccount;
+import com.example.app.blackBox.CreateStudentTest;
+import com.example.app.firebaseDB.FbQuery;
 import com.google.firebase.FirebaseApp;
 
 import org.junit.Rule;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-public class SearchTest {
+public class FbCheckUsedEmailTest {
     @Rule
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
-
     @Test
-    public void search() {
+    public void check() {
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
-        Long uscID=4204204269L;
-        String emailExpected = "fname.lname@usc.edu";
-        MutableLiveData<StudentAccount> student = new MutableLiveData<>();
-        Observer<StudentAccount> saObserver = new Observer<StudentAccount>() {
+        String emailExpected = CreateStudentTest.email;
+        MutableLiveData<Boolean> mld = new MutableLiveData<>();
+        Observer<Boolean> email_obs = new Observer<Boolean>() {
             @Override
-            public void onChanged(StudentAccount studentAccount) {
-                assertEquals(emailExpected, studentAccount.getEmail());
+            public void onChanged(Boolean Success) {
+                assertEquals(Success,false);
             }
         };
-        student.observeForever(saObserver);
-        FbQuery.search(uscID,student);
+        mld.observeForever(email_obs);
+        FbQuery.checkEmailExists(emailExpected,mld);
+
+
         //To get the test to run add this - Firebase takes time to execute the query and the thread
         //will just run in the background without testing the Firebase database if the code isn't
         //there
