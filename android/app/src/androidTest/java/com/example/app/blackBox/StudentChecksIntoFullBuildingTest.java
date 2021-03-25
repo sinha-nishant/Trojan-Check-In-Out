@@ -31,7 +31,7 @@ public class StudentChecksIntoFullBuildingTest extends TestCase {
 
     // going to make a student check into the already full building
     public FbCheckInOut fbcheckinout = new FbCheckInOut();
-    long usdID = 4829692065;
+    //long usdID = 4829692065; THIS LINE COMMENTED OUT BY JOHN FOR ERROR
     // just creating an empty studentactivity list for now
     List<StudentActivity> sa_list = new ArrayList<StudentActivity>();
     // creating instance of MutableLiveData?
