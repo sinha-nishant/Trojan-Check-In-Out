@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -53,13 +54,12 @@ public class QRScan extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_q_r_scan_test);
-        Bundle bundle = getIntent().getExtras();
-        email = bundle.getString("email");
-        id = bundle.getString("uscID");
-        loadingCircle = findViewById(R.id.progresBar);
-        loadingCircle.setVisibility(View.INVISIBLE);
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs",MODE_PRIVATE);
         Long retrieveID = sharedPreferences.getLong("uscid",0L);
+        email = sharedPreferences.getString("email","");
+        id = retrieveID.toString();
+        loadingCircle = findViewById(R.id.progresBar);
+        loadingCircle.setVisibility(View.INVISIBLE);
         builder = new AlertDialog.Builder(this);
         final Observer<Boolean> checkOutObserver = new Observer<Boolean>(){
             @Override
@@ -135,10 +135,13 @@ public class QRScan extends AppCompatActivity {
         mCodeScanner.setDecodeCallback(new DecodeCallback() {
             @Override
             public void onDecoded(@NonNull final Result result) {
+                Log.d("IT WORKSSSSSSS","DECODEDD");
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         //Long uscID, StudentActivity sa, MutableLiveData<Boolean> success
+                        Log.d("IT WORKSSSSSSS","DECODEDD");
+
                         loadingCircle.setVisibility(View.VISIBLE);
                         postScanResult=result;
                         FbQuery.search(retrieveID, studentMLD);
@@ -207,5 +210,8 @@ public class QRScan extends AppCompatActivity {
         bundle.putString("uscID", id);
         i.putExtras(bundle);
         startActivity(i);
+    }
+    public CodeScanner getmCodeScanner(){
+        return mCodeScanner;
     }
 }

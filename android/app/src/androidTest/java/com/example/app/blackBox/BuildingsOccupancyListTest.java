@@ -15,8 +15,6 @@ import com.example.app.firebaseDB.FbQuery;
 import com.google.firebase.FirebaseApp;
 import org.junit.Rule;
 import org.junit.Test;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import javax.annotation.Nullable;
 import static androidx.test.espresso.Espresso.onView;
@@ -35,12 +33,6 @@ public class BuildingsOccupancyListTest {
 
     public static List<Building>  post_value;
 
-    class Sortbyname implements Comparator<Building> {
-        public int compare(Building a, Building b)
-        {
-            return a.getName().compareTo(b.getName());
-        }
-    }
     @Test
     public void onStart() {
 
@@ -62,7 +54,7 @@ public class BuildingsOccupancyListTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Collections.sort(post_value,new Sortbyname());
+
         for(int i=0;i<post_value.size();i++){
             String occupancymessage = "Occupancy: "+post_value.get(i).getOccupancy().toString()+"/100";
             onView(ViewMatchers.withId(R.id.recyclerList))

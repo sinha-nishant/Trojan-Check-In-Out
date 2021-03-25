@@ -13,7 +13,7 @@ import org.junit.Test;
 import static android.content.Context.MODE_PRIVATE;
 
 
-public class SharedPrefenceTest {
+public class SharedPreferencesTest {
     @Rule
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
 

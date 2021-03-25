@@ -51,7 +51,7 @@ public class FbQuery implements FirestoreConnector {
 
 
     public static void getAllBuildings(MutableLiveData<List<Building>> buildingsMLD) {
-        FirestoreConnector.getDB().collection("Buildings").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        FirestoreConnector.getDB().collection("Buildings").orderBy("name").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful() && !task.getResult().isEmpty()) {
