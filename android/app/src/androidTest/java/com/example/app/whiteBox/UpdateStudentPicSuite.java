@@ -6,6 +6,6 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 
-@Suite.SuiteClasses({FbCreateStudentAccountTest.class,FbUpdateStudentProfilePicTest.class,FbDeleteAccountTest.class})
+@Suite.SuiteClasses({FbCreateStudentAccountTest.class,FbUpdateStudentProfilePicTest.class, FbDeleteStudentAccountTest.class})
 public class UpdateStudentPicSuite {
 }

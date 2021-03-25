@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
 @Suite.SuiteClasses({
         FbCreateStudentAccountTest.class,
         FbStudentSearchTest.class,
-        FbDeleteAccountTest.class
+        FbDeleteStudentAccountTest.class
 })
 public class FbCreateSearchDeleteStudentTestSuite {
 

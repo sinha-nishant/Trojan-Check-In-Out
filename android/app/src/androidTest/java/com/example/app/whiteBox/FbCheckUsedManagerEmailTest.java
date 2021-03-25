@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.test.core.app.ApplicationProvider;
 
-import com.example.app.firebaseDB.FbUpdate;
+import com.example.app.firebaseDB.FbQuery;
 import com.google.firebase.FirebaseApp;
 
 import org.junit.Rule;
@@ -16,42 +16,36 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-public class FbDeleteAccountTest {
+public class FbCheckUsedManagerEmailTest {
     @Rule
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
-
     @Test
-    //test to check if the createAccount function works along with a built in deleteAccount that
-    //is not tested
-    public void deleteAccountTest() {
-        //values to initialize account
-        String email= FbCreateStudentAccountTest.email;
-
+    public void check() {
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
-        Integer intExpected = 2;
-        MutableLiveData<Integer> success = new MutableLiveData<>();
-        Observer<Integer> successObserver = new Observer<Integer>() {
+        String emailExpected = FbCreateManagerAccountTest.email;
+        MutableLiveData<Boolean> mld = new MutableLiveData<>();
+        Observer<Boolean> email_obs = new Observer<Boolean>() {
             @Override
-            public void onChanged(Integer integer) {
-                if(integer==null){
-                    fail("did not set integer");
-                }
-                assertEquals(intExpected,integer);
+            public void onChanged(Boolean Success) {
+                assertEquals(Success,false);
             }
         };
-        success.observeForever(successObserver);
+        mld.observeForever(email_obs);
+        FbQuery.checkEmailExists(emailExpected,mld);
 
-        FbUpdate.deleteAccount(email,success);
+
         //To get the test to run add this - Firebase takes time to execute the query and the thread
         //will just run in the background without testing the Firebase database if the code isn't
         //there
         try {
-            Thread.sleep(15000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
+        if(mld.getValue()==null){
+            fail("did not update MLD");
+        }
 
     }
 }

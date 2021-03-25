@@ -6,7 +6,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 
 @Suite.SuiteClasses({FbCreateStudentAccountTest.class, FbCheckUsedStudentEmailTest.class, FbCheckUsedIdTest.class,
-        FbDeleteAccountTest.class})
+        FbDeleteStudentAccountTest.class})
 
 
 public class checkIdEmailSuite {
