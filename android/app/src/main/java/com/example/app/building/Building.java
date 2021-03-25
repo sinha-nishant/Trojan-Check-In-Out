@@ -1,14 +1,10 @@
 package com.example.app.building;
 
-
-
 import com.example.app.users.StudentAccount;
 
 import java.util.ArrayList;
 import java.util.List;
-interface Test{
-    public void callback(boolean didCheckIn);
-}
+
 public class Building {
     private String name;
     private Integer capacity;
@@ -44,14 +40,13 @@ public class Building {
         return qrCodeURL;
     }
     public List<StudentAccount> getStudents(){
-
         return new ArrayList<StudentAccount>();
     }
     public List<Long> getStudents_ids(){
         return this.students_ids;
     }
-    //setters
 
+    //setters
     public void setName(String name){
         this.name=name;
     }
@@ -67,37 +62,4 @@ public class Building {
     public void setStudents_ids(List<Long> students_ids){
         this.students_ids=students_ids;
     }
-
-//    public boolean checkIn(StudentAccount student, Test callback){
-//        call firebase check in
-//        maybe pass a callback that if sucess will do the following:
-//            do whatever is necessary to send a pop up message with the capacity if full
-//
-//       Test callbackk = new Test(){
-//           public void callback(Building b, StudentAccount s){
-//               b.students_ids.add(123123123L);
-//               b.students_accounts.add(s);
-//
-//
-//               x= x+1;
-//           }
-//       };
-//StudentActivity sa = new StudentActivity();
-//       FirebaseTest.checkIn(student.getUscID(), sa, callbackk);
-//        return true;
-//    }
-//    public boolean checkOut(StudentAccount student){
-//        return true;
-//    }
-//
-//    public String toString() {
-//        Integer numStudents;
-//        if (this.students_ids == null) {
-//            numStudents = 0;
-//        }
-//        else {
-//            numStudents = this.students_ids.size();
-//        }
-//        return this.name + " capacity: " + this.capacity + " current: " + numStudents;
-//    }
 }

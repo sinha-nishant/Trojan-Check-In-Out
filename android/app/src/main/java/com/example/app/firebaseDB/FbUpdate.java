@@ -1,12 +1,10 @@
 package com.example.app.firebaseDB;
 
 import android.util.Log;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.app.firebaseDB.FirestoreConnector;
 import com.example.app.log_create.CreateAccount;
 import com.example.app.log_create.uploadPhoto;
 import com.example.app.users.Account;

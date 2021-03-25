@@ -5,11 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
-
 import androidx.test.core.app.ApplicationProvider;
-
-
-import com.example.app.log_create.LogInOut;
 
 import org.junit.Rule;
 import org.junit.Test;
