@@ -10,8 +10,10 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({CreateStudentTest.class, FbCheckUsedEmailTest.class, FbCheckUsedIdTest.class,
-         StudentDeleteTest.class})
+
+@Suite.SuiteClasses({FbCreateAccountTest.class, FbCheckUsedEmailTest.class, FbCheckUsedIdTest.class,
+        FbDeleteAccountTest.class})
+
 
 public class checkIdEmailSuite {
 }

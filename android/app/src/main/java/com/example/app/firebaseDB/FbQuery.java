@@ -242,6 +242,7 @@ public class FbQuery implements FirestoreConnector {
                         //Account not found
                         else if (task.getResult().isEmpty()) {
                             Log.d("ACCOUNT", "NOT FOUND");
+                            student.setValue(null);
                         }
                     }
                 });

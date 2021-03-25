@@ -23,7 +23,7 @@ public class FbCheckUsedEmailTest {
     public void check() {
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
-        String emailExpected = CreateStudentTest.email;
+        String emailExpected = FbCreateAccountTest.email;
         MutableLiveData<Boolean> mld = new MutableLiveData<>();
         Observer<Boolean> email_obs = new Observer<Boolean>() {
             @Override

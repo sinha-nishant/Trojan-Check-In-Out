@@ -24,7 +24,7 @@ public class FbCheckUsedIdTest {
     public void check() {
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
-        Long uscID= Long.valueOf(CreateStudentTest.uscID);// should be user in an account
+        Long uscID= FbCreateAccountTest.uscID;
         MutableLiveData<Boolean> mld = new MutableLiveData<>();
         Observer<Boolean> id_obs = new Observer<Boolean>() {
             @Override

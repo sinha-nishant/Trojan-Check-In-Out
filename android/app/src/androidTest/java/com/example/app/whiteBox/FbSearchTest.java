@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.test.core.app.ApplicationProvider;
 
+import com.example.app.blackBox.CreateStudentTest;
 import com.example.app.firebaseDB.FbQuery;
 import com.example.app.users.StudentAccount;
 import com.google.firebase.FirebaseApp;
@@ -24,12 +25,15 @@ public class FbSearchTest {
     public void search() {
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
-        Long uscID=4204204269L;
-        String emailExpected = "fname.lname@usc.edu";
+        Long uscID= FbCreateAccountTest.uscID;
+        String emailExpected = FbCreateAccountTest.email;
         MutableLiveData<StudentAccount> student = new MutableLiveData<>();
         Observer<StudentAccount> saObserver = new Observer<StudentAccount>() {
             @Override
             public void onChanged(StudentAccount studentAccount) {
+                if(studentAccount==null){
+                    fail("could not find account");
+                }
                 assertEquals(emailExpected, studentAccount.getEmail());
             }
         };
@@ -43,5 +47,6 @@ public class FbSearchTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
     }
 }

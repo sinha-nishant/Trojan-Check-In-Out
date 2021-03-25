@@ -15,6 +15,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class FbDeleteAccountTest {
     @Rule
@@ -25,7 +26,7 @@ public class FbDeleteAccountTest {
     //is not tested
     public void deleteAccountTest() {
         //values to initialize account
-        String email="fname.lname@usc.edu";
+        String email=FbCreateAccountTest.email;
 
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
@@ -34,6 +35,9 @@ public class FbDeleteAccountTest {
         Observer<Integer> successObserver = new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
+                if(integer==null){
+                    fail("did not set integer");
+                }
                 assertEquals(intExpected,integer);
             }
         };
@@ -48,6 +52,7 @@ public class FbDeleteAccountTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
 
     }
 }
