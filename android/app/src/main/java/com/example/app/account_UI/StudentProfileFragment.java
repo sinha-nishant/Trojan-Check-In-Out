@@ -69,10 +69,7 @@ public class StudentProfileFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public StudentProfileFragment(String email,String id) {
-        str_email = email;
-        str_id=id;
-    }
+
 
     /**
      * Use this factory method to create a new instance of
@@ -103,7 +100,6 @@ public class StudentProfileFragment extends Fragment {
         Log.i("Views","in onCreated");
         AmplifyInit();
         pb= (ProgressBar) getActivity().findViewById(R.id.progressBar6);
-//        pb.setVisibility(View.GONE);
 
         MutableStudent();
 
@@ -253,13 +249,7 @@ public class StudentProfileFragment extends Fragment {
                                         int which)
                     {
 
-                        // When the user click yes button
-                        // then app will close
-//                        finish();
-//                        if(ImageSet==true){
-//                            openProfile();
-//                        }
-//                        openProfile();//check if created and redirect
+
                     }
                 });
         alertDialog = builder.create();
@@ -281,6 +271,13 @@ public class StudentProfileFragment extends Fragment {
                     str_email=sa.getEmail();
                     str_id=sa.getUscID().toString();
                     str_major=sa.getMajor();
+                    name = (TextView)(getView().findViewById(R.id.textView13));
+                    name.setText("USC ID: " + str_id);
+
+                    name = (TextView)(getView().findViewById(R.id.textView14));
+                    name.setText("Email: " + str_email);
+
+
                     name = (TextView)(getView().findViewById(R.id.tvProfileName));
                     name.setText("Welcome, " + str_name);
                     name = (TextView)(getView().findViewById(R.id.textView15));
@@ -324,10 +321,7 @@ public class StudentProfileFragment extends Fragment {
                     if(img==null){
                         Log.d("Check", "img is null");
                     }
-//                    img= (ImageView)(getView().findViewById(R.id.imageView2));
-//                    Glide.with(getActivity()).load(profilepic.toString()).into(img);
-//                    alertDialog.setMessage("updated image successfully");
-//                    alertDialog.show();
+
                     FbUpdate.updatePhoto(str_email,Firebase_success);
                 }
                 else{

@@ -218,18 +218,12 @@ public class ManagerName extends AppCompatActivity {
     private void openProfile() {
         //What unique identifier will be used to draw up profile page? Email?
         Intent i = new Intent(this, ManagerProfile.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("email", email);
-        i.putExtras(bundle);
         startActivity(i);
     }
 
     private void openManagerSignUp() {
         //What unique identifier will be used to draw up profile page? Email?
         Intent i = new Intent(this, ManagerSignUpStart.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("email", email);
-        i.putExtras(bundle);
         startActivity(i);
     }
 

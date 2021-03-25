@@ -26,12 +26,8 @@ public class   StudentProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_profile);
 
-        Bundle bundle = getIntent().getExtras();
-        email = bundle.getString("email");
-        id= bundle.getString("uscID");
-
-        profileF = new StudentProfileFragment(email,id);
-        menuF = new StudentProfileMenu(email,id);
+        profileF = new StudentProfileFragment();
+        menuF = new StudentProfileMenu();
 
         fl = (FrameLayout) findViewById(R.id.fl_fragment);
 

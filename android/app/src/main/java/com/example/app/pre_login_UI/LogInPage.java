@@ -74,13 +74,6 @@ public class  LogInPage extends AppCompatActivity {
 
     public void openProfileStudent() {
         Intent i = new Intent(this, StudentProfile.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("email", email);
-        if(id!=null){
-            bundle.putString("uscID", id.toString());
-            Log.d("ID","working");
-        }
-        i.putExtras(bundle);
         startActivity(i);
 
 
@@ -89,12 +82,6 @@ public class  LogInPage extends AppCompatActivity {
 
     public void openProfileManager() {
         Intent i = new Intent(this, ManagerProfile.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("email", email);
-//        if(id!=null){
-//            bundle.putString("uscID", id.toString());
-//        }
-        i.putExtras(bundle);
         startActivity(i);
 
 

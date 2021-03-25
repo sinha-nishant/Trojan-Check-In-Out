@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -32,9 +33,11 @@ public class StudentHistory extends AppCompatActivity {
 
         //BACKEND: Load in list of student activities here
 
-        Intent intent = getIntent();
-        Bundle bundle= intent.getExtras();
-        uscID= Long.valueOf(bundle.getString("uscID"));
+
+        SharedPreferences sp=  getSharedPreferences("sharedPrefs",MODE_PRIVATE);
+        uscID = sp.getLong("uscid",0L);
+        Log.d("history","id=  "+uscID.toString());
+
         MutableStudent();
         FbQuery.search(uscID,student);
 
@@ -52,7 +55,8 @@ public class StudentHistory extends AppCompatActivity {
                 else{
                     Log.d("student","student found");
                     List<StudentActivity> activities= sa.getActivity();
-
+                    Log.d("history",sa.toString());
+                    Log.d("history",sa.getActivity().toString());
                     lv = (ListView)findViewById(R.id.buildingList);
                     buildings = new ArrayList<>(activities.size());
 

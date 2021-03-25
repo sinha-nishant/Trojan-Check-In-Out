@@ -61,10 +61,6 @@ public class StudentProfileMenu extends Fragment {
         // Required empty public constructor
     }
 
-    public StudentProfileMenu(String em,String id) {
-        email = em;
-        uscID=id;
-    }
 
     /**
      * Use this factory method to create a new instance of
@@ -95,6 +91,7 @@ public class StudentProfileMenu extends Fragment {
         MutableBoolean();
         SharedPreferences sp=  getContext().getSharedPreferences("sharedPrefs",MODE_PRIVATE);
         Long id = sp.getLong("uscid",0L);
+        uscID=id.toString();
         FbQuery.search(id,student);
     }
 
@@ -145,10 +142,11 @@ public class StudentProfileMenu extends Fragment {
                 //Ask User to confirm
                 pb.setVisibility(View.VISIBLE);
                 isDelete=true;
+                if(uscID==null){
+                    Log.d("id","id is null");
+                }
                 FbQuery.search(Long.valueOf((uscID)),student);
-//                StudentAccount sa= student.getValue();
-//                sa.delete(delete_success);
-//                openHomePage();
+
             }
         });
         manualCheckOut = (Button)getView().findViewById(R.id.checkOutBtn);
@@ -164,19 +162,11 @@ public class StudentProfileMenu extends Fragment {
     }
     public void openQR() {
         Intent i = new Intent(getActivity(), QRScan.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("email", email);
-        bundle.putString("uscID", uscID);
-        i.putExtras(bundle);
         startActivity(i);
     }
 
     public void openStudentHistory(String email,String id) {
         Intent i = new Intent(getActivity(), StudentHistory.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("email", email);
-        bundle.putString("uscID",id);
-        i.putExtras(bundle);
         startActivity(i);
     }
 

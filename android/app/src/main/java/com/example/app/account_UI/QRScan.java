@@ -205,10 +205,6 @@ public class QRScan extends AppCompatActivity {
 
     public void goToStudentProfile() {
         Intent i = new Intent(this, StudentProfile.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("email", email);
-        bundle.putString("uscID", id);
-        i.putExtras(bundle);
         startActivity(i);
     }
     public CodeScanner getmCodeScanner(){

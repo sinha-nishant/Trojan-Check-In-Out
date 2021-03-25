@@ -135,20 +135,12 @@ public class StudentUploadPhoto extends AppCompatActivity {
     private void openProfile() {
         //What unique identifier will be used to draw up profile page? Email?
         Intent i = new Intent(this, StudentProfile.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("email", email);
-        bundle.putString("uscID",id);
-        i.putExtras(bundle);
         startActivity(i);
     }
 
     private void openSignUp() {
         //What unique identifier will be used to draw up profile page? Email?
         Intent i = new Intent(this, StudentSignUpStart.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("email", email);
-        bundle.putString("uscID",id);
-        i.putExtras(bundle);
         startActivity(i);
     }
 
