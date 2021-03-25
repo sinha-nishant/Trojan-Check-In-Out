@@ -12,7 +12,5 @@ jobs:
     steps:
     - name: Checkout the code
       uses: actions/checkout@v2
-    - name: Set the build directory
-      run:  cd android
     - name: Build the App
-      run: ./gradlew build
+      run: cd android && ./gradlew build
