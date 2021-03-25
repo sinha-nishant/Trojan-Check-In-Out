@@ -23,7 +23,6 @@ import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
 import com.example.app.R;
 import com.example.app.account_UI.StudentProfile;
 import com.example.app.firebaseDB.FbQuery;
-import com.example.app.firebaseDB.FbUpdate;
 import com.example.app.log_create.CreateAccount;
 import com.example.app.log_create.LogInOut;
 

@@ -182,11 +182,6 @@ public class StudentProfileMenu extends Fragment {
 
     public void openHomePage() {
         Intent i = new Intent(getActivity(), StartPage.class);
-        /*
-        Bundle bundle = new Bundle();
-        bundle.putString("email", email);
-        i.putExtras(bundle);
-        */
         startActivity(i);
     }
 
