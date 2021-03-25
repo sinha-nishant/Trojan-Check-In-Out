@@ -34,7 +34,7 @@ import static org.junit.Assert.fail;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class LoginTest {
+public class LoginStudentTest {
 
     @Rule
     public ActivityScenarioRule<LogInPage> activityRule =
@@ -44,7 +44,7 @@ public class LoginTest {
     public void loginSuccess() throws InterruptedException {
 
         onView(ViewMatchers.withId(R.id.editTextEmailLogin))// add email to textview
-                .perform(typeText("sancho@usc.edu"), closeSoftKeyboard());
+                .perform(typeText(CreateStudentTest.email), closeSoftKeyboard());
         onView(withId(R.id.editTextPasswordLogin))//add password to textview
                 .perform(typeText("pass"), closeSoftKeyboard());
 

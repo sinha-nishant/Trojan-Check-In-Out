@@ -7,11 +7,11 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        FbCreateAccountTest.class,
-        FbSearchTest.class,
+        FbCreateStudentAccountTest.class,
+        FbStudentSearchTest.class,
         FbDeleteAccountTest.class
 })
-public class FbCreateSearchDeleteTestSuite {
+public class FbCreateSearchDeleteStudentTestSuite {
 
 
 }

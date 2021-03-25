@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.test.core.app.ApplicationProvider;
 
-import com.example.app.blackBox.CreateStudentTest;
 import com.example.app.firebaseDB.FbQuery;
 import com.google.firebase.FirebaseApp;
 
@@ -24,7 +23,7 @@ public class FbCheckUsedIdTest {
     public void check() {
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
-        Long uscID= FbCreateAccountTest.uscID;
+        Long uscID= FbCreateStudentAccountTest.uscID;
         MutableLiveData<Boolean> mld = new MutableLiveData<>();
         Observer<Boolean> id_obs = new Observer<Boolean>() {
             @Override

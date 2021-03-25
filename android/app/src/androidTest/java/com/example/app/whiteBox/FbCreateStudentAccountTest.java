@@ -18,7 +18,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-public class FbCreateAccountTest {
+public class FbCreateStudentAccountTest {
     public static String email;
     public static Long uscID;
     @Rule

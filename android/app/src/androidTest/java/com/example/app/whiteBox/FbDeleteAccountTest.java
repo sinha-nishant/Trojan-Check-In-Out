@@ -8,7 +8,6 @@ import androidx.lifecycle.Observer;
 import androidx.test.core.app.ApplicationProvider;
 
 import com.example.app.firebaseDB.FbUpdate;
-import com.example.app.users.StudentAccount;
 import com.google.firebase.FirebaseApp;
 
 import org.junit.Rule;
@@ -26,7 +25,7 @@ public class FbDeleteAccountTest {
     //is not tested
     public void deleteAccountTest() {
         //values to initialize account
-        String email=FbCreateAccountTest.email;
+        String email= FbCreateStudentAccountTest.email;
 
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
