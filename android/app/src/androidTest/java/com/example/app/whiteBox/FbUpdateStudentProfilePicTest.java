@@ -15,8 +15,9 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
-public class FbUpdateProfilePicTest {
+public class FbUpdateStudentProfilePicTest {
     @Rule
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
 
@@ -32,12 +33,15 @@ public class FbUpdateProfilePicTest {
             }
         };
         updateMLD.observeForever(Observer);
-        String email="Bale2@usc.edu";
+        String email= FbCreateStudentAccountTest.email;
         FbUpdate.updatePhoto(email,updateMLD);
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+        if(updateMLD.getValue()==null){
+            fail("Could not find email");
         }
     }
 }
