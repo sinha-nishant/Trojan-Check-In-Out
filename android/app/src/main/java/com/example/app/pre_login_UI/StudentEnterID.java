@@ -33,7 +33,17 @@ public class StudentEnterID extends AppCompatActivity {
             public void onClick(View v) {
                 id = idInput.getText().toString();
                 major = majorSelect.getSelectedItem().toString();
-                if(id.length() != 10)
+                boolean letter = false;
+                for(int i = 0; i < id.length(); i++) {
+                    if (!Character.isDigit(id.charAt(i))) {
+                        letter = true;
+                    }
+                }
+                if(letter)
+                {
+                    showToast("USC ID must only contain numbers");
+                }
+                else if(id.length() != 10)
                 {
                     showToast("Invalid USC ID");
                 }
