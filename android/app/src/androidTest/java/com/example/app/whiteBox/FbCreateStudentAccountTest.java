@@ -52,7 +52,7 @@ public class FbCreateStudentAccountTest {
 
         String generatedString = sb.toString();
         generatedString+="@usc.edu";
-        email=generatedString;
+        email=generatedString;//generate random email
 
 
 
@@ -64,7 +64,7 @@ public class FbCreateStudentAccountTest {
 
         long leftLimit = 1000000000L;
         long rightLimit = 9999999999L;
-        uscID = leftLimit + (long) (Math.random() * (rightLimit - leftLimit));
+        uscID = leftLimit + (long) (Math.random() * (rightLimit - leftLimit));//generate random id
 
         String major = "CSBA";
         StudentAccount a= new StudentAccount(firstName,lastName,email,password,uscID,major,false);
@@ -74,6 +74,7 @@ public class FbCreateStudentAccountTest {
         Observer<Boolean> successObserver = new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isSuccess) {
+                //check if account was created
                 if(isSuccess==null){
                     fail("did not observe");
                     return;

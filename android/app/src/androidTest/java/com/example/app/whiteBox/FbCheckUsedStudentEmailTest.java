@@ -19,12 +19,13 @@ public class FbCheckUsedStudentEmailTest {
     @Rule
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
     @Test
-    public void check() {
+    public void checkUsedStudentEmail() {
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
         String emailExpected = FbCreateStudentAccountTest.email;
         MutableLiveData<Boolean> mld = new MutableLiveData<>();
         Observer<Boolean> email_obs = new Observer<Boolean>() {
+            //check if email has been used
             @Override
             public void onChanged(Boolean Success) {
                 assertEquals(Success,false);

@@ -24,10 +24,7 @@ public class FbCreateManagerAccountTest {
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
 
     @Test
-    //test to check if the createAccount function works along with a built in deleteAccount that
-    //is not tested
     public void createManager() {
-        //values to initialize account
 
         String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 + "0123456789"
@@ -51,7 +48,7 @@ public class FbCreateManagerAccountTest {
 
         String generatedString = sb.toString();
         generatedString+="@usc.edu";
-        email=generatedString;
+        email=generatedString;//generated random email
 
 
 
@@ -61,13 +58,14 @@ public class FbCreateManagerAccountTest {
         String password="pass1234";
 
         Account a= new Account(firstName,lastName,email,password,true);
-//        Account a= new Account(firstName,lastName,"hhhhhhhh@usc.edu",password,true);
+
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
         MutableLiveData<Boolean> success = new MutableLiveData<>();
         Observer<Boolean> successObserver = new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isSuccess) {
+                //check if account got created
                 if(isSuccess==null){
                     fail("did not observe");
                     return;
@@ -76,7 +74,7 @@ public class FbCreateManagerAccountTest {
             }
         };
         success.observeForever(successObserver);
-
+        //create account
         FbUpdate.createAccount(a,success);
         //To get the test to run add this - Firebase takes time to execute the query and the thread
         //will just run in the background without testing the Firebase database if the code isn't

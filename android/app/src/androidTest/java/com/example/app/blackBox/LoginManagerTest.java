@@ -37,7 +37,7 @@ public class LoginManagerTest {
             new ActivityScenarioRule<>(LogInPage.class);
 
     @Test
-    public void loginSuccess() throws InterruptedException {
+    public void loginManagerSuccess() throws InterruptedException {
 
         onView(ViewMatchers.withId(R.id.editTextEmailLogin))// add email to textview
                 .perform(typeText(CreateManagerTest.email), closeSoftKeyboard());

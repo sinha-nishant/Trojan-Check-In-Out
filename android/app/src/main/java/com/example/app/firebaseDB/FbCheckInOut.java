@@ -59,6 +59,7 @@ public class FbCheckInOut implements FirestoreConnector {
                         });
                     }
                 }
+
             }
         });
     }

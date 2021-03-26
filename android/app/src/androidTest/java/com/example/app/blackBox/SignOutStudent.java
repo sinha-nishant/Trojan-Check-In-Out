@@ -48,6 +48,7 @@ public class SignOutStudent {
             };
     @Before
     public void setUp() {
+        // account info set up to imitate real use  case
         Context targetContext = getInstrumentation().getTargetContext();
         SharedPreferences sharedPreferences = targetContext.getSharedPreferences("sharedPrefs",MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -58,13 +59,15 @@ public class SignOutStudent {
     }
 
     @Test
-    public void SignOutSuccess() throws InterruptedException {
+    public void SignOutStudentSuccess() throws InterruptedException {
         onView(ViewMatchers.withId(R.id.buttonFragment2))
                 .perform(click());
         onView(withId(R.id.studentMenuLogOut))
                 .perform(click());
         try{
+
             intended(hasComponent(StartPage.class.getName()));
+
         }catch (AssertionFailedError e){
             fail("Not right page");
         }

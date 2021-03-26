@@ -59,8 +59,8 @@ public class CreateManagerTest {
 
         String generatedString = sb.toString();
         generatedString+="@usc.edu";
-        email=generatedString;
-
+        email=generatedString;//created random  email
+        // adding email a nd password into textviews
         onView(ViewMatchers.withId(R.id.managerSignUpEmailAddress))
                 .perform(typeText(email), closeSoftKeyboard());
         onView(withId(R.id.managerSignUpPassword))
@@ -68,12 +68,12 @@ public class CreateManagerTest {
 
         onView(withId(R.id.managerEmailPassSubmitButton))
                 .perform(click());
-
+        // adding first/lastname info
         onView(withId(R.id.managerFirstName))
                 .perform(typeText("Manager"), closeSoftKeyboard());
         onView(withId(R.id.managerLastName))
                 .perform(typeText("Create"), closeSoftKeyboard());
-
+        //creating after button click
         onView(withId(R.id.nameButtonM))
                 .perform(click());
 

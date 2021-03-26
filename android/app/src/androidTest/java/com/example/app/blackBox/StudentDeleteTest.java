@@ -37,18 +37,11 @@ public class StudentDeleteTest {
         @Rule
         public ActivityTestRule<StudentProfile> mActivityRule =
                 new ActivityTestRule<StudentProfile>(StudentProfile.class) {
-                    @Override
-                    protected Intent getActivityIntent() {
-                        Context targetContext = getInstrumentation().getTargetContext();
-                        Intent result = new Intent(targetContext, StudentProfile.class);
-                        result.putExtra("email", CreateStudentTest.email);
-                        result.putExtra("uscID", CreateStudentTest.uscID);
-                        return result;
-                    }
                 };
 
         @Before
         public void setUp() {
+            // set up to provide info available in normal use case
             Context targetContext = getInstrumentation().getTargetContext();
             SharedPreferences sharedPreferences = targetContext.getSharedPreferences("sharedPrefs",MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -59,7 +52,7 @@ public class StudentDeleteTest {
         }
 
         @Test
-        public void deleteSuccess() throws InterruptedException {
+        public void deleteStudentSuccess() throws InterruptedException {
 
             onView(ViewMatchers.withId(R.id.buttonFragment2))
                     .perform(click());

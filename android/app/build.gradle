@@ -91,4 +91,6 @@ dependencies {
     implementation 'org.hamcrest:hamcrest:2.2'
     // checking activity in espresso
     androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.2'
+    androidTestImplementation "androidx.test.espresso:espresso-intents"
+
 }

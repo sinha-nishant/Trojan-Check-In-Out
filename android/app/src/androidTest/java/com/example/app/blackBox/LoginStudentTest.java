@@ -41,7 +41,7 @@ public class LoginStudentTest {
             new ActivityScenarioRule<>(LogInPage.class);
 
     @Test
-    public void loginSuccess() throws InterruptedException {
+    public void loginStudentSuccess() throws InterruptedException {
 
         onView(ViewMatchers.withId(R.id.editTextEmailLogin))// add email to textview
                 .perform(typeText(CreateStudentTest.email), closeSoftKeyboard());

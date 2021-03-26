@@ -38,13 +38,9 @@ public class CreateStudentTest {
             new ActivityScenarioRule<>(StudentSignUpStart.class);
 
     @Test
-    public void CreateSuccess() throws InterruptedException {
+    public void CreateStudentSuccess() throws InterruptedException {
         byte[] array = new byte[20];
         new Random().nextBytes(array);
-
-//        String generatedString = new String(array, Charset.forName("UTF-8"));
-//        generatedString+="@usc.edu";
-//        email=generatedString;
 
         String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 + "0123456789"
@@ -68,11 +64,9 @@ public class CreateStudentTest {
 
         String generatedString = sb.toString();
         generatedString+="@usc.edu";
-        email=generatedString;
+        email=generatedString;//generated random string
 
-        Log.d("email",email);
-
-
+        //adding email/ pw info
         onView(ViewMatchers.withId(R.id.studentSignUpEmailAddress))
                 .perform(typeText(generatedString), closeSoftKeyboard());
         onView(withId(R.id.studentSignUpPassword))
@@ -80,7 +74,7 @@ public class CreateStudentTest {
 
         onView(withId(R.id.studentEmailPassSubmitButton))
                 .perform(click());
-
+        // adding name info
         onView(withId(R.id.studentFirstName))
                 .perform(typeText("My"), closeSoftKeyboard());
         onView(withId(R.id.studentLastName))
@@ -88,10 +82,7 @@ public class CreateStudentTest {
 
         onView(withId(R.id.nameButton))
                 .perform(click());
-//        array = new byte[10]; // length is bounded by 7
-//        new Random().nextBytes(array);
-//
-//        generatedString = new String(array, Charset.forName("UTF-8"));
+        //generating random 10 digit id
         long leftLimit = 1000000000L;
         long rightLimit = 9999999999L;
         long generatedLong = leftLimit + (long) (Math.random() * (rightLimit - leftLimit));
@@ -99,8 +90,7 @@ public class CreateStudentTest {
         uscID=id;
         onView(withId(R.id.studentID))
                 .perform(typeText(id), closeSoftKeyboard());
-//        onView(withId(R.id.studentMajor))//add password to textview
-//                .perform(typeText("Test"), closeSoftKeyboard());
+
         onView(withId(R.id.signup))
                 .perform(click());
 

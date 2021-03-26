@@ -58,22 +58,14 @@ public class ManagerDeleteTest {
     @Rule
     public ActivityTestRule<ManagerProfile> mActivityRule =
             new ActivityTestRule<ManagerProfile>(ManagerProfile.class) {
-//                    @Override
-//                protected Intent getActivityIntent() {
-//                    Context targetContext = getInstrumentation().getTargetContext();
-//                    Intent result = new Intent(targetContext, ManagerProfile.class);
-//                    result.putExtra("email", "ManagerTest6@usc.edu");
-//                    result.putExtra("uscID", "0");
-//                    return result;
-//                }
             };
 
     @Before
     public void setUp() {
+        //adding shared preferences to imitate info present in normal use case
         Context targetContext = getInstrumentation().getTargetContext();
-        SharedPreferences sharedPreferences = targetContext.getSharedPreferences("sharedPrefs",targetContext.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = targetContext.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-//        editor.putString("email","ManagerTest6@usc.edu");
         editor.putString("email",CreateManagerTest.email);
         editor.putLong( "uscid",0L);
         editor.apply();

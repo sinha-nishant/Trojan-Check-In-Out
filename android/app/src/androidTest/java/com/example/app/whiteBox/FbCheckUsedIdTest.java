@@ -20,12 +20,13 @@ public class FbCheckUsedIdTest {
     @Rule
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
     @Test
-    public void check() {
+    public void checkUsedID() {
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
         Long uscID= FbCreateStudentAccountTest.uscID;
         MutableLiveData<Boolean> mld = new MutableLiveData<>();
         Observer<Boolean> id_obs = new Observer<Boolean>() {
+            //checking if this id exists in the database
             @Override
             public void onChanged(Boolean Success) {
                 assertEquals(Success,false);
@@ -33,7 +34,6 @@ public class FbCheckUsedIdTest {
         };
         mld.observeForever(id_obs);
         FbQuery.checkUSCidExists(uscID,mld);
-
 
         //To get the test to run add this - Firebase takes time to execute the query and the thread
         //will just run in the background without testing the Firebase database if the code isn't
