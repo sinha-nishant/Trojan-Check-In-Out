@@ -1,14 +1,16 @@
 package com.example.app.whiteBox;
 
 
+import com.example.app.blackBox.CreateStudentTest;
+import com.example.app.blackBox.StudentDeleteTest;
+
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        FbCreateStudentAccountTest.class,
-        FbCheckStudentActivity.class,
-        FbDeleteStudentAccountTest.class
+        CreateStudentTest.class, QRScanCheckInTest.class,FbCheckStudentActivity.class ,QRScanCheckOutTest.class,
+        StudentDeleteTest.class
 })
 public class checkActivitySuite {
 }

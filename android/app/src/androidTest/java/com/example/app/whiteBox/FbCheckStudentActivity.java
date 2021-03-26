@@ -33,22 +33,9 @@ public class FbCheckStudentActivity {
     public void checkActivity() {
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
-        Long id = FbCreateStudentAccountTest.uscID;
-        StudentActivity act= new StudentActivity("TestBuilding",new Date());
-        MutableLiveData<Boolean> checkInMLD = new MutableLiveData<>();
+        Long id = Long.valueOf(CreateStudentTest.uscID);
+        StudentActivity act= new StudentActivity(QRScanCheckInTest.random_building,QRScanCheckInTest.checkInDate);
         MutableLiveData<StudentAccount> studentMLD = new MutableLiveData<>();
-        Observer<Boolean> checkIn_obs = new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean Success) {
-                fail("in change");
-                if(Success==false){
-                    fail("could not check in");
-                    return;
-                }
-                FbQuery.search(8869324031L,studentMLD);
-            }
-        };
-        checkInMLD.observeForever(checkIn_obs);
         Observer<StudentAccount> student_obs = new Observer<StudentAccount>() {
             @Override
             public void onChanged(StudentAccount sa) {
@@ -59,12 +46,12 @@ public class FbCheckStudentActivity {
                 if(activities==null|| activities.size()==0){
                     fail("did not update activity");
                 }
-                assertEquals(activities.get(0),act);
+                assertEquals(activities.get(0).getBuildingName(),act.getBuildingName());
             }
         };
         studentMLD.observeForever(student_obs);
+        FbQuery.search(id,studentMLD);
 
-        FbCheckInOut.checkIn(id,act,checkInMLD);//not  getting callback
 
 
         //To get the test to run add this - Firebase takes time to execute the query and the thread
