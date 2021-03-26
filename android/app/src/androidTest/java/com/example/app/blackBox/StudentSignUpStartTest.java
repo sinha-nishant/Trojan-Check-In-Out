@@ -7,6 +7,7 @@ import android.view.View;
 
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.FailureHandler;
+import androidx.test.espresso.intent.Intents;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -14,6 +15,8 @@ import androidx.test.rule.ActivityTestRule;
 
 import com.example.app.R;
 import com.example.app.account_UI.StudentProfile;
+import com.example.app.pre_login_UI.StudentEnterID;
+import com.example.app.pre_login_UI.StudentEnterName;
 import com.example.app.pre_login_UI.StudentSignUpStart;
 
 import junit.framework.TestCase;
@@ -29,6 +32,8 @@ import static android.content.Context.MODE_PRIVATE;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.intent.Intents.intended;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.RootMatchers.isDialog;
 import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -83,5 +88,17 @@ public class StudentSignUpStartTest extends TestCase {
         onView(withId(R.id.studentEmailPassSubmitButton)).perform(click());
         //Check for toast
         onView(withText("Invalid Email")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+    }
+    @Test
+    public void testCorrectValidation() throws InterruptedException
+    {
+        Intents.init();
+        onView(withId(R.id.studentSignUpEmailAddress)).perform(typeText(correct));
+        Espresso.closeSoftKeyboard();
+        onView(withId(R.id.studentSignUpPassword)).perform(typeText(password));
+        Espresso.closeSoftKeyboard();
+        onView(withId(R.id.studentEmailPassSubmitButton)).perform(click());
+        //Check for new page
+        intended(hasComponent(StudentEnterName.class.getName()));
     }
 }
