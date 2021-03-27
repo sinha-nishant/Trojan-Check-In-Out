@@ -58,7 +58,7 @@ public class ManagerProfile extends AppCompatActivity {
         Log.d("ManagerProfile","in manager Profile");
         SharedPreferences sp=  activity.getSharedPreferences("sharedPrefs",activity.MODE_PRIVATE);
 
-        email= sp.getString("email","tcio@usc.edu");
+        email= sp.getString("email","");
         Log.d("ManagerProfile", email+"ending");
         imgView= (ImageView)findViewById(R.id.imageView);
         nameView= (TextView)findViewById(R.id.textView18);

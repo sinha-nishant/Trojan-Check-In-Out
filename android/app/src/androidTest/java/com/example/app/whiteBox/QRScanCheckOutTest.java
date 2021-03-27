@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.test.core.app.ApplicationProvider;
 
+import com.example.app.Credentials;
 import com.example.app.blackBox.CreateStudentTest;
 import com.example.app.building.Building;
 import com.example.app.firebaseDB.FbQuery;
@@ -95,7 +96,7 @@ public class QRScanCheckOutTest {
             //get student so you can get exact StudentActivity object
             StudentActivity sa = new StudentActivity(QRScanCheckInTest.random_building,QRScanCheckInTest.checkInDate,null);
             //check out student with the use of Services package
-            CheckInOut.checkOut(checkOutMLD,sa,Long.parseLong(CreateStudentTest.uscID));
+            CheckInOut.checkOut(checkOutMLD,sa,Long.parseLong(Credentials.id));
             Thread.sleep(5000);
             //get buildings again from firebase
             FbQuery.getBuilding(QRScanCheckInTest.random_building, buildingMLD);

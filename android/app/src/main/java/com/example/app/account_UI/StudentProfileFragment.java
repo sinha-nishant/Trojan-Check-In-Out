@@ -109,7 +109,8 @@ public class StudentProfileFragment extends Fragment {
         MutableBoolean();
         MutableFirebase();
         SharedPreferences sp=  getContext().getSharedPreferences("sharedPrefs",getActivity().MODE_PRIVATE);
-        Long id = sp.getLong("uscid",1234567890L);
+        Long id = sp.getLong("uscid",0L);
+        Log.d("uscID", "sp id: " + id);
         FbQuery.search(id,student);
 
 

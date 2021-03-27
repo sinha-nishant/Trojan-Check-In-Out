@@ -17,6 +17,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.rule.ActivityTestRule;
 
 import com.budiyev.android.codescanner.CodeScanner;
+import com.example.app.Credentials;
 import com.example.app.R;
 import com.example.app.account_UI.QRScan;
 import com.example.app.blackBox.CreateStudentTest;
@@ -137,7 +138,7 @@ public class QRScanCheckInTest {
             Result result = reader.decode(bitmap);
             //check in student with the use of Services package
 
-            CheckInOut.checkIn(checkInMLD,result.getText(),Long.parseLong(CreateStudentTest.uscID));
+            CheckInOut.checkIn(checkInMLD,result.getText(), Long.parseLong(Credentials.id));
             Thread.sleep(5000);
             //get buildings again from firebase
             FbQuery.getBuilding(random_building, buildingMLD);
