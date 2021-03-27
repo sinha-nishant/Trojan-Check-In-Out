@@ -7,13 +7,16 @@ import android.view.View;
 
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.FailureHandler;
+import androidx.test.espresso.intent.Intents;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
 import com.example.app.R;
+import com.example.app.account_UI.StudentHistory;
 import com.example.app.account_UI.StudentProfile;
+import com.example.app.pre_login_UI.StudentEnterID;
 import com.example.app.pre_login_UI.StudentEnterName;
 import com.example.app.pre_login_UI.StudentSignUpStart;
 
@@ -30,6 +33,8 @@ import static android.content.Context.MODE_PRIVATE;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.intent.Intents.intended;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.RootMatchers.isDialog;
 import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -66,6 +71,7 @@ public class StudentEnterNameTest extends TestCase {
 
     @Before
     public void setUp() {
+        Intents.init();
         Context targetContext = getInstrumentation().getTargetContext();
         SharedPreferences sharedPreferences = targetContext.getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -80,6 +86,7 @@ public class StudentEnterNameTest extends TestCase {
         onView(withId(R.id.nameButton)).perform(click());
         //Check for toast
         onView(withText("First or last name is blank")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+        Intents.release();
     }
     @Test
     public void testEmptyFirstName() throws InterruptedException {
@@ -90,6 +97,7 @@ public class StudentEnterNameTest extends TestCase {
         onView(withId(R.id.nameButton)).perform(click());
         //Check for toast
         onView(withText("First or last name is blank")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+        Intents.release();
     }
     @Test
     public void testEmptyLastName() throws InterruptedException {
@@ -100,5 +108,17 @@ public class StudentEnterNameTest extends TestCase {
         onView(withId(R.id.nameButton)).perform(click());
         //Check for toast
         onView(withText("First or last name is blank")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+        Intents.release();
+    }
+    @Test
+    public void testValidInput() throws InterruptedException {
+        onView(withId(R.id.studentFirstName)).perform(typeText(actualName));
+        Espresso.closeSoftKeyboard();
+        onView(withId(R.id.studentLastName)).perform(typeText(actualName));
+        Espresso.closeSoftKeyboard();
+        onView(withId(R.id.nameButton)).perform(click());
+        //Check for new page
+        intended(hasComponent(StudentEnterID.class.getName()));
+        Intents.release();
     }
 }
