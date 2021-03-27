@@ -7,6 +7,7 @@ import android.view.View;
 
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.FailureHandler;
+import androidx.test.espresso.intent.Intents;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -17,6 +18,7 @@ import com.example.app.account_UI.StudentProfile;
 import com.example.app.pre_login_UI.StudentEnterID;
 import com.example.app.pre_login_UI.StudentEnterName;
 import com.example.app.pre_login_UI.StudentSignUpStart;
+import com.example.app.pre_login_UI.StudentUploadPhoto;
 
 import junit.framework.TestCase;
 
@@ -31,6 +33,8 @@ import static android.content.Context.MODE_PRIVATE;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.intent.Intents.intended;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.RootMatchers.isDialog;
 import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -75,6 +79,7 @@ public class StudentEnterIDTest extends TestCase {
 
     @Before
     public void setUp() {
+        Intents.init();
         Context targetContext = getInstrumentation().getTargetContext();
         SharedPreferences sharedPreferences = targetContext.getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -92,6 +97,7 @@ public class StudentEnterIDTest extends TestCase {
         onView(withId(R.id.signup)).perform(click());
         //Check for toast
         onView(withText("Invalid USC ID")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+        Intents.release();
     }
     @Test
     public void testLongID() throws InterruptedException {
@@ -100,6 +106,7 @@ public class StudentEnterIDTest extends TestCase {
         onView(withId(R.id.signup)).perform(click());
         //Check for toast
         onView(withText("Invalid USC ID")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+        Intents.release();
     }
     @Test
     public void testBlankID() throws InterruptedException {
@@ -108,6 +115,7 @@ public class StudentEnterIDTest extends TestCase {
         onView(withId(R.id.signup)).perform(click());
         //Check for toast
         onView(withText("Invalid USC ID")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+        Intents.release();
     }
     @Test
     public void testNonNumericID() throws InterruptedException {
@@ -116,6 +124,7 @@ public class StudentEnterIDTest extends TestCase {
         onView(withId(R.id.signup)).perform(click());
         //Check for toast
         onView(withText("USC ID must only contain numbers")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+        Intents.release();
     }
     @Test
     public void testCorrectLengthNonNumericID() throws InterruptedException {
@@ -124,5 +133,15 @@ public class StudentEnterIDTest extends TestCase {
         onView(withId(R.id.signup)).perform(click());
         //Check for toast
         onView(withText("USC ID must only contain numbers")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+        Intents.release();
+    }
+    @Test
+    public void testValidInput() throws InterruptedException {
+        onView(withId(R.id.studentID)).perform(typeText(validID));
+        Espresso.closeSoftKeyboard();
+        onView(withId(R.id.signup)).perform(click());
+        //Check for new page
+        intended(hasComponent(StudentUploadPhoto.class.getName()));
+        Intents.release();
     }
 }
