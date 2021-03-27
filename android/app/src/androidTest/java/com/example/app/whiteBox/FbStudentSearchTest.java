@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.test.core.app.ApplicationProvider;
 
+import com.example.app.Credentials;
 import com.example.app.firebaseDB.FbQuery;
 import com.example.app.users.StudentAccount;
 import com.google.firebase.FirebaseApp;
@@ -24,8 +25,8 @@ public class FbStudentSearchTest {
     public void search() {
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
-        Long uscID= FbCreateStudentAccountTest.uscID;
-        String emailExpected = FbCreateStudentAccountTest.email;
+        Long uscID= Long.valueOf(Credentials.id);
+        String emailExpected = Credentials.email;
         MutableLiveData<StudentAccount> student = new MutableLiveData<>();
         Observer<StudentAccount> saObserver = new Observer<StudentAccount>() {
             @Override

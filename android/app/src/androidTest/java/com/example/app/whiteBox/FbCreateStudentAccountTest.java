@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.test.core.app.ApplicationProvider;
 
+import com.example.app.Credentials;
 import com.example.app.firebaseDB.FbUpdate;
 import com.example.app.users.Account;
 import com.example.app.users.StudentAccount;
@@ -28,31 +29,8 @@ public class FbCreateStudentAccountTest {
     //test to check if the createAccount function works along with a built in deleteAccount that
     //is not tested
     public void createAccountWithCorrectInputNoPic() {
-        //values to initialize account
 
-        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                + "0123456789"
-                + "abcdefghijklmnopqrstuvxyz";
-
-        // create StringBuffer size of AlphaNumericString
-        StringBuilder sb = new StringBuilder(20);
-
-        for (int i = 0; i < 20; i++) {
-
-            // generate a random number between
-            // 0 to AlphaNumericString variable length
-            int index
-                    = (int)(AlphaNumericString.length()
-                    * Math.random());
-
-            // add Character one by one in end of sb
-            sb.append(AlphaNumericString
-                    .charAt(index));
-        }
-
-        String generatedString = sb.toString();
-        generatedString+="@usc.edu";
-        email=generatedString;//generate random email
+        email= Credentials.email;
 
 
 
@@ -61,10 +39,7 @@ public class FbCreateStudentAccountTest {
 
         String password="pass1234";
 
-
-        long leftLimit = 1000000000L;
-        long rightLimit = 9999999999L;
-        uscID = leftLimit + (long) (Math.random() * (rightLimit - leftLimit));//generate random id
+        uscID= Long.valueOf(Credentials.id);
 
         String major = "CSBA";
         StudentAccount a= new StudentAccount(firstName,lastName,email,password,uscID,major,false);

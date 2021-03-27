@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.test.core.app.ApplicationProvider;
 
+import com.example.app.Credentials;
 import com.example.app.firebaseDB.FbQuery;
 import com.google.firebase.FirebaseApp;
 
@@ -23,7 +24,7 @@ public class FbCheckUsedManagerEmailTest {
     public void checkUsedManagerEmail() {
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
-        String emailExpected = FbCreateManagerAccountTest.email;
+        String emailExpected = Credentials.email;
         MutableLiveData<Boolean> mld = new MutableLiveData<>();
         Observer<Boolean> email_obs = new Observer<Boolean>() {
             //check if email has been used

@@ -9,6 +9,7 @@ import android.view.View;
 
 import org.hamcrest.Matcher;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -24,6 +25,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 
+import com.example.app.Credentials;
 import com.example.app.R;
 import com.example.app.account_UI.ManagerProfile;
 import com.example.app.account_UI.StudentProfile;
@@ -45,43 +47,47 @@ import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 
 public class ManagerDeleteTest {
-    Intent intent;
-    SharedPreferences.Editor preferencesEditor;
 
 
-    @Rule
-    public ActivityTestRule<ManagerProfile> mActivityRule =
-            new ActivityTestRule<ManagerProfile>(ManagerProfile.class) {
-            };
+
+
+@Rule
+public ActivityScenarioRule<ManagerProfile> activityRule =
+        new ActivityScenarioRule<>(ManagerProfile.class);
 
     @Before
-    public void setUp() {
+    public void setUp() throws InterruptedException {
         //adding shared preferences to imitate info present in normal use case
+        Intents.init();
         Context targetContext = getInstrumentation().getTargetContext();
         SharedPreferences sharedPreferences = targetContext.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("email",CreateManagerTest.email);
-        editor.putLong( "uscid",0L);
+        editor.putString("email", Credentials.email);
+//        editor.putLong( "uscid",0L);
         editor.apply();
+
+
     }
 
 
     @Test
     public void deleteSuccess() throws InterruptedException {
 
-        Thread.sleep(5000);// wait 5 seconds for Firebase to bring back account data
+
+        Thread.sleep(10000);// wait 5 seconds for Firebase to bring back account data
         onView(ViewMatchers.withId(R.id.button15))//click delete button
                 .perform(click());
         Thread.sleep(5000);// wait 5 seconds for Firebase to bring back account data
-
-
-        //check if you get success message from alert dialog
+//
+//
+//        //check if you get success message from alert dialog
         onView(withText("Successful in deleting your account")).inRoot(isDialog()).withFailureHandler(new FailureHandler() {
             @Override
             public void handle(Throwable error, Matcher<View> viewMatcher){
@@ -95,5 +101,9 @@ public class ManagerDeleteTest {
 
 
 
+    }
+    @After
+    public void teardown(){
+        Intents.release();
     }
 }

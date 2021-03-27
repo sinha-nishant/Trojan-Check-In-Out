@@ -6,7 +6,10 @@ import android.view.View;
 import androidx.test.espresso.FailureHandler;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.filters.LargeTest;
 
+import com.example.app.Credentials;
 import com.example.app.R;
 import com.example.app.pre_login_UI.LogInPage;
 import com.example.app.pre_login_UI.StudentSignUpStart;
@@ -14,6 +17,7 @@ import com.example.app.pre_login_UI.StudentSignUpStart;
 import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.nio.charset.Charset;
 import java.util.Random;
@@ -28,7 +32,8 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.junit.Assert.fail;
-
+@RunWith(AndroidJUnit4.class)
+@LargeTest
 public class CreateStudentTest {
     public static String email;
     public static String uscID;
@@ -39,36 +44,10 @@ public class CreateStudentTest {
 
     @Test
     public void CreateStudentSuccess() throws InterruptedException {
-        byte[] array = new byte[20];
-        new Random().nextBytes(array);
 
-        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                + "0123456789"
-                + "abcdefghijklmnopqrstuvxyz";
-
-        // create StringBuffer size of AlphaNumericString
-        StringBuilder sb = new StringBuilder(20);
-
-        for (int i = 0; i < 20; i++) {
-
-            // generate a random number between
-            // 0 to AlphaNumericString variable length
-            int index
-                    = (int)(AlphaNumericString.length()
-                    * Math.random());
-
-            // add Character one by one in end of sb
-            sb.append(AlphaNumericString
-                    .charAt(index));
-        }
-
-        String generatedString = sb.toString();
-        generatedString+="@usc.edu";
-        email=generatedString;//generated random string
-
-        //adding email/ pw info
+        email= Credentials.email;
         onView(ViewMatchers.withId(R.id.studentSignUpEmailAddress))
-                .perform(typeText(generatedString), closeSoftKeyboard());
+                .perform(typeText(email), closeSoftKeyboard());
         onView(withId(R.id.studentSignUpPassword))
                 .perform(typeText("pass"), closeSoftKeyboard());
 
@@ -82,14 +61,10 @@ public class CreateStudentTest {
 
         onView(withId(R.id.nameButton))
                 .perform(click());
-        //generating random 10 digit id
-        long leftLimit = 1000000000L;
-        long rightLimit = 9999999999L;
-        long generatedLong = leftLimit + (long) (Math.random() * (rightLimit - leftLimit));
-        String id= String.valueOf(generatedLong);
-        uscID=id;
+
+        uscID=Credentials.id;
         onView(withId(R.id.studentID))
-                .perform(typeText(id), closeSoftKeyboard());
+                .perform(typeText(uscID), closeSoftKeyboard());
 
         onView(withId(R.id.signup))
                 .perform(click());
@@ -105,13 +80,6 @@ public class CreateStudentTest {
                 fail("Could not find alert");
             }
         }).check(matches(isDisplayed()));
-
-
-
-
-
-
-
 
     }
 }

@@ -9,4 +9,5 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({CreateStudentTest.class, QRScanCheckInTest.class,
         StudentDeleteTest.class})
 public class CheckInStudentSuite {
+
 }

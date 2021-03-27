@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.test.core.app.ApplicationProvider;
 
+import com.example.app.Credentials;
 import com.example.app.firebaseDB.FbUpdate;
 import com.example.app.users.StudentAccount;
 import com.google.firebase.FirebaseApp;
@@ -33,7 +34,7 @@ public class FbUpdateStudentProfilePicTest {
             }
         };
         updateMLD.observeForever(Observer);
-        String email= FbCreateStudentAccountTest.email;
+        String email= Credentials.email;
         FbUpdate.updatePhoto(email,updateMLD);
         try {
             Thread.sleep(5000);

@@ -8,6 +8,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
+import com.example.app.Credentials;
 import com.example.app.R;
 
 import com.example.app.pre_login_UI.LogInPage;
@@ -40,7 +41,7 @@ public class LoginManagerTest {
     public void loginManagerSuccess() throws InterruptedException {
 
         onView(ViewMatchers.withId(R.id.editTextEmailLogin))// add email to textview
-                .perform(typeText(CreateManagerTest.email), closeSoftKeyboard());
+                .perform(typeText(Credentials.email), closeSoftKeyboard());
         onView(withId(R.id.editTextPasswordLogin))//add password to textview
                 .perform(typeText("pass"), closeSoftKeyboard());
 

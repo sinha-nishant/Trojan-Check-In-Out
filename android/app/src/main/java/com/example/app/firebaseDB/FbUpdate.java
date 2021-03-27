@@ -53,9 +53,11 @@ public class FbUpdate  implements FirestoreConnector {
 
     //Refactored
     public static void createAccount(Account a, MutableLiveData<Boolean> create_success) {
+        Log.d("FbCreate","at start of fb create");
         FirestoreConnector.getDB().collection("Accounts").add(a).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
+                Log.d("FbCreate","in here");
                 if (task.isSuccessful()) {
                     Log.d("CREATE", "Account Added to DB");
 //                    Log.d("CREATE", a.toString());
@@ -66,6 +68,7 @@ public class FbUpdate  implements FirestoreConnector {
                         Log.d("CREATE", ((StudentAccount)a).toString());
                     }
                     create_success.setValue(true);
+
 
                 } else {
                     Log.d("Err", "failed to set up");

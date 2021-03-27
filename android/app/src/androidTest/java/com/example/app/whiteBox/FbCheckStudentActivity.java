@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.test.core.app.ApplicationProvider;
 
+import com.example.app.Credentials;
 import com.example.app.blackBox.CreateStudentTest;
 import com.example.app.firebaseDB.FbCheckInOut;
 import com.example.app.firebaseDB.FbQuery;
@@ -33,7 +34,7 @@ public class FbCheckStudentActivity {
     public void checkActivity() {
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
-        Long id = Long.valueOf(CreateStudentTest.uscID);
+        Long id = Long.valueOf(Credentials.id);
         StudentActivity act= new StudentActivity(QRScanCheckInTest.random_building,QRScanCheckInTest.checkInDate);
         MutableLiveData<StudentAccount> studentMLD = new MutableLiveData<>();
         Observer<StudentAccount> student_obs = new Observer<StudentAccount>() {

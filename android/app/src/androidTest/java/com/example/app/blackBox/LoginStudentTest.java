@@ -2,6 +2,7 @@ package com.example.app.blackBox;
 
 import android.view.View;
 
+import com.example.app.Credentials;
 import com.example.app.R;
 import com.example.app.pre_login_UI.LogInPage;
 
@@ -44,7 +45,7 @@ public class LoginStudentTest {
     public void loginStudentSuccess() throws InterruptedException {
 
         onView(ViewMatchers.withId(R.id.editTextEmailLogin))// add email to textview
-                .perform(typeText(CreateStudentTest.email), closeSoftKeyboard());
+                .perform(typeText(Credentials.email), closeSoftKeyboard());
         onView(withId(R.id.editTextPasswordLogin))//add password to textview
                 .perform(typeText("pass"), closeSoftKeyboard());
 

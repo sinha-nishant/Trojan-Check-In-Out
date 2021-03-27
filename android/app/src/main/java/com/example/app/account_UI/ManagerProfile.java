@@ -55,21 +55,30 @@ public class ManagerProfile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager_profile_v2);
+        Log.d("ManagerProfile","in manager Profile");
+        SharedPreferences sp=  activity.getSharedPreferences("sharedPrefs",activity.MODE_PRIVATE);
 
+        email= sp.getString("email","tcio@usc.edu");
+        Log.d("ManagerProfile", email+"ending");
         imgView= (ImageView)findViewById(R.id.imageView);
         nameView= (TextView)findViewById(R.id.textView18);
         emailView= (TextView)findViewById(R.id.textView19);
         pb= (ProgressBar)findViewById(R.id.progressBar3);
-
+        pb.setVisibility(View.GONE);
+//        SharedPreferences sp=  activity.getSharedPreferences("sharedPrefs",activity.MODE_PRIVATE);
+//
+//        email= sp.getString("email","");
+//        Log.d("ManagerProfile", email);
         MutableStudent();
         AmplifyInit();
         DialogInit();
         MutableDelete();
         MutableBoolean();
         MutableFirebase();
-        SharedPreferences sp=  activity.getSharedPreferences("sharedPrefs",activity.MODE_PRIVATE);
-
-        email= sp.getString("email","");
+//        SharedPreferences sp=  activity.getSharedPreferences("sharedPrefs",activity.MODE_PRIVATE);
+//
+//        email= sp.getString("email","");
+//        Log.d("ManagerProfile", email);
         FbQuery.search(email, student);
 
 
@@ -196,8 +205,9 @@ public class ManagerProfile extends AppCompatActivity {
         final Observer<Account> obs = new Observer<Account>(){
             @Override
             public void onChanged(@javax.annotation.Nullable final Account a){
+                Log.d("ManagerProfile","mld changed");
                 if(a==null){
-                    Log.d("profile","is null");
+                    Log.d("ManagerProfile","is null");
                     return;
                 }
                 else{

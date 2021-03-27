@@ -90,7 +90,8 @@ public class StudentProfileMenu extends Fragment {
         MutableStudent();
         MutableBoolean();
         SharedPreferences sp=  getContext().getSharedPreferences("sharedPrefs",MODE_PRIVATE);
-        Long id = sp.getLong("uscid",0L);
+        Long id = sp.getLong("uscid",123456790L);
+        Log.d("StudentProfile",id+"ending");
         uscID=id.toString();
         FbQuery.search(id,student);
     }
@@ -145,6 +146,7 @@ public class StudentProfileMenu extends Fragment {
                 if(uscID==null){
                     Log.d("id","id is null");
                 }
+                Log.d("id",uscID);
                 FbQuery.search(Long.valueOf((uscID)),student);
 
             }

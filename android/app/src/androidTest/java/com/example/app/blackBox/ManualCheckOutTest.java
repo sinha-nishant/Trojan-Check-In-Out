@@ -1,21 +1,28 @@
 package com.example.app.blackBox;
 
+import android.app.LauncherActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.View;
 
 import androidx.test.espresso.FailureHandler;
+import androidx.test.espresso.intent.Intents;
 import androidx.test.espresso.matcher.ViewMatchers;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 
+import com.example.app.Credentials;
 import com.example.app.R;
 import com.example.app.account_UI.StudentProfile;
 
 import org.hamcrest.Matcher;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static android.content.Context.MODE_PRIVATE;
 import static androidx.test.espresso.Espresso.onView;
@@ -27,7 +34,8 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.junit.Assert.fail;
-
+@RunWith(AndroidJUnit4.class)
+@LargeTest
 public class ManualCheckOutTest {
 
     @Rule
@@ -37,19 +45,20 @@ public class ManualCheckOutTest {
                 protected Intent getActivityIntent() {
                     Context targetContext = getInstrumentation().getTargetContext();
                     Intent result = new Intent(targetContext, StudentProfile.class);
-                    result.putExtra("email", CreateStudentTest.email);
-                    result.putExtra("uscID", CreateStudentTest.uscID);
+                    result.putExtra("email", Credentials.email);
+                    result.putExtra("uscID", Credentials.id);
                     return result;
                 }
             };
 
     @Before
     public void setUp() {
+//        Intents.init();
         Context targetContext = getInstrumentation().getTargetContext();
         SharedPreferences sharedPreferences = targetContext.getSharedPreferences("sharedPrefs",MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("email",CreateStudentTest.email);
-        editor.putLong( "uscid",Long.parseLong(CreateStudentTest.uscID));
+        editor.putString("email",Credentials.email);
+        editor.putLong( "uscid",Long.parseLong(Credentials.id));
         editor.apply();
 
     }
@@ -74,6 +83,12 @@ public class ManualCheckOutTest {
             }
         }).check(matches(isDisplayed()));
 
+    }
+
+    @After
+    public void teardown(){
+//        Intents.release();
+//        mActivityRule.launchActivity(null);
     }
 
 }
