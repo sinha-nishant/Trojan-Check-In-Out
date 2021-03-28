@@ -36,31 +36,7 @@ public class CreateManagerTest {
 
     @Test
     public void ManagerCreateSuccess() throws InterruptedException {
-//        byte[] array = new byte[20];
-//        new Random().nextBytes(array);
-//        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-//                + "0123456789"
-//                + "abcdefghijklmnopqrstuvxyz";
-//
-//        // create StringBuffer size of AlphaNumericString
-//        StringBuilder sb = new StringBuilder(20);
-//
-//        for (int i = 0; i < 20; i++) {
-//
-//            // generate a random number between
-//            // 0 to AlphaNumericString variable length
-//            int index
-//                    = (int)(AlphaNumericString.length()
-//                    * Math.random());
-//
-//            // add Character one by one in end of sb
-//            sb.append(AlphaNumericString
-//                    .charAt(index));
-//        }
-//
-//        String generatedString = sb.toString();
-//        generatedString+="@usc.edu";
-//        email=generatedString;//created random  email
+
         email= Credentials.email;
         // adding email a nd password into textviews
         onView(ViewMatchers.withId(R.id.managerSignUpEmailAddress))

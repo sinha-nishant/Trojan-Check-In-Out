@@ -67,10 +67,8 @@ public class SignOutStudent {
 
     @Test
     public void SignOutStudentSuccess() throws InterruptedException {
-        Thread.sleep(10000);
         onView(ViewMatchers.withId(R.id.buttonFragment2))
                 .perform(click());
-//        Thread.sleep(25000);
 
         onView(withId(R.id.studentMenuLogOut))
                 .perform(click());

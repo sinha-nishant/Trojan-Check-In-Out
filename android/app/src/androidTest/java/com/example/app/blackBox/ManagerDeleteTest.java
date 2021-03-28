@@ -70,7 +70,6 @@ public ActivityScenarioRule<ManagerProfile> activityRule =
         SharedPreferences sharedPreferences = targetContext.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("email", Credentials.email);
-//        editor.putLong( "uscid",0L);
         editor.apply();
 
 
@@ -94,11 +93,6 @@ public ActivityScenarioRule<ManagerProfile> activityRule =
                 fail("Could not find alert");
             }
         }).check(matches(isDisplayed()));
-
-
-
-
-
 
 
     }

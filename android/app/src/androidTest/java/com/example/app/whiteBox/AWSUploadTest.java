@@ -60,7 +60,7 @@ public class AWSUploadTest {
 
         }
 
-        Thread.sleep(30000);
+        Thread.sleep(10000);
         if(uploadMLD.getValue()==null){
             fail("did not update image");
         }

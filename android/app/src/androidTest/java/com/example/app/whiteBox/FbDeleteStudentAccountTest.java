@@ -48,7 +48,7 @@ public class FbDeleteStudentAccountTest {
         //will just run in the background without testing the Firebase database if the code isn't
         //there
         try {
-            Thread.sleep(15000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
