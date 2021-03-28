@@ -51,50 +51,50 @@ public class StudentMenuRedirectionTest extends TestCase {
                     return result;
                 }};
 
-                @Before
-                public void setUp() {
-                    Intents.init();
-                    Context targetContext = getInstrumentation().getTargetContext();
-                    SharedPreferences sharedPreferences = targetContext.getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("0000011111", StudentMenuRedirectionTest.uscID);
-                    editor.apply();
-                }
-                @Test
-                public void testLogOutRedirect() throws InterruptedException {
-                    onView(withId(R.id.buttonFragment2)).perform(click());
-                    onView(withId(R.id.studentMenuLogOut)).perform(click());
-                    //Check for new page
-                    intended(hasComponent(StartPage.class.getName()));
-                    Intents.release();
-                }
-                @Test
-                public void testHistoryRedirect() throws InterruptedException {
-                    onView(withId(R.id.buttonFragment2)).perform(click());
-                    onView(withId(R.id.studentMenuHistory)).perform(click());
-                    //Check for new page
-                    intended(hasComponent(StudentHistory.class.getName()));
-                    Intents.release();
-                }
-                @Test
-                public void testSwitchingFragmentsRedirect() throws InterruptedException {
-                    //just a bunch of fragment switching
-                    onView(withId(R.id.buttonFragment1)).perform(click());
-                    onView(withId(R.id.buttonFragment1)).perform(click());
-                    onView(withId(R.id.buttonFragment2)).perform(click());
-                    onView(withId(R.id.buttonFragment2)).perform(click());
-                    onView(withId(R.id.buttonFragment1)).perform(click());
-                    onView(withId(R.id.buttonFragment1)).perform(click());
-                    onView(withId(R.id.buttonFragment1)).perform(click());
-                    onView(withId(R.id.buttonFragment1)).perform(click());
-                    onView(withId(R.id.buttonFragment1)).perform(click());
-                    onView(withId(R.id.buttonFragment2)).perform(click());
-                    onView(withId(R.id.buttonFragment2)).perform(click());
+    @Before
+    public void setUp() {
+        Intents.init();
+        Context targetContext = getInstrumentation().getTargetContext();
+        SharedPreferences sharedPreferences = targetContext.getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("0000011111", StudentMenuRedirectionTest.uscID);
+        editor.apply();
+    }
+    @Test
+    public void testLogOutRedirect() throws InterruptedException {
+        onView(withId(R.id.buttonFragment2)).perform(click());
+        onView(withId(R.id.studentMenuLogOut)).perform(click());
+        //Check for new page
+        intended(hasComponent(StartPage.class.getName()));
+        Intents.release();
+    }
+    @Test
+    public void testHistoryRedirect() throws InterruptedException {
+        onView(withId(R.id.buttonFragment2)).perform(click());
+        onView(withId(R.id.studentMenuHistory)).perform(click());
+        //Check for new page
+        intended(hasComponent(StudentHistory.class.getName()));
+        Intents.release();
+    }
+    @Test
+    public void testSwitchingFragmentsRedirect() throws InterruptedException {
+        //just a bunch of fragment switching
+        onView(withId(R.id.buttonFragment1)).perform(click());
+        onView(withId(R.id.buttonFragment1)).perform(click());
+        onView(withId(R.id.buttonFragment2)).perform(click());
+        onView(withId(R.id.buttonFragment2)).perform(click());
+        onView(withId(R.id.buttonFragment1)).perform(click());
+        onView(withId(R.id.buttonFragment1)).perform(click());
+        onView(withId(R.id.buttonFragment1)).perform(click());
+        onView(withId(R.id.buttonFragment1)).perform(click());
+        onView(withId(R.id.buttonFragment1)).perform(click());
+        onView(withId(R.id.buttonFragment2)).perform(click());
+        onView(withId(R.id.buttonFragment2)).perform(click());
 
-                    onView(withId(R.id.studentMenuHistory)).perform(click());
-                    //Check for new page
-                    intended(hasComponent(StudentHistory.class.getName()));
-                    Intents.release();
-                 }
+        onView(withId(R.id.studentMenuHistory)).perform(click());
+        //Check for new page
+        intended(hasComponent(StudentHistory.class.getName()));
+        Intents.release();
+     }
 
-            }
+}
