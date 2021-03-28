@@ -96,9 +96,9 @@ public class ManagerNameTest extends TestCase {
 
     @Test
     public void testEmptyLastName() throws InterruptedException {
-        onView(withId(R.id.managerFirstName)).perform(typeText(blankName));
+        onView(withId(R.id.managerFirstName)).perform(typeText(actualName));
         Espresso.closeSoftKeyboard();
-        onView(withId(R.id.managerLastName)).perform(typeText(actualName));
+        onView(withId(R.id.managerLastName)).perform(typeText(blankName));
         Espresso.closeSoftKeyboard();
         onView(withId(R.id.nameButtonM)).perform(click());
         //Check for toast

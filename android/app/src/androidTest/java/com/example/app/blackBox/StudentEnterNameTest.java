@@ -101,9 +101,9 @@ public class StudentEnterNameTest extends TestCase {
     }
     @Test
     public void testEmptyLastName() throws InterruptedException {
-        onView(withId(R.id.studentFirstName)).perform(typeText(blankName));
+        onView(withId(R.id.studentFirstName)).perform(typeText(actualName));
         Espresso.closeSoftKeyboard();
-        onView(withId(R.id.studentLastName)).perform(typeText(actualName));
+        onView(withId(R.id.studentLastName)).perform(typeText(blankName));
         Espresso.closeSoftKeyboard();
         onView(withId(R.id.nameButton)).perform(click());
         //Check for toast
