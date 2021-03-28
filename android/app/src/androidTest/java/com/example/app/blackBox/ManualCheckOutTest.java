@@ -87,8 +87,7 @@ public class ManualCheckOutTest {
 
     @After
     public void teardown(){
-//        Intents.release();
-//        mActivityRule.launchActivity(null);
+
     }
 
 }

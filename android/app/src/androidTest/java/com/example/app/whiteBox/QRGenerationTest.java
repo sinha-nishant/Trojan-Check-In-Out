@@ -78,7 +78,6 @@ public class QRGenerationTest {
             try {
                 Result result = reader.decode(bitmap);
                 decoded = result.getText();
-//                Log.d("Building is : ", decoded);
                 decoded_bitmaps.add(decoded);
             } catch (NotFoundException e) {
                 e.printStackTrace();
