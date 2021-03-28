@@ -45,6 +45,7 @@ public class Building {
     public List<Long> getStudents_ids(){
         return this.students_ids;
     }
+    public Boolean getAvailability(){return occupancy<capacity;}
 
     //setters
     public void setName(String name){

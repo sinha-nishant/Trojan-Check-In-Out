@@ -56,7 +56,7 @@ public class BuildingsOccupancyListTest {
         }
 
         for(int i=0;i<post_value.size();i++){
-            String occupancymessage = "Occupancy: "+post_value.get(i).getOccupancy().toString()+"/100";
+            String occupancymessage = "Occupancy: "+post_value.get(i).getOccupancy().toString()+"/"+post_value.get(i).getCapacity();
             onView(ViewMatchers.withId(R.id.recyclerList))
                     .perform(RecyclerViewActions
                             .scrollToPosition(i))
