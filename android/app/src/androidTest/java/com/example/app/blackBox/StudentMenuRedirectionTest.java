@@ -61,14 +61,6 @@ public class StudentMenuRedirectionTest extends TestCase {
         editor.apply();
     }
     @Test
-    public void testLogOutRedirect() throws InterruptedException {
-        onView(withId(R.id.buttonFragment2)).perform(click());
-        onView(withId(R.id.studentMenuLogOut)).perform(click());
-        //Check for new page
-        intended(hasComponent(StartPage.class.getName()));
-        Intents.release();
-    }
-    @Test
     public void testHistoryRedirect() throws InterruptedException {
         onView(withId(R.id.buttonFragment2)).perform(click());
         onView(withId(R.id.studentMenuHistory)).perform(click());
