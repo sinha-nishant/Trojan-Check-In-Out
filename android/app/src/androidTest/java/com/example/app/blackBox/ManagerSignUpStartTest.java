@@ -62,11 +62,11 @@ public class ManagerSignUpStartTest extends TestCase {
     {
         onView(withId(R.id.managerSignUpEmailAddress)).perform(typeText(blankEmail));
         Espresso.closeSoftKeyboard();
-        onView(withId(R.id.managerSignUpPassword)).perform(typeText(blankPass));
+        onView(withId(R.id.managerSignUpPassword)).perform(typeText(password));
         Espresso.closeSoftKeyboard();
         onView(withId(R.id.managerEmailPassSubmitButton)).perform(click());
         //Check for toast
-        onView(withText("Email or Password is blank")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+        onView(withText("Email is blank")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
     }
     @Test
     public void testEmptyPass() throws InterruptedException
@@ -77,7 +77,7 @@ public class ManagerSignUpStartTest extends TestCase {
         Espresso.closeSoftKeyboard();
         onView(withId(R.id.managerEmailPassSubmitButton)).perform(click());
         //Check for toast
-        onView(withText("Email or Password is blank")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+        onView(withText("Password is blank")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
     }
     @Test
     public void testIncorrectEmail() throws InterruptedException

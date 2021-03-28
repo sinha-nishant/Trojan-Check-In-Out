@@ -85,7 +85,7 @@ public class StudentEnterNameTest extends TestCase {
     public void testEmptyBothNames() throws InterruptedException {
         onView(withId(R.id.nameButton)).perform(click());
         //Check for toast
-        onView(withText("First or last name is blank")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+        onView(withText("First and last name are blank")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
         Intents.release();
     }
     @Test
@@ -96,7 +96,7 @@ public class StudentEnterNameTest extends TestCase {
         Espresso.closeSoftKeyboard();
         onView(withId(R.id.nameButton)).perform(click());
         //Check for toast
-        onView(withText("First or last name is blank")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+        onView(withText("First name is blank")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
         Intents.release();
     }
     @Test
@@ -107,7 +107,7 @@ public class StudentEnterNameTest extends TestCase {
         Espresso.closeSoftKeyboard();
         onView(withId(R.id.nameButton)).perform(click());
         //Check for toast
-        onView(withText("First or last name is blank")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+        onView(withText("Last name is blank")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
         Intents.release();
     }
     @Test

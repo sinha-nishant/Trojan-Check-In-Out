@@ -65,7 +65,7 @@ public class StudentSignUpStartTest extends TestCase {
         Espresso.closeSoftKeyboard();
         onView(withId(R.id.studentEmailPassSubmitButton)).perform(click());
         //Check for toast
-        onView(withText("Email or Password is blank")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+        onView(withText("Email and Password are blank")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
     }
     @Test
     public void testEmptyPass() throws InterruptedException
@@ -76,7 +76,7 @@ public class StudentSignUpStartTest extends TestCase {
         Espresso.closeSoftKeyboard();
         onView(withId(R.id.studentEmailPassSubmitButton)).perform(click());
         //Check for toast
-        onView(withText("Email or Password is blank")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+        onView(withText("Password is blank")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
     }
     @Test
     public void testIncorrectEmail() throws InterruptedException

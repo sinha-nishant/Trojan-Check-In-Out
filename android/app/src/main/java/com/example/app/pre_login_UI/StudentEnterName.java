@@ -43,8 +43,12 @@ public class StudentEnterName extends AppCompatActivity {
                 //used for popups to user
                 //showToast(email);
                 //showToast(password);
-                if(fName.length() == 0 || lName.length() == 0)
-                    showToast("First or last name is blank");
+                if(fName.length() == 0 && lName.length() == 0)
+                    showToast("First and last name are blank");
+                else if(fName.length() == 0 )
+                    showToast("First name is blank");
+                else if(lName.length() == 0 )
+                    showToast("Last name is blank");
                 else
                 {
                     //don't put info in database yet, keep passing values until completed

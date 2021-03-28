@@ -87,9 +87,16 @@ public class ManagerName extends AppCompatActivity {
                 fName = firstNameInput.getText().toString();
                 lName = lastNameInput.getText().toString();
 
-
-                if(fName.length() == 0 || lName.length() == 0){
-                    showToast("First or last name is blank");
+                if(fName.length() == 0 && lName.length() == 0){
+                    showToast("First and last name are blank");
+                    return;
+                }
+                else if(fName.length() == 0 ) {
+                    showToast("First name is blank");
+                    return;
+                }
+                else if(lName.length() == 0 ) {
+                    showToast("Last name is blank");
                     return;
                 }
                 pb.setVisibility(View.VISIBLE);
