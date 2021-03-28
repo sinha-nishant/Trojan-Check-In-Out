@@ -37,11 +37,18 @@ A similar system implemented on the USC campus is by the USC housing. This syste
 - Note: For the choose environment questions, just press enter. For the default editor question toggle using arrows and press enter once landing on Android Studio. Make Sure to choose AWS access Key option and not the Profile Option. For region, Toggle to us-west-2 and press enter.
 ![image](https://user-images.githubusercontent.com/42727780/111911887-49e99a00-8a8d-11eb-8512-f299bfc982e3.png)
 
+# Testing optimizations
+-To avoid flakiness, we highly recommend that you turn off system animations on the emulator. On your emulator, under Settings > Developer options, disable the following 3 settings: Window animation scale, Transition animation scale, Animator duration scale
+
 
 # You now have everything set up in order to run our app
 
 **Note on how to add images to your emulator**
 - In order to take advantage of the upload profile picture functionality, you will need to have images installed in your emulator. This can be done by dragging and dropping images from your desktop/laptop into the emulator. You can find the image in the downloads tab of the emulator
+
+**Note on scanning QR codes**
+
+- To allow for scanning functionality, you must enable your emulator's camera. To do this, go to android studio. click on tools-> AVD manager -> click on edit button for specific emulator-> show advanced settings. Under camera, change front and back camera options to Webcam0.
 
 
 
