@@ -35,7 +35,11 @@ public class FbUpdate  implements FirestoreConnector {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
+                                            success.setValue(true);
                                             Log.d("UPDATE", buildingName + " updated capacity " + newCapacity);
+                                        }
+                                        else{
+                                            success.setValue(false);
                                         }
                                     }
                                 });
