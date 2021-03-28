@@ -3,15 +3,15 @@
 
 
     <item
-        android:id="@+id/managerHome"
+        android:id="@+id/managerHome22"
         android:title="Home"
         android:icon="@drawable/ic_baseline_home_24"/>
     <item
-        android:id="@+id/managerSearchFragment"
+        android:id="@+id/managerSearch2"
         android:title="Search"
         android:icon="@drawable/ic_baseline_search_24"/>
     <item
-        android:id="@+id/managerProfile"
+        android:id="@+id/managerProfile2"
         android:title="Profile"
         android:icon="@drawable/ic_baseline_person_24"/>
 </menu>

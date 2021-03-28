@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/my_nav">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_nav"
+    app:startDestination="@id/managerHome22">
+    <fragment
+        android:id="@+id/managerHome22"
+        android:name="com.example.app.ManagerHome2"
+        android:label="fragment_manager_home2"
+        tools:layout="@layout/fragment_manager_home2" />
+    <fragment
+        android:id="@+id/managerProfile2"
+        android:name="com.example.app.ManagerProfile"
+        android:label="fragment_manager_profile"
+        tools:layout="@layout/fragment_manager_profile" />
+    <fragment
+        android:id="@+id/managerSearch2"
+        android:name="com.example.app.ManagerSearch"
+        android:label="fragment_manager_search2"
+        tools:layout="@layout/fragment_manager_search2" />
 </navigation>

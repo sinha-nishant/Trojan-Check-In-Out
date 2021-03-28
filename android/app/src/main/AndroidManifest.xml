@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.App">
-        <activity android:name=".account_UI.ManagerProfile"></activity>
+        <activity android:name=".ManagerHome" android:exported="true"></activity>
+        <activity android:name=".account_UI.ManagerProfile" />
         <activity android:name=".account_UI.StudentHistory" />
         <activity android:name=".account_UI.StudentProfile" />
         <activity android:name=".pre_login_UI.ManagerName" />
@@ -28,14 +29,13 @@
         <activity android:name=".pre_login_UI.StudentSignUpStart" />
         <activity android:name=".pre_login_UI.SignUpPage" />
         <activity android:name=".building.BuildingsOccupancyList" />
-        <activity android:name=".pre_login_UI.StartPage" >
+        <activity android:name=".pre_login_UI.StartPage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
     </application>
 
 </manifest>
