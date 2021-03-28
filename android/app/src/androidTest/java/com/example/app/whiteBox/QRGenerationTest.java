@@ -40,7 +40,7 @@ public class QRGenerationTest {
     @Rule
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
     public static List<Building> post_value;
-    public static List<String>  decoded_bitmaps= new ArrayList<>();
+    public static HashSet<String>  decoded_bitmaps= new HashSet<String>();
     @Test
     public void getBitMap() {
         //get all buildings from firebase
