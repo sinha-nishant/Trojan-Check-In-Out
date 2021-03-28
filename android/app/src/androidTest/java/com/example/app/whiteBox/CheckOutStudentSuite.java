@@ -1,5 +1,7 @@
-package com.example.app.blackBox;
+package com.example.app.whiteBox;
 
+import com.example.app.blackBox.CreateStudentTest;
+import com.example.app.blackBox.StudentDeleteTest;
 import com.example.app.whiteBox.QRScanCheckInTest;
 import com.example.app.whiteBox.QRScanCheckOutTest;
 

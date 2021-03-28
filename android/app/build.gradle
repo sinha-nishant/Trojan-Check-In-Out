@@ -50,6 +50,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.+'
 
+
     //added
     androidTestImplementation 'android.arch.core:core-testing:1.1.1'
     testImplementation 'androidx.test:core:1.2.0'
