@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.App">
-        <activity android:name=".ManagerHome" android:exported="true"></activity>
+        <activity android:name=".account_UI.ManagerHome" android:exported="true"></activity>
         <activity android:name=".account_UI.ManagerProfile" />
         <activity android:name=".account_UI.StudentHistory" />
         <activity android:name=".account_UI.StudentProfile" />
