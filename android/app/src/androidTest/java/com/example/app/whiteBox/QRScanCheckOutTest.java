@@ -2,7 +2,6 @@ package com.example.app.whiteBox;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.MutableLiveData;
@@ -10,7 +9,6 @@ import androidx.lifecycle.Observer;
 import androidx.test.core.app.ApplicationProvider;
 
 import com.example.app.Credentials;
-import com.example.app.blackBox.CreateStudentTest;
 import com.example.app.building.Building;
 import com.example.app.firebaseDB.FbQuery;
 import com.example.app.services.CheckInOut;
@@ -33,13 +31,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-
-import javax.annotation.Nullable;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class QRScanCheckOutTest {
     Integer returnedOccupancy;

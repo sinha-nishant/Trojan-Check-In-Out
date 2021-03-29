@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.test.core.app.ApplicationProvider;
 
-import com.example.app.Credentials;
 import com.example.app.firebaseDB.FbUpdate;
 import com.google.firebase.FirebaseApp;
 

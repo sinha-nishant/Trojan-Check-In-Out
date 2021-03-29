@@ -2,7 +2,6 @@ package com.example.app.whiteBox;
 
 import com.example.app.blackBox.CreateStudentTest;
 import com.example.app.blackBox.StudentDeleteTest;
-import com.example.app.whiteBox.QRScanCheckInTest;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

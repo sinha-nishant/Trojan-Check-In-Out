@@ -1,6 +1,5 @@
 package com.example.app.blackBox;
 
-import android.util.Log;
 import android.view.View;
 
 import androidx.test.espresso.FailureHandler;
@@ -11,16 +10,12 @@ import androidx.test.filters.LargeTest;
 
 import com.example.app.Credentials;
 import com.example.app.R;
-import com.example.app.pre_login_UI.LogInPage;
 import com.example.app.pre_login_UI.StudentSignUpStart;
 
 import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.nio.charset.Charset;
-import java.util.Random;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;

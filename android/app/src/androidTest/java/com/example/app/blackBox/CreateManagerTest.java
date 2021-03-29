@@ -6,7 +6,6 @@ import androidx.test.espresso.FailureHandler;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
-
 import com.example.app.Credentials;
 import com.example.app.R;
 import com.example.app.pre_login_UI.ManagerSignUpStart;
@@ -14,8 +13,6 @@ import com.example.app.pre_login_UI.ManagerSignUpStart;
 import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
-
-import java.util.Random;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;

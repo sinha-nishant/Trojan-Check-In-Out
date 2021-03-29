@@ -15,7 +15,8 @@ import com.google.firebase.FirebaseApp;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class FbStudentSearchTest {
     @Rule
@@ -26,6 +27,7 @@ public class FbStudentSearchTest {
     public void search() {
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
+        //exisiting email and id of student account
         Long uscID= Long.valueOf(Credentials.id);
         String emailExpected = Credentials.email;
         MutableLiveData<StudentAccount> student = new MutableLiveData<>();

@@ -23,6 +23,7 @@ public class FbCheckUsedStudentEmailTest {
     public void checkUsedStudentEmail() {
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
+        //existing email
         String emailExpected = Credentials.email;
         MutableLiveData<Boolean> mld = new MutableLiveData<>();
         Observer<Boolean> email_obs = new Observer<Boolean>() {

@@ -30,12 +30,12 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class FullBuildingCheckInTest {
     public static Integer compareOccupancy;

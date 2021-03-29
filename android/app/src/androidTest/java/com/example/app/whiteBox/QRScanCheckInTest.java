@@ -1,29 +1,16 @@
 package com.example.app.whiteBox;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.util.Log;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.test.core.app.ApplicationProvider;
-import androidx.test.espresso.intent.Intents;
-import androidx.test.espresso.matcher.ViewMatchers;
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
-import androidx.test.rule.ActivityTestRule;
 
-import com.budiyev.android.codescanner.CodeScanner;
 import com.example.app.Credentials;
-import com.example.app.R;
-import com.example.app.account_UI.QRScan;
-import com.example.app.blackBox.CreateStudentTest;
 import com.example.app.building.Building;
 import com.example.app.firebaseDB.FbQuery;
-import com.example.app.pre_login_UI.LogInPage;
 import com.example.app.services.CheckInOut;
 import com.example.app.services.QRGeneration;
 import com.google.firebase.FirebaseApp;
@@ -38,7 +25,6 @@ import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
 
-import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -50,16 +36,8 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import static android.content.Context.MODE_PRIVATE;
-import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
-import static androidx.test.espresso.intent.matcher.IntentMatchers.hasExtra;
-
-
-import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
-import static com.example.app.whiteBox.QRGenerationTest.decoded_bitmaps;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class QRScanCheckInTest {
     public static Integer compareOccupancy;

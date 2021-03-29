@@ -9,7 +9,6 @@ import androidx.test.core.app.ApplicationProvider;
 
 import com.example.app.Credentials;
 import com.example.app.firebaseDB.FbUpdate;
-import com.example.app.users.Account;
 import com.example.app.users.StudentAccount;
 import com.google.firebase.FirebaseApp;
 

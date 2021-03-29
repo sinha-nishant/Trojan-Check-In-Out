@@ -18,7 +18,6 @@ import com.example.app.building.BuildingsOccupancyList;
 import com.example.app.firebaseDB.FbQuery;
 import com.example.app.services.CheckInOut;
 import com.example.app.users.StudentActivity;
-import com.example.app.whiteBox.QRScanCheckInTest;
 import com.google.firebase.FirebaseApp;
 
 import org.junit.After;
@@ -38,7 +37,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.hasSibling;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 public class BuildingUpdateCheckInOutTest {
     //create account, building view, delete account

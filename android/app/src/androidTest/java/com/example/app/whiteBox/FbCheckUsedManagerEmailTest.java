@@ -24,6 +24,7 @@ public class FbCheckUsedManagerEmailTest {
     public void checkUsedManagerEmail() {
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
+        //exisiting email
         String emailExpected = Credentials.email;
         MutableLiveData<Boolean> mld = new MutableLiveData<>();
         Observer<Boolean> email_obs = new Observer<Boolean>() {

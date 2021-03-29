@@ -4,20 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import androidx.test.espresso.Espresso;
 import androidx.test.espresso.intent.Intents;
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
 import com.example.app.R;
 import com.example.app.account_UI.StudentHistory;
 import com.example.app.account_UI.StudentProfile;
-import com.example.app.account_UI.StudentProfileMenu;
-import com.example.app.pre_login_UI.StartPage;
-import com.example.app.pre_login_UI.StudentEnterID;
-import com.example.app.pre_login_UI.StudentEnterName;
-import com.example.app.pre_login_UI.StudentSignUpStart;
 
 import junit.framework.TestCase;
 
@@ -29,7 +22,6 @@ import org.junit.runner.RunWith;
 import static android.content.Context.MODE_PRIVATE;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;

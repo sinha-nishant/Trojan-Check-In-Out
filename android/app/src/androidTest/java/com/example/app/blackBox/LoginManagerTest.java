@@ -10,7 +10,6 @@ import androidx.test.filters.LargeTest;
 
 import com.example.app.Credentials;
 import com.example.app.R;
-
 import com.example.app.pre_login_UI.LogInPage;
 
 import org.hamcrest.Matcher;

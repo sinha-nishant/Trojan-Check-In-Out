@@ -24,6 +24,7 @@ public class FbCheckUsedIdTest {
     public void checkUsedID() {
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
+        //existing id
         Long uscID= Long.valueOf(Credentials.id);
         MutableLiveData<Boolean> mld = new MutableLiveData<>();
         Observer<Boolean> id_obs = new Observer<Boolean>() {

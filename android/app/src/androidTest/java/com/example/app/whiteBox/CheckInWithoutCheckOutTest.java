@@ -19,13 +19,13 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class CheckInWithoutCheckOutTest {
     public static Integer compareOccupancy;

@@ -9,10 +9,7 @@ import androidx.lifecycle.Observer;
 import androidx.test.core.app.ApplicationProvider;
 
 import com.example.app.Credentials;
-import com.example.app.blackBox.CreateStudentTest;
-import com.example.app.firebaseDB.FbCheckInOut;
 import com.example.app.firebaseDB.FbQuery;
-import com.example.app.firebaseDB.FbUpdate;
 import com.example.app.users.StudentAccount;
 import com.example.app.users.StudentActivity;
 import com.google.firebase.FirebaseApp;
@@ -20,13 +17,12 @@ import com.google.firebase.FirebaseApp;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-public class FbCheckStudentActivity {
+public class FbCheckStudentActivityTest {
     @Rule
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
 

@@ -9,7 +9,7 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        CreateStudentTest.class, QRScanCheckInTest.class,FbCheckStudentActivity.class ,QRScanCheckOutTest.class,
+        CreateStudentTest.class, QRScanCheckInTest.class, FbCheckStudentActivityTest.class ,QRScanCheckOutTest.class,
         StudentDeleteTest.class
 })
 public class checkActivitySuite {

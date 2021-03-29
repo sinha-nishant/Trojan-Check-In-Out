@@ -1,12 +1,10 @@
 package com.example.app.blackBox;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.View;
 
 import androidx.test.espresso.FailureHandler;
-import androidx.test.espresso.intent.Intents;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
@@ -15,15 +13,12 @@ import androidx.test.rule.ActivityTestRule;
 import com.example.app.Credentials;
 import com.example.app.R;
 import com.example.app.account_UI.StudentProfile;
-import com.example.app.blackBox.CreateStudentTest;
 
 import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.lang.reflect.Parameter;
 
 import static android.content.Context.MODE_PRIVATE;
 import static androidx.test.espresso.Espresso.onView;

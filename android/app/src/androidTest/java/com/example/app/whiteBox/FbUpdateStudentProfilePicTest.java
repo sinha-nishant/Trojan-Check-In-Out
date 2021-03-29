@@ -9,13 +9,11 @@ import androidx.test.core.app.ApplicationProvider;
 
 import com.example.app.Credentials;
 import com.example.app.firebaseDB.FbUpdate;
-import com.example.app.users.StudentAccount;
 import com.google.firebase.FirebaseApp;
 
 import org.junit.Rule;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 public class FbUpdateStudentProfilePicTest {
@@ -35,6 +33,7 @@ public class FbUpdateStudentProfilePicTest {
         };
         updateMLD.observeForever(Observer);
         String email= Credentials.email;
+        //update photo url according to the email above
         FbUpdate.updatePhoto(email,updateMLD);
         try {
             Thread.sleep(5000);

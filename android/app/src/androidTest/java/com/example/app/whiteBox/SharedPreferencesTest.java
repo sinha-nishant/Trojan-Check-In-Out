@@ -22,11 +22,13 @@ public class SharedPreferencesTest {
         Context context = ApplicationProvider.getApplicationContext();
         SharedPreferences sharedPreferences = context.getSharedPreferences("sharedPrefs",MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
+        //inserting email and if into shared preferences
         String inputString="TestEmail20@usc.edu";
         editor.putString("email",inputString);
         Long inputLong= 1717171212L;
         editor.putLong( "uscid",inputLong);
         editor.apply();
+        // retrieving id and email to check if matches
         String test_retrieve_email = sharedPreferences.getString("email","");
         Long test_retrieve_id = sharedPreferences.getLong("uscid",0L);
         assert test_retrieve_email.equals(inputString) ;

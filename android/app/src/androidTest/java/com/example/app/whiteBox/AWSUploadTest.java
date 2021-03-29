@@ -1,15 +1,12 @@
 package com.example.app.whiteBox;
 
-import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.test.core.app.ApplicationProvider;
-
 
 import com.amplifyframework.AmplifyException;
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
@@ -22,7 +19,6 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
-
 import java.net.URL;
 
 import static org.junit.Assert.assertEquals;
@@ -52,6 +48,7 @@ public class AWSUploadTest {
 
             URL url = new URL(uri.toString());
             InputStream stream = url.openStream();
+            ///upload image
             uploadPhoto.upload(stream,email,uploadMLD);
 
         } catch (IOException e) {
