@@ -22,12 +22,11 @@ public class FbIncreaseCapacityTest {
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
 
     @Test
-    //test to check if the createAccount function works along with a built in deleteAccount that
-    //is not tested
+    //test to increase building capacity (non-requirement)
     public void increaseBuildingCapacityTest() {
         //values to initialize account
         String buildingName = "Ahmanson Ctr. for Biological Research Animal Section";
-        int newCapacity = 420;
+        int newCapacity = 100;
 
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
@@ -35,28 +34,26 @@ public class FbIncreaseCapacityTest {
         Observer<Boolean> successObserver = new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
-                if(aBoolean==null){
+                if (aBoolean == null) {
                     fail("Did not observe");
                     return;
                 }
-                assertEquals(true,aBoolean);
+                assertEquals(true, aBoolean);
             }
         };
         success.observeForever(successObserver);
 
-        FbUpdate.updateCapacity(buildingName,success,newCapacity);
-        //To get the test to run add this - Firebase takes time to execute the query and the thread
-        //will just run in the background without testing the Firebase database if the code isn't
-        //there
+        FbUpdate.updateCapacity(buildingName, success, newCapacity);
+        //amount of delay in order to ensure the Firebase command is executed
         try {
             Thread.sleep(15000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
+        //if there is a problem with the test such that live data is never updated
         if (success.getValue() == null) {
-            fail("did not update MLD");
-
+            fail("did not update observer");
         }
 
 

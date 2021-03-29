@@ -22,6 +22,7 @@ public class FbStudentSearchTest {
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
 
     @Test
+    //test to check if search using ID is working
     public void search() {
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
@@ -38,14 +39,19 @@ public class FbStudentSearchTest {
             }
         };
         student.observeForever(saObserver);
+
+        //search using ID
         FbQuery.search(uscID,student);
-        //To get the test to run add this - Firebase takes time to execute the query and the thread
-        //will just run in the background without testing the Firebase database if the code isn't
-        //there
+
+        //amount of delay in order to ensure the Firebase command is executed
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+
+        if (student.getValue() == null) {
+            fail("did not update MLD");
         }
 
     }

@@ -30,10 +30,11 @@ public class FbCreateStudentAccountTest {
     //is not tested
     public void createAccountWithCorrectInputNoPic() {
 
+        //randomized credentials
         email= Credentials.email;
 
 
-
+        //non-randomized name and password
         String firstName= "Fname";
         String lastName="Lname";
 
@@ -60,13 +61,16 @@ public class FbCreateStudentAccountTest {
         success.observeForever(successObserver);
 
         FbUpdate.createAccount(a,success);
-        //To get the test to run add this - Firebase takes time to execute the query and the thread
-        //will just run in the background without testing the Firebase database if the code isn't
-        //there
+
+        //amount of delay in order to ensure the Firebase command is executed
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+        //if there is a problem with the test such that live data is never updated
+        if(success.getValue()==null){
+            fail("did not update observer");
         }
 
 

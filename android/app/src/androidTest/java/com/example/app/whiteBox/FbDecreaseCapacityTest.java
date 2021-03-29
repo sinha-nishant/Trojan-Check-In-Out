@@ -21,8 +21,8 @@ public class FbDecreaseCapacityTest {
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
 
     @Test
-    //test to check if the createAccount function works along with a built in deleteAccount that
-    //is not tested
+    //test to check if the the update capacity works well with decreasing building capacity
+    //(non-requirement test)
     public void decreaseBuildingCapacityTest() {
         //values to initialize account
         String buildingName = "Ahmanson Ctr. for Biological Research Animal Section";
@@ -44,9 +44,7 @@ public class FbDecreaseCapacityTest {
         success.observeForever(successObserver);
 
         FbUpdate.updateCapacity(buildingName, success, newCapacity);
-        //To get the test to run add this - Firebase takes time to execute the query and the thread
-        //will just run in the background without testing the Firebase database if the code isn't
-        //there
+        //amount of delay in order to ensure the Firebase command is executed
         try {
             Thread.sleep(15000);
         } catch (InterruptedException e) {

@@ -20,6 +20,7 @@ public class FbUpdateStudentPasswordTest {
     @Rule
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
 
+    //non-requirement test to try and update the password
     @Test
     public void UpdatePassword() {
         Context context = ApplicationProvider.getApplicationContext();
@@ -34,6 +35,8 @@ public class FbUpdateStudentPasswordTest {
         updateMLD.observeForever(Observer);
         String email = Credentials.email;
         FbUpdate.updatePassword(email,"SecurePassword69", updateMLD);
+
+        //amount of delay in order to ensure the Firebase command is executed
         try {
             Thread.sleep(15000);
         } catch (InterruptedException e) {
