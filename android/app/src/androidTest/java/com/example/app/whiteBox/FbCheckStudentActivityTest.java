@@ -47,7 +47,7 @@ public class FbCheckStudentActivityTest {
             }
         };
         studentMLD.observeForever(student_obs);
-        FbQuery.search(id,studentMLD);
+        FbQuery.getStudent(id,studentMLD);
 
 
 

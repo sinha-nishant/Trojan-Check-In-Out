@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,7 +38,7 @@ public class StudentHistory extends AppCompatActivity {
         Log.d("history","id=  "+uscID.toString());
 
         MutableStudent();
-        FbQuery.search(uscID,student);
+        FbQuery.getStudent(uscID,student);
 
 
 

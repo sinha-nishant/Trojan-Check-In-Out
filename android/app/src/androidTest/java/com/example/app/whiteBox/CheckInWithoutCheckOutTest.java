@@ -87,7 +87,7 @@ public class CheckInWithoutCheckOutTest {
                 student=studentAccount;
             }
         };
-        FbQuery.search(Long.parseLong(Credentials.id),studentMLD);
+        FbQuery.getStudent(Long.parseLong(Credentials.id),studentMLD);
         if(i+1<post_value.size()){
             i++;
         }else{

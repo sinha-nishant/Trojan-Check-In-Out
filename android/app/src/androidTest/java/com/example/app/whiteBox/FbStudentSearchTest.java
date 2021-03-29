@@ -23,7 +23,7 @@ public class FbStudentSearchTest {
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
 
     @Test
-    //test to check if search using ID is working
+    //test to check if getStudent using ID is working
     public void search() {
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
@@ -42,8 +42,8 @@ public class FbStudentSearchTest {
         };
         student.observeForever(saObserver);
 
-        //search using ID
-        FbQuery.search(uscID,student);
+        //getStudent using ID
+        FbQuery.getStudent(uscID,student);
 
         //amount of delay in order to ensure the Firebase command is executed
         try {

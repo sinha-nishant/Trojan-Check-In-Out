@@ -225,9 +225,8 @@ public class FbQuery implements FirestoreConnector {
                 });
     }
 
-
     //Search for account using uscID
-    public static void search(Long uscID,MutableLiveData<StudentAccount> student) {
+    public static void getStudent(Long uscID, MutableLiveData<StudentAccount> student) {
         FirestoreConnector.getDB().collection("Accounts").whereEqualTo("uscID", uscID).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -249,8 +248,8 @@ public class FbQuery implements FirestoreConnector {
     }
 
 
-    //search for account using email
-    public static void search(String email,MutableLiveData<Account> manager) {
+    //getStudent for account using email
+    public static void getManager(String email, MutableLiveData<Account> manager) {
         FirestoreConnector.getDB().collection("Accounts").whereEqualTo("email", email).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

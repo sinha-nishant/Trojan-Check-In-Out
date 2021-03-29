@@ -93,7 +93,7 @@ public class StudentProfileMenu extends Fragment {
         Long id = sp.getLong("uscid",123456790L);
         Log.d("StudentProfile",id+"ending");
         uscID=id.toString();
-        FbQuery.search(id,student);
+        FbQuery.getStudent(id,student);
     }
 
     @Override
@@ -147,7 +147,7 @@ public class StudentProfileMenu extends Fragment {
                     Log.d("id","id is null");
                 }
                 Log.d("id",uscID);
-                FbQuery.search(Long.valueOf((uscID)),student);
+                FbQuery.getStudent(Long.valueOf((uscID)),student);
 
             }
         });
@@ -331,7 +331,7 @@ public class StudentProfileMenu extends Fragment {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("sharedPrefs",MODE_PRIVATE);
 
         Long retrieveID = sharedPreferences.getLong("uscid",0L);
-        FbQuery.search(retrieveID, studentMLD);
+        FbQuery.getStudent(retrieveID, studentMLD);
 
     }
 }

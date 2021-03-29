@@ -144,7 +144,7 @@ public class QRScan extends AppCompatActivity {
 
                         loadingCircle.setVisibility(View.VISIBLE);
                         postScanResult=result;
-                        FbQuery.search(retrieveID, studentMLD);
+                        FbQuery.getStudent(retrieveID, studentMLD);
                     }
                 });
             }

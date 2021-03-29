@@ -79,7 +79,7 @@ public class ManagerProfile extends AppCompatActivity {
 //
 //        email= sp.getString("email","");
 //        Log.d("ManagerProfile", email);
-        FbQuery.search(email, student);
+        FbQuery.getManager(email, student);
 
 
     }

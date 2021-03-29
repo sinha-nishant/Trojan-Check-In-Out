@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Credentials;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -111,7 +110,7 @@ public class StudentProfileFragment extends Fragment {
         SharedPreferences sp=  getContext().getSharedPreferences("sharedPrefs",getActivity().MODE_PRIVATE);
         Long id = sp.getLong("uscid",0L);
         Log.d("uscID", "sp id: " + id);
-        FbQuery.search(id,student);
+        FbQuery.getStudent(id,student);
 
 
         //END BACKEND
