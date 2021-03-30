@@ -109,6 +109,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:onClick="openCSVView"
         android:text="Upload CSV"
         android:textColor="#FFC107"
         app:layout_constraintEnd_toEndOf="parent"

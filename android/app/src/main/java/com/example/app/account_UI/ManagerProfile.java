@@ -377,5 +377,9 @@ public class ManagerProfile extends AppCompatActivity {
         Intent i = new Intent(this, BuildingsOccupancyList.class);
         startActivity(i);
     }
+    public void openCSVView(View v){
+        Intent i = new Intent(this, ManagerCSV.class);
+        startActivity(i);
+    }
 
 }
