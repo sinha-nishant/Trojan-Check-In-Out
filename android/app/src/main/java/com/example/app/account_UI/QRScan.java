@@ -46,6 +46,9 @@ public class QRScan extends AppCompatActivity {
     private ProgressBar loadingCircle;
     private AlertDialog checkInOutMessage;
     private AlertDialog.Builder builder;
+    private AlertDialog.Builder builderForDoubleCheck;
+    public StudentActivity  sa;
+
     private Result postScanResult;
 
     private String email, id;
@@ -61,6 +64,7 @@ public class QRScan extends AppCompatActivity {
         loadingCircle = findViewById(R.id.progresBar);
         loadingCircle.setVisibility(View.INVISIBLE);
         builder = new AlertDialog.Builder(this);
+        builderForDoubleCheck = new AlertDialog.Builder(this);
         final Observer<Boolean> checkOutObserver = new Observer<Boolean>(){
             @Override
             public void onChanged(@Nullable final Boolean success){
@@ -109,10 +113,12 @@ public class QRScan extends AppCompatActivity {
                      FbQuery.getBuilding(postScanResult.getText().toString(),buildingMLD);
                  }else{
                      //get last index which indicates most recent activity
-                     StudentActivity  sa = sa_list.get(sa_list.size()-1);
+                     sa = sa_list.get(sa_list.size()-1);
                      if(sa.getCheckOutTime()==null && sa.getBuildingName().equals(postScanResult.getText().toString())){ //if null and scans same building then checkout student and display checkout success
                          //call checkout from checkout services or can call firebasecheckout directly
-                         CheckInOut.checkOut(checkOutMLD,sa,retrieveID);
+                         //present double check message for checkout
+                         doubleCheckMessage("Eligible for Check Out","Are you sure you want to check out of "+postScanResult.getText()+"?","checkOut");
+
                      }else if(sa.getCheckOutTime()==null && !sa.getBuildingName().equals(postScanResult.getText().toString()) ){ //if null and scans a different building then direct to check out of last building
                          //set values(such as message, and button to redirect if necessary) of alert dialog and show it to user
                          setBuilder("Check In Failure","Please check out of "+ sa.getBuildingName()+" before checking in again.");
@@ -206,7 +212,7 @@ public class QRScan extends AppCompatActivity {
         Long retrieveID = sharedPreferences.getLong("uscid",0L);
 
         loadingCircle.setVisibility(View.GONE);
-        builder.setTitle(title)
+        builderForDoubleCheck.setTitle(title)
                 .setMessage(message)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
@@ -214,6 +220,9 @@ public class QRScan extends AppCompatActivity {
                        //check in student since they double checked
                         if(functionality.equals("checkIn")){
                             CheckInOut.checkIn(checkInMLD,postScanResult.getText().toString(),retrieveID);
+                        }else if(functionality.equals("checkOut")){
+                            CheckInOut.checkOut(checkOutMLD,sa,retrieveID);
+
                         }
                     }
                 })
@@ -222,11 +231,13 @@ public class QRScan extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         if(functionality.equals("checkIn")){
                             setBuilder("Check In Attempt Canceled","You were not checked into the building.");
+                        }else if(functionality.equals("checkOut")){
+                            setBuilder("Check Out Attempt Canceled","You were not checked out of the building.");
                         }
                     }
                 })
         ;
-        checkInOutMessage=builder.create();
+        checkInOutMessage=builderForDoubleCheck.create();
         //stop loading bar
         checkInOutMessage.show();
     }

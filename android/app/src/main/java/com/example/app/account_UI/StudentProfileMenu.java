@@ -24,6 +24,7 @@ import com.example.app.firebaseDB.FbCheckInOut;
 import com.example.app.firebaseDB.FbQuery;
 import com.example.app.log_create.LogInOut;
 import com.example.app.pre_login_UI.StartPage;
+import com.example.app.services.CheckInOut;
 import com.example.app.users.StudentAccount;
 import com.example.app.users.StudentActivity;
 
@@ -50,6 +51,8 @@ public class StudentProfileMenu extends Fragment {
     AlertDialog alertDialog;
     AlertDialog checkInOutMessage;
     AlertDialog deleteDialog;
+
+    private StudentActivity sa;
 
 
     // TODO: Rename and change types of parameters
@@ -283,9 +286,38 @@ public class StudentProfileMenu extends Fragment {
 
     public void manualCheckOut(){
         AlertDialog.Builder builder= new AlertDialog.Builder(getContext());
-
+        AlertDialog.Builder doubleCheck = new AlertDialog.Builder(getContext());
         MutableLiveData<Boolean> checkOutMLD = new MutableLiveData<>();
         MutableLiveData<StudentAccount> studentMLD = new MutableLiveData<>();
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("sharedPrefs",MODE_PRIVATE);
+        Long retrieveID = sharedPreferences.getLong("uscid",0L);
+        doubleCheck.setTitle("Eligible for Check Out")
+                .setMessage("Are you sure you want to check out?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //check in student since they double checked
+                        Date date = new Date();
+                        FbCheckInOut.checkOut(retrieveID,sa,date,checkOutMLD);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        builder.setTitle("Check Out Attempt Canceled")
+                                .setMessage("You were not checked out of the building.")
+                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // do whatever reflects wireframe the best(such as switching pages
+                                    }
+                                });
+                        checkInOutMessage=builder.create();
+                        //stop loading bar
+                        checkInOutMessage.show();
+                    }
+                })
+        ;
 
 
         final Observer<Boolean> checkOutObserver = new Observer<Boolean>(){
@@ -326,11 +358,13 @@ public class StudentProfileMenu extends Fragment {
                 // check last index of studentactivity list
                 List<StudentActivity> sa_list = student.getActivity();
                 if(!sa_list.isEmpty()) {//no activity so check in if occupancy isn't full
-                    StudentActivity sa = sa_list.get(sa_list.size()-1);
+                    sa = sa_list.get(sa_list.size()-1);
                     Date date = new Date();
                     if(sa.getCheckOutTime()==null){
-                        FbCheckInOut.checkOut(student.getUscID(),sa,date,checkOutMLD);
-
+                        //add double check message
+                        checkInOutMessage=doubleCheck.create();
+                        //stop loading bar
+                        checkInOutMessage.show();
 
                     }else{
                         builder.setTitle("Check Out Failure")
@@ -361,9 +395,6 @@ public class StudentProfileMenu extends Fragment {
             }
         };
         studentMLD.observe(this,studentAccountObserver);
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences("sharedPrefs",MODE_PRIVATE);
-
-        Long retrieveID = sharedPreferences.getLong("uscid",0L);
         FbQuery.getStudent(retrieveID, studentMLD);
 
     }
