@@ -44,7 +44,7 @@ public class ManagerCSV extends AppCompatActivity {
     public void selectCSVFile(){
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("text/csv");
+        intent.setType("*/*");
         startActivityForResult(Intent.createChooser(intent, "Open CSV"),readRequestCode);
     }
     @Override
