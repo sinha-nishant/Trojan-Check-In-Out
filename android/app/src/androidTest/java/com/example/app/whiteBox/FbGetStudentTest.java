@@ -18,23 +18,23 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-public class FbStudentSearchTest {
+public class FbGetStudentTest {
     @Rule
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
 
     @Test
     //test to check if getStudent using ID is working
-    public void search() {
+    public void getStudent() {
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
-        //exisiting email and id of student account
-        Long uscID= Long.valueOf(Credentials.id);
+        //existing email and id of student account
+        Long uscID = Long.valueOf(Credentials.id);
         String emailExpected = Credentials.email;
         MutableLiveData<StudentAccount> student = new MutableLiveData<>();
         Observer<StudentAccount> saObserver = new Observer<StudentAccount>() {
             @Override
             public void onChanged(StudentAccount studentAccount) {
-                if(studentAccount==null){
+                if (studentAccount == null) {
                     fail("could not find account");
                 }
                 assertEquals(emailExpected, studentAccount.getEmail());
@@ -43,7 +43,7 @@ public class FbStudentSearchTest {
         student.observeForever(saObserver);
 
         //getStudent using ID
-        FbQuery.getStudent(uscID,student);
+        FbQuery.getStudent(uscID, student);
 
         //amount of delay in order to ensure the Firebase command is executed
         try {
@@ -55,6 +55,5 @@ public class FbStudentSearchTest {
         if (student.getValue() == null) {
             fail("did not update MLD");
         }
-
     }
 }

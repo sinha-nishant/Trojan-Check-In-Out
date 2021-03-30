@@ -6,10 +6,9 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         FbCreateStudentAccountTest.class,
-        FbStudentSearchTest.class,
+        FbSearchByMajorTest.class,
         FbDeleteStudentAccountTest.class
 })
-public class FbCreateSearchDeleteStudentTestSuite {
-
+public class FbSearchByMajorSuite {
 
 }
