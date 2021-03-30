@@ -89,7 +89,9 @@ public class QRScan extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable final Building scannedBuilding){
                 if(scannedBuilding.getOccupancy()<scannedBuilding.getCapacity()){ //if not null and scanned building occupancy isn't full then checkin and display checkin message
-                    CheckInOut.checkIn(checkInMLD,postScanResult.getText().toString(),retrieveID);
+                    //add a pop up here saying are you sure you want to check in
+                    doubleCheckMessage("Eligible for Check In","Are you sure you want to check into "+postScanResult.getText()+"?","checkIn");
+
                 }else { //if not null and scanned building full then just display capacity full message with the capacity
                    setBuilder("Check In Failure","The building has reached its full capacity of "+scannedBuilding.getCapacity().toString()+" students.");
                 }
@@ -114,7 +116,7 @@ public class QRScan extends AppCompatActivity {
                      }else if(sa.getCheckOutTime()==null && !sa.getBuildingName().equals(postScanResult.getText().toString()) ){ //if null and scans a different building then direct to check out of last building
                          //set values(such as message, and button to redirect if necessary) of alert dialog and show it to user
                          setBuilder("Check In Failure","Please check out of "+ sa.getBuildingName()+" before checking in again.");
-                     }else if(sa.getCheckOutTime()!=null){
+                     }else if(sa.getCheckOutTime()!=null){ //check in attempt
                          //would have to call getbuilding and send another callback
                          FbQuery.getBuilding(postScanResult.getText().toString(),buildingMLD);
                      }
@@ -135,13 +137,10 @@ public class QRScan extends AppCompatActivity {
         mCodeScanner.setDecodeCallback(new DecodeCallback() {
             @Override
             public void onDecoded(@NonNull final Result result) {
-                Log.d("IT WORKSSSSSSS","DECODEDD");
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         //Long uscID, StudentActivity sa, MutableLiveData<Boolean> success
-                        Log.d("IT WORKSSSSSSS","DECODEDD");
-
                         loadingCircle.setVisibility(View.VISIBLE);
                         postScanResult=result;
                         FbQuery.getStudent(retrieveID, studentMLD);
@@ -198,6 +197,35 @@ public class QRScan extends AppCompatActivity {
                         goToStudentProfile();
                     }
                 });
+        checkInOutMessage=builder.create();
+        //stop loading bar
+        checkInOutMessage.show();
+    }
+    public void doubleCheckMessage(String title, String message, String functionality){
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs",MODE_PRIVATE);
+        Long retrieveID = sharedPreferences.getLong("uscid",0L);
+
+        loadingCircle.setVisibility(View.GONE);
+        builder.setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                       //check in student since they double checked
+                        if(functionality.equals("checkIn")){
+                            CheckInOut.checkIn(checkInMLD,postScanResult.getText().toString(),retrieveID);
+                        }
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(functionality.equals("checkIn")){
+                            setBuilder("Check In Attempt Canceled","You were not checked into the building.");
+                        }
+                    }
+                })
+        ;
         checkInOutMessage=builder.create();
         //stop loading bar
         checkInOutMessage.show();
