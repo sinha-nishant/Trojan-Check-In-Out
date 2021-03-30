@@ -50,6 +50,7 @@ public class ManagerProfile extends AppCompatActivity {
     AlertDialog alertDialog;
     int SELECT_PICTURE = 200;
     ProgressBar pb;
+    AlertDialog deleteDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +73,7 @@ public class ManagerProfile extends AppCompatActivity {
         MutableStudent();
         AmplifyInit();
         DialogInit();
+        DeleteDialog();
         MutableDelete();
         MutableBoolean();
         MutableFirebase();
@@ -200,6 +202,39 @@ public class ManagerProfile extends AppCompatActivity {
         alertDialog = builder.create();
     }
 
+    public void DeleteDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Confirmation of Delete Request");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Yes",
+                new DialogInterface
+                        .OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                                        int which)
+                    {
+                        student.getValue().delete(delete_success);
+
+                    }
+                });
+        builder.setNegativeButton("No",
+                new DialogInterface
+                        .OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                                        int which)
+                    {
+
+
+                    }
+                });
+        deleteDialog = builder.create();
+    }
+
+
     public void MutableStudent(){
 
         final Observer<Account> obs = new Observer<Account>(){
@@ -294,7 +329,7 @@ public class ManagerProfile extends AppCompatActivity {
     }
 
     public void Delete(View v){
-        student.getValue().delete(delete_success);
+        deleteDialog.show();
     }
 
     public void signOut(View v){

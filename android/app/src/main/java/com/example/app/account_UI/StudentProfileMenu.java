@@ -49,6 +49,7 @@ public class StudentProfileMenu extends Fragment {
 
     AlertDialog alertDialog;
     AlertDialog checkInOutMessage;
+    AlertDialog deleteDialog;
 
 
     // TODO: Rename and change types of parameters
@@ -87,6 +88,7 @@ public class StudentProfileMenu extends Fragment {
         pb.setVisibility(View.GONE);
 
         DialogInit();
+        DeleteDialog();
         MutableStudent();
         MutableBoolean();
         SharedPreferences sp=  getContext().getSharedPreferences("sharedPrefs",MODE_PRIVATE);
@@ -141,14 +143,7 @@ public class StudentProfileMenu extends Fragment {
             public void onClick(View v) {
                 //DO BACKEND WORK TO DELETE ACCOUNT
                 //Ask User to confirm
-                pb.setVisibility(View.VISIBLE);
-                isDelete=true;
-                if(uscID==null){
-                    Log.d("id","id is null");
-                }
-                Log.d("id",uscID);
-                FbQuery.getStudent(Long.valueOf((uscID)),student);
-
+                deleteDialog.show();
             }
         });
         manualCheckOut = (Button)getView().findViewById(R.id.checkOutBtn);
@@ -196,6 +191,44 @@ public class StudentProfileMenu extends Fragment {
                     }
                 });
         alertDialog = builder.create();
+    }
+
+    public void DeleteDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        builder.setTitle("Confirmation of Delete Request");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Yes",
+                new DialogInterface
+                        .OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                                        int which)
+                    {
+
+                        pb.setVisibility(View.VISIBLE);
+                        isDelete=true;
+                        if(uscID==null){
+                            Log.d("id","id is null");
+                        }
+                        Log.d("id",uscID);
+                        FbQuery.getStudent(Long.valueOf((uscID)),student);
+
+                    }
+                });
+        builder.setNegativeButton("No",
+                new DialogInterface
+                        .OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                                        int which)
+                    {
+
+                    }
+                });
+        deleteDialog = builder.create();
     }
 
     public void MutableStudent(){
