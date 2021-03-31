@@ -18,6 +18,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -54,57 +55,94 @@ public class FbUpdate  implements FirestoreConnector {
         });
     }
 
-    public static void updateCapacities(HashMap<String, Integer> newCapacities,MutableLiveData<Boolean> success) {
-
-    }
-
-    //Refactored
-    public static void createAccount(Account a, MutableLiveData<Boolean> create_success) {
-        Log.d("FbCreate","at start of fb create");
-        FirestoreConnector.getDB().collection("Accounts").add(a).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+    /**
+     * Batch update capacities
+     * @param buildings hashmap from building name to new capacities
+     * @param success indicates whether update occurred successfully
+     */
+    public static void updateCapacities(HashMap<String, Integer> buildings, MutableLiveData<Boolean> success) {
+        // get all buildings in hashmap
+        FirestoreConnector.getDB().collection("Buildings").whereIn("name", new ArrayList<>(buildings.keySet()))
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentReference> task) {
-                Log.d("FbCreate","in here");
-                if (task.isSuccessful()) {
-                    Log.d("CREATE", "Account Added to DB");
-                    if(a.getIsManager()){
-                        Log.d("CREATE", a.toString());
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                    WriteBatch batch = FirestoreConnector.getDB().batch();
+                    // Add capacity update to batch
+                    for (QueryDocumentSnapshot qds: task.getResult()) {
+                        batch.update(qds.getReference(), "capacity", buildings.get(qds.get("name")));
                     }
-                    else{
-                        Log.d("CREATE", ((StudentAccount)a).toString());
-                    }
-                    create_success.setValue(true);
-
-                } else {
-                    Log.d("Err", "failed to set up");
-                    create_success.setValue(false);
+                    // Execute batch capacity updates
+                    batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                success.setValue(true);
+                            }
+                            else {
+                                Log.d("UPDATE CAPACITIES", String.valueOf(task.getException()));
+                                success.setValue(false);
+                            }
+                        }
+                    });
                 }
-            }
-        });
-    }
 
-    //Refactored
-    public static void createAccount(Account a, MutableLiveData<Boolean> success, InputStream stream) {
-        FirestoreConnector.getDB().collection("Accounts").add(a).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentReference> task) {
-                if (task.isSuccessful()) {
-                    Log.d("CREATE", "Account Added to DB");
-
-                    uploadPhoto.upload(stream, a.getEmail(),success);
-                    if(a.getIsManager()){
-                        Log.d("CREATE", a.toString());
-                        Log.d("CREATE", "Manager acc");
-                    }
-                    else{
-                        Log.d("CREATE", ((StudentAccount)a).toString());
-                    }
-
-                } else {
+                else {
+                    Log.d("UPDATE CAPACITIES", String.valueOf(task.getException()));
                     success.setValue(false);
                 }
             }
         });
+
+        }
+
+        //Refactored
+        public static void createAccount(Account a, MutableLiveData<Boolean> create_success) {
+            Log.d("FbCreate","at start of fb create");
+            FirestoreConnector.getDB().collection("Accounts").add(a).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentReference> task) {
+                    Log.d("FbCreate","in here");
+                    if (task.isSuccessful()) {
+                        Log.d("CREATE", "Account Added to DB");
+                        if(a.getIsManager()){
+                            Log.d("CREATE", a.toString());
+                        }
+                        else{
+                            Log.d("CREATE", ((StudentAccount)a).toString());
+                        }
+                        create_success.setValue(true);
+
+                    } else {
+                        Log.d("Err", "failed to set up");
+                        create_success.setValue(false);
+                    }
+                }
+            });
+        }
+
+        //Refactored
+        public static void createAccount(Account a, MutableLiveData<Boolean> success, InputStream stream) {
+            FirestoreConnector.getDB().collection("Accounts").add(a).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentReference> task) {
+                    if (task.isSuccessful()) {
+                        Log.d("CREATE", "Account Added to DB");
+
+                        uploadPhoto.upload(stream, a.getEmail(),success);
+                        if(a.getIsManager()){
+                            Log.d("CREATE", a.toString());
+                            Log.d("CREATE", "Manager acc");
+                        }
+                        else{
+                            Log.d("CREATE", ((StudentAccount)a).toString());
+                        }
+
+                    } else {
+                        success.setValue(false);
+                    }
+                }
+            });
     }
 
     public static void deleteAccount(String email, MutableLiveData<Integer> delete_success) {
