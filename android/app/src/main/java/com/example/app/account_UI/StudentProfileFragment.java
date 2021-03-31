@@ -33,6 +33,7 @@ import com.example.app.firebaseDB.FbQuery;
 import com.example.app.firebaseDB.FbUpdate;
 import com.example.app.log_create.uploadPhoto;
 import com.example.app.users.StudentAccount;
+import com.example.app.users.StudentActivity;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -45,7 +46,7 @@ import java.io.InputStream;
 public class StudentProfileFragment extends Fragment {
 
     private String str_name, str_email, str_id, str_major;
-    private TextView name;
+    private TextView name, building_name;
     private Uri profilepic;
     private AlertDialog alertDialog;
     private ProgressBar pb;
@@ -100,6 +101,7 @@ public class StudentProfileFragment extends Fragment {
         Log.i("Views","in onCreated");
         AmplifyInit();
         pb= (ProgressBar) getActivity().findViewById(R.id.progressBar6);
+        building_name = (TextView) getActivity().findViewById(R.id.textViewCurrBuilding);
 
         MutableStudent();
 
@@ -268,6 +270,21 @@ public class StudentProfileFragment extends Fragment {
                 else{
                     Log.d("profile","in profile onchaged");
                     Log.d("profile",sa.toString());
+                    int activity_size= sa.getActivity().size();
+                    if(activity_size==0){
+                        building_name.setText("You are not checked into a building currently");
+                    }
+                    else{
+                        StudentActivity act=sa.getActivity().get(activity_size-1);
+                        if(act.getCheckOutTime()==null){
+                            building_name.setText("You are now checked into a building currently "+ act.getBuildingName());
+                        }
+                        else{
+                            building_name.setText("You are not checked into a building currently");
+                        }
+                    }
+
+
                     str_name= sa.getFirstName()+ " "+ sa.getLastName();
                     str_email=sa.getEmail();
                     str_id=sa.getUscID().toString();

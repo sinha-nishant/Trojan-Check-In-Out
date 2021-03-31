@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.app.R;
 import com.example.app.firebaseDB.FbCheckInOut;
@@ -59,6 +60,7 @@ public class StudentProfileMenu extends Fragment {
     Button btnQR, btnHistory, btnSignOut, btnDelete,manualCheckOut;
     String email;
     String uscID;
+    TextView building_name;
     private ProgressBar pb;
 
     public StudentProfileMenu() {
@@ -88,6 +90,8 @@ public class StudentProfileMenu extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         pb= (ProgressBar) getActivity().findViewById(R.id.progressBar6);
+        building_name = (TextView) getActivity().findViewById(R.id.textViewCurrBuilding);
+
         pb.setVisibility(View.GONE);
 
         DialogInit();
@@ -243,6 +247,19 @@ public class StudentProfileMenu extends Fragment {
                 }
                 else{
                     Log.d("student","student found");
+                    int activity_size= sa.getActivity().size();
+                    if(activity_size==0){
+                        building_name.setText("You are not checked into a building currently");
+                    }
+                    else{
+                        StudentActivity act=sa.getActivity().get(activity_size-1);
+                        if(act.getCheckOutTime()==null){
+                            building_name.setText("You are now checked into a building currently "+ act.getBuildingName());
+                        }
+                        else{
+                            building_name.setText("You are not checked into a building currently");
+                        }
+                    }
                     if(isDelete){
                         StudentAccount acc = student.getValue();
                         sa.delete(delete_success);
@@ -335,6 +352,8 @@ public class StudentProfileMenu extends Fragment {
                     checkInOutMessage=builder.create();
                     //stop loading bar
                     checkInOutMessage.show();
+                    FbQuery.getStudent(Long.valueOf(uscID),student);
+
                 }else { //wasn't able to check in student
                     builder.setTitle("Check Out Failure")
                             .setMessage("Something went wrong with our database. Please try again later.")
