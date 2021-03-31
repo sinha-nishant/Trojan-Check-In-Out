@@ -102,7 +102,6 @@ public class StudentProfileFragment extends Fragment {
         AmplifyInit();
         pb= (ProgressBar) getActivity().findViewById(R.id.progressBar6);
         building_name = (TextView) getActivity().findViewById(R.id.textViewCurrBuilding);
-
         MutableStudent();
 
         DialogInit();
@@ -315,7 +314,7 @@ public class StudentProfileFragment extends Fragment {
                     uploadButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
+                            uploadButton.setEnabled(false);
                             imageChooser();
 
                         }
@@ -343,6 +342,7 @@ public class StudentProfileFragment extends Fragment {
                     FbUpdate.updatePhoto(str_email,Firebase_success);
                 }
                 else{
+                    uploadButton.setEnabled(true);
                     alertDialog.setMessage("Error. Could not upload change profile picture");
                     alertDialog.show();
                 }
@@ -368,10 +368,12 @@ public class StudentProfileFragment extends Fragment {
                     Glide.with(getActivity()).load(profilepic.toString()).diskCacheStrategy(DiskCacheStrategy.NONE)
                             .skipMemoryCache(true).into(img);
                     pb.setVisibility(View.GONE);
+                    uploadButton.setEnabled(true);
                     alertDialog.setMessage("updated image successfully");
                     alertDialog.show();
                 }
                 else{
+                    uploadButton.setEnabled(true);
                     alertDialog.setMessage("Error. Could not update profile Picture");
                     alertDialog.show();
                 }

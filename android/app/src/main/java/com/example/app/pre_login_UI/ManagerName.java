@@ -160,6 +160,8 @@ public class ManagerName extends AppCompatActivity {
     }
 
     public void submit(){
+        profileButton.setEnabled(false);
+        profileButton.setEnabled(false);
         FbQuery.checkEmailExists(email,email_success);
 
     }
@@ -176,13 +178,16 @@ public class ManagerName extends AppCompatActivity {
 
 
                    LogInOut.SaveData(ManagerName.this,email,0L);
-
+                   profileButton.setEnabled(true);
+                   profileButton.setEnabled(true);
                    alertDialog.setMessage("Succeeded in creating your account");
                    alertDialog.show();
                }
                else{
                    pb.setVisibility(View.GONE);
                    //switch page
+                   profileButton.setEnabled(true);
+                   profileButton.setEnabled(true);
                    alertDialog.setMessage("Error. Failed to create your account successfully");
                    alertDialog.show();
                }
@@ -269,6 +274,8 @@ public class ManagerName extends AppCompatActivity {
                 }
                 else{
                     pb.setVisibility(View.GONE);
+                    profileButton.setEnabled(true);
+                    profileButton.setEnabled(true);
                     //switch page
                     alertDialog.setMessage("This email is already in use");
                     alertDialog.show();

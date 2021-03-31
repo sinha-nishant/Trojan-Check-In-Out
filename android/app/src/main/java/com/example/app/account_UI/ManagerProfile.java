@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -51,6 +52,7 @@ public class ManagerProfile extends AppCompatActivity {
     int SELECT_PICTURE = 200;
     ProgressBar pb;
     AlertDialog deleteDialog;
+    Button photoBtn, deleteBtn, signOutBtn, csvBtn, viewBuildingBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +68,14 @@ public class ManagerProfile extends AppCompatActivity {
         emailView= (TextView)findViewById(R.id.textView19);
         pb= (ProgressBar)findViewById(R.id.progressBar3);
         pb.setVisibility(View.GONE);
+
+        photoBtn= findViewById(R.id.button11);
+        deleteBtn= findViewById(R.id.button15);
+        signOutBtn= findViewById(R.id.button16);
+        csvBtn= findViewById(R.id.csvBtn);
+        viewBuildingBtn= findViewById(R.id.button17);
+
+
 //        SharedPreferences sp=  activity.getSharedPreferences("sharedPrefs",activity.MODE_PRIVATE);
 //
 //        email= sp.getString("email","");
@@ -155,6 +165,7 @@ public class ManagerProfile extends AppCompatActivity {
                         Log.i("photo","mutable null");
                     }
                     pb.setVisibility(View.VISIBLE);
+                    disableBtns();
                     uploadPhoto.upload(exampleInputStream,email,upload_success);
 
 
@@ -287,6 +298,7 @@ public class ManagerProfile extends AppCompatActivity {
                     FbUpdate.updatePhoto(email,Firebase_success);
                 }
                 else{
+                    enableBtns();
                     pb.setVisibility(View.GONE);
                     alertDialog.setMessage("Error. Could not upload change profile picture");
                     alertDialog.show();
@@ -312,11 +324,13 @@ public class ManagerProfile extends AppCompatActivity {
                     Glide.with(activity).load(profilePic.toString()).diskCacheStrategy(DiskCacheStrategy.NONE)
                             .skipMemoryCache(true).into(imgView);
                     pb.setVisibility(View.GONE);
+                    enableBtns();
                     alertDialog.setMessage("updated image successfully");
                     alertDialog.show();
                 }
                 else{
                     pb.setVisibility(View.GONE);
+                    enableBtns();
                     alertDialog.setMessage("Error. Could not update profile Picture");
                     alertDialog.show();
                 }
@@ -329,10 +343,12 @@ public class ManagerProfile extends AppCompatActivity {
     }
 
     public void Delete(View v){
+        disableBtns();
         deleteDialog.show();
     }
 
     public void signOut(View v){
+        disableBtns();
         pb.setVisibility(View.VISIBLE);
         LogInOut.LogOut(this);
         pb.setVisibility(View.GONE);
@@ -380,6 +396,22 @@ public class ManagerProfile extends AppCompatActivity {
     public void openCSVView(View v){
         Intent i = new Intent(this, ManagerCSV.class);
         startActivity(i);
+
+    }
+
+    public void disableBtns(){
+        photoBtn.setEnabled(false);
+        deleteBtn.setEnabled(false);
+        signOutBtn.setEnabled(false);
+        csvBtn.setEnabled(false);
+        viewBuildingBtn.setEnabled(false);
+    }
+    public void enableBtns(){
+        photoBtn.setEnabled(true);
+        deleteBtn.setEnabled(true);
+        signOutBtn.setEnabled(true);
+        csvBtn.setEnabled(true);
+        viewBuildingBtn.setEnabled(true);
     }
 
 }

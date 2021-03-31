@@ -137,6 +137,7 @@ public class StudentProfileMenu extends Fragment {
             @Override
             public void onClick(View v) {
                 //DO BACKEND WORK
+                disableBtns();
                 pb.setVisibility(View.VISIBLE);
                 LogInOut.LogOut(getContext());
                 pb.setVisibility(View.GONE);
@@ -150,6 +151,7 @@ public class StudentProfileMenu extends Fragment {
             public void onClick(View v) {
                 //DO BACKEND WORK TO DELETE ACCOUNT
                 //Ask User to confirm
+                disableBtns();
                 deleteDialog.show();
             }
         });
@@ -158,6 +160,7 @@ public class StudentProfileMenu extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d("Calling manual check out","line 156");
+                disableBtns();
                manualCheckOut();
                 Log.d("After manualcheckout","line 158");
 
@@ -232,7 +235,7 @@ public class StudentProfileMenu extends Fragment {
                     public void onClick(DialogInterface dialog,
                                         int which)
                     {
-
+                        enableBtns();
                     }
                 });
         deleteDialog = builder.create();
@@ -280,14 +283,17 @@ public class StudentProfileMenu extends Fragment {
                     return;
                 }
                 if(result==0){
+                    enableBtns();
                     alertDialog.setMessage("We could not check you out of your last building. Delete failed");
                     alertDialog.show();
                 }
                 else if(result==1){
+                    enableBtns();
                     alertDialog.setMessage("Unsuccessful in deleting your account");
                     alertDialog.show();
                 }
                 else{
+                    enableBtns();
                     pb.setVisibility(View.GONE);
                     alertDialog.setMessage("Successful in deleting your account");
                     alertDialog.show();
@@ -332,6 +338,8 @@ public class StudentProfileMenu extends Fragment {
                         checkInOutMessage=builder.create();
                         //stop loading bar
                         checkInOutMessage.show();
+                        enableBtns();
+
                     }
                 })
         ;
@@ -347,6 +355,7 @@ public class StudentProfileMenu extends Fragment {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     // do whatever reflects wireframe the best(such as switching pages
+                                    enableBtns();
                                 }
                             });
                     checkInOutMessage=builder.create();
@@ -361,6 +370,7 @@ public class StudentProfileMenu extends Fragment {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     // do whatever reflects wireframe the best(such as switching pages
+                                    enableBtns();
                                 }
                             });
                     checkInOutMessage=builder.create();
@@ -383,6 +393,7 @@ public class StudentProfileMenu extends Fragment {
                         //add double check message
                         checkInOutMessage=doubleCheck.create();
                         //stop loading bar
+                        enableBtns();
                         checkInOutMessage.show();
 
                     }else{
@@ -392,6 +403,7 @@ public class StudentProfileMenu extends Fragment {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         // do whatever reflects wireframe the best(such as switching pages
+                                        enableBtns();
                                     }
                                 });
                         checkInOutMessage=builder.create();
@@ -405,6 +417,7 @@ public class StudentProfileMenu extends Fragment {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     // do whatever reflects wireframe the best(such as switching pages
+                                    enableBtns();
                                 }
                             });
                     checkInOutMessage=builder.create();
@@ -416,5 +429,21 @@ public class StudentProfileMenu extends Fragment {
         studentMLD.observe(this,studentAccountObserver);
         FbQuery.getStudent(retrieveID, studentMLD);
 
+    }
+
+    public void disableBtns(){
+        btnQR.setEnabled(false);
+        btnHistory.setEnabled(false);
+        btnSignOut.setEnabled(false);
+        btnDelete.setEnabled(false);
+        manualCheckOut.setEnabled(false);
+    }
+
+    public void enableBtns(){
+        btnQR.setEnabled(true);
+        btnHistory.setEnabled(true);
+        btnSignOut.setEnabled(true);
+        btnDelete.setEnabled(true);
+        manualCheckOut.setEnabled(true);
     }
 }

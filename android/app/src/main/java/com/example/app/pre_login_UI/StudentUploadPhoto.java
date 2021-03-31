@@ -36,7 +36,7 @@ public class StudentUploadPhoto extends AppCompatActivity {
     String email, password, fName, lName, id, major;
 
     ImageView uploadImage;
-    Button bUploadImage;
+    Button bUploadImage, submitBtn;
     ProgressBar studentProgress;
     AlertDialog alertDialog;
     Uri selectedImage;
@@ -78,7 +78,7 @@ public class StudentUploadPhoto extends AppCompatActivity {
 
 
         bUploadImage = (Button)findViewById(R.id.uploadImageButton);
-
+        submitBtn= findViewById(R.id.submit);
 
         // handle the Choose Image button to trigger
         // the image chooser function
@@ -149,7 +149,8 @@ public class StudentUploadPhoto extends AppCompatActivity {
 
     public void submit(View v){
         studentProgress.setVisibility(View.VISIBLE);
-
+        bUploadImage.setEnabled(false);
+        submitBtn.setEnabled(false);
         FbQuery.checkEmailExists(email,email_success);
 
     }
@@ -209,13 +210,16 @@ public class StudentUploadPhoto extends AppCompatActivity {
 
 
                     LogInOut.SaveData(StudentUploadPhoto.this,email,Long.valueOf(id));
-
+                    bUploadImage.setEnabled(true);
+                    submitBtn.setEnabled(true);
                     alertDialog.setMessage("Succeeded in creating your account");
                     alertDialog.show();
                 }
                 else{
                     studentProgress.setVisibility(View.GONE);
                     //switch page
+                    bUploadImage.setEnabled(true);
+                    submitBtn.setEnabled(true);
                     alertDialog.setMessage("Could not create your account successfully");
                     alertDialog.show();
                 }
@@ -237,7 +241,9 @@ public class StudentUploadPhoto extends AppCompatActivity {
                 }
                 else{
                     studentProgress.setVisibility(View.GONE);
-                    //switch page
+                    //switch pagebUploadImage.setEnabled(false);
+                    bUploadImage.setEnabled(true);
+                    submitBtn.setEnabled(true);
                     alertDialog.setMessage("This Email is already in use");
                     alertDialog.show();
                 }
@@ -283,6 +289,8 @@ public class StudentUploadPhoto extends AppCompatActivity {
                 else{
                     studentProgress.setVisibility(View.GONE);
                     //switch page
+                    bUploadImage.setEnabled(true);
+                    submitBtn.setEnabled(true);
                     alertDialog.setMessage("This id is already in use");
                     alertDialog.show();
                 }
