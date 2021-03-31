@@ -9,7 +9,6 @@ import com.example.app.building.Building;
 import com.example.app.pre_login_UI.LogInPage;
 import com.example.app.users.Account;
 import com.example.app.users.StudentAccount;
-import com.example.app.users.StudentActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -19,13 +18,12 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Comparator;
 import java.util.List;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
 public class FbQuery implements FirestoreConnector {
-    //Refactored
     public static void checkUSCidExists(Long uscID, MutableLiveData<Boolean> success) {
         CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
         Query query = accounts.whereEqualTo("uscID", uscID);
@@ -48,7 +46,6 @@ public class FbQuery implements FirestoreConnector {
             }
         });
     }
-
 
     public static void getAllBuildings(MutableLiveData<List<Building>> buildingsMLD) {
         FirestoreConnector.getDB().collection("Buildings").orderBy("name").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -74,7 +71,7 @@ public class FbQuery implements FirestoreConnector {
             }
         });
     }
-    // DataRetriever
+
     public static void getBuilding(String buildingName, MutableLiveData<Building> buildingMLD) {
         FirestoreConnector.getDB().collection("Buildings").whereEqualTo("name", buildingName).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -124,7 +121,7 @@ public class FbQuery implements FirestoreConnector {
             }
         });
     }
-    // Refactored
+
     public static void checkEmailExists(String email, MutableLiveData<Boolean> success) {
         CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
         Query query = accounts.whereEqualTo("email", email);
@@ -208,8 +205,6 @@ public class FbQuery implements FirestoreConnector {
                 });
     }
 
-
-    //getStudent for account using email
     public static void getManager(String email, MutableLiveData<Account> manager) {
         FirestoreConnector.getDB().collection("Accounts").whereEqualTo("email", email).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -233,6 +228,20 @@ public class FbQuery implements FirestoreConnector {
     }
 
     /**
+     * Merges and orders by last name two lists containing Student Accounts.
+     * Used to reduce code duplication in querying from Accounts and DeletedAccounts and
+     * make it more clear what operation is occuring.
+     * @param accounts1 first list of Student Accounts
+     * @param accounts2 second list of Student Accounts
+     * @return list of merged and sorted Student Accounts
+     */
+    private static List<StudentAccount> mergeSearchResults(List<StudentAccount> accounts1, List<StudentAccount> accounts2) {
+        accounts1.addAll(accounts2);
+        accounts1.sort(Comparator.comparing(StudentAccount::getLastName));
+        return accounts1;
+    }
+
+    /**
      * Search by major
      * @param major major of student
      * @param studentsMLD list of students
@@ -241,14 +250,49 @@ public class FbQuery implements FirestoreConnector {
         FirestoreConnector.getDB().collection("Accounts").whereEqualTo("major", major).orderBy("lastName").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                            List<StudentAccount> students  = task.getResult().toObjects(StudentAccount.class);
-                            studentsMLD.setValue(students);
+                    public void onComplete(@NonNull Task<QuerySnapshot> task1) {
+                        if (task1.isSuccessful()) {
+                            if (!task1.getResult().isEmpty()) {
+                                FirestoreConnector.getDB().collection("DeletedAccounts").whereEqualTo("major", major).orderBy("lastName").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task2) {
+                                        if (task2.isSuccessful()) {
+                                            if (!task2.getResult().isEmpty()) {
+                                                List<StudentAccount> studentsFound = mergeSearchResults(
+                                                        task1.getResult().toObjects(StudentAccount.class),
+                                                        task2.getResult().toObjects(StudentAccount.class)
+                                                );
+
+                                                // TODO: Take out this log!
+                                                for (StudentAccount sa: studentsFound) {
+                                                    Log.d("MAJOR", sa.toString());
+                                                }
+
+                                                studentsMLD.setValue(studentsFound);
+                                            }
+
+                                            else {
+                                                studentsMLD.setValue(task1.getResult().toObjects(StudentAccount.class));
+                                            }
+                                        }
+
+                                        else {
+                                            Log.d("MAJOR", String.valueOf(task2.getException()));
+                                            studentsMLD.setValue(null);
+                                        }
+                                    }
+                                });
+                            }
+
+                            // if no students with given major are found
+                            else {
+                                studentsMLD.setValue(new ArrayList<StudentAccount>());
+                            }
                         }
 
+                        // if exception in query
                         else {
-                            Log.d("MAJOR", String.valueOf(task.getException()));
+                            Log.d("MAJOR", String.valueOf(task1.getException()));
                             studentsMLD.setValue(null);
                         }
                     }
