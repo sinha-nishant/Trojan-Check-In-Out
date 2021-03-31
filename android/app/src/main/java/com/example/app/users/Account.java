@@ -11,6 +11,7 @@ public class Account {
     protected String profilePicture;
     protected String password;
     protected Boolean isManager;
+    protected Boolean isActive;
 
 
     public Account() {};
@@ -22,6 +23,7 @@ public class Account {
         this.password= password;
         this.profilePicture=profilePicture;
         this.isManager=type;
+        isActive=true;
     }
 
     public Account(String firstName, String lastName, String email, String hashedPw, Boolean isManager) {
@@ -30,6 +32,7 @@ public class Account {
         this.email=email;
         this.password= hashedPw;
         this.isManager=isManager;
+        isActive=true;
     }
 
     public void setPassword(String newPassword) {
@@ -71,6 +74,15 @@ public class Account {
     public Boolean getIsManager(){
         return isManager;
     }
+
+    public Boolean getIsActive(){
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isAlive){
+        isActive=isAlive;
+    }
+
 
 
     public String toString() {
