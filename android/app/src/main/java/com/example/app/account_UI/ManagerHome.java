@@ -3,6 +3,7 @@ package com.example.app.account_UI;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
@@ -19,6 +20,8 @@ public class ManagerHome extends AppCompatActivity {
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         NavController navController = Navigation.findNavController(this,  R.id.fragment2);
+
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
+
     }
 }
