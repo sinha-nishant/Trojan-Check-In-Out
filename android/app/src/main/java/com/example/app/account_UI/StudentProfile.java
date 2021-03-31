@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.example.app.R;
 
@@ -18,6 +19,7 @@ public class   StudentProfile extends AppCompatActivity {
     Button profileB, menuB;
     FrameLayout fl;
     FragmentManager fm;
+    TextView tv;
     String email;
     String id;
 
@@ -29,6 +31,8 @@ public class   StudentProfile extends AppCompatActivity {
         profileF = new StudentProfileFragment();
         menuF = new StudentProfileMenu();
 
+        tv = (TextView) findViewById(R.id.textViewCurrBuilding);
+        tv.setText("You are currently checked into: ");
         fl = (FrameLayout) findViewById(R.id.fl_fragment);
 
         fm = getSupportFragmentManager();
