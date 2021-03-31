@@ -45,8 +45,8 @@ public class StudentSignUpStart extends AppCompatActivity {
                     showToast("Email and Password are blank");
                 else if(email.length() == 0)
                     showToast("Email is blank");
-                else if(password.length() == 0)
-                    showToast("Password is blank");
+                else if(password.length() < 5)
+                    showToast("Password needs to have at least 4 characters");
                 else if(email.length() < 8 || !email.substring(email.length()-8).equals("@usc.edu"))
                     showToast("Invalid Email");
                 else
