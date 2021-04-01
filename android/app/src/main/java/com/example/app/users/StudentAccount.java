@@ -47,22 +47,7 @@ public class StudentAccount extends Account {
 
 
     public void delete(MutableLiveData<Integer> delete_success){
-    Date time = new Date();
-    if(this.activity!=null&&this.activity.size()!=0){
-        int last= this.activity.size()-1;
-        StudentActivity act=activity.get(last);
-        if(act.getCheckOutTime()==null){
-            FbCheckInOut.checkOut(uscID,act,time,delete_success,this.email,true);
-        }
-        else{
-            FbUpdate.deleteAccount(email,delete_success);
-        }
-    }
-    else{
-        FbUpdate.deleteAccount(email,delete_success);
-    }
-
-
+    FbUpdate.deleteAccount(email,delete_success);
 
 }
 

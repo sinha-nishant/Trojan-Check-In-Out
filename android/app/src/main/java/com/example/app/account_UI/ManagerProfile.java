@@ -271,7 +271,7 @@ public class ManagerProfile extends AppCompatActivity {
                     nameView.setText(name);
                     emailView.setText(email);
                     if(profilePic!=null){
-                        Glide.with(activity).load(profilePic.toString()).diskCacheStrategy(DiskCacheStrategy.NONE)
+                        Glide.with(activity).load(profilePic.toString()).error(Glide.with(imgView).load(R.drawable.profile_blank)).diskCacheStrategy(DiskCacheStrategy.NONE)
                                 .skipMemoryCache(true).into(imgView);
                     }
                     pb.setVisibility(View.GONE);
@@ -321,7 +321,7 @@ public class ManagerProfile extends AppCompatActivity {
                     if(imgView==null){
                         Log.d("Check", "img is null");
                     }
-                    Glide.with(activity).load(profilePic.toString()).diskCacheStrategy(DiskCacheStrategy.NONE)
+                    Glide.with(activity).load(profilePic.toString()).error(Glide.with(imgView).load(R.drawable.profile_blank)).diskCacheStrategy(DiskCacheStrategy.NONE)
                             .skipMemoryCache(true).into(imgView);
                     pb.setVisibility(View.GONE);
                     enableBtns();
