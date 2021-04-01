@@ -26,7 +26,8 @@ public class FbDeleteManagerAccountTest {
     //is not tested
     public void deleteAccountTest() {
         //values to initialize account
-        String email= Credentials.email;
+        //String email= Credentials.email;
+        String email = "randy.boi@usc.edu";
 
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
@@ -47,7 +48,7 @@ public class FbDeleteManagerAccountTest {
 
         //amount of delay in order to ensure the Firebase command is executed
         try {
-            Thread.sleep(5000);
+            Thread.sleep(15000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

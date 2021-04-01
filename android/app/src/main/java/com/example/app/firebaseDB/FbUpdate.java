@@ -11,8 +11,10 @@ import com.example.app.users.Account;
 import com.example.app.users.StudentAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
@@ -24,7 +26,7 @@ import java.util.Objects;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
-public class FbUpdate  implements FirestoreConnector {
+public class FbUpdate implements FirestoreConnector {
     // Update Capacity
     public static void updateCapacity(String buildingName, MutableLiveData<Boolean> success, Integer newCapacity) {
         FirestoreConnector.getDB().collection("Buildings")
@@ -43,8 +45,7 @@ public class FbUpdate  implements FirestoreConnector {
                                         if (task.isSuccessful()) {
                                             success.setValue(true);
                                             Log.d("UPDATE", buildingName + " updated capacity " + newCapacity);
-                                        }
-                                        else{
+                                        } else {
                                             success.setValue(false);
                                         }
                                     }
@@ -57,8 +58,9 @@ public class FbUpdate  implements FirestoreConnector {
 
     /**
      * Batch update capacities
+     *
      * @param buildings hashmap from building name to new capacities
-     * @param success indicates whether update occurred successfully
+     * @param success   indicates whether update occurred successfully
      */
     public static void updateCapacities(HashMap<String, Integer> buildings, MutableLiveData<Boolean> success) {
         // get all buildings in hashmap
@@ -69,7 +71,7 @@ public class FbUpdate  implements FirestoreConnector {
                 if (task.isSuccessful() && !task.getResult().isEmpty()) {
                     WriteBatch batch = FirestoreConnector.getDB().batch();
                     // Add capacity update to batch
-                    for (QueryDocumentSnapshot qds: task.getResult()) {
+                    for (QueryDocumentSnapshot qds : task.getResult()) {
                         batch.update(qds.getReference(), "capacity", buildings.get(qds.get("name")));
                     }
                     // Execute batch capacity updates
@@ -78,90 +80,148 @@ public class FbUpdate  implements FirestoreConnector {
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 success.setValue(true);
-                            }
-                            else {
+                            } else {
                                 Log.d("UPDATE CAPACITIES", String.valueOf(task.getException()));
                                 success.setValue(false);
                             }
                         }
                     });
-                }
-
-                else {
+                } else {
                     Log.d("UPDATE CAPACITIES", String.valueOf(task.getException()));
                     success.setValue(false);
                 }
             }
         });
 
-        }
-
-        //Refactored
-        public static void createAccount(Account a, MutableLiveData<Boolean> create_success) {
-            Log.d("FbCreate","at start of fb create");
-            FirestoreConnector.getDB().collection("Accounts").add(a).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentReference> task) {
-                    Log.d("FbCreate","in here");
-                    if (task.isSuccessful()) {
-                        Log.d("CREATE", "Account Added to DB");
-                        if(a.getIsManager()){
-                            Log.d("CREATE", a.toString());
-                        }
-                        else{
-                            Log.d("CREATE", ((StudentAccount)a).toString());
-                        }
-                        create_success.setValue(true);
-
-                    } else {
-                        Log.d("Err", "failed to set up");
-                        create_success.setValue(false);
-                    }
-                }
-            });
-        }
-
-        //Refactored
-        public static void createAccount(Account a, MutableLiveData<Boolean> success, InputStream stream) {
-            FirestoreConnector.getDB().collection("Accounts").add(a).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentReference> task) {
-                    if (task.isSuccessful()) {
-                        Log.d("CREATE", "Account Added to DB");
-
-                        uploadPhoto.upload(stream, a.getEmail(),success);
-                        if(a.getIsManager()){
-                            Log.d("CREATE", a.toString());
-                            Log.d("CREATE", "Manager acc");
-                        }
-                        else{
-                            Log.d("CREATE", ((StudentAccount)a).toString());
-                        }
-
-                    } else {
-                        success.setValue(false);
-                    }
-                }
-            });
     }
 
+    /**
+     * Create Account
+     * @param Account account to be  created
+     * @param create_success boolean representing whether the account was created successfully-
+     *                       returns following values:
+     *                       0: account created without error
+     *                       1: account already existed in a time remnant (must be restored)
+     *                       2: error while execution
+     */
+    public static void createAccount(Account a, MutableLiveData<Integer> create_success,int b) {
+        CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
+        //try to search using email
+        String email = a.getEmail();
+
+        accounts.whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+        {
+
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful() && !task.getResult().isEmpty()){
+                    for(QueryDocumentSnapshot qds : task.getResult()){
+                        if(qds.getBoolean("isDeleted")){
+                            Log.d("CREATE","Account exists");
+                            create_success.setValue(1);
+                        }
+                    }
+
+
+                }
+                //account doesn't exist
+                else if(task.isSuccessful() && task.getResult().isEmpty()){
+                    accounts.add(a).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentReference> task) {
+                            if (task.isSuccessful()) {
+                            //now create a field "isDeleted" and set it to true
+                                accounts.whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                                            for (QueryDocumentSnapshot qds : task.getResult()) {
+                                                FirestoreConnector.getDB().collection("Accounts").document(qds.getId()).update("isDeleted", false).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        Log.d("CREATE", "Account Added to DB");
+
+                                                        if (a.getIsManager()) {
+                                                            Log.d("CREATE", a.toString());
+                                                        } else {
+                                                            Log.d("CREATE", ((StudentAccount) a).toString());
+                                                        }
+                                                        create_success.setValue(0);
+                                                    }
+                                                });
+                                            }
+
+
+                                        }
+                                    }});
+                            }
+
+                            else {
+                                Log.d("Err", "failed to set up");
+                                create_success.setValue(2);
+                            }
+                        }
+                    });
+                }
+                else{
+                    Log.d("Err", "failed to set up");
+                    create_success.setValue(2);
+                }
+
+            }
+        });
+    }
+
+    public static void createAccount(Account a, MutableLiveData<Boolean> create_success){
+        //delete later
+    }
+
+    //Refactored
+    public static void createAccount(Account a, MutableLiveData<Boolean> success, InputStream stream) {
+        FirestoreConnector.getDB().collection("Accounts").add(a).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+                if (task.isSuccessful()) {
+                    Log.d("CREATE", "Account Added to DB");
+
+                    //uploadPhoto.upload(stream, a.getEmail(), success);
+                    if (a.getIsManager()) {
+                        Log.d("CREATE", a.toString());
+                        Log.d("CREATE", "Manager acc");
+                    } else {
+                        Log.d("CREATE", ((StudentAccount) a).toString());
+                    }
+
+                } else {
+                    success.setValue(false);
+                }
+            }
+        });
+    }
+
+    /**
+     * Delete account
+     *
+     * @param email email
+     * @param success indicates whether deletion occurred successfully: 1 if not deleted, 2 if deleted
+     */
     public static void deleteAccount(String email, MutableLiveData<Integer> delete_success) {
-        FirestoreConnector.getDB().collection("Accounts").whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
+        accounts.whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot qds : task.getResult()) {
-                        FirestoreConnector.getDB().collection("Accounts").document(qds.getId()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        //update the value of the field isDeleted to true to indicate account deletion
+                        FirestoreConnector.getDB().collection("Accounts").document(qds.getId()).update("isDeleted", true).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
                                     Log.d("TEST", "Deleted Account");
-
                                     delete_success.setValue(2);
-
                                 } else {
 
-                                    Log.d("TEST","Did not Delete Account");
+                                    Log.d("TEST", "Did not Delete Account");
                                     delete_success.setValue(1);
                                 }
                             }
@@ -257,53 +317,52 @@ public class FbUpdate  implements FirestoreConnector {
 
     /**
      * Restore deleted account
-     * @param email email of user
+     *
+     * @param email    email of user
      * @param password plain text user password
      * @param restored boolean to indicate whether account successfully found and restored
      */
-    public static void restore (String email, String password, MutableLiveData<Boolean> restored) {
+    public static void restore(String email, String password, MutableLiveData<Boolean> restored) {
         FirestoreConnector.getDB().collection("DeletedAccounts").whereEqualTo("email", email)
-            .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                        String hashedPW = String.valueOf(task.getResult().getDocuments().get(0).get("password"));
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                    String hashedPW = String.valueOf(task.getResult().getDocuments().get(0).get("password"));
 
-                        BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), hashedPW);
+                    BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), hashedPW);
 
-                        // If email and password combination is valid
-                        if (result.verified) {
-                            FirebaseFirestore db = FirestoreConnector.getDB();
+                    // If email and password combination is valid
+                    if (result.verified) {
+                        FirebaseFirestore db = FirestoreConnector.getDB();
 
-                            // Create batch of operations
-                            WriteBatch batch = db.batch();
-                            DocumentReference dr = db.collection("Accounts").document();
-                            batch.set(dr, Objects.requireNonNull(task.getResult().getDocuments().get(0).getData()));
-                            batch.delete(task.getResult().getDocuments().get(0).getReference());
+                        // Create batch of operations
+                        WriteBatch batch = db.batch();
+                        DocumentReference dr = db.collection("Accounts").document();
+                        batch.set(dr, Objects.requireNonNull(task.getResult().getDocuments().get(0).getData()));
+                        batch.delete(task.getResult().getDocuments().get(0).getReference());
 
-                            // Execute transactions in batch
-                            batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        restored.setValue(true);
-                                    }
-                                    else {
-                                        Log.d("RESTORE ACCOUNT", String.valueOf(task.getException()));
-                                        restored.setValue(false);
-                                    }
+                        // Execute transactions in batch
+                        batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    restored.setValue(true);
+                                } else {
+                                    Log.d("RESTORE ACCOUNT", String.valueOf(task.getException()));
+                                    restored.setValue(false);
                                 }
-                            });
+                            }
+                        });
 
-                        } else {
-                            restored.setValue(false);
-                        }
-                    }
-                    else {
-                        Log.d("RESTORE ACCOUNT", String.valueOf(task.getException()));
+                    } else {
                         restored.setValue(false);
                     }
+                } else {
+                    Log.d("RESTORE ACCOUNT", String.valueOf(task.getException()));
+                    restored.setValue(false);
                 }
-            });
+            }
+        });
     }
 }

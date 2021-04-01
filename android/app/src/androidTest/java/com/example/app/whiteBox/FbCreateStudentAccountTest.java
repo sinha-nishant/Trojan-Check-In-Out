@@ -30,7 +30,9 @@ public class FbCreateStudentAccountTest {
     public void createAccountWithCorrectInputNoPic() {
 
         //randomized credentials
-        email= Credentials.email;
+        //email= Credentials.email;
+
+        email = "randy.boi@usc.edu";
 
 
         //non-randomized name and password
@@ -42,28 +44,29 @@ public class FbCreateStudentAccountTest {
         uscID= Long.valueOf(Credentials.id);
 
         String major = "CSBA";
+        Integer intExpected = 1;
         StudentAccount a= new StudentAccount(firstName,lastName,email,password,uscID,major,false);
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
-        MutableLiveData<Boolean> success = new MutableLiveData<>();
-        Observer<Boolean> successObserver = new Observer<Boolean>() {
+        MutableLiveData<Integer> success = new MutableLiveData<>();
+        Observer<Integer> successObserver = new Observer<Integer>() {
             @Override
-            public void onChanged(Boolean isSuccess) {
+            public void onChanged(Integer isSuccess) {
                 //check if account was created
                 if(isSuccess==null){
                     fail("did not observe");
                     return;
                 }
-                assertEquals(true,isSuccess);
+                assertEquals(intExpected,isSuccess);
             }
         };
         success.observeForever(successObserver);
 
-        FbUpdate.createAccount(a,success);
+        FbUpdate.createAccount(a,success,2);
 
         //amount of delay in order to ensure the Firebase command is executed
         try {
-            Thread.sleep(5000);
+            Thread.sleep(15000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
