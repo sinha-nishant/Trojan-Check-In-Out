@@ -46,7 +46,7 @@ public class ManagerName extends AppCompatActivity {
     String email,password;
     ProgressBar pb;
     AlertDialog alertDialog;
-    private final MutableLiveData<Boolean> create_success = new MutableLiveData<>();
+    private final MutableLiveData<Integer> create_success = new MutableLiveData<>();
     private final MutableLiveData<Boolean> email_success = new MutableLiveData<>();
 
     @Override
@@ -167,10 +167,10 @@ public class ManagerName extends AppCompatActivity {
     }
 
    private void createMLDInit(){
-       final Observer<Boolean> create_obs = new Observer<Boolean>(){
+       final Observer<Integer> create_obs = new Observer<Integer>(){
            @Override
-           public void onChanged(@Nullable final Boolean isSuccess){
-               if(isSuccess){
+           public void onChanged(@Nullable final Integer isSuccess){
+               if(isSuccess==0){
                    //stop progress bar
                    pb.setVisibility(View.GONE);
                    //Generate popupmessage
@@ -188,7 +188,15 @@ public class ManagerName extends AppCompatActivity {
                    //switch page
                    profileButton.setEnabled(true);
                    profileButton.setEnabled(true);
-                   alertDialog.setMessage("Error. Failed to create your account successfully");
+                   if(isSuccess==1){
+                       alertDialog.setMessage("This account existed before. Please restore it.");
+                   }
+                   if(isSuccess==2){
+                       alertDialog.setMessage("Could not create your account successfully");
+                   }
+                   if(isSuccess==3){
+                       alertDialog.setMessage("Could not upload profile picture and create account");
+                   }
                    alertDialog.show();
                }
 
@@ -217,7 +225,7 @@ public class ManagerName extends AppCompatActivity {
                             openManagerSignUp();
                             return;
                         }
-                        if(create_success.getValue()){
+                        if(create_success.getValue()==0){
                             openProfile();
                         }
 

@@ -18,7 +18,7 @@ public class CreateAccount {
 
     }
 
-    public static void CreateManager(String firstName, String lastName, String email, String pw, MutableLiveData<Boolean> success){
+    public static void CreateManager(String firstName, String lastName, String email, String pw, MutableLiveData<Integer> success){
         Log.i("CreateAccount","in create account");
 
         String hashedPw = BCrypt.withDefaults().hashToString(12, pw.toCharArray());
@@ -28,7 +28,7 @@ public class CreateAccount {
 
     }
 
-    public static void CreateStudent(String firstName, String lastName, String email, String pw,Long id, String major,MutableLiveData<Boolean> success){
+    public static void CreateStudent(String firstName, String lastName, String email, String pw,Long id, String major,MutableLiveData<Integer> success){
         Log.i("CreateAccount","in create account");
 
         String hashedPw = BCrypt.withDefaults().hashToString(12, pw.toCharArray());
@@ -36,7 +36,7 @@ public class CreateAccount {
         FbUpdate.createAccount(a,success);
 
     }
-    public static void CreateManager(String firstName, String lastName, String email, String pw, InputStream url, MutableLiveData<Boolean> success){
+    public static void CreateManager(String firstName, String lastName, String email, String pw, InputStream url, MutableLiveData<Integer> success){
         Log.i("CreateAccount","in create account");
 
         String picUrl=AWSLink(email);
@@ -46,7 +46,7 @@ public class CreateAccount {
 
     }
 
-    public static void CreateStudent(String firstName, String lastName, String email, String pw,InputStream url,Long id, String major,MutableLiveData<Boolean> success){
+    public static void CreateStudent(String firstName, String lastName, String email, String pw,InputStream url,Long id, String major,MutableLiveData<Integer> success){
         Log.i("CreateAccount","in create account");
 
         String picUrl=AWSLink(email);

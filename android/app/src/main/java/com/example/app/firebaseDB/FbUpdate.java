@@ -97,14 +97,14 @@ public class FbUpdate implements FirestoreConnector {
 
     /**
      * Create Account
-     * @param Account account to be  created
+     * @param Account account to be  created without image
      * @param create_success boolean representing whether the account was created successfully-
      *                       returns following values:
      *                       0: account created without error
      *                       1: account already existed in a time remnant (must be restored)
      *                       2: error while execution
      */
-    public static void createAccount(Account a, MutableLiveData<Integer> create_success,int b) {
+    public static void createAccount(Account a, MutableLiveData<Integer> create_success) {
         CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
         //try to search using email
         String email = a.getEmail();
@@ -172,32 +172,111 @@ public class FbUpdate implements FirestoreConnector {
         });
     }
 
-    public static void createAccount(Account a, MutableLiveData<Boolean> create_success){
-        //delete later
-    }
 
-    //Refactored
-    public static void createAccount(Account a, MutableLiveData<Boolean> success, InputStream stream) {
-        FirestoreConnector.getDB().collection("Accounts").add(a).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+    /**
+     * Create Account
+     * @param Account account to be  created with image
+     * @param create_success boolean representing whether the account was created successfully-
+     *                       returns following values:
+     *                       0: account created without error
+     *                       1: account already existed in a time remnant (must be restored)
+     *                       2: error while execution
+     */
+    public static void createAccount(Account a, MutableLiveData<Integer> create_success,InputStream stream) {
+        CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
+        //try to search using email
+        String email = a.getEmail();
+
+        accounts.whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+        {
+
             @Override
-            public void onComplete(@NonNull Task<DocumentReference> task) {
-                if (task.isSuccessful()) {
-                    Log.d("CREATE", "Account Added to DB");
-
-                    //uploadPhoto.upload(stream, a.getEmail(), success);
-                    if (a.getIsManager()) {
-                        Log.d("CREATE", a.toString());
-                        Log.d("CREATE", "Manager acc");
-                    } else {
-                        Log.d("CREATE", ((StudentAccount) a).toString());
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful() && !task.getResult().isEmpty()){
+                    for(QueryDocumentSnapshot qds : task.getResult()){
+                        if(qds.getBoolean("isDeleted")){
+                            Log.d("CREATE","Account exists");
+                            create_success.setValue(1);
+                        }
                     }
 
-                } else {
-                    success.setValue(false);
+
                 }
+                //account doesn't exist
+                else if(task.isSuccessful() && task.getResult().isEmpty()){
+                    accounts.add(a).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentReference> task) {
+                            if (task.isSuccessful()) {
+                                //now create a field "isDeleted" and set it to true
+                                accounts.whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                                            for (QueryDocumentSnapshot qds : task.getResult()) {
+                                                FirestoreConnector.getDB().collection("Accounts").document(qds.getId()).update("isDeleted", false).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        Log.d("CREATE", "Account Added to DB");
+
+                                                        if (a.getIsManager()) {
+                                                            Log.d("CREATE", a.toString());
+                                                        } else {
+                                                            Log.d("CREATE", ((StudentAccount) a).toString());
+                                                        }
+//                                                        create_success.setValue(0);
+                                                        uploadPhoto.upload(stream, a.getEmail(), create_success);
+                                                    }
+                                                });
+                                            }
+
+
+                                        }
+                                    }});
+                            }
+
+                            else {
+                                Log.d("Err", "failed to set up");
+                                create_success.setValue(2);
+                            }
+                        }
+                    });
+                }
+                else{
+                    Log.d("Err", "failed to set up");
+                    create_success.setValue(2);
+                }
+
             }
         });
     }
+
+//    public static void createAccount(Account a, MutableLiveData<Boolean> create_success){
+//        //delete later
+//    }
+
+//    //Refactored
+//    public static void createAccount(Account a, MutableLiveData<Boolean> success, InputStream stream) {
+//        FirestoreConnector.getDB().collection("Accounts").add(a).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentReference> task) {
+//                if (task.isSuccessful()) {
+//                    Log.d("CREATE", "Account Added to DB");
+//
+//                    //uploadPhoto.upload(stream, a.getEmail(), success);
+//                    if (a.getIsManager()) {
+//                        Log.d("CREATE", a.toString());
+//                        Log.d("CREATE", "Manager acc");
+//                    } else {
+//                        Log.d("CREATE", ((StudentAccount) a).toString());
+//                    }
+//
+//                } else {
+//                    success.setValue(false);
+//                }
+//            }
+//        });
+//    }
 
     /**
      * Delete account

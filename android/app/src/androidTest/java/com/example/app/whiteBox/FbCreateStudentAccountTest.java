@@ -44,7 +44,7 @@ public class FbCreateStudentAccountTest {
         uscID= Long.valueOf(Credentials.id);
 
         String major = "CSBA";
-        Integer intExpected = 1;
+        Integer intExpected = 0;
         StudentAccount a= new StudentAccount(firstName,lastName,email,password,uscID,major,false);
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
@@ -62,7 +62,7 @@ public class FbCreateStudentAccountTest {
         };
         success.observeForever(successObserver);
 
-        FbUpdate.createAccount(a,success,2);
+        FbUpdate.createAccount(a,success);
 
         //amount of delay in order to ensure the Firebase command is executed
         try {

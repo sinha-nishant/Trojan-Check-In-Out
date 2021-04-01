@@ -166,7 +166,7 @@ public class ManagerProfile extends AppCompatActivity {
                     }
                     pb.setVisibility(View.VISIBLE);
                     disableBtns();
-                    uploadPhoto.upload(exampleInputStream,email,upload_success);
+                    uploadPhoto.update(exampleInputStream,email,upload_success);
 
 
                 }

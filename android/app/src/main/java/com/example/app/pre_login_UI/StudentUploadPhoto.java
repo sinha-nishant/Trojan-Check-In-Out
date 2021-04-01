@@ -41,7 +41,7 @@ public class StudentUploadPhoto extends AppCompatActivity {
     AlertDialog alertDialog;
     Uri selectedImage;
     Boolean ImageSet=false;
-    private final MutableLiveData<Boolean> create_success = new MutableLiveData<>();
+    private final MutableLiveData<Integer> create_success = new MutableLiveData<>();
     private final MutableLiveData<Boolean> email_success = new MutableLiveData<>();
     private final MutableLiveData<Boolean> id_success = new MutableLiveData<>();
 
@@ -188,7 +188,8 @@ public class StudentUploadPhoto extends AppCompatActivity {
                             openSignUp();
                             return;
                         }
-                        if(!create_success.getValue()){
+                        if(create_success.getValue()>0){
+                            //Todo redirect to restore page if 1
                             openSignUp();
                             return;
                         }
@@ -199,10 +200,10 @@ public class StudentUploadPhoto extends AppCompatActivity {
     }
 
     private void createMLDInit(){
-        final Observer<Boolean> create_obs = new Observer<Boolean>(){
+        final Observer<Integer> create_obs = new Observer<Integer>(){
             @Override
-            public void onChanged(@Nullable final Boolean isSuccess){
-                if(isSuccess){
+            public void onChanged(@Nullable final Integer isSuccess){
+                if(isSuccess==0){
                     //stop progress bar
                     studentProgress.setVisibility(View.GONE);
                     //Generate popupmessage
@@ -220,7 +221,16 @@ public class StudentUploadPhoto extends AppCompatActivity {
                     //switch page
                     bUploadImage.setEnabled(true);
                     submitBtn.setEnabled(true);
-                    alertDialog.setMessage("Could not create your account successfully");
+                    if(isSuccess==1){
+                        alertDialog.setMessage("This account existed before. Please restore it.");
+                    }
+                    if(isSuccess==2){
+                        alertDialog.setMessage("Could not create your account successfully");
+                    }
+                    if(isSuccess==3){
+                        alertDialog.setMessage("Could not upload profile picture and create account");
+                    }
+
                     alertDialog.show();
                 }
 
