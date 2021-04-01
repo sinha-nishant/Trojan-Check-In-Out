@@ -69,8 +69,9 @@ public class FbQuery implements FirestoreConnector {
                         }
 
                         buildings.get(buildings.size() - 1).setStudents_ids(students);
-                        buildingsMLD.setValue(buildings);
                     }
+                    buildingsMLD.setValue(buildings);
+
                 }
             }
         });
@@ -95,6 +96,25 @@ public class FbQuery implements FirestoreConnector {
         });
     }
 
+    public static void getBuildings(List<String> buildingNames, MutableLiveData<List<Building>> buildingsMLD) {
+        FirestoreConnector.getDB().collection("Buildings").whereIn("name",buildingNames).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                    List<Building> buildings = new ArrayList<>();
+                    for (QueryDocumentSnapshot qds : task.getResult()) {
+                        buildings.add(qds.toObject(Building.class));
+                        List<Long> students = new ArrayList<>();
+                        if (qds.get("students") != null) {
+                            students.addAll((List<Long>) Objects.requireNonNull(qds.get("students")));
+                        }
+                        buildings.get(buildings.size() - 1).setStudents_ids(students);
+                    }
+                    buildingsMLD.setValue(buildings);
+                }
+            }
+        });
+    }
     /**
      * Provides the current students in a given building
      * @param building the building object for which the student accounts are desired
