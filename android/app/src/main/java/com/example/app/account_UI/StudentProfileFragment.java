@@ -145,7 +145,7 @@ public class StudentProfileFragment extends Fragment {
 
         img= (ImageView)(getView().findViewById(R.id.imageView2));
         if(profilepic!=null){
-            Glide.with(getActivity()).load(profilepic.toString()).diskCacheStrategy(DiskCacheStrategy.NONE)
+            Glide.with(getActivity()).load(profilepic.toString()).error(Glide.with(img).load(R.drawable.profile_blank)).diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true).into(img);
         }
 
@@ -303,7 +303,7 @@ public class StudentProfileFragment extends Fragment {
                         profilepic =Uri.parse(sa.getProfilePicture());
                         Log.d("URI",profilepic.toString());
                         img= (ImageView)(getView().findViewById(R.id.imageView2));
-                        Glide.with(getActivity()).load(profilepic.toString()).diskCacheStrategy(DiskCacheStrategy.NONE)
+                        Glide.with(getActivity()).load(profilepic.toString()).error(Glide.with(img).load(R.drawable.profile_blank)).diskCacheStrategy(DiskCacheStrategy.NONE)
                                 .skipMemoryCache(true).into(img);
                         Log.d("URI",profilepic.toString());
 
@@ -365,7 +365,7 @@ public class StudentProfileFragment extends Fragment {
                         Log.d("Check", "img is null");
                     }
                     img= (ImageView)(getView().findViewById(R.id.imageView2));
-                    Glide.with(getActivity()).load(profilepic.toString()).diskCacheStrategy(DiskCacheStrategy.NONE)
+                    Glide.with(getActivity()).load(profilepic.toString()).error(Glide.with(img).load(R.drawable.profile_blank)).diskCacheStrategy(DiskCacheStrategy.NONE)
                             .skipMemoryCache(true).into(img);
                     pb.setVisibility(View.GONE);
                     uploadButton.setEnabled(true);
