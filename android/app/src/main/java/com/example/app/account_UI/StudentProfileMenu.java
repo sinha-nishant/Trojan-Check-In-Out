@@ -47,6 +47,8 @@ public class StudentProfileMenu extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     MutableLiveData<StudentAccount> student= new MutableLiveData<>();
     MutableLiveData<Integer> delete_success= new MutableLiveData<>();
+    MutableLiveData<Boolean> checkOut_success= new MutableLiveData<>();
+    StudentAccount deleteStudent;
     Boolean isDelete = false;
 
     AlertDialog alertDialog;
@@ -98,6 +100,7 @@ public class StudentProfileMenu extends Fragment {
         DeleteDialog();
         MutableStudent();
         MutableBoolean();
+        MutableCheckOut();
         SharedPreferences sp=  getContext().getSharedPreferences("sharedPrefs",MODE_PRIVATE);
         Long id = sp.getLong("uscid",123456790L);
         Log.d("StudentProfile",id+"ending");
@@ -265,7 +268,16 @@ public class StudentProfileMenu extends Fragment {
                     }
                     if(isDelete){
                         StudentAccount acc = student.getValue();
-                        sa.delete(delete_success);
+                        //
+                        int size = acc.getActivity().size();
+                        if(size>0 && acc.getActivity().get(size-1).getCheckOutTime()==null){
+                            deleteStudent=sa;
+                            FbCheckInOut.checkOut(Long.valueOf(uscID),acc.getActivity().get(size-1),new Date(),checkOut_success);
+                        }
+                        else{
+                            sa.delete(delete_success);
+                        }
+
                     }
                 }
 
@@ -305,6 +317,22 @@ public class StudentProfileMenu extends Fragment {
 
         };
         delete_success.observe(this, obs2);
+    }
+
+    public void MutableCheckOut(){
+        final Observer<Boolean> checkOutObs = new Observer<Boolean>(){
+            @Override
+            public void onChanged(@javax.annotation.Nullable final Boolean result){
+                if(result){
+                    deleteStudent.delete(delete_success);
+                }
+                else{
+                    delete_success.setValue(0);
+                }
+            }
+
+        };
+        checkOut_success.observe(this, checkOutObs);
     }
 
     public void manualCheckOut(){
