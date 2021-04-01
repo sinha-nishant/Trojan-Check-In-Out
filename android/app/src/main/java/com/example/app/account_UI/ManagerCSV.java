@@ -213,7 +213,6 @@ public class ManagerCSV extends AppCompatActivity {
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                       //go to manager profile
                     }
                 });
         updateMessage=builder.create();
