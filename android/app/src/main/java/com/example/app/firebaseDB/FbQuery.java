@@ -19,6 +19,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -71,6 +72,32 @@ public class FbQuery implements FirestoreConnector {
                         buildings.get(buildings.size() - 1).setStudents_ids(students);
                     }
                     buildingsMLD.setValue(buildings);
+
+                }
+            }
+        });
+    }
+    public static void getAllBuildingsMap(MutableLiveData<HashMap<String,Building>> buildingsMLD) {
+        FirestoreConnector.getDB().collection("Buildings").orderBy("name").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                    HashMap <String, Building> map = new HashMap<String,Building>();
+                    List<Building> buildings = new ArrayList<>();
+                    for (QueryDocumentSnapshot qds : task.getResult()) {
+
+                        buildings.add(qds.toObject(Building.class));
+                        List<Long> students = new ArrayList<>();
+                        if (qds.get("students") != null) {
+                            students.addAll((List<Long>) Objects.requireNonNull(qds.get("students")));
+                        }
+
+                        buildings.get(buildings.size() - 1).setStudents_ids(students);
+                    }
+                    for(int i=0;i<buildings.size();i++){
+                        map.put(buildings.get(i).getName(),buildings.get(i));
+                    }
+                    buildingsMLD.setValue(map);
 
                 }
             }

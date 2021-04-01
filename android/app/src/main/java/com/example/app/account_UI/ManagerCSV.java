@@ -135,9 +135,9 @@ public class ManagerCSV extends AppCompatActivity {
                 csvBuildingNames.add(buildingName);
                 map.put(buildingName,capacity);
                 line=bufferedReader.readLine();
-                if(csvBuildingNames.size()==10){//Take out after Firebase is fixed
-                    break;
-                }
+//                if(csvBuildingNames.size()==10){//Take out after Firebase is fixed
+//                    break;
+//                }
             }
 
         }

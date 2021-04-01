@@ -12,30 +12,31 @@ import com.example.app.firebaseDB.FbUpdate;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
 public class UpdateCapacityService {
     public static void updateCapacities(LifecycleOwner owner, HashMap<String, Integer> map, List<String> cannotUpdate, List<String> csvBuildingNames, MutableLiveData<Boolean> updateMLD){
-
-        MutableLiveData<List<Building>> buildingsMLD = new MutableLiveData<>();
-        final Observer<List<Building>> buildingsObserver = new Observer<List<Building>>(){
+        MutableLiveData<HashMap<String, Building>> buildingsMLD = new MutableLiveData<>();
+        final Observer<HashMap<String, Building>> buildingsObserver = new Observer<HashMap<String, Building>>(){
             @Override
-            public void onChanged(@Nullable final List<Building> buildingList){
-                Log.d("List Returned",buildingList.toString());
-                for(int i =0;i<buildingList.size();i++){
-                    if(buildingList.get(i).getOccupancy()>map.get(buildingList.get(i).getName())){// if the new capacity is less than occupancy cannot update
-                        cannotUpdate.add(buildingList.get(i).getName());
-                        map.remove(buildingList.get(i).getName());
+            public void onChanged(@Nullable final HashMap<String, Building> buildingHashMap){
+                for(int i =0;i<csvBuildingNames.size();i++){
+                    if(buildingHashMap.get(csvBuildingNames.get(i))==null){
+                        Log.d("Null on",csvBuildingNames.get(i));
+                    }
+                    else if(buildingHashMap.get(csvBuildingNames.get(i)).getOccupancy()>map.get(csvBuildingNames.get(i))){
+                        cannotUpdate.add(csvBuildingNames.get(i));
+                        map.remove(csvBuildingNames.get(i));
                     }
                 }
-
                 Log.d("Can't Update",cannotUpdate.toString());
                 Log.d("Can Update",map.toString());
                 FbUpdate.updateCapacities(map,updateMLD);
             }
         };
         buildingsMLD.observe(owner,buildingsObserver);
-        FbQuery.getBuildings(csvBuildingNames,buildingsMLD);
+        FbQuery.getAllBuildingsMap(buildingsMLD);
     }
 }
