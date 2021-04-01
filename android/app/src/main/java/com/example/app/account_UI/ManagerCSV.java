@@ -92,8 +92,6 @@ public class ManagerCSV extends AppCompatActivity {
                 selectCSVFile();
             }
         });
-
-
     }
     public void selectCSVFile(){
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -135,9 +133,6 @@ public class ManagerCSV extends AppCompatActivity {
                 csvBuildingNames.add(buildingName);
                 map.put(buildingName,capacity);
                 line=bufferedReader.readLine();
-//                if(csvBuildingNames.size()==10){//Take out after Firebase is fixed
-//                    break;
-//                }
             }
 
         }
