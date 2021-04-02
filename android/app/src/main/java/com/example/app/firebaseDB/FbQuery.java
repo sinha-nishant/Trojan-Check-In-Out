@@ -28,7 +28,8 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 public class FbQuery implements FirestoreConnector {
     /**
      * Checks whether given USC ID already applies to an active account
-     * @param uscID ID to check existence of
+     *
+     * @param uscID  ID to check existence of
      * @param exists true if ID exists, false if does not exist
      */
     public static void checkUSCidExists(Long uscID, MutableLiveData<Boolean> exists) {
@@ -39,9 +40,14 @@ public class FbQuery implements FirestoreConnector {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     if (!task.getResult().isEmpty()) {
-                        Log.d("EXIST", "USC ID " + uscID + " exists!");
-                        exists.setValue(false);
+                        for (QueryDocumentSnapshot qds : task.getResult()) {
+                            if (!qds.getBoolean("isDeleted")) {
+                                Log.d("EXIST", "USC ID " + uscID + " exists!");
+                                exists.setValue(false);
+                            }
 
+
+                        }
                     } else {
                         Log.d("EXIST", "USC ID " + uscID + " does not exist!");
                         exists.setValue(true);
@@ -52,7 +58,41 @@ public class FbQuery implements FirestoreConnector {
     }
 
     /**
+     * Checks whether given email ID exists among the deleted accounts
+     *
+     * @param email  email of the student
+     * @param exists boolean representing whether the account exists or not:
+     *               false if doesn't exist
+     *               true if exists
+     */
+    public static void checkRestore(String email, MutableLiveData<Boolean> exists) {
+        CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
+        Query query = accounts.whereEqualTo("email", email);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    if (!task.getResult().isEmpty()) {
+                        for (QueryDocumentSnapshot qds : task.getResult()) {
+                            if (qds.getBoolean("isDeleted")) {
+                                Log.d("RESTORE", "Account exists");
+                                exists.setValue(true);
+                            }
+                        }
+                    } else {
+                        Log.d("RESTORE", "Account does not exist");
+                        exists.setValue(false);
+                    }
+                }
+
+            }
+        });
+
+    }
+
+    /**
      * Retrieves all buildings from database
+     *
      * @param buildingsMLD list of retrieved buildings
      */
     public static void getAllBuildings(MutableLiveData<List<Building>> buildingsMLD) {
@@ -77,12 +117,13 @@ public class FbQuery implements FirestoreConnector {
             }
         });
     }
-    public static void getAllBuildingsMap(MutableLiveData<HashMap<String,Building>> buildingsMLD) {
+
+    public static void getAllBuildingsMap(MutableLiveData<HashMap<String, Building>> buildingsMLD) {
         FirestoreConnector.getDB().collection("Buildings").orderBy("name").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                    HashMap <String, Building> map = new HashMap<String,Building>();
+                    HashMap<String, Building> map = new HashMap<String, Building>();
                     List<Building> buildings = new ArrayList<>();
                     for (QueryDocumentSnapshot qds : task.getResult()) {
 
@@ -94,8 +135,8 @@ public class FbQuery implements FirestoreConnector {
 
                         buildings.get(buildings.size() - 1).setStudents_ids(students);
                     }
-                    for(int i=0;i<buildings.size();i++){
-                        map.put(buildings.get(i).getName(),buildings.get(i));
+                    for (int i = 0; i < buildings.size(); i++) {
+                        map.put(buildings.get(i).getName(), buildings.get(i));
                     }
                     buildingsMLD.setValue(map);
 
@@ -106,8 +147,9 @@ public class FbQuery implements FirestoreConnector {
 
     /**
      * Retrieves a building with given name
+     *
      * @param buildingName the name of the building to retrieve
-     * @param buildingMLD the variable that will store the Building result
+     * @param buildingMLD  the variable that will store the Building result
      */
     public static void getBuilding(String buildingName, MutableLiveData<Building> buildingMLD) {
         FirestoreConnector.getDB().collection("Buildings").whereEqualTo("name", buildingName).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -124,7 +166,7 @@ public class FbQuery implements FirestoreConnector {
     }
 
     public static void getBuildings(List<String> buildingNames, MutableLiveData<List<Building>> buildingsMLD) {
-        FirestoreConnector.getDB().collection("Buildings").whereIn("name",buildingNames).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        FirestoreConnector.getDB().collection("Buildings").whereIn("name", buildingNames).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful() && !task.getResult().isEmpty()) {
@@ -142,12 +184,14 @@ public class FbQuery implements FirestoreConnector {
             }
         });
     }
+
     /**
      * Provides the current students in a given building
-     * @param building the building object for which the student accounts are desired
+     *
+     * @param building    the building object for which the student accounts are desired
      * @param studentsMLD the accounts of the students in the building
      */
-    public static void getCurrentStudents(Building building, MutableLiveData<List<StudentAccount>> studentsMLD)  {
+    public static void getCurrentStudents(Building building, MutableLiveData<List<StudentAccount>> studentsMLD) {
         Log.d("CURRENT", String.valueOf(building.getStudents_ids()));
         CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
         Query query = accounts.whereIn("uscID", building.getStudents_ids());
@@ -165,9 +209,7 @@ public class FbQuery implements FirestoreConnector {
                     }
 
                     studentsMLD.setValue(students);
-                }
-
-                else {
+                } else {
                     Log.d("CURRENT", String.valueOf(task.getException()));
                     studentsMLD.setValue(null);
                 }
@@ -177,7 +219,8 @@ public class FbQuery implements FirestoreConnector {
 
     /**
      * Checks whether given email already in use by active account
-     * @param email email to check whether in use
+     *
+     * @param email  email to check whether in use
      * @param exists true if exists, false if doesn't
      */
     public static void checkEmailExists(String email, MutableLiveData<Boolean> exists) {
@@ -188,8 +231,14 @@ public class FbQuery implements FirestoreConnector {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     if (!task.getResult().isEmpty()) {
-                        Log.d("EXIST", "Email " + email + " exists!");
-                        exists.setValue(false);
+                        for (QueryDocumentSnapshot qds : task.getResult()) {
+                            if (!qds.getBoolean("isDeleted")) {
+                                Log.d("EXIST", "Email " + email + " exists!");
+                                exists.setValue(false);
+                            }
+                        }
+
+
                     } else {
                         Log.d("EXIST", "Email " + email + " does not exist!");
                         exists.setValue(true);
@@ -201,8 +250,9 @@ public class FbQuery implements FirestoreConnector {
 
     /**
      * Validates log-in credentials
-     * @param email user's email
-     * @param password user's plain text password
+     *
+     * @param email         user's email
+     * @param password      user's plain text password
      * @param login_success true if successfully authenticated, false if invalid credentials
      */
     public static void authenticate(String email, String password, MutableLiveData<Boolean> login_success) {
@@ -221,8 +271,8 @@ public class FbQuery implements FirestoreConnector {
 
                                 BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), hashedPW);
                                 if (result.verified) {
-                                    if(uscID==null){
-                                        uscID=0L;
+                                    if (uscID == null) {
+                                        uscID = 0L;
                                     }
                                     LogInPage.setId(uscID);
                                     login_success.setValue(true);
@@ -242,7 +292,8 @@ public class FbQuery implements FirestoreConnector {
 
     /**
      * Retrieve a Student Account by USC ID
-     * @param uscID USC ID associated with account
+     *
+     * @param uscID   USC ID associated with account
      * @param student stores Student Account retrieved
      */
     public static void getStudent(Long uscID, MutableLiveData<StudentAccount> student) {
@@ -268,7 +319,8 @@ public class FbQuery implements FirestoreConnector {
 
     /**
      * Retrieve a Manager account by email
-     * @param email email associated with account
+     *
+     * @param email   email associated with account
      * @param manager Account object retrieved
      */
     public static void getManager(String email, MutableLiveData<Account> manager) {
@@ -294,6 +346,7 @@ public class FbQuery implements FirestoreConnector {
      * Merges and orders by last name two lists containing Student Accounts.
      * Used to reduce code duplication in querying from Accounts and DeletedAccounts and
      * make it more clear what operation is occurring.
+     *
      * @param accounts1 first list of Student Accounts
      * @param accounts2 second list of Student Accounts
      * @return list of merged and sorted Student Accounts
@@ -306,7 +359,8 @@ public class FbQuery implements FirestoreConnector {
 
     /**
      * Search by major
-     * @param major major of student
+     *
+     * @param major       major of student
      * @param studentsMLD list of students
      */
     public static void search(String major, MutableLiveData<List<StudentAccount>> studentsMLD) {
@@ -327,14 +381,10 @@ public class FbQuery implements FirestoreConnector {
                                                 );
 
                                                 studentsMLD.setValue(studentsFound);
-                                            }
-
-                                            else {
+                                            } else {
                                                 studentsMLD.setValue(task1.getResult().toObjects(StudentAccount.class));
                                             }
-                                        }
-
-                                        else {
+                                        } else {
                                             Log.d("MAJOR", String.valueOf(task2.getException()));
                                             studentsMLD.setValue(null);
                                         }

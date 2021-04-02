@@ -48,16 +48,16 @@ public class FbCreateStudentAccountTest {
         StudentAccount a= new StudentAccount(firstName,lastName,email,password,uscID,major,false);
         Context context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
-        MutableLiveData<Integer> success = new MutableLiveData<>();
-        Observer<Integer> successObserver = new Observer<Integer>() {
+        MutableLiveData<Boolean> success = new MutableLiveData<>();
+        Observer<Boolean> successObserver = new Observer<Boolean>() {
             @Override
-            public void onChanged(Integer isSuccess) {
+            public void onChanged(Boolean isSuccess) {
                 //check if account was created
                 if(isSuccess==null){
                     fail("did not observe");
                     return;
                 }
-                assertEquals(intExpected,isSuccess);
+                assertEquals(true,isSuccess);
             }
         };
         success.observeForever(successObserver);
