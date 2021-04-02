@@ -41,9 +41,10 @@ public class StudentUploadPhoto extends AppCompatActivity {
     AlertDialog alertDialog;
     Uri selectedImage;
     Boolean ImageSet=false;
-    private final MutableLiveData<Integer> create_success = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> create_success = new MutableLiveData<>();
     private final MutableLiveData<Boolean> email_success = new MutableLiveData<>();
     private final MutableLiveData<Boolean> id_success = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> restore_success = new MutableLiveData<>();
 
     int SELECT_PICTURE = 200;
 
@@ -64,6 +65,7 @@ public class StudentUploadPhoto extends AppCompatActivity {
         createMLDInit();
         emailMLDInit();
         idMLDInit();
+        restoreMLDInit();
 
 
         //To Backend: What data y'all get:
@@ -180,16 +182,20 @@ public class StudentUploadPhoto extends AppCompatActivity {
                                         int which)
                     {
 
-                        if(!email_success.getValue()){
+                        if(email_success.getValue()){
                             openSignUp();
                             return;
                         }
-                        if(!id_success.getValue()){
+                        if(id_success.getValue()){
                             openSignUp();
                             return;
                         }
-                        if(create_success.getValue()>0){
-                            //Todo redirect to restore page if 1
+                        if(restore_success.getValue()){
+                            //Todo redirect to restore page
+                            openSignUp();
+                            return;
+                        }
+                        if(!create_success.getValue()){
                             openSignUp();
                             return;
                         }
@@ -200,10 +206,10 @@ public class StudentUploadPhoto extends AppCompatActivity {
     }
 
     private void createMLDInit(){
-        final Observer<Integer> create_obs = new Observer<Integer>(){
+        final Observer<Boolean> create_obs = new Observer<Boolean>(){
             @Override
-            public void onChanged(@Nullable final Integer isSuccess){
-                if(isSuccess==0){
+            public void onChanged(@Nullable final Boolean isSuccess){
+                if(isSuccess){
                     //stop progress bar
                     studentProgress.setVisibility(View.GONE);
                     //Generate popupmessage
@@ -221,15 +227,7 @@ public class StudentUploadPhoto extends AppCompatActivity {
                     //switch page
                     bUploadImage.setEnabled(true);
                     submitBtn.setEnabled(true);
-                    if(isSuccess==1){
-                        alertDialog.setMessage("This account existed before. Please restore it.");
-                    }
-                    if(isSuccess==2){
-                        alertDialog.setMessage("Could not create your account successfully");
-                    }
-                    if(isSuccess==3){
-                        alertDialog.setMessage("Could not upload profile picture and create account");
-                    }
+                    alertDialog.setMessage("Could not successfully create your account");
 
                     alertDialog.show();
                 }
@@ -244,14 +242,15 @@ public class StudentUploadPhoto extends AppCompatActivity {
     private void emailMLDInit(){
         final Observer<Boolean> email_obs = new Observer<Boolean>(){
             @Override
-            public void onChanged(@Nullable final Boolean isSuccess){
-                if(isSuccess){
+            public void onChanged(@Nullable final Boolean Exists){
+                if(!Exists){
 
                     FbQuery.checkUSCidExists(Long.valueOf(id),id_success);
                 }
                 else{
                     studentProgress.setVisibility(View.GONE);
                     //switch pagebUploadImage.setEnabled(false);
+                    Log.d("email","in student account email exists "+email);
                     bUploadImage.setEnabled(true);
                     submitBtn.setEnabled(true);
                     alertDialog.setMessage("This Email is already in use");
@@ -267,33 +266,9 @@ public class StudentUploadPhoto extends AppCompatActivity {
     private void idMLDInit(){
         final Observer<Boolean> id_obs = new Observer<Boolean>(){
             @Override
-            public void onChanged(@Nullable final Boolean isSuccess){
-                if(isSuccess){
-
-
-        if(ImageSet==false){
-            CreateAccount.CreateStudent(fName,lName,email,password,Long.valueOf(id),major,create_success);
-            return;
-        }
-
-        String uri =selectedImage.toString();
-        InputStream exampleInputStream=null;
-
-
-        try {
-            exampleInputStream = getContentResolver().openInputStream(Uri.parse(uri));
-            if(exampleInputStream==null){
-                Log.i("upload", "stream is null");
-            }
-            else{
-                Log.i("upload", "stream is valid");
-            }
-
-
-        } catch (FileNotFoundException e) {
-            Log.i("upload", "error in uri parsing");
-        }
-        CreateAccount.CreateStudent(fName, lName, email,password,exampleInputStream,Long.valueOf(id),major,create_success);
+            public void onChanged(@Nullable final Boolean Exists){
+                if(!Exists){
+                    FbQuery.checkRestore(email,restore_success);
 
                 }
                 else{
@@ -309,6 +284,50 @@ public class StudentUploadPhoto extends AppCompatActivity {
 
         };
         id_success.observe(this, id_obs);
+    }
+
+    private void restoreMLDInit(){
+        final Observer<Boolean> restore_obs = new Observer<Boolean>(){
+            @Override
+            public void onChanged(@Nullable final Boolean Exists){
+                if(!Exists){
+
+                    if(ImageSet==false){
+            CreateAccount.CreateStudent(fName,lName,email,password,Long.valueOf(id),major,create_success);
+                        return;
+                    }
+
+                    String uri =selectedImage.toString();
+                    InputStream exampleInputStream=null;
+
+
+                    try {
+                        exampleInputStream = getContentResolver().openInputStream(Uri.parse(uri));
+                        if(exampleInputStream==null){
+                            Log.i("upload", "stream is null");
+                        }
+                        else{
+                            Log.i("upload", "stream is valid");
+                        }
+
+
+                    } catch (FileNotFoundException e) {
+                        Log.i("upload", "error in uri parsing");
+                    }
+        CreateAccount.CreateStudent(fName, lName, email,password,exampleInputStream,Long.valueOf(id),major,create_success);
+                }
+                else{
+                    studentProgress.setVisibility(View.GONE);
+                    bUploadImage.setEnabled(true);
+                    submitBtn.setEnabled(true);
+                    alertDialog.setMessage("This account existed before. Please restore");
+                    alertDialog.show();
+                }
+
+            }
+
+        };
+        restore_success.observe(this, restore_obs);
     }
 }
 

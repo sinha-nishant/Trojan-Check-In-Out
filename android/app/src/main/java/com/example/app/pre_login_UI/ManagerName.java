@@ -46,8 +46,9 @@ public class ManagerName extends AppCompatActivity {
     String email,password;
     ProgressBar pb;
     AlertDialog alertDialog;
-    private final MutableLiveData<Integer> create_success = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> create_success = new MutableLiveData<>();
     private final MutableLiveData<Boolean> email_success = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> restore_success = new MutableLiveData<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,7 @@ public class ManagerName extends AppCompatActivity {
         DialogInit();
         createMLDInit();
         emailMLDInit();
+        restoreMLDInit();
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -167,10 +169,10 @@ public class ManagerName extends AppCompatActivity {
     }
 
    private void createMLDInit(){
-       final Observer<Integer> create_obs = new Observer<Integer>(){
+       final Observer<Boolean> create_obs = new Observer<Boolean>(){
            @Override
-           public void onChanged(@Nullable final Integer isSuccess){
-               if(isSuccess==0){
+           public void onChanged(@Nullable final Boolean isSuccess){
+               if(isSuccess){
                    //stop progress bar
                    pb.setVisibility(View.GONE);
                    //Generate popupmessage
@@ -188,15 +190,7 @@ public class ManagerName extends AppCompatActivity {
                    //switch page
                    profileButton.setEnabled(true);
                    profileButton.setEnabled(true);
-                   if(isSuccess==1){
-                       alertDialog.setMessage("This account existed before. Please restore it.");
-                   }
-                   if(isSuccess==2){
-                       alertDialog.setMessage("Could not create your account successfully");
-                   }
-                   if(isSuccess==3){
-                       alertDialog.setMessage("Could not upload profile picture and create account");
-                   }
+                   alertDialog.setMessage("Could not successfully create your account");
                    alertDialog.show();
                }
 
@@ -220,13 +214,19 @@ public class ManagerName extends AppCompatActivity {
                     public void onClick(DialogInterface dialog,
                                         int which)
                     {
-
+                        if(email_success.getValue()){
+                            openManagerSignUp();
+                            return;
+                        }
                         if(create_success==null||create_success.getValue()==null){
                             openManagerSignUp();
                             return;
                         }
-                        if(create_success.getValue()==0){
+                        if(create_success.getValue()){
                             openProfile();
+                        }
+                        else{
+                            openManagerSignUp();
                         }
 
                     }
@@ -250,34 +250,9 @@ public class ManagerName extends AppCompatActivity {
     private void emailMLDInit(){
         final Observer<Boolean> email_obs = new Observer<Boolean>(){
             @Override
-            public void onChanged(@Nullable final Boolean isSuccess){
-                if(isSuccess){
-
-
-        if(!ImageSet){
-
-            CreateAccount.CreateManager(fName,lName,email,password,create_success);
-            return;
-        }
-
-        String uri =selectedImage.toString();
-        InputStream exampleInputStream=null;
-
-
-        try {
-            exampleInputStream = getContentResolver().openInputStream(Uri.parse(uri));
-            if(exampleInputStream==null){
-                Log.i("upload", "stream is null");
-            }
-            else{
-                Log.i("upload", "stream is valid");
-            }
-
-
-        } catch (FileNotFoundException e) {
-            Log.i("upload", "error in uri parsing");
-        }
-        CreateAccount.CreateManager(fName, lName, email,password,exampleInputStream,create_success);
+            public void onChanged(@Nullable final Boolean Exists){
+                if(!Exists){
+                    FbQuery.checkRestore(email,restore_success);
 
                 }
                 else{
@@ -293,6 +268,54 @@ public class ManagerName extends AppCompatActivity {
 
         };
         email_success.observe(this, email_obs);
+    }
+
+    private void restoreMLDInit(){
+        final Observer<Boolean> restore_obs = new Observer<Boolean>(){
+            @Override
+            public void onChanged(@Nullable final Boolean Exists){
+                if(!Exists){
+
+
+                    if(!ImageSet){
+
+            CreateAccount.CreateManager(fName,lName,email,password,create_success);
+                        return;
+                    }
+
+                    String uri =selectedImage.toString();
+                    InputStream exampleInputStream=null;
+
+
+                    try {
+                        exampleInputStream = getContentResolver().openInputStream(Uri.parse(uri));
+                        if(exampleInputStream==null){
+                            Log.i("upload", "stream is null");
+                        }
+                        else{
+                            Log.i("upload", "stream is valid");
+                        }
+
+
+                    } catch (FileNotFoundException e) {
+                        Log.i("upload", "error in uri parsing");
+                    }
+        CreateAccount.CreateManager(fName, lName, email,password,exampleInputStream,create_success);
+
+                }
+                else{
+                    pb.setVisibility(View.GONE);
+                    profileButton.setEnabled(true);
+                    profileButton.setEnabled(true);
+                    //switch page
+                    alertDialog.setMessage("This account existed before. Please restore");
+                    alertDialog.show();
+                }
+
+            }
+
+        };
+        restore_success.observe(this, restore_obs);
     }
 
 

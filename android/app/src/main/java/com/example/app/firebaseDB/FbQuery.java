@@ -43,6 +43,9 @@ public class FbQuery implements FirestoreConnector {
                         for (QueryDocumentSnapshot qds : task.getResult()) {
                             if (!qds.getBoolean("isDeleted")) {
                                 Log.d("EXIST", "USC ID " + uscID + " exists!");
+                                exists.setValue(true);
+                            }
+                            else{
                                 exists.setValue(false);
                             }
 
@@ -50,7 +53,7 @@ public class FbQuery implements FirestoreConnector {
                         }
                     } else {
                         Log.d("EXIST", "USC ID " + uscID + " does not exist!");
-                        exists.setValue(true);
+                        exists.setValue(false);
                     }
                 }
             }
@@ -231,9 +234,13 @@ public class FbQuery implements FirestoreConnector {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     if (!task.getResult().isEmpty()) {
+                        Log.d("abcde","in success not empty");
                         for (QueryDocumentSnapshot qds : task.getResult()) {
                             if (!qds.getBoolean("isDeleted")) {
                                 Log.d("EXIST", "Email " + email + " exists!");
+                                exists.setValue(true);
+                            }
+                            else{
                                 exists.setValue(false);
                             }
                         }
@@ -241,8 +248,11 @@ public class FbQuery implements FirestoreConnector {
 
                     } else {
                         Log.d("EXIST", "Email " + email + " does not exist!");
-                        exists.setValue(true);
+                        exists.setValue(false);
                     }
+                }
+                else{
+                    Log.d("abcde","not successful email retrieval");
                 }
             }
         });

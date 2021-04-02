@@ -184,7 +184,7 @@ public class FbUpdate implements FirestoreConnector {
                                             } else {
                                                 Log.d("CREATE", ((StudentAccount) a).toString());
                                             }
-                                            create_success.setValue(true);
+//                                            create_success.setValue(true);
                                             uploadPhoto.upload(stream, a.getEmail(), create_success);
                                         }
                                     });
