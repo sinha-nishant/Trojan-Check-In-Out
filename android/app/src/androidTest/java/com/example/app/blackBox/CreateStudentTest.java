@@ -44,7 +44,7 @@ public class CreateStudentTest {
         onView(ViewMatchers.withId(R.id.studentSignUpEmailAddress))
                 .perform(typeText(email), closeSoftKeyboard());
         onView(withId(R.id.studentSignUpPassword))
-                .perform(typeText("pass"), closeSoftKeyboard());
+                .perform(typeText("password"), closeSoftKeyboard());
 
         onView(withId(R.id.studentEmailPassSubmitButton))
                 .perform(click());

@@ -39,7 +39,7 @@ public class CreateManagerTest {
         onView(ViewMatchers.withId(R.id.managerSignUpEmailAddress))
                 .perform(typeText(email), closeSoftKeyboard());
         onView(withId(R.id.managerSignUpPassword))
-                .perform(typeText("pass"), closeSoftKeyboard());
+                .perform(typeText("password"), closeSoftKeyboard());
 
         onView(withId(R.id.managerEmailPassSubmitButton))
                 .perform(click());

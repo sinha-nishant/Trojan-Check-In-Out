@@ -61,10 +61,11 @@ public class StudentDeleteTest {
             onView(withId(R.id.studentMenuDelete))
                     .perform(click());
             Thread.sleep(5000);
-
-
-
-            //check if you get success message from alert dialog
+            onView(withText("Yes")).inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                    .perform(click());
+            Thread.sleep(5000);
+//            //check if you get success message from alert dialog
             onView(withText("Successful in deleting your account")).inRoot(isDialog()).withFailureHandler(new FailureHandler() {
                 @Override
                 public void handle(Throwable error, Matcher<View> viewMatcher){

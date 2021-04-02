@@ -30,9 +30,9 @@ public class FbCreateStudentAccountTest {
     public void createAccountWithCorrectInputNoPic() {
 
         //randomized credentials
-        //email= Credentials.email;
+        email= Credentials.email;
 
-        email = "randy.boi@usc.edu";
+//        email = "randy.boi@usc.edu";
 
 
         //non-randomized name and password

@@ -30,8 +30,8 @@ public class FbCheckUsedIdTest {
         Observer<Boolean> id_obs = new Observer<Boolean>() {
             //checking if this id exists in the database
             @Override
-            public void onChanged(Boolean Success) {
-                assertEquals(Success,false);
+            public void onChanged(Boolean Exists) {
+                assertEquals(Exists,true);
             }
         };
         mld.observeForever(id_obs);

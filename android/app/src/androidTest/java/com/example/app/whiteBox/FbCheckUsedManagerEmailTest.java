@@ -30,8 +30,8 @@ public class FbCheckUsedManagerEmailTest {
         Observer<Boolean> email_obs = new Observer<Boolean>() {
             //check if email has been used
             @Override
-            public void onChanged(Boolean Success) {
-                assertEquals(Success,false);
+            public void onChanged(Boolean Exists) {
+                assertEquals(Exists,true);
             }
         };
         mld.observeForever(email_obs);

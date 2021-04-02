@@ -65,8 +65,10 @@ public ActivityScenarioRule<ManagerProfile> activityRule =
         onView(ViewMatchers.withId(R.id.button15))//click delete button
                 .perform(click());
         Thread.sleep(5000);// wait 5 seconds for Firebase to bring back account data
-//
-//
+        onView(withText("Yes")).inRoot(isDialog())
+                .check(matches(isDisplayed()))
+                .perform(click());
+        Thread.sleep(5000);
 //        //check if you get success message from alert dialog
         onView(withText("Successful in deleting your account")).inRoot(isDialog()).withFailureHandler(new FailureHandler() {
             @Override
