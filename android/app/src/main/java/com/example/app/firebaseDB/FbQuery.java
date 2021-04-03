@@ -40,17 +40,16 @@ public class FbQuery implements FirestoreConnector {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     if (!task.getResult().isEmpty()) {
-                        for (QueryDocumentSnapshot qds : task.getResult()) {
-                            if (qds.getBoolean("isActive")) {
+                        DocumentSnapshot ds = task.getResult().getDocuments().get(0);
+                            if (ds.getBoolean("isActive")) {
                                 Log.d("EXIST", "USC ID " + uscID + " exists!");
                                 exists.setValue(true);
-                            }
-                            else{
+                            } else {
                                 exists.setValue(false);
                             }
 
 
-                        }
+
                     } else {
                         Log.d("EXIST", "USC ID " + uscID + " does not exist!");
                         exists.setValue(false);
@@ -68,7 +67,7 @@ public class FbQuery implements FirestoreConnector {
      *               false if doesn't exist
      *               true if exists
      */
-    public static void checkRestore(String email, MutableLiveData<Boolean> exists) {
+    public static void checkManagerRestore(String email, MutableLiveData<Boolean> exists) {
         CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
         Query query = accounts.whereEqualTo("email", email);
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -76,12 +75,12 @@ public class FbQuery implements FirestoreConnector {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     if (!task.getResult().isEmpty()) {
-                        for (QueryDocumentSnapshot qds : task.getResult()) {
-                            if (!qds.getBoolean("isActive")) {
+                        DocumentSnapshot ds = task.getResult().getDocuments().get(0);
+                            if (!ds.getBoolean("isActive")) {
                                 Log.d("RESTORE", "Account exists");
                                 exists.setValue(true);
                             }
-                        }
+
                     } else {
                         Log.d("RESTORE", "Account does not exist");
                         exists.setValue(false);
@@ -92,6 +91,41 @@ public class FbQuery implements FirestoreConnector {
         });
 
     }
+
+    /**
+     * Checks whether given usc ID exists among the deleted accounts
+     *
+     * @param uscID  usc ID of the student
+     * @param email email of the student
+     * @param exists boolean representing whether the account exists or not:
+     *               false if doesn't exist
+     *               true if exists
+     */
+    public static void checkStudentRestore(Long uscID, String email, MutableLiveData<Boolean> exists) {
+        CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
+        Query query = accounts.whereEqualTo("uscID", uscID).whereEqualTo("email", email);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    if (!task.getResult().isEmpty()) {
+                        DocumentSnapshot ds = task.getResult().getDocuments().get(0);
+                            if (!ds.getBoolean("isActive")) {
+                                Log.d("RESTORE", "Account exists");
+                                exists.setValue(true);
+                            }
+
+                    } else {
+                        Log.d("RESTORE", "Account does not exist");
+                        exists.setValue(false);
+                    }
+                }
+
+            }
+        });
+
+    }
+
 
     /**
      * Retrieves all buildings from database
@@ -234,25 +268,23 @@ public class FbQuery implements FirestoreConnector {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     if (!task.getResult().isEmpty()) {
-                        Log.d("abcde","in success not empty");
-                        for (QueryDocumentSnapshot qds : task.getResult()) {
-                            if (qds.getBoolean("isActive")) {
+                        Log.d("abcde", "in success not empty");
+                        DocumentSnapshot ds = task.getResult().getDocuments().get(0);
+                            if (ds.getBoolean("isActive")) {
                                 Log.d("EXIST", "Email " + email + " exists!");
                                 exists.setValue(true);
-                            }
-                            else{
+                            } else {
                                 exists.setValue(false);
                             }
                         }
 
 
-                    } else {
+                    else {
                         Log.d("EXIST", "Email " + email + " does not exist!");
                         exists.setValue(false);
                     }
-                }
-                else{
-                    Log.d("abcde","not successful email retrieval");
+                } else {
+                    Log.d("EXIST", "not successful email retrieval");
                 }
             }
         });
@@ -276,20 +308,26 @@ public class FbQuery implements FirestoreConnector {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             if (!task.getResult().isEmpty()) {
-                                Log.d("AUTHENTICATE", email + " Auth successful!");
-                                Long uscID = (Long) task.getResult().getDocuments().get(0).get("uscID");
-                                Log.d("ID", String.valueOf(uscID));
-                                String hashedPW = (String) task.getResult().getDocuments().get(0).get("password");
+                                DocumentSnapshot ds = task.getResult().getDocuments().get(0);
+                                if (ds.getBoolean("isActive")) {
+                                    Log.d("AUTHENTICATE", email + " Auth successful!");
+                                    Long uscID = (Long) task.getResult().getDocuments().get(0).get("uscID");
+                                    Log.d("ID", String.valueOf(uscID));
+                                    String hashedPW = (String) task.getResult().getDocuments().get(0).get("password");
 
-                                BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), hashedPW);
-                                if (result.verified) {
-                                    if (uscID == null) {
-                                        uscID = 0L;
+                                    BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), hashedPW);
+                                    if (result.verified) {
+                                        if (uscID == null) {
+                                            uscID = 0L;
+                                        }
+                                        LogInPage.setId(uscID);
+                                        login_success.setValue(true);
+
+                                    } else {
+                                        login_success.setValue(false);
                                     }
-                                    LogInPage.setId(uscID);
-                                    login_success.setValue(true);
-
                                 } else {
+                                    Log.d("AUTHENTICATE", email + " Auth failed!");
                                     login_success.setValue(false);
                                 }
 
@@ -322,7 +360,7 @@ public class FbQuery implements FirestoreConnector {
                                 student.setValue(account);
                             }
                             //Account is not live
-                            else{
+                            else {
                                 Log.d("STUDENT ACCOUNT", "NOT FOUND");
                                 student.setValue(null);
                             }
@@ -353,8 +391,7 @@ public class FbQuery implements FirestoreConnector {
                                 Account account = (Account) ds.toObject(Account.class);
                                 Log.d("MANAGER ACCOUNT", Objects.requireNonNull(account).toString());
                                 manager.setValue(account);
-                            }
-                            else if (task.getResult().isEmpty()) {
+                            } else if (task.getResult().isEmpty()) {
                                 Log.d("MANAGER ACCOUNT", "NOT FOUND");
                             }
                         }

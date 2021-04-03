@@ -13,6 +13,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -118,23 +119,22 @@ public class FbUpdate implements FirestoreConnector {
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             //create a field "isDeleted" and set it to true
                             if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                                for (QueryDocumentSnapshot qds : task.getResult()) {
-                                    FirestoreConnector.getDB().collection("Accounts").document(qds.getId()).update("isActive", true).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            Log.d("CREATE", "Account Added to DB");
+                                DocumentSnapshot ds = task.getResult().getDocuments().get(0);
+                                FirestoreConnector.getDB().collection("Accounts").document(ds.getId()).update("isActive", true).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        Log.d("CREATE", "Account Added to DB");
 
-                                            if (a.getIsManager()) {
-                                                Log.d("CREATE", a.toString());
-                                            } else {
-                                                Log.d("CREATE", ((StudentAccount) a).toString());
-                                            }
-                                            create_success.setValue(true);
+                                        if (a.getIsManager()) {
+                                            Log.d("CREATE", a.toString());
+                                        } else {
+                                            Log.d("CREATE", ((StudentAccount) a).toString());
                                         }
-                                    });
-                                }
-                            }
-                            else {
+                                        create_success.setValue(true);
+                                    }
+                                });
+
+                            } else {
                                 Log.d("Err", "failure while adding isDeleted");
                                 create_success.setValue(false);
                             }
@@ -173,24 +173,23 @@ public class FbUpdate implements FirestoreConnector {
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             //create a field "isDeleted" and set it to true
                             if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                                for (QueryDocumentSnapshot qds : task.getResult()) {
-                                    FirestoreConnector.getDB().collection("Accounts").document(qds.getId()).update("isActive", true).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            Log.d("CREATE", "Account Added to DB");
+                                DocumentSnapshot ds = task.getResult().getDocuments().get(0);
+                                FirestoreConnector.getDB().collection("Accounts").document(ds.getId()).update("isActive", true).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        Log.d("CREATE", "Account Added to DB");
 
-                                            if (a.getIsManager()) {
-                                                Log.d("CREATE", a.toString());
-                                            } else {
-                                                Log.d("CREATE", ((StudentAccount) a).toString());
-                                            }
-//                                            create_success.setValue(true);
-                                            uploadPhoto.upload(stream, a.getEmail(), create_success);
+                                        if (a.getIsManager()) {
+                                            Log.d("CREATE", a.toString());
+                                        } else {
+                                            Log.d("CREATE", ((StudentAccount) a).toString());
                                         }
-                                    });
-                                }
-                            }
-                            else {
+//                                            create_success.setValue(true);
+                                        uploadPhoto.upload(stream, a.getEmail(), create_success);
+                                    }
+                                });
+
+                            } else {
                                 Log.d("Err", "failure while adding isDeleted");
                                 create_success.setValue(false);
                             }
@@ -270,8 +269,8 @@ public class FbUpdate implements FirestoreConnector {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                    for (QueryDocumentSnapshot qds : task.getResult()) {
-                        FirestoreConnector.getDB().collection("Accounts").document(qds.getId()).update("password", newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    DocumentSnapshot ds = task.getResult().getDocuments().get(0);
+                        FirestoreConnector.getDB().collection("Accounts").document(ds.getId()).update("password", newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
@@ -284,7 +283,7 @@ public class FbUpdate implements FirestoreConnector {
                         });
                     }
                 }
-            }
+
         });
     }
 
@@ -296,11 +295,7 @@ public class FbUpdate implements FirestoreConnector {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                            for (QueryDocumentSnapshot qds : task.getResult()) {
-                                FirestoreConnector.getDB().collection("Accounts")
-                                        .document(qds.getId())
-                                        .update("major", newMajor)
-                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            task.getResult().getDocuments().get(0).getReference().update("major", newMajor).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
@@ -315,7 +310,7 @@ public class FbUpdate implements FirestoreConnector {
                             }
                         }
                     }
-                });
+                );
     }
 
     //updated params and added callback
@@ -325,11 +320,7 @@ public class FbUpdate implements FirestoreConnector {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                            for (QueryDocumentSnapshot qds : task.getResult()) {
-                                FirestoreConnector.getDB().collection("Accounts")
-                                        .document(qds.getId())
-                                        .update("profilePicture", CreateAccount.AWSLink(email))
-                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            task.getResult().getDocuments().get(0).getReference().update("profilePicture",CreateAccount.AWSLink(email)).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
@@ -343,7 +334,7 @@ public class FbUpdate implements FirestoreConnector {
                                         });
                             }
                         }
-                    }
+
                 });
     }
 
