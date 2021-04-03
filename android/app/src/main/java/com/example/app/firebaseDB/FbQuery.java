@@ -19,6 +19,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -466,5 +467,86 @@ public class FbQuery implements FirestoreConnector {
                         }
                     }
                 });
+    }
+
+    /**
+     * Search by building, date, and time
+     * @param buildingName Name of building that's history is desired
+     * @param start Date object indicating start of search range
+     * @param end Date object indicating end of search range
+     * @param studentsMLD List of StudentAccounts
+     */
+    public static void search(String buildingName, Date start, Date end, MutableLiveData<List<StudentAccount>> studentsMLD) {
+        FirestoreConnector.getDB().collection("Activities")
+                .whereEqualTo("buildingName", buildingName).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    if (!task.getResult().isEmpty()) {
+                        List<Long> student_ids = new ArrayList<>();
+                        for (DocumentSnapshot ds: task.getResult().getDocuments()) {
+                            Date checkInTime = ds.getDate("checkInTime");
+                            Date checkOutTime = null;
+                            if (ds.get("checkOutTime") != null) {
+                                checkOutTime = ds.getDate("checkOutTime");
+                            }
+
+                            Long uscID = ds.getLong("uscID");
+
+                            if (checkInTime.after(start) && checkInTime.before(end)) {
+                                student_ids.add(uscID);
+                            }
+
+                            else if (checkInTime.before(end) && (checkOutTime == null)) {
+                                student_ids.add(uscID);
+                            }
+
+                            else if (checkInTime.before(start) && checkOutTime.after(start)) {
+                                student_ids.add(uscID);
+                            }
+                        }
+
+                        getStudents(student_ids, studentsMLD);
+                    }
+
+                    else {
+                        studentsMLD.setValue(new ArrayList<>());
+                    }
+                }
+
+                else {
+                    Log.d("DATE", String.valueOf(task.getException()));
+                    studentsMLD.setValue(new ArrayList<>());
+                }
+            }
+        });
+    }
+
+    private static void getStudents(List<Long> student_ids, MutableLiveData<List<StudentAccount>> studentsMLD) {
+        List<StudentAccount> students = new ArrayList<>();
+        CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
+        for (Long id: student_ids) {
+            accounts.whereEqualTo("uscID", id).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                        students.add(task.getResult().getDocuments().get(0).toObject(StudentAccount.class));
+                        if (students.size() == student_ids.size()) {
+
+                            for (StudentAccount sa: students) {
+                                Log.d("STUDENTS", sa.toString());
+                            }
+
+                            studentsMLD.setValue(students);
+                        }
+                    }
+
+                    else {
+                        Log.d("STUDENTS", String.valueOf(task.getException()));
+                        studentsMLD.setValue(new ArrayList<>());
+                    }
+                }
+            });
+        }
     }
 }
