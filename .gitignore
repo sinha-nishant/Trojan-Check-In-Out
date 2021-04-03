@@ -90,3 +90,4 @@ package-lock.json
 package.json
 android/app/src/androidTest/java/com/example/app/whiteBox/FbBatchCapacityUpdateTest.java
 android/app/src/androidTest/java/com/example/app/whiteBox/FbRestoreTest.java
+android/app/src/androidTest/java/com/example/app/whiteBox/FbSearchByDateTest.java
