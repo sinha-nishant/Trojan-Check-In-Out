@@ -59,7 +59,6 @@ public class FbUpdate implements FirestoreConnector {
 
     /**
      * Batch update capacities
-     *
      * @param buildings hashmap from building name to new capacities
      * @param success   indicates whether update occurred successfully
      */
@@ -98,8 +97,7 @@ public class FbUpdate implements FirestoreConnector {
 
     /**
      * Create Account
-     *
-     * @param Account        account to be  created without image
+     * @param a       account to be  created without image
      * @param create_success boolean representing whether the account was created successfully-
      *                       returns following values:
      *                       true: account created without error
@@ -152,7 +150,7 @@ public class FbUpdate implements FirestoreConnector {
     /**
      * Create Account
      *
-     * @param Account        account to be  created with image
+     * @param a        account to be  created with image
      * @param create_success boolean representing whether the account was created successfully-
      *                       returns following values:
      *                       0: account created without error
@@ -207,34 +205,11 @@ public class FbUpdate implements FirestoreConnector {
 //        //delete later
 //    }
 
-//    //Refactored
-//    public static void createAccount(Account a, MutableLiveData<Boolean> success, InputStream stream) {
-//        FirestoreConnector.getDB().collection("Accounts").add(a).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentReference> task) {
-//                if (task.isSuccessful()) {
-//                    Log.d("CREATE", "Account Added to DB");
-//
-//                    //uploadPhoto.upload(stream, a.getEmail(), success);
-//                    if (a.getIsManager()) {
-//                        Log.d("CREATE", a.toString());
-//                        Log.d("CREATE", "Manager acc");
-//                    } else {
-//                        Log.d("CREATE", ((StudentAccount) a).toString());
-//                    }
-//
-//                } else {
-//                    success.setValue(false);
-//                }
-//            }
-//        });
-//    }
-
     /**
      * Delete account
      *
      * @param email   email
-     * @param success indicates whether deletion occurred successfully: 1 if not deleted, 2 if deleted
+     * @param delete_success indicates whether deletion occurred successfully: 1 if not deleted, 2 if deleted
      */
     public static void deleteAccount(String email, MutableLiveData<Integer> delete_success) {
         CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
@@ -287,8 +262,8 @@ public class FbUpdate implements FirestoreConnector {
         });
     }
 
-    //Update major
-//updated params and added callback
+    // Update major
+    // Updated params and added callback
     public static void updateMajor(long uscID, String newMajor, MutableLiveData<Boolean> success) {
         FirestoreConnector.getDB().collection("Accounts").whereEqualTo("uscID", uscID).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -313,7 +288,7 @@ public class FbUpdate implements FirestoreConnector {
                 );
     }
 
-    //updated params and added callback
+    // Updated params and added callback
     public static void updatePhoto(String email, MutableLiveData<Boolean> success) {
         FirestoreConnector.getDB().collection("Accounts").whereEqualTo("email", email).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -340,13 +315,14 @@ public class FbUpdate implements FirestoreConnector {
 
     /**
      * Restore deleted account
-     *
-     * @param email    email of user
+     * @param email email of user
      * @param password plain text user password
      * @param restored boolean to indicate whether account successfully found and restored
      */
     public static void restore(String email, String password, MutableLiveData<Boolean> restored) {
-        FirestoreConnector.getDB().collection("DeletedAccounts").whereEqualTo("email", email)
+        FirestoreConnector.getDB().collection("Accounts")
+                .whereEqualTo("email", email)
+                .whereEqualTo("isActive", false)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -357,28 +333,16 @@ public class FbUpdate implements FirestoreConnector {
 
                     // If email and password combination is valid
                     if (result.verified) {
-                        FirebaseFirestore db = FirestoreConnector.getDB();
-
-                        // Create batch of operations
-                        WriteBatch batch = db.batch();
-                        DocumentReference dr = db.collection("Accounts").document();
-                        batch.set(dr, Objects.requireNonNull(task.getResult().getDocuments().get(0).getData()));
-                        batch.delete(task.getResult().getDocuments().get(0).getReference());
-
-                        // Execute transactions in batch
-                        batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        task.getResult().getDocuments().get(0).getReference().update("isActive", true)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    restored.setValue(true);
-                                } else {
-                                    Log.d("RESTORE ACCOUNT", String.valueOf(task.getException()));
-                                    restored.setValue(false);
-                                }
+                                restored.setValue(task.isSuccessful());
                             }
                         });
 
                     } else {
+                        Log.d("RESTORE ACCOUNT", "Invalid credentials");
                         restored.setValue(false);
                     }
                 } else {
