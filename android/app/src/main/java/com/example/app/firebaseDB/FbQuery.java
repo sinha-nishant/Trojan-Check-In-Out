@@ -41,7 +41,7 @@ public class FbQuery implements FirestoreConnector {
                 if (task.isSuccessful()) {
                     if (!task.getResult().isEmpty()) {
                         for (QueryDocumentSnapshot qds : task.getResult()) {
-                            if (!qds.getBoolean("isDeleted")) {
+                            if (qds.getBoolean("isActive")) {
                                 Log.d("EXIST", "USC ID " + uscID + " exists!");
                                 exists.setValue(true);
                             }
@@ -77,7 +77,7 @@ public class FbQuery implements FirestoreConnector {
                 if (task.isSuccessful()) {
                     if (!task.getResult().isEmpty()) {
                         for (QueryDocumentSnapshot qds : task.getResult()) {
-                            if (qds.getBoolean("isDeleted")) {
+                            if (!qds.getBoolean("isActive")) {
                                 Log.d("RESTORE", "Account exists");
                                 exists.setValue(true);
                             }
@@ -236,7 +236,7 @@ public class FbQuery implements FirestoreConnector {
                     if (!task.getResult().isEmpty()) {
                         Log.d("abcde","in success not empty");
                         for (QueryDocumentSnapshot qds : task.getResult()) {
-                            if (!qds.getBoolean("isDeleted")) {
+                            if (qds.getBoolean("isActive")) {
                                 Log.d("EXIST", "Email " + email + " exists!");
                                 exists.setValue(true);
                             }
@@ -257,6 +257,8 @@ public class FbQuery implements FirestoreConnector {
             }
         });
     }
+
+    //check later
 
     /**
      * Validates log-in credentials
@@ -301,7 +303,7 @@ public class FbQuery implements FirestoreConnector {
     }
 
     /**
-     * Retrieve a Student Account by USC ID
+     * Retrieve a live Student Account by USC ID
      *
      * @param uscID   USC ID associated with account
      * @param student stores Student Account retrieved
@@ -313,10 +315,17 @@ public class FbQuery implements FirestoreConnector {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful() && !task.getResult().isEmpty()) {
                             DocumentSnapshot ds = task.getResult().getDocuments().get(0);
-                            StudentAccount account = ds.toObject(StudentAccount.class);
-                            Objects.requireNonNull(account).setUscID((Long) ds.get("uscID"));
-                            Log.d("STUDENT ACCOUNT", account.toString());
-                            student.setValue(account);
+                            if (ds.getBoolean("isActive")) {
+                                StudentAccount account = ds.toObject(StudentAccount.class);
+                                Objects.requireNonNull(account).setUscID((Long) ds.get("uscID"));
+                                Log.d("STUDENT ACCOUNT", account.toString());
+                                student.setValue(account);
+                            }
+                            //Account is not live
+                            else{
+                                Log.d("STUDENT ACCOUNT", "NOT FOUND");
+                                student.setValue(null);
+                            }
                         }
                         //Account not found
                         else if (task.getResult().isEmpty()) {
@@ -340,9 +349,14 @@ public class FbQuery implements FirestoreConnector {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful() && !task.getResult().isEmpty()) {
                             DocumentSnapshot ds = task.getResult().getDocuments().get(0);
-                            Account account = (Account) ds.toObject(Account.class);
-                            Log.d("MANAGER ACCOUNT", Objects.requireNonNull(account).toString());
-                            manager.setValue(account);
+                            if (ds.getBoolean("isActive")) {
+                                Account account = (Account) ds.toObject(Account.class);
+                                Log.d("MANAGER ACCOUNT", Objects.requireNonNull(account).toString());
+                                manager.setValue(account);
+                            }
+                            else if (task.getResult().isEmpty()) {
+                                Log.d("MANAGER ACCOUNT", "NOT FOUND");
+                            }
                         }
                         //Account not found
                         else if (task.getResult().isEmpty()) {

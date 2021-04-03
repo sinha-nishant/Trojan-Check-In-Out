@@ -119,7 +119,7 @@ public class FbUpdate implements FirestoreConnector {
                             //create a field "isDeleted" and set it to true
                             if (task.isSuccessful() && !task.getResult().isEmpty()) {
                                 for (QueryDocumentSnapshot qds : task.getResult()) {
-                                    FirestoreConnector.getDB().collection("Accounts").document(qds.getId()).update("isDeleted", false).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    FirestoreConnector.getDB().collection("Accounts").document(qds.getId()).update("isActive", true).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             Log.d("CREATE", "Account Added to DB");
@@ -174,7 +174,7 @@ public class FbUpdate implements FirestoreConnector {
                             //create a field "isDeleted" and set it to true
                             if (task.isSuccessful() && !task.getResult().isEmpty()) {
                                 for (QueryDocumentSnapshot qds : task.getResult()) {
-                                    FirestoreConnector.getDB().collection("Accounts").document(qds.getId()).update("isDeleted", false).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    FirestoreConnector.getDB().collection("Accounts").document(qds.getId()).update("isActive", true).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             Log.d("CREATE", "Account Added to DB");
@@ -245,7 +245,7 @@ public class FbUpdate implements FirestoreConnector {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot qds : task.getResult()) {
                         //update the value of the field isDeleted to true to indicate account deletion
-                        FirestoreConnector.getDB().collection("Accounts").document(qds.getId()).update("isDeleted", true).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        FirestoreConnector.getDB().collection("Accounts").document(qds.getId()).update("isActive", false).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
