@@ -250,9 +250,9 @@ public class ManagerName extends AppCompatActivity {
     private void emailMLDInit(){
         final Observer<Boolean> email_obs = new Observer<Boolean>(){
             @Override
-            public void onChanged(@Nullable final Boolean Exists){
-                if(!Exists){
-                    FbQuery.checkRestore(email,restore_success);
+            public void onChanged(@Nullable final Boolean exists){
+                if(!exists){
+                    FbQuery.checkManagerRestore(email,restore_success);
 
                 }
                 else{
@@ -273,8 +273,8 @@ public class ManagerName extends AppCompatActivity {
     private void restoreMLDInit(){
         final Observer<Boolean> restore_obs = new Observer<Boolean>(){
             @Override
-            public void onChanged(@Nullable final Boolean Exists){
-                if(!Exists){
+            public void onChanged(@Nullable final Boolean exists){
+                if(!exists){
 
 
                     if(!ImageSet){

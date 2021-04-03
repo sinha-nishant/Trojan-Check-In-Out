@@ -242,8 +242,8 @@ public class StudentUploadPhoto extends AppCompatActivity {
     private void emailMLDInit(){
         final Observer<Boolean> email_obs = new Observer<Boolean>(){
             @Override
-            public void onChanged(@Nullable final Boolean Exists){
-                if(!Exists){
+            public void onChanged(@Nullable final Boolean exists){
+                if(!exists){
 
                     FbQuery.checkUSCidExists(Long.valueOf(id),id_success);
                 }
@@ -266,9 +266,9 @@ public class StudentUploadPhoto extends AppCompatActivity {
     private void idMLDInit(){
         final Observer<Boolean> id_obs = new Observer<Boolean>(){
             @Override
-            public void onChanged(@Nullable final Boolean Exists){
-                if(!Exists){
-                    FbQuery.checkRestore(email,restore_success);
+            public void onChanged(@Nullable final Boolean exists){
+                if(!exists){
+                    FbQuery.checkStudentRestore(Long.valueOf(id),email,restore_success);
 
                 }
                 else{
@@ -276,7 +276,7 @@ public class StudentUploadPhoto extends AppCompatActivity {
                     //switch page
                     bUploadImage.setEnabled(true);
                     submitBtn.setEnabled(true);
-                    alertDialog.setMessage("This id is already in use");
+                    alertDialog.setMessage("This ID is already in use");
                     alertDialog.show();
                 }
 
@@ -289,8 +289,8 @@ public class StudentUploadPhoto extends AppCompatActivity {
     private void restoreMLDInit(){
         final Observer<Boolean> restore_obs = new Observer<Boolean>(){
             @Override
-            public void onChanged(@Nullable final Boolean Exists){
-                if(!Exists){
+            public void onChanged(@Nullable final Boolean exists){
+                if(!exists){
 
                     if(ImageSet==false){
             CreateAccount.CreateStudent(fName,lName,email,password,Long.valueOf(id),major,create_success);
