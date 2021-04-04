@@ -45,4 +45,9 @@ public class StartPage extends AppCompatActivity {
         //Intent i = new Intent(this, StudentHistory.class);
         startActivity(i);
     }
+
+    public void openRestore(View v) {
+        Intent i = new Intent(this, RestorePage.class);
+        startActivity(i);
+    }
 }

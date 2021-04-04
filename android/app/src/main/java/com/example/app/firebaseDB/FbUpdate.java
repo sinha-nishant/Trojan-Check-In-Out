@@ -7,6 +7,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.app.log_create.CreateAccount;
 import com.example.app.log_create.uploadPhoto;
+import com.example.app.pre_login_UI.LogInPage;
+import com.example.app.pre_login_UI.RestorePage;
 import com.example.app.users.Account;
 import com.example.app.users.StudentAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -330,6 +332,9 @@ public class FbUpdate implements FirestoreConnector {
                     String hashedPW = String.valueOf(task.getResult().getDocuments().get(0).get("password"));
 
                     BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), hashedPW);
+                    //arjun added
+                    final Long uscID = (Long) task.getResult().getDocuments().get(0).get("uscID");
+                    //ended arjun
 
                     // If email and password combination is valid
                     if (result.verified) {
@@ -337,6 +342,14 @@ public class FbUpdate implements FirestoreConnector {
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
+                                // arjun added
+                                if (uscID == null) {
+                                    RestorePage.setId(0L);
+                                }
+                                else{
+                                    RestorePage.setId(uscID);
+                                }
+                                //ended arjun
                                 restored.setValue(task.isSuccessful());
                             }
                         });

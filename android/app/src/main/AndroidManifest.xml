@@ -16,7 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.App">
-        <activity android:name=".building.BuildingStudents"></activity>
+        <activity android:name=".pre_login_UI.RestorePage"></activity>
+        <activity android:name=".building.BuildingStudents" />
         <activity android:name=".services.UrlUploadImage" />
         <activity android:name=".account_UI.ManagerCSV" />
         <activity
