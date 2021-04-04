@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.amplifyframework.AmplifyException;
@@ -49,6 +50,7 @@ public class UrlUploadImage extends AppCompatActivity {
     Boolean isStudent;
     Boolean isCreated;
     String finalUrl;
+    ProgressBar pb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +62,8 @@ public class UrlUploadImage extends AppCompatActivity {
         img= findViewById(R.id.urlImage);
         uploadable=false;
         finalUrl="";
-
+        pb= findViewById(R.id.urlProgress);
+        pb.setVisibility(View.GONE);
         Bundle bundle= getIntent().getExtras();
         if(bundle==null){
             bundle= new Bundle();
@@ -121,10 +124,12 @@ public class UrlUploadImage extends AppCompatActivity {
             @Override
             public void onChanged(@javax.annotation.Nullable final Boolean isSuccess){
                 if(isSuccess){
+                    pb.setVisibility(View.GONE);
                     alertDialog.setMessage("Succeeded in uploading profile picture");
                     alertDialog.show();
                 }
                 else{
+                    pb.setVisibility(View.GONE);
                     alertDialog.setMessage("Error. Could not upload change profile picture");
                     alertDialog.show();
                 }
@@ -156,6 +161,7 @@ public class UrlUploadImage extends AppCompatActivity {
             alertDialog.show();
             return;
         }
+        pb.setVisibility(View.VISIBLE);
         uploadTask task= new uploadTask();
         task.execute();
 
@@ -166,6 +172,7 @@ public class UrlUploadImage extends AppCompatActivity {
     }
 
     public void preview(View v){
+        pb.setVisibility(View.VISIBLE);
         Uri profilepic= Uri.parse(url.getText().toString());
         Glide.with(this)
                 .load(profilepic.toString()).error(Glide.with(this).load(R.drawable.profile_blank)).diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -173,6 +180,7 @@ public class UrlUploadImage extends AppCompatActivity {
                 .listener(new RequestListener<Drawable>() {
                               @Override
                               public boolean onLoadFailed(GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                  pb.setVisibility(View.GONE);
                                   alertDialog.setMessage("Url is not valid");
                                   alertDialog.show();
                                   uploadable=false;
@@ -181,6 +189,7 @@ public class UrlUploadImage extends AppCompatActivity {
                               }
                               @Override
                               public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                  pb.setVisibility(View.GONE);
                                   uploadable=true;
                                   finalUrl=url.getText().toString();
                                   Log.d("uri",uploadable.toString());
@@ -209,6 +218,7 @@ public class UrlUploadImage extends AppCompatActivity {
                 uploadPhoto.update(stream,str_email,upload_success);
                 Log.d("async","in background task");
             }catch (IOException e){
+                pb.setVisibility(View.GONE);
                 alertDialog.setMessage("Failed to resolve url");
                 alertDialog.show();
                 e.printStackTrace();
