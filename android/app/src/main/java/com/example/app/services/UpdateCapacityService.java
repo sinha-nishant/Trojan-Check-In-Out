@@ -39,4 +39,7 @@ public class UpdateCapacityService {
         buildingsMLD.observe(owner,buildingsObserver);
         FbQuery.getAllBuildingsMap(buildingsMLD);
     }
+    public static void updateCapacity(String buildingName, Integer newCapacity, MutableLiveData<Boolean> updateMLD){
+        FbUpdate.updateCapacity(buildingName,updateMLD,newCapacity);
+    }
 }

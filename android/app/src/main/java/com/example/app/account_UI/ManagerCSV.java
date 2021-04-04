@@ -24,9 +24,7 @@ import com.example.app.firebaseDB.FbQuery;
 import com.example.app.firebaseDB.FbUpdate;
 import com.example.app.services.CheckInOut;
 import com.example.app.services.UpdateCapacityService;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
-import com.opencsv.exceptions.CsvException;
+
 
 import java.io.BufferedReader;
 import java.io.File;

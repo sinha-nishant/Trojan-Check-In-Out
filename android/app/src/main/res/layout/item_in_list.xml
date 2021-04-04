@@ -13,6 +13,7 @@
     app:cardCornerRadius="15dp"
 >
 
+
     <LinearLayout
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
@@ -20,6 +21,20 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
     >
+
+        <Button
+            android:id="@+id/menu_button"
+            android:layout_width="45dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:backgroundTint="@color/white"
+            android:text="&#8942;"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:iconTint="#FFFFFF"
+            app:rippleColor="#FFFFFF"
+            style="?android:attr/borderlessButtonStyle"/>
+
 
         <ImageView
             android:id="@+id/qrImageView"

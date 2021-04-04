@@ -63,7 +63,7 @@ public class BuildingsOccupancyListTest {
 
         for(int i=0;i<post_value.size();i++){
             String occupancymessage = "Occupancy: "+post_value.get(i).getOccupancy().toString()+"/"+post_value.get(i).getCapacity();
-            onView(ViewMatchers.withId(R.id.recyclerList))
+            onView(ViewMatchers.withId(R.id.studentRView))
                     .perform(RecyclerViewActions
                             .scrollToPosition(i))
                     .check(matches(hasDescendant(allOf(withText(post_value.get(i).getName()), hasSibling(withText(occupancymessage))))));

@@ -80,7 +80,7 @@ public class BuildingUpdateCheckInOutTest {
         Integer old_occ = post_value.get(i).getOccupancy();
         //scroll to rand building
         String occupancymessage = "Occupancy: "+(old_occ)+"/"+post_value.get(i).getCapacity();
-        onView(ViewMatchers.withId(R.id.recyclerList))
+        onView(ViewMatchers.withId(R.id.studentRView))
                 .perform(RecyclerViewActions
                         .scrollToPosition(i))
                 .check(matches(hasDescendant(allOf(withText(post_value.get(i).getName()), hasSibling(withText(occupancymessage))))));
@@ -101,7 +101,7 @@ public class BuildingUpdateCheckInOutTest {
         Thread.sleep(5000);
         //make sure that the view for the manager shows that the building checked into has increased occupancy by 1
         occupancymessage = "Occupancy: "+(old_occ+1)+"/"+post_value.get(i).getCapacity();
-        onView(ViewMatchers.withId(R.id.recyclerList))
+        onView(ViewMatchers.withId(R.id.studentRView))
                 .perform(RecyclerViewActions
                         .scrollToPosition(i))
                 .check(matches(hasDescendant(allOf(withText(post_value.get(i).getName()), hasSibling(withText(occupancymessage))))));
@@ -126,7 +126,7 @@ public class BuildingUpdateCheckInOutTest {
 
         //make sure that the view for the manager shows that the building checked out has decreased occupancy by 1
         occupancymessage = "Occupancy: "+(old_occ)+"/"+post_value.get(i).getCapacity();
-        onView(ViewMatchers.withId(R.id.recyclerList))
+        onView(ViewMatchers.withId(R.id.studentRView))
                 .perform(RecyclerViewActions
                         .scrollToPosition(i))
                 .check(matches(hasDescendant(allOf(withText(post_value.get(i).getName()), hasSibling(withText(occupancymessage))))));
