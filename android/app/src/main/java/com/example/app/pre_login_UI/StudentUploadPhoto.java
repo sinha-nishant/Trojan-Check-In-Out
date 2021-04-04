@@ -7,7 +7,9 @@ import androidx.lifecycle.Observer;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,14 +22,24 @@ import com.amplifyframework.AmplifyException;
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.app.R;
+import com.example.app.UrlUploadImage;
 import com.example.app.account_UI.StudentProfile;
 import com.example.app.firebaseDB.FbQuery;
 import com.example.app.log_create.CreateAccount;
 import com.example.app.log_create.LogInOut;
+import com.example.app.log_create.uploadPhoto;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
 import javax.annotation.Nullable;
 
@@ -40,11 +52,12 @@ public class StudentUploadPhoto extends AppCompatActivity {
     ProgressBar studentProgress;
     AlertDialog alertDialog;
     Uri selectedImage;
-    Boolean ImageSet=false;
+    Integer ImageSet=0; //0 not set, 1 set by local imaage, 2 set by url
     private final MutableLiveData<Boolean> create_success = new MutableLiveData<>();
     private final MutableLiveData<Boolean> email_success = new MutableLiveData<>();
     private final MutableLiveData<Boolean> id_success = new MutableLiveData<>();
     private final MutableLiveData<Boolean> restore_success = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> upload_success = new MutableLiveData<>();
 
     int SELECT_PICTURE = 200;
 
@@ -66,6 +79,7 @@ public class StudentUploadPhoto extends AppCompatActivity {
         emailMLDInit();
         idMLDInit();
         restoreMLDInit();
+        uploadMLDInit();
 
 
         //To Backend: What data y'all get:
@@ -77,6 +91,15 @@ public class StudentUploadPhoto extends AppCompatActivity {
         lName = bundle.getString("lName");
         id = bundle.getString("id");
         major = bundle.getString("major");
+
+        if(bundle.containsKey("url")){
+            Log.d("uriReturned", bundle.getString("url"));
+            selectedImage=Uri.parse(bundle.getString("url"));
+            Glide.with(this)
+                    .load(selectedImage.toString()).error(Glide.with(this).load(R.drawable.profile_blank)).diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true).into(uploadImage);
+            ImageSet = 2;
+        }
 
 
         bUploadImage = (Button)findViewById(R.id.uploadImageButton);
@@ -123,7 +146,7 @@ public class StudentUploadPhoto extends AppCompatActivity {
                 if (null != selectedImage) {
                     // update the preview image in the layout
                     uploadImage.setImageURI(selectedImage);
-                    ImageSet = true;
+                    ImageSet = 1;
 
 
                 }
@@ -192,6 +215,10 @@ public class StudentUploadPhoto extends AppCompatActivity {
                         }
                         if(restore_success.getValue()){
                             //Todo redirect to restore page
+                            openSignUp();
+                            return;
+                        }
+                        if(upload_success.getValue()!=null && !upload_success.getValue()){
                             openSignUp();
                             return;
                         }
@@ -292,12 +319,13 @@ public class StudentUploadPhoto extends AppCompatActivity {
             public void onChanged(@Nullable final Boolean exists){
                 if(!exists){
 
-                    if(ImageSet==false){
-            CreateAccount.CreateStudent(fName,lName,email,password,Long.valueOf(id),major,create_success);
+                    if(ImageSet==0){
+            CreateAccount.CreateStudent(fName,lName,email,password,Long.valueOf(id),major,create_success,false);
                         return;
                     }
-
+                    if(ImageSet==1){
                     String uri =selectedImage.toString();
+                    Log.d("uploadUri", uri);
                     InputStream exampleInputStream=null;
 
 
@@ -314,7 +342,16 @@ public class StudentUploadPhoto extends AppCompatActivity {
                     } catch (FileNotFoundException e) {
                         Log.i("upload", "error in uri parsing");
                     }
-        CreateAccount.CreateStudent(fName, lName, email,password,exampleInputStream,Long.valueOf(id),major,create_success);
+                    if(exampleInputStream==null){
+                        Log.d("uploadUri","stream is null");
+                    }
+                    CreateAccount.CreateStudent(fName, lName, email,password,exampleInputStream,Long.valueOf(id),major,create_success);
+                    }
+                    if(ImageSet==2){
+                        uploadTask task= new uploadTask();
+                        task.execute();
+                    }
+
                 }
                 else{
                     studentProgress.setVisibility(View.GONE);
@@ -329,5 +366,62 @@ public class StudentUploadPhoto extends AppCompatActivity {
         };
         restore_success.observe(this, restore_obs);
     }
+
+    private void uploadMLDInit(){
+        final Observer<Boolean> upload_obs = new Observer<Boolean>(){
+            @Override
+            public void onChanged(@Nullable final Boolean isSuccess){
+                if(isSuccess){
+
+//                    FbQuery.checkUSCidExists(Long.valueOf(id),id_success);
+                    CreateAccount.CreateStudent(fName, lName, email,password,Long.valueOf(id),major,create_success,true);
+
+                }
+                else{
+                    studentProgress.setVisibility(View.GONE);
+                    //switch pagebUploadImage.setEnabled(false);
+                    bUploadImage.setEnabled(true);
+                    submitBtn.setEnabled(true);
+                    alertDialog.setMessage("Could not upload image");
+                    alertDialog.show();
+                }
+
+            }
+
+        };
+        upload_success.observe(this, upload_obs);
+    }
+
+    public void url(View v){
+        Intent i = new Intent(this, UrlUploadImage.class);
+        Bundle bundle=getIntent().getExtras();
+        i.putExtras(bundle);
+        startActivity(i);
+
+
+    }
+    class uploadTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            doInBackground();   //your methods
+            return null;
+        }
+
+        protected void doInBackground() {
+            try{
+                URL link= new URL(selectedImage.toString());
+                InputStream stream = link.openStream();
+                uploadPhoto.upload(stream, email, upload_success);
+                Log.d("async","in background task for student upload");
+            }catch (IOException e){
+                upload_success.setValue(false);
+            }
+
+
+        }
+    }
+
+
 }
 

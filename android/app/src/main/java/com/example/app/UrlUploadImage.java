@@ -27,8 +27,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.example.app.account_UI.ManagerProfile;
 import com.example.app.account_UI.StudentProfile;
 import com.example.app.log_create.uploadPhoto;
+import com.example.app.pre_login_UI.ManagerName;
 import com.example.app.pre_login_UI.StudentUploadPhoto;
 
 
@@ -64,7 +66,7 @@ public class UrlUploadImage extends AppCompatActivity {
             bundle= new Bundle();
         }
 
-//        str_email=bundle.getString("email");
+        str_email=bundle.getString("email");
         if(!bundle.containsKey("id")){
             isStudent=false;
         }
@@ -234,7 +236,7 @@ public class UrlUploadImage extends AppCompatActivity {
     }
 
     public void openManagerSubmit() {
-        Intent i = new Intent(this, ManagerProfile.class);
+        Intent i = new Intent(this, ManagerName.class);
         Bundle bundle= getIntent().getExtras();
         bundle.putString("url", finalUrl);
         i.putExtras(bundle);

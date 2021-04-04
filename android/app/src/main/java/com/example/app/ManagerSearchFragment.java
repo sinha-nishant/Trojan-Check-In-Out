@@ -10,10 +10,10 @@ import android.view.ViewGroup;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ManagerSearch#newInstance} factory method to
+ * Use the {@link ManagerSearchFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ManagerSearch extends Fragment {
+public class ManagerSearchFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +24,7 @@ public class ManagerSearch extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public ManagerSearch() {
+    public ManagerSearchFragment() {
         // Required empty public constructor
     }
 
@@ -37,8 +37,8 @@ public class ManagerSearch extends Fragment {
      * @return A new instance of fragment ManagerSearch.
      */
     // TODO: Rename and change types and number of parameters
-    public static ManagerSearch newInstance(String param1, String param2) {
-        ManagerSearch fragment = new ManagerSearch();
+    public static ManagerSearchFragment newInstance(String param1, String param2) {
+        ManagerSearchFragment fragment = new ManagerSearchFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

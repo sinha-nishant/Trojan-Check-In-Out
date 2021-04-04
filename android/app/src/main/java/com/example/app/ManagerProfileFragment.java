@@ -1,48 +1,19 @@
 package com.example.app;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-
-import com.amplifyframework.AmplifyException;
-import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
-import com.amplifyframework.core.Amplify;
-import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.app.building.BuildingsOccupancyList;
-import com.example.app.firebaseDB.FbQuery;
-import com.example.app.firebaseDB.FbUpdate;
-import com.example.app.log_create.LogInOut;
-import com.example.app.log_create.uploadPhoto;
-import com.example.app.pre_login_UI.StartPage;
-import com.example.app.users.Account;
-
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ManagerProfile#newInstance} factory method to
+ * Use the {@link ManagerProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ManagerProfile extends Fragment {
+public class ManagerProfileFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -53,7 +24,7 @@ public class ManagerProfile extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public ManagerProfile() {
+    public ManagerProfileFragment() {
         // Required empty public constructor
     }
 
@@ -66,8 +37,8 @@ public class ManagerProfile extends Fragment {
      * @return A new instance of fragment ManagerProfile.
      */
     // TODO: Rename and change types and number of parameters
-    public static ManagerProfile newInstance(String param1, String param2) {
-        ManagerProfile fragment = new ManagerProfile();
+    public static ManagerProfileFragment newInstance(String param1, String param2) {
+        ManagerProfileFragment fragment = new ManagerProfileFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

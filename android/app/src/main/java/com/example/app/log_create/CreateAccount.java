@@ -18,21 +18,33 @@ public class CreateAccount {
 
     }
 
-    public static void CreateManager(String firstName, String lastName, String email, String pw, MutableLiveData<Boolean> success){
+    public static void CreateManager(String firstName, String lastName, String email, String pw, MutableLiveData<Boolean> success, Boolean useUrl){
         Log.i("CreateAccount","in create account");
 
         String hashedPw = BCrypt.withDefaults().hashToString(12, pw.toCharArray());
-        Account a= new Account(firstName,lastName,email,hashedPw,true);
+        Account a;
+        if(useUrl){
+            a= new Account(firstName,lastName,email,hashedPw,AWSLink(email),true);
+        }
+        else{
+            a= new Account(firstName,lastName,email,hashedPw,true);
+        }
         FbUpdate.createAccount(a,success);
 
 
     }
 
-    public static void CreateStudent(String firstName, String lastName, String email, String pw,Long id, String major,MutableLiveData<Boolean> success){
+    public static void CreateStudent(String firstName, String lastName, String email, String pw,Long id, String major,MutableLiveData<Boolean> success, Boolean useUrl){
         Log.i("CreateAccount","in create account");
 
         String hashedPw = BCrypt.withDefaults().hashToString(12, pw.toCharArray());
-        Account a = new StudentAccount(firstName,lastName,email,hashedPw,id,major,false);
+        Account a;
+        if(useUrl){
+            a = new StudentAccount(firstName,lastName,email,hashedPw,AWSLink(email),id,major,false);
+        }
+        else{
+            a = new StudentAccount(firstName,lastName,email,hashedPw,id,major,false);
+        }
         FbUpdate.createAccount(a,success);
 
     }

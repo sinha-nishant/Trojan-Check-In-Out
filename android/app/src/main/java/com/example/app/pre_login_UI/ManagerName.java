@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,14 +22,20 @@ import com.amplifyframework.AmplifyException;
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.app.UrlUploadImage;
 import com.example.app.account_UI.ManagerProfile;
 import com.example.app.R;
 import com.example.app.firebaseDB.FbQuery;
 import com.example.app.log_create.CreateAccount;
 import com.example.app.log_create.LogInOut;
+import com.example.app.log_create.uploadPhoto;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
 import javax.annotation.Nullable;
 
@@ -42,13 +49,14 @@ public class ManagerName extends AppCompatActivity {
     int SELECT_PICTURE = 200;
     ImageView img;
     Uri selectedImage;
-    Boolean ImageSet=false;
+    Integer ImageSet=0;//0 not set, 1 set by local imaage, 2 set by url
     String email,password;
     ProgressBar pb;
     AlertDialog alertDialog;
     private final MutableLiveData<Boolean> create_success = new MutableLiveData<>();
     private final MutableLiveData<Boolean> email_success = new MutableLiveData<>();
     private final MutableLiveData<Boolean> restore_success = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> upload_success = new MutableLiveData<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +83,15 @@ public class ManagerName extends AppCompatActivity {
         createMLDInit();
         emailMLDInit();
         restoreMLDInit();
+        uploadMLDInit();
+        if(bundle.containsKey("url")){
+            Log.d("uriReturned", bundle.getString("url"));
+            selectedImage=Uri.parse(bundle.getString("url"));
+            Glide.with(this)
+                    .load(selectedImage.toString()).error(Glide.with(this).load(R.drawable.profile_blank)).diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true).into(img);
+            ImageSet = 2;
+        }
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,7 +169,7 @@ public class ManagerName extends AppCompatActivity {
                 if (null != selectedImage) {
                     // update the preview image in the layout
                     img.setImageURI(selectedImage);
-                    ImageSet = true;
+                    ImageSet = 1;
 
 
                 }
@@ -163,7 +180,7 @@ public class ManagerName extends AppCompatActivity {
 
     public void submit(){
         profileButton.setEnabled(false);
-        profileButton.setEnabled(false);
+        submitButton.setEnabled(false);
         FbQuery.checkEmailExists(email,email_success);
 
     }
@@ -181,7 +198,7 @@ public class ManagerName extends AppCompatActivity {
 
                    LogInOut.SaveData(ManagerName.this,email,0L);
                    profileButton.setEnabled(true);
-                   profileButton.setEnabled(true);
+                   submitButton.setEnabled(true);
                    alertDialog.setMessage("Succeeded in creating your account");
                    alertDialog.show();
                }
@@ -189,7 +206,7 @@ public class ManagerName extends AppCompatActivity {
                    pb.setVisibility(View.GONE);
                    //switch page
                    profileButton.setEnabled(true);
-                   profileButton.setEnabled(true);
+                   submitButton.setEnabled(true);
                    alertDialog.setMessage("Could not successfully create your account");
                    alertDialog.show();
                }
@@ -200,6 +217,30 @@ public class ManagerName extends AppCompatActivity {
        create_success.observe(this, create_obs);
    }
 
+    private void uploadMLDInit(){
+        final Observer<Boolean> upload_obs = new Observer<Boolean>(){
+            @Override
+            public void onChanged(@Nullable final Boolean isSuccess){
+                if(isSuccess){
+
+//                    FbQuery.checkUSCidExists(Long.valueOf(id),id_success);
+                    CreateAccount.CreateManager(fName, lName, email,password,create_success,true);
+
+                }
+                else{
+                    pb.setVisibility(View.GONE);
+                    //switch pagebUploadImage.setEnabled(false);
+                    profileButton.setEnabled(true);
+                    submitButton.setEnabled(true);
+                    alertDialog.setMessage("Could not upload image");
+                    alertDialog.show();
+                }
+
+            }
+
+        };
+        upload_success.observe(this, upload_obs);
+    }
 
     private void DialogInit(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -215,6 +256,10 @@ public class ManagerName extends AppCompatActivity {
                                         int which)
                     {
                         if(email_success.getValue()){
+                            openManagerSignUp();
+                            return;
+                        }
+                        if(upload_success.getValue()!=null && !upload_success.getValue()){
                             openManagerSignUp();
                             return;
                         }
@@ -258,7 +303,7 @@ public class ManagerName extends AppCompatActivity {
                 else{
                     pb.setVisibility(View.GONE);
                     profileButton.setEnabled(true);
-                    profileButton.setEnabled(true);
+                    submitButton.setEnabled(true);
                     //switch page
                     alertDialog.setMessage("This email is already in use");
                     alertDialog.show();
@@ -277,36 +322,44 @@ public class ManagerName extends AppCompatActivity {
                 if(!exists){
 
 
-                    if(!ImageSet){
+                    if(ImageSet==0){
 
-            CreateAccount.CreateManager(fName,lName,email,password,create_success);
+                        CreateAccount.CreateManager(fName,lName,email,password,create_success,false);
                         return;
                     }
 
-                    String uri =selectedImage.toString();
-                    InputStream exampleInputStream=null;
+                    if(ImageSet==1){
+                        String uri =selectedImage.toString();
+                        InputStream exampleInputStream=null;
 
 
-                    try {
-                        exampleInputStream = getContentResolver().openInputStream(Uri.parse(uri));
-                        if(exampleInputStream==null){
-                            Log.i("upload", "stream is null");
+                        try {
+                            exampleInputStream = getContentResolver().openInputStream(Uri.parse(uri));
+                            if(exampleInputStream==null){
+                                Log.i("upload", "stream is null");
+                            }
+                            else{
+                                Log.i("upload", "stream is valid");
+                            }
+
+
+                        } catch (FileNotFoundException e) {
+                            Log.i("upload", "error in uri parsing");
                         }
-                        else{
-                            Log.i("upload", "stream is valid");
-                        }
-
-
-                    } catch (FileNotFoundException e) {
-                        Log.i("upload", "error in uri parsing");
+                        CreateAccount.CreateManager(fName, lName, email,password,exampleInputStream,create_success);
                     }
-        CreateAccount.CreateManager(fName, lName, email,password,exampleInputStream,create_success);
+                    if(ImageSet==2){
+                        uploadTask task= new uploadTask();
+                        task.execute();
+                    }
+
+
 
                 }
                 else{
                     pb.setVisibility(View.GONE);
                     profileButton.setEnabled(true);
-                    profileButton.setEnabled(true);
+                    submitButton.setEnabled(true);
                     //switch page
                     alertDialog.setMessage("This account existed before. Please restore");
                     alertDialog.show();
@@ -318,5 +371,34 @@ public class ManagerName extends AppCompatActivity {
         restore_success.observe(this, restore_obs);
     }
 
+    class uploadTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            doInBackground();   //your methods
+            return null;
+        }
+
+        protected void doInBackground() {
+            try{
+                URL link= new URL(selectedImage.toString());
+                InputStream stream = link.openStream();
+                uploadPhoto.upload(stream, email, upload_success);
+                Log.d("async","in background task for student upload");
+            }catch (IOException e){
+                upload_success.setValue(false);
+            }
+
+
+        }
+    }
+
+    public void url(View v){
+        Intent i = new Intent(this, UrlUploadImage.class);
+        Bundle bundle=getIntent().getExtras();
+        i.putExtras(bundle);
+        startActivity(i);
+
+    }
 
 }

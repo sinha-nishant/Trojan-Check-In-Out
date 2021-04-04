@@ -11,12 +11,12 @@
         tools:layout="@layout/fragment_manager_home2" />
     <fragment
         android:id="@+id/managerProfile2"
-        android:name="com.example.app.ManagerProfile"
+        android:name="com.example.app.ManagerProfileFragment"
         android:label="fragment_manager_profile"
         tools:layout="@layout/fragment_manager_profile" />
     <fragment
         android:id="@+id/managerSearch2"
-        android:name="com.example.app.ManagerSearch"
+        android:name="com.example.app.ManagerSearchFragment"
         android:label="fragment_manager_search2"
         tools:layout="@layout/fragment_manager_search2" />
 </navigation>

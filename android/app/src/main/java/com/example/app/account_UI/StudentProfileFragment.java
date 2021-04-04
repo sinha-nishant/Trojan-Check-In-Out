@@ -29,6 +29,7 @@ import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.app.R;
+import com.example.app.UrlUploadImage;
 import com.example.app.firebaseDB.FbQuery;
 import com.example.app.firebaseDB.FbUpdate;
 import com.example.app.log_create.uploadPhoto;
@@ -43,13 +44,14 @@ import java.io.InputStream;
  * Use the {@link StudentProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class StudentProfileFragment extends Fragment {
+public class StudentProfileFragment extends Fragment implements View.OnClickListener{
 
     private String str_name, str_email, str_id, str_major;
     private TextView name, building_name;
     private Uri profilepic;
     private AlertDialog alertDialog;
     private ProgressBar pb;
+    Button  urlUploadBtn;
     ImageView img;
     Button uploadButton;
     MutableLiveData<StudentAccount> student= new MutableLiveData<>();
@@ -102,6 +104,7 @@ public class StudentProfileFragment extends Fragment {
         AmplifyInit();
         pb= (ProgressBar) getActivity().findViewById(R.id.progressBar6);
         building_name = (TextView) getActivity().findViewById(R.id.textViewCurrBuilding);
+//        urlUploadBtn= getActivity().findViewById(R.id.urlStudentProfile);
         MutableStudent();
 
         DialogInit();
@@ -112,7 +115,12 @@ public class StudentProfileFragment extends Fragment {
         Long id = sp.getLong("uscid",0L);
         Log.d("uscID", "sp id: " + id);
         FbQuery.getStudent(id,student);
-
+//        urlUploadBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                url();
+//            }
+//        });
 
         //END BACKEND
     }
@@ -122,7 +130,19 @@ public class StudentProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         Log.i("Views","in onCreatedView");
-        return inflater.inflate(R.layout.fragment_student_profile, container, false);
+//        urlUploadBtn= getActivity().findViewById(R.id.urlStudentProfile);
+//        urlUploadBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                url();
+//            }
+//        });
+        View view=inflater.inflate(R.layout.fragment_student_profile, container, false);
+        urlUploadBtn = (Button) view.findViewById(R.id.urlStudentProfile);
+        urlUploadBtn.setOnClickListener(this);
+//        return inflater.inflate(R.layout.fragment_student_profile, container, false);
+        return view;
+
 
     }
 
@@ -384,5 +404,38 @@ public class StudentProfileFragment extends Fragment {
         Firebase_success.observe(this, obs3);
 
     }
+
+    public void url(){
+        Intent i = new Intent(getActivity(), UrlUploadImage.class);
+        Bundle bundle=new Bundle();
+        bundle.putString("email",str_email);
+        bundle.putString("id",str_id);
+        bundle.putString("created","yes");
+        i.putExtras(bundle);
+        startActivity(i);
+
+
+    }
+    @Override
+    public void onClick(View v) {
+        //do what you want to do when button is clicked
+//        switch (v.getId()) {
+//            case R.id.textView_help:
+//                switchFragment(HelpFragment.TAG);
+//                break;
+//            case R.id.textView_settings:
+//                switchFragment(SettingsFragment.TAG);
+//                break;
+//        }
+        Intent i = new Intent(getActivity(), UrlUploadImage.class);
+        Bundle bundle=new Bundle();
+        bundle.putString("email",str_email);
+        bundle.putString("id",str_id);
+        bundle.putString("created","yes");
+        i.putExtras(bundle);
+        startActivity(i);
+
+    }
+
 
 }

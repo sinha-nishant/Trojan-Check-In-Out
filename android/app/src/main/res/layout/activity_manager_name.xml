@@ -80,4 +80,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nameButtonM" />
 
+    <Button
+        android:id="@+id/urlupload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="url"
+        android:text="Url Image Upload"
+        app:layout_constraintBottom_toTopOf="@+id/choosePic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/managerLastName" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

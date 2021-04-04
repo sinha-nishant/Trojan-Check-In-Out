@@ -25,6 +25,7 @@ import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.app.R;
+import com.example.app.UrlUploadImage;
 import com.example.app.building.BuildingsOccupancyList;
 import com.example.app.firebaseDB.FbQuery;
 import com.example.app.firebaseDB.FbUpdate;
@@ -52,7 +53,7 @@ public class ManagerProfile extends AppCompatActivity {
     int SELECT_PICTURE = 200;
     ProgressBar pb;
     AlertDialog deleteDialog;
-    Button photoBtn, deleteBtn, signOutBtn, csvBtn, viewBuildingBtn;
+    Button photoBtn, deleteBtn, signOutBtn, csvBtn, viewBuildingBtn, urlBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +75,7 @@ public class ManagerProfile extends AppCompatActivity {
         signOutBtn= findViewById(R.id.button16);
         csvBtn= findViewById(R.id.csvBtn);
         viewBuildingBtn= findViewById(R.id.button17);
-
+        urlBtn=findViewById(R.id.urlManagerProfile);
 
 //        SharedPreferences sp=  activity.getSharedPreferences("sharedPrefs",activity.MODE_PRIVATE);
 //
@@ -413,5 +414,15 @@ public class ManagerProfile extends AppCompatActivity {
         csvBtn.setEnabled(true);
         viewBuildingBtn.setEnabled(true);
     }
+
+    public void url(View v){
+        Intent i = new Intent(this, UrlUploadImage.class);
+        Bundle bundle=new Bundle();
+        bundle.putString("email",email);
+        bundle.putString("created","yes");
+        i.putExtras(bundle);
+        startActivity(i);
+    }
+
 
 }
