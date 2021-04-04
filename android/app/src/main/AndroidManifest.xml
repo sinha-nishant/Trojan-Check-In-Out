@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.App">
         <activity android:name=".building.BuildingStudents"></activity>
-        <activity android:name=".UrlUploadImage" />
+        <activity android:name=".services.UrlUploadImage" />
         <activity android:name=".account_UI.ManagerCSV" />
         <activity
             android:name=".account_UI.ManagerHome"

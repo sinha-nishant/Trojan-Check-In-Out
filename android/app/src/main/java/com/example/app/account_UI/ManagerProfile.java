@@ -25,7 +25,7 @@ import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.app.R;
-import com.example.app.UrlUploadImage;
+import com.example.app.services.UrlUploadImage;
 import com.example.app.building.BuildingsOccupancyList;
 import com.example.app.firebaseDB.FbQuery;
 import com.example.app.firebaseDB.FbUpdate;

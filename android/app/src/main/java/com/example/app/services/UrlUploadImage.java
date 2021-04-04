@@ -1,4 +1,4 @@
-package com.example.app;
+package com.example.app.services;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
@@ -28,6 +28,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.example.app.R;
 import com.example.app.account_UI.ManagerProfile;
 import com.example.app.account_UI.StudentProfile;
 import com.example.app.log_create.uploadPhoto;
