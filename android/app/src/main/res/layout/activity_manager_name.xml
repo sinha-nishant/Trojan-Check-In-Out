@@ -86,6 +86,8 @@
         android:layout_height="wrap_content"
         android:onClick="url"
         android:text="Url Image Upload"
+        android:backgroundTint="#980909"
+        android:textColor="#FFC107"
         app:layout_constraintBottom_toTopOf="@+id/choosePic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

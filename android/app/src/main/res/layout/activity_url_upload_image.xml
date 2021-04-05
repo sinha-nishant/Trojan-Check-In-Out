@@ -26,6 +26,8 @@
         android:layout_marginBottom="136dp"
         android:onClick="back"
         android:text="back"
+        android:backgroundTint="#980909"
+        android:textColor="#FFC107"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -36,6 +38,8 @@
         android:layout_marginBottom="136dp"
         android:onClick="update"
         android:text="Update"
+        android:backgroundTint="#980909"
+        android:textColor="#FFC107"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/preview"
         app:layout_constraintStart_toEndOf="@+id/back" />
@@ -48,6 +52,8 @@
         android:layout_marginBottom="136dp"
         android:onClick="preview"
         android:text="Preview"
+        android:backgroundTint="#980909"
+        android:textColor="#FFC107"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

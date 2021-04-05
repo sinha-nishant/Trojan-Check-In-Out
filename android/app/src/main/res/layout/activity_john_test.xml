@@ -51,6 +51,8 @@
         android:layout_height="wrap_content"
         android:onClick="openRestore"
         android:text="Go to Restore"
+        android:backgroundTint="#980909"
+        android:textColor="#FFC107"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
