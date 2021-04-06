@@ -490,7 +490,8 @@ public class FbQuery implements FirestoreConnector {
      */
     public static void search(String firstName, String lastName, MutableLiveData<List<StudentAccount>> studentsMLD) {
         //retrieve all the accounts
-        FirestoreConnector.getDB().collection("Accounts").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        FirestoreConnector.getDB().collection("Accounts").
+    get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -499,7 +500,6 @@ public class FbQuery implements FirestoreConnector {
                         for (DocumentSnapshot ds : task.getResult().getDocuments()) {
                             String fName = ds.getString("firstName");
                             String lName = ds.getString("lastName");
-                            Log.d("Search","FNAME: "+fName);
                             if (fName != null) {
                                 fName.toLowerCase();
                             }

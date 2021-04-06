@@ -41,12 +41,13 @@ public class FbSearchByNameTest {
                     fail("Student accounts are null");
                 }
                 for (StudentAccount studentAccount : studentAccountList) {
-                    // hardcoded from FbCreateStudentAccountTest
-                    if (!(studentAccount.getFirstName().contains(fname_substring)
-                            || studentAccount.getLastName().contains(lname_substring))) {
+                    // hardcoded to test
+                    //Log.d("SEARCH_Test",studentAccount.getFirstName() + ": " + studentAccount.getLastName());
+                    if (!(studentAccount.getFirstName().toLowerCase().contains(fname_substring)
+                            || studentAccount.getLastName().toLowerCase().contains(lname_substring))) {
                         fail("Something doesn't look quite right");
                     }
-                    Log.d("SEARCH_Test",studentAccount.getFirstName() + ": " + studentAccount.getLastName());
+
                 }
 
                 assert (true);
