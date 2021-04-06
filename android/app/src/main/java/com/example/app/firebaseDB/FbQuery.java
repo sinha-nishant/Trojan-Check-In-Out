@@ -42,13 +42,12 @@ public class FbQuery implements FirestoreConnector {
                 if (task.isSuccessful()) {
                     if (!task.getResult().isEmpty()) {
                         DocumentSnapshot ds = task.getResult().getDocuments().get(0);
-                            if (ds.getBoolean("isActive")) {
-                                Log.d("EXIST", "USC ID " + uscID + " exists!");
-                                exists.setValue(true);
-                            } else {
-                                exists.setValue(false);
-                            }
-
+                        if (ds.getBoolean("isActive")) {
+                            Log.d("EXIST", "USC ID " + uscID + " exists!");
+                            exists.setValue(true);
+                        } else {
+                            exists.setValue(false);
+                        }
 
 
                     } else {
@@ -77,10 +76,10 @@ public class FbQuery implements FirestoreConnector {
                 if (task.isSuccessful()) {
                     if (!task.getResult().isEmpty()) {
                         DocumentSnapshot ds = task.getResult().getDocuments().get(0);
-                            if (!ds.getBoolean("isActive")) {
-                                Log.d("RESTORE", "Account exists");
-                                exists.setValue(true);
-                            }
+                        if (!ds.getBoolean("isActive")) {
+                            Log.d("RESTORE", "Account exists");
+                            exists.setValue(true);
+                        }
 
                     } else {
                         Log.d("RESTORE", "Account does not exist");
@@ -97,7 +96,7 @@ public class FbQuery implements FirestoreConnector {
      * Checks whether given usc ID exists among the deleted accounts
      *
      * @param uscID  usc ID of the student
-     * @param email email of the student
+     * @param email  email of the student
      * @param exists boolean representing whether the account exists or not:
      *               false if doesn't exist
      *               true if exists
@@ -111,10 +110,10 @@ public class FbQuery implements FirestoreConnector {
                 if (task.isSuccessful()) {
                     if (!task.getResult().isEmpty()) {
                         DocumentSnapshot ds = task.getResult().getDocuments().get(0);
-                            if (!ds.getBoolean("isActive")) {
-                                Log.d("RESTORE", "Account exists");
-                                exists.setValue(true);
-                            }
+                        if (!ds.getBoolean("isActive")) {
+                            Log.d("RESTORE", "Account exists");
+                            exists.setValue(true);
+                        }
 
                     } else {
                         Log.d("RESTORE", "Account does not exist");
@@ -271,16 +270,13 @@ public class FbQuery implements FirestoreConnector {
                     if (!task.getResult().isEmpty()) {
                         Log.d("abcde", "in success not empty");
                         DocumentSnapshot ds = task.getResult().getDocuments().get(0);
-                            if (ds.getBoolean("isActive")) {
-                                Log.d("EXIST", "Email " + email + " exists!");
-                                exists.setValue(true);
-                            } else {
-                                exists.setValue(false);
-                            }
+                        if (ds.getBoolean("isActive")) {
+                            Log.d("EXIST", "Email " + email + " exists!");
+                            exists.setValue(true);
+                        } else {
+                            exists.setValue(false);
                         }
-
-
-                    else {
+                    } else {
                         Log.d("EXIST", "Email " + email + " does not exist!");
                         exists.setValue(false);
                     }
@@ -406,7 +402,8 @@ public class FbQuery implements FirestoreConnector {
 
     /**
      * Search by major
-     * @param major major of student
+     *
+     * @param major       major of student
      * @param studentsMLD list of students
      */
     public static void search(String major, MutableLiveData<List<StudentAccount>> studentsMLD) {
@@ -416,7 +413,7 @@ public class FbQuery implements FirestoreConnector {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             if (!task.getResult().isEmpty()) {
-                                for (StudentAccount sa: task.getResult().toObjects(StudentAccount.class)) {
+                                for (StudentAccount sa : task.getResult().toObjects(StudentAccount.class)) {
                                     Log.d("MAJOR", sa.toString());
                                 }
                                 studentsMLD.setValue(task.getResult().toObjects(StudentAccount.class));
@@ -439,10 +436,11 @@ public class FbQuery implements FirestoreConnector {
 
     /**
      * Search by building, date, and time
+     *
      * @param buildingName Name of building that's history is desired
-     * @param start Date object indicating start of search range
-     * @param end Date object indicating end of search range
-     * @param studentsMLD List of StudentAccounts
+     * @param start        Date object indicating start of search range
+     * @param end          Date object indicating end of search range
+     * @param studentsMLD  List of StudentAccounts
      */
     public static void search(String buildingName, Date start, Date end, MutableLiveData<List<StudentAccount>> studentsMLD) {
         FirestoreConnector.getDB().collection("Activities")
@@ -452,7 +450,7 @@ public class FbQuery implements FirestoreConnector {
                 if (task.isSuccessful()) {
                     if (!task.getResult().isEmpty()) {
                         List<Long> student_ids = new ArrayList<>();
-                        for (DocumentSnapshot ds: task.getResult().getDocuments()) {
+                        for (DocumentSnapshot ds : task.getResult().getDocuments()) {
                             Date checkInTime = ds.getDate("checkInTime");
                             Date checkOutTime = null;
                             if (ds.get("checkOutTime") != null) {
@@ -463,26 +461,18 @@ public class FbQuery implements FirestoreConnector {
 
                             if (checkInTime.after(start) && checkInTime.before(end)) {
                                 student_ids.add(uscID);
-                            }
-
-                            else if (checkInTime.before(end) && (checkOutTime == null)) {
+                            } else if (checkInTime.before(end) && (checkOutTime == null)) {
                                 student_ids.add(uscID);
-                            }
-
-                            else if (checkInTime.before(start) && checkOutTime.after(start)) {
+                            } else if (checkInTime.before(start) && checkOutTime.after(start)) {
                                 student_ids.add(uscID);
                             }
                         }
 
                         getStudents(student_ids, studentsMLD);
-                    }
-
-                    else {
+                    } else {
                         studentsMLD.setValue(new ArrayList<>());
                     }
-                }
-
-                else {
+                } else {
                     Log.d("DATE", String.valueOf(task.getException()));
                     studentsMLD.setValue(new ArrayList<>());
                 }
@@ -493,8 +483,9 @@ public class FbQuery implements FirestoreConnector {
 
     /**
      * Search by building, date, and time
-     * @param firstName Name of building that's history is desired
-     * @param lastName Date object indicating start of search range
+     *
+     * @param firstName   Name of building that's history is desired
+     * @param lastName    Date object indicating start of search range
      * @param studentsMLD List of StudentAccounts
      */
     public static void search(String firstName, String lastName, MutableLiveData<List<StudentAccount>> studentsMLD) {
@@ -505,24 +496,30 @@ public class FbQuery implements FirestoreConnector {
                 if (task.isSuccessful()) {
                     if (!task.getResult().isEmpty()) {
                         List<Long> student_ids = new ArrayList<>();
-                        for (DocumentSnapshot ds: task.getResult().getDocuments()) {
-                            String fName = ds.getString("firstName").toLowerCase();
-                            String lName = ds.getString("lastName").toLowerCase();
+                        for (DocumentSnapshot ds : task.getResult().getDocuments()) {
+                            String fName = ds.getString("firstName");
+                            String lName = ds.getString("lastName");
+                            Log.d("Search","FNAME: "+fName);
+                            if (fName != null) {
+                                fName.toLowerCase();
+                            }
+                            if (lName != null) {
+                                lName.toLowerCase();
+                            }
                             Long uscID = ds.getLong("uscID");
-                            if(fName.contains(firstName) && lName.contains(lastName)){
-                                student_ids.add(uscID);
+                            if (fName != null && lName != null) {
+                                if (fName.contains(firstName) && lName.contains(lastName)) {
+                                    student_ids.add(uscID);
+                                }
+
                             }
                         }
 
                         getStudents(student_ids, studentsMLD);
-                    }
-
-                    else {
+                    } else {
                         studentsMLD.setValue(new ArrayList<>());
                     }
-                }
-
-                else {
+                } else {
                     Log.d("SEARCH_NAME", String.valueOf(task.getException()));
                     studentsMLD.setValue(new ArrayList<>());
                 }
@@ -533,7 +530,7 @@ public class FbQuery implements FirestoreConnector {
     private static void getStudents(List<Long> student_ids, MutableLiveData<List<StudentAccount>> studentsMLD) {
         List<StudentAccount> students = new ArrayList<>();
         CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
-        for (Long id: student_ids) {
+        for (Long id : student_ids) {
             accounts.whereEqualTo("uscID", id).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -541,16 +538,14 @@ public class FbQuery implements FirestoreConnector {
                         students.add(task.getResult().getDocuments().get(0).toObject(StudentAccount.class));
                         if (students.size() == student_ids.size()) {
 
-                            for (StudentAccount sa: students) {
+                            for (StudentAccount sa : students) {
                                 Log.d("STUDENTS", sa.toString());
                             }
 
                             students.sort(Comparator.comparing(StudentAccount::getLastName));
                             studentsMLD.setValue(students);
                         }
-                    }
-
-                    else {
+                    } else {
                         Log.d("STUDENTS", String.valueOf(task.getException()));
                         studentsMLD.setValue(new ArrayList<>());
                     }

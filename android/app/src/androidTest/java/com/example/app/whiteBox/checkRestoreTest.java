@@ -20,6 +20,7 @@ import static org.junit.Assert.fail;
 public class checkRestoreTest {
     @Rule
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
+
     @Test
     public void checkUsedStudentEmail() {
         Context context = ApplicationProvider.getApplicationContext();
@@ -32,11 +33,11 @@ public class checkRestoreTest {
             @Override
             public void onChanged(Boolean Success) {
 
-                assertEquals(false,Success);
+                assertEquals(false, Success);
             }
         };
         mld.observeForever(email_obs);
-        FbQuery.checkRestore(emailExpected,mld);
+        FbQuery.checkManagerRestore(emailExpected, mld);
 
 
         //To get the test to run add this - Firebase takes time to execute the query and the thread
@@ -47,7 +48,7 @@ public class checkRestoreTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        if(mld.getValue()==null){
+        if (mld.getValue() == null) {
             fail("did not update");
         }
     }
