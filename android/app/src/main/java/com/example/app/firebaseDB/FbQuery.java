@@ -490,6 +490,46 @@ public class FbQuery implements FirestoreConnector {
         });
     }
 
+
+    /**
+     * Search by building, date, and time
+     * @param firstName Name of building that's history is desired
+     * @param lastName Date object indicating start of search range
+     * @param studentsMLD List of StudentAccounts
+     */
+    public static void search(String firstName, String lastName, MutableLiveData<List<StudentAccount>> studentsMLD) {
+        //retrieve all the accounts
+        FirestoreConnector.getDB().collection("Accounts").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    if (!task.getResult().isEmpty()) {
+                        List<Long> student_ids = new ArrayList<>();
+                        for (DocumentSnapshot ds: task.getResult().getDocuments()) {
+                            String fName = ds.getString("firstName");
+                            String lName = ds.getString("lastName");
+                            Long uscID = ds.getLong("uscID");
+                            if(fName.contains(firstName) && lName.contains(lastName)){
+                                student_ids.add(uscID);
+                            }
+                        }
+
+                        getStudents(student_ids, studentsMLD);
+                    }
+
+                    else {
+                        studentsMLD.setValue(new ArrayList<>());
+                    }
+                }
+
+                else {
+                    Log.d("SEARCH_NAME", String.valueOf(task.getException()));
+                    studentsMLD.setValue(new ArrayList<>());
+                }
+            }
+        });
+    }
+
     private static void getStudents(List<Long> student_ids, MutableLiveData<List<StudentAccount>> studentsMLD) {
         List<StudentAccount> students = new ArrayList<>();
         CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
