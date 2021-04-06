@@ -506,8 +506,8 @@ public class FbQuery implements FirestoreConnector {
                     if (!task.getResult().isEmpty()) {
                         List<Long> student_ids = new ArrayList<>();
                         for (DocumentSnapshot ds: task.getResult().getDocuments()) {
-                            String fName = ds.getString("firstName");
-                            String lName = ds.getString("lastName");
+                            String fName = ds.getString("firstName").toLowerCase();
+                            String lName = ds.getString("lastName").toLowerCase();
                             Long uscID = ds.getLong("uscID");
                             if(fName.contains(firstName) && lName.contains(lastName)){
                                 student_ids.add(uscID);
