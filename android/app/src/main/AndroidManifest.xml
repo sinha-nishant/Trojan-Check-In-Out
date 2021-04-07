@@ -16,7 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.App">
-        <activity android:name=".searchMajorResult">
+        <activity android:name=".searchResults">
         </activity>
         <activity android:name=".pre_login_UI.RestorePage"></activity>
         <activity android:name=".building.BuildingStudents" />

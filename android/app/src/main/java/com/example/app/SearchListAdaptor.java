@@ -23,7 +23,7 @@ import com.google.android.material.card.MaterialCardView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MajorListAdaptor extends ArrayAdapter<StudentAccount> {
+public class SearchListAdaptor extends ArrayAdapter<StudentAccount> {
     private final Context mContext;
     private final int mResource;
     private int lastPosition=-1;
@@ -36,7 +36,7 @@ public class MajorListAdaptor extends ArrayAdapter<StudentAccount> {
         ListView history;
     }
 
-    public MajorListAdaptor(Context context, int resource, List<StudentAccount> objects){
+    public SearchListAdaptor(Context context, int resource, List<StudentAccount> objects){
         super(context,resource,objects);
         mContext=context;
         mResource=resource;

@@ -38,6 +38,7 @@ import com.example.app.pre_login_UI.StudentUploadPhoto;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 
@@ -174,6 +175,15 @@ public class UrlUploadImage extends AppCompatActivity {
 
     public void preview(View v){
         pb.setVisibility(View.VISIBLE);
+        try{
+            URL link= new URL(url.getText().toString());
+        } catch (MalformedURLException e) {
+            alertDialog.setMessage("Url is not valid");
+            alertDialog.show();
+            pb.setVisibility(View.GONE);
+            uploadable=false;
+            return;
+        }
         Uri profilepic= Uri.parse(url.getText().toString());
         Glide.with(this)
                 .load(profilepic.toString()).error(Glide.with(this).load(R.drawable.profile_blank)).diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -204,7 +214,9 @@ public class UrlUploadImage extends AppCompatActivity {
 
     }
 
+
     class uploadTask extends AsyncTask<Void, Void, Void> {
+        private Boolean done=true;
 
         @Override
         protected Void doInBackground(Void... arg0) {
@@ -212,18 +224,28 @@ public class UrlUploadImage extends AppCompatActivity {
             return null;
         }
 
+        @Override
+        protected void onPostExecute(Void arg) {
+            if(!done){
+                alertDialog.setMessage("Could not configure image using the url");
+                alertDialog.show();
+            }
+        }
+
+
+
         protected void doInBackground() {
+
             try{
                 URL link= new URL(url.getText().toString());
                 InputStream stream = link.openStream();
-                uploadPhoto.update(stream,str_email,upload_success);
-                Log.d("async","in background task");
-            }catch (IOException e){
-                pb.setVisibility(View.GONE);
-                alertDialog.setMessage("Failed to resolve url");
-                alertDialog.show();
+                uploadPhoto.upload(stream, str_email, upload_success);
+            }catch(Exception e){
+                done =false;
                 e.printStackTrace();
             }
+
+
 
 
         }

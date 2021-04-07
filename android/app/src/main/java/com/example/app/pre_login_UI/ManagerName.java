@@ -371,7 +371,9 @@ public class ManagerName extends AppCompatActivity {
         restore_success.observe(this, restore_obs);
     }
 
+
     class uploadTask extends AsyncTask<Void, Void, Void> {
+        private Boolean done=true;
 
         @Override
         protected Void doInBackground(Void... arg0) {
@@ -379,15 +381,28 @@ public class ManagerName extends AppCompatActivity {
             return null;
         }
 
+        @Override
+        protected void onPostExecute(Void arg) {
+            if(!done){
+                alertDialog.setMessage("Could not configure image using the url");
+                alertDialog.show();
+            }
+        }
+
+
+
         protected void doInBackground() {
+
             try{
                 URL link= new URL(selectedImage.toString());
                 InputStream stream = link.openStream();
                 uploadPhoto.upload(stream, email, upload_success);
-                Log.d("async","in background task for student upload");
-            }catch (IOException e){
-                upload_success.setValue(false);
+            }catch(Exception e){
+                done =false;
+                e.printStackTrace();
             }
+
+
 
 
         }
