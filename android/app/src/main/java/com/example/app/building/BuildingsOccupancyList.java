@@ -1,37 +1,37 @@
  package com.example.app.building;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+ import android.app.AlertDialog;
+ import android.content.DialogInterface;
+ import android.content.Intent;
+ import android.os.Bundle;
+ import android.text.InputType;
+ import android.view.LayoutInflater;
+ import android.view.MenuItem;
+ import android.view.View;
+ import android.view.ViewGroup;
+ import android.widget.Button;
+ import android.widget.EditText;
+ import android.widget.ImageView;
+ import android.widget.PopupMenu;
+ import android.widget.TextView;
+ import android.widget.Toast;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.InputType;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.PopupMenu;
-import android.widget.TextView;
-import android.widget.Toast;
+ import androidx.annotation.NonNull;
+ import androidx.appcompat.app.AppCompatActivity;
+ import androidx.lifecycle.MutableLiveData;
+ import androidx.lifecycle.Observer;
+ import androidx.recyclerview.widget.LinearLayoutManager;
+ import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.app.account_UI.ManagerProfile;
-import com.example.app.R;
-import com.example.app.firebaseDB.FirestoreConnector;
-import com.example.app.services.QRGeneration;
-import com.example.app.services.UpdateCapacityService;
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
+ import com.example.app.R;
+ import com.example.app.account_UI.ManagerProfile;
+ import com.example.app.firebaseDB.FirestoreConnector;
+ import com.example.app.services.QRGeneration;
+ import com.example.app.services.UpdateCapacityService;
+ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+ import com.google.firebase.firestore.FirebaseFirestore;
+ import com.google.firebase.firestore.Query;
 
  public class BuildingsOccupancyList extends AppCompatActivity {
 

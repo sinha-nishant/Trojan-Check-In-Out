@@ -3,11 +3,9 @@ package com.example.app.users;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.app.firebaseDB.FbCheckInOut;
 import com.example.app.firebaseDB.FbUpdate;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class StudentAccount extends Account {

@@ -1,12 +1,9 @@
 package com.example.app.services;
 
-import android.text.BoringLayout;
-
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.app.building.Building;
 import com.example.app.firebaseDB.FbCheckInOut;
-import com.example.app.firebaseDB.FbQuery;
 import com.example.app.users.StudentAccount;
 import com.example.app.users.StudentActivity;
 

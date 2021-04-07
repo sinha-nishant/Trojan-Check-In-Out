@@ -1,6 +1,7 @@
 package com.example.app.log_create;
 
-import android.content.*;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;

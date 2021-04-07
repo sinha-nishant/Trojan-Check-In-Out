@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.app.log_create.CreateAccount;
 import com.example.app.log_create.uploadPhoto;
-import com.example.app.pre_login_UI.LogInPage;
 import com.example.app.pre_login_UI.RestorePage;
 import com.example.app.users.Account;
 import com.example.app.users.StudentAccount;
@@ -16,8 +15,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
@@ -25,7 +22,6 @@ import com.google.firebase.firestore.WriteBatch;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
