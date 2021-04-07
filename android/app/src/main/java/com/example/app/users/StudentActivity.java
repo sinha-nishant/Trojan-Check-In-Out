@@ -34,11 +34,11 @@ public class StudentActivity {
     }
 
     public void setCheckInTime(Date checkInTime) {
-        this.checkInTime = checkInTime; // do we need to edit checkout ?
+        this.checkInTime = checkInTime;
     }
 
     public void setCheckOutTime(Date checkOutTime) {
-        this.checkOutTime = checkOutTime; // do we need to edit checkout ?
+        this.checkOutTime = checkOutTime;
     }
 
     public void setBuildingName(String buildingName) {
@@ -47,12 +47,12 @@ public class StudentActivity {
 
     public String toString()
     {
-        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+        SimpleDateFormat format1 = new SimpleDateFormat("MMM dd, yyyy 'at' hh:mm a z");
         String checkIn = format1.format(this.checkInTime);
         String checkOut = "none";
         if(checkOutTime!=null){
             checkOut = format1.format(this.checkOutTime);
         }
-        return this.buildingName + "\n\tCheck In Time: " + checkIn + "\n\tCheck Out Time: " + checkOut +"\n";
+        return "\n" + this.buildingName + "\n\tCheck-in: " + checkIn + "\n\tCheck-out: " + checkOut +"\n";
     }
 }
