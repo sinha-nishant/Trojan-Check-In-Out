@@ -15,7 +15,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.app.account_UI.ManagerProfile;
+import com.example.app.account_UI.ManagerHome;
 import com.example.app.R;
 import com.example.app.account_UI.StudentProfile;
 import com.example.app.log_create.LogInOut;
@@ -81,7 +81,7 @@ public class  LogInPage extends AppCompatActivity {
     }
 
     public void openProfileManager() {
-        Intent i = new Intent(this, ManagerProfile.class);
+        Intent i = new Intent(this, ManagerHome.class);
         startActivity(i);
 
 

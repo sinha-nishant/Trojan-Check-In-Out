@@ -25,7 +25,7 @@ import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.app.services.UrlUploadImage;
-import com.example.app.account_UI.ManagerProfile;
+import com.example.app.account_UI.ManagerHome;
 import com.example.app.R;
 import com.example.app.firebaseDB.FbQuery;
 import com.example.app.log_create.CreateAccount;
@@ -33,7 +33,6 @@ import com.example.app.log_create.LogInOut;
 import com.example.app.log_create.uploadPhoto;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
@@ -286,7 +285,7 @@ public class ManagerName extends AppCompatActivity {
 
     private void openProfile() {
         //What unique identifier will be used to draw up profile page? Email?
-        Intent i = new Intent(this, ManagerProfile.class);
+        Intent i = new Intent(this, ManagerHome.class);
         startActivity(i);
     }
 

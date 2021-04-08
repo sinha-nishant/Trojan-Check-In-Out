@@ -13,7 +13,7 @@ import androidx.test.filters.LargeTest;
 
 import com.example.app.Credentials;
 import com.example.app.R;
-import com.example.app.account_UI.ManagerProfile;
+import com.example.app.account_UI.ManagerHome;
 
 import org.hamcrest.Matcher;
 import org.junit.After;
@@ -40,8 +40,8 @@ public class ManagerDeleteTest {
 
 
 @Rule
-public ActivityScenarioRule<ManagerProfile> activityRule =
-        new ActivityScenarioRule<>(ManagerProfile.class);
+public ActivityScenarioRule<ManagerHome> activityRule =
+        new ActivityScenarioRule<>(ManagerHome.class);
 
     @Before
     public void setUp() throws InterruptedException {

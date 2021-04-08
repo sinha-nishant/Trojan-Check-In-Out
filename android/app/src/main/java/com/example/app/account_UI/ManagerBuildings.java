@@ -27,13 +27,18 @@ public class ManagerBuildings extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()):
+                switch (item.getItemId()){
+                    case R.id.manager_building:
+                        break;
 
-                case R.id.manager_building:
+                    case R.id.manager_search:
+                        break;
 
-                case R.id.manager_search:
+                    case R.id.manager_home:
+                        break;
+                }
 
-                case R.id.
+
 
 
                 return false;

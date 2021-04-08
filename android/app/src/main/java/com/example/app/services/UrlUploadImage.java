@@ -29,14 +29,13 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.app.R;
-import com.example.app.account_UI.ManagerProfile;
+import com.example.app.account_UI.ManagerHome;
 import com.example.app.account_UI.StudentProfile;
 import com.example.app.log_create.uploadPhoto;
 import com.example.app.pre_login_UI.ManagerName;
 import com.example.app.pre_login_UI.StudentUploadPhoto;
 
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -256,7 +255,7 @@ public class UrlUploadImage extends AppCompatActivity {
         startActivity(i);
     }
     public void openManagerProfile() {
-        Intent i = new Intent(this, ManagerProfile.class);
+        Intent i = new Intent(this, ManagerHome.class);
         startActivity(i);
     }
 

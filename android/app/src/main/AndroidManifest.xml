@@ -25,7 +25,7 @@
         <activity
             android:name=".account_UI.ManagerBuildings"
             android:exported="true" />
-        <activity android:name=".account_UI.ManagerProfile" />
+        <activity android:name=".account_UI.ManagerHome" />
         <activity android:name=".account_UI.StudentHistory" />
         <activity android:name=".account_UI.StudentProfile" />
         <activity android:name=".pre_login_UI.ManagerName" />

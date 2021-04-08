@@ -6,7 +6,7 @@
     <item android:id="@+id/manager_search"
         android:title="Search"
         android:icon="@drawable/ic_baseline_search_24"/>
-    <item android:id="@+id/manager_profile"
+    <item android:id="@+id/manager_home"
         android:title="Home"
         android:icon="@drawable/ic_home"/>
 </menu>

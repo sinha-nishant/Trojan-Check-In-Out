@@ -15,7 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.app.R;
-import com.example.app.account_UI.ManagerProfile;
+import com.example.app.account_UI.ManagerHome;
 import com.example.app.account_UI.StudentProfile;
 import com.example.app.firebaseDB.FbUpdate;
 import com.example.app.log_create.LogInOut;
@@ -122,7 +122,7 @@ public class RestorePage extends AppCompatActivity {
         startActivity(i);
     }
     public void openManager(){
-        Intent i= new Intent(this, ManagerProfile.class);
+        Intent i= new Intent(this, ManagerHome.class);
         startActivity(i);
     }
 }

@@ -24,7 +24,7 @@
  import androidx.recyclerview.widget.RecyclerView;
 
  import com.example.app.R;
- import com.example.app.account_UI.ManagerProfile;
+ import com.example.app.account_UI.ManagerHome;
  import com.example.app.firebaseDB.FirestoreConnector;
  import com.example.app.services.QRGeneration;
  import com.example.app.services.UpdateCapacityService;
@@ -142,7 +142,7 @@ private String m_Text = "";
      }
 
      public void openManagerProfile(View v){
-         Intent i = new Intent(this, ManagerProfile.class);
+         Intent i = new Intent(this, ManagerHome.class);
          startActivity(i);
      }
      public void openStudentList(View v, String buildingName){
