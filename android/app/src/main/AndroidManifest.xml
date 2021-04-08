@@ -31,7 +31,15 @@
         <activity android:name=".pre_login_UI.ManagerName" />
         <activity android:name=".pre_login_UI.LogInPage" />
         <activity android:name=".account_UI.QRScan" />
-        <activity android:name=".account_UI.ManagerSearch" />
+
+        <activity android:name=".account_UI.ManagerSearch">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity android:name=".pre_login_UI.StudentEnterID" />
         <activity android:name=".pre_login_UI.StudentUploadPhoto" />
         <activity android:name=".pre_login_UI.StudentEnterName" />
@@ -40,11 +48,11 @@
         <activity android:name=".pre_login_UI.SignUpPage" />
         <activity android:name=".building.BuildingsOccupancyList" />
         <activity android:name=".pre_login_UI.StartPage">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
     </application>
 
