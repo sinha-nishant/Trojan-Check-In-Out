@@ -202,4 +202,187 @@
         <item>A.C. Allen Cowlings and Ilium Residential College</item>
         <item>Ahmanson Ctr. for Biological Research</item>
     </string-array>
+
+    <string-array name="majors_search_array">
+        <item>empty</item>
+        <item>Undeclared</item>
+        <item>Accounting (BS)</item>
+        <item>Acting for the Stage, Screen and New Media (BFA)</item>
+        <item>Aerospace Engineering (BS)</item>
+        <item>American Popular Culture (BA)</item>
+        <item>American Studies and Ethnicity (African American Studies) (BA)</item>
+        <item>American Studies and Ethnicity (Asian American Studies) (BA)</item>
+        <item>American Studies and Ethnicity (BA)</item>
+        <item>American Studies and Ethnicity (Chicano/Latino Studies) (BA)</item>
+        <item>Animation and Digital Arts (BA)</item>
+        <item>Anthropology (BA)</item>
+        <item>Anthropology (Visual Anthropology) (BA)</item>
+        <item>Applied and Computational Mathematics (BA)</item>
+        <item>Applied and Computational Mathematics (BS)</item>
+        <item>Applied Mechanics (BS)</item>
+        <item>Archaeology (BA)</item>
+        <item>Architectural Studies (BS)</item>
+        <item>Architecture (BArch)</item>
+        <item>Art (BA)</item>
+        <item>Art History (BA)</item>
+        <item>Arts, Technology and the Business of Innovation (BS)</item>
+        <item>Astronautical Engineering (BS)</item>
+        <item>Astronomy (BA)</item>
+        <item>Astronomy (BS)</item>
+        <item>Biochemistry (BS)</item>
+        <item>Biological Sciences (BA)</item>
+        <item>Biological Sciences (BS)</item>
+        <item>Biomedical Engineering (BS)</item>
+        <item>Biomedical Engineering, Electrical Engineering Emphasis, (BS)</item>
+        <item>Biomedical Engineering, Mechanical Engineering Emphasis, (BS)</item>
+        <item>Biomedical Engineering, Molecular and Cellular Engineering Emphasis, (BS)</item>
+        <item>Biophysics (BS)</item>
+        <item>Business Administration (BS)</item>
+        <item>Business Administration (Cinematic Arts) (BS)</item>
+        <item>Business Administration (International Relations) (BS)</item>
+        <item>Business Administration (Real Estate Finance) (BS)</item>
+        <item>Business Administration (World Program) (BS)</item>
+        <item>Central European Studies (BA)</item>
+        <item>Chemical Engineering (BS)</item>
+        <item>Chemical Engineering, Biochemical Engineering Emphasis (BS)</item>
+        <item>Chemical Engineering, Environmental Engineering Emphasis (BS)</item>
+        <item>Chemical Engineering, Nanotechnology Emphasis (BS)</item>
+        <item>Chemical Engineering, Petroleum Engineering Emphasis (BS)</item>
+        <item>Chemical Engineering, Polymer/Materials Science Emphasis (BS)</item>
+        <item>Chemical Engineering, Sustainable Energy Emphasis (BS)</item>
+        <item>Chemistry (BA)</item>
+        <item>Chemistry (BS)</item>
+        <item>Chemistry (Chemical Biology) (BS)</item>
+        <item>Chemistry (Chemical Nanoscience) (BS)</item>
+        <item>Chemistry (Research) (BS)</item>
+        <item>Choral Music (BA)</item>
+        <item>Choral Music (BM)</item>
+        <item>Cinema and Media Studies (BA)</item>
+        <item>Cinematic Arts, Film and Television Production (BA)</item>
+        <item>Cinematic Arts, Film and Television Production (BFA)</item>
+        <item>Civil Engineering (BS)</item>
+        <item>Civil Engineering, Building Science Emphasis (BS)</item>
+        <item>Civil Engineering, Construction Engineering and Management Emphasis (BS)</item>
+        <item>Civil Engineering, Environmental Engineering Emphasis (BS)</item>
+        <item>Civil Engineering, Structural Engineering Emphasis (BS)</item>
+        <item>Civil Engineering, Water Resources Engineering Emphasis (BS)</item>
+        <item>Classics (BA)</item>
+        <item>Cognitive Science (BA)</item>
+        <item>Communication (BA)</item>
+        <item>Comparative Literature (BA)</item>
+        <item>Composition (BM)</item>
+        <item>Computational Linguistics (BS)</item>
+        <item>Computational Neuroscience (BS)</item>
+        <item>Computer Engineering and Computer Science (BS)</item>
+        <item>Computer Science (BS)</item>
+        <item>Computer Science (Games) (BS)</item>
+        <item>Computer Science/Business Administration (BS)</item>
+        <item>Contemporary Latino and Latin American Studies</item>
+        <item>Dance (BFA)</item>
+        <item>Data Science (BA)</item>
+        <item>Dental Hygiene (BS)</item>
+        <item>Design (BFA)</item>
+        <item>Earth Sciences (BA)</item>
+        <item>East Asian Area Studies (BA)</item>
+        <item>East Asian Languages and Cultures (BA)</item>
+        <item>Economics (BA)</item>
+        <item>Electrical and Computer Engineering (BS)</item>
+        <item>English (BA)</item>
+        <item>Environmental Engineering (BS)</item>
+        <item>Environmental Science and Health (BA)</item>
+        <item>Environmental Science and Health (BS)</item>
+        <item>Environmental Studies (BA)</item>
+        <item>Environmental Studies (BS)</item>
+        <item>Fine Arts (BFA)</item>
+        <item>French (BA)</item>
+        <item>Gender and Sexuality Studies (BA)</item>
+        <item>GeoDesign (BS)</item>
+        <item>Geological Sciences (BS)</item>
+        <item>Global Geodesign (BS)</item>
+        <item>Global Health Studies (BS)</item>
+        <item>Global Studies (BA)</item>
+        <item>Health and Human Sciences (BA)</item>
+        <item>Health and Humanity (BA)</item>
+        <item>Health Promotion and Disease Prevention Studies (BS)</item>
+        <item>History (BA)</item>
+        <item>History and Social Science Education (BA)</item>
+        <item>Human Biology (BA)</item>
+        <item>Human Biology (BS)</item>
+        <item>Human Development and Aging (BS)</item>
+        <item>Human Development and Aging, Health Science Track (BS)</item>
+        <item>Human Development and Aging, Honors Programs (BS)</item>
+        <item>Industrial and Systems Engineering (BS)</item>
+        <item>Intelligence and Cyber Operations (BA)</item>
+        <item>Interactive Entertainment (BA)</item>
+        <item>International Relations (BA)</item>
+        <item>International Relations (Global Business) (BA)</item>
+        <item>International Relations and the Global Economy (BA)</item>
+        <item>Italian (BA)</item>
+        <item>Jazz Studies (BM)</item>
+        <item>Jewish Studies (BA)</item>
+        <item>Journalism (BA)</item>
+        <item>Latin American and Iberian Cultures, Media and Politics</item>
+        <item>Law, History, and Culture (BA)</item>
+        <item>Lifespan Health (BS)</item>
+        <item>Linguistics (BA)</item>
+        <item>Linguistics and Cognitive Science (BA)</item>
+        <item>Mathematics (BA)</item>
+        <item>Mathematics (BS)</item>
+        <item>Mechanical Engineering (BS)</item>
+        <item>Mechanical Engineering, Petroleum Engineering (BS)</item>
+        <item>Media Arts and Practice (BA)</item>
+        <item>Middle East Studies (BA)</item>
+        <item>Music (BA)</item>
+        <item>Music Industry (BM)</item>
+        <item>Music Industry (BS)</item>
+        <item>Music Production (BM)</item>
+        <item>Musical Theatre (BFA)</item>
+        <item>Narrative Studies (BA)</item>
+        <item>Neuroscience (BA)</item>
+        <item>Neuroscience (BS)</item>
+        <item>Non-Governmental Organizations and Social Change (BA)</item>
+        <item>Occupational Therapy (BS)</item>
+        <item>Performance (Classical Guitar) (BM)</item>
+        <item>Performance (Organ) (BM)</item>
+        <item>Performance (Other) (BM)</item>
+        <item>Performance (Piano) (BM)</item>
+        <item>Performance (Popular Music) (BM)</item>
+        <item>Performance (Studio Guitar) (BM)</item>
+        <item>Performance (Violin), (Viola), (Violoncello), (Double Bass) or (Harp) (BM)</item>
+        <item>Performance (Vocal Arts) (BM)</item>
+        <item>Pharmacology and Drug Development (BS)</item>
+        <item>Philosophy (BA)</item>
+        <item>Philosophy and Physics (BA)</item>
+        <item>Philosophy, Politics and Economics (BA)</item>
+        <item>Philosophy, Politics and Law (BA)</item>
+        <item>Physical Sciences (BS)</item>
+        <item>Physical Sciences (BS)</item>
+        <item>Physics (BA)</item>
+        <item>Physics (BS)</item>
+        <item>Physics/Computer Science (BS)</item>
+        <item>Political Economy (BA)</item>
+        <item>Political Science (BA)</item>
+        <item>Psychology (BA)</item>
+        <item>Public Policy (BS)</item>
+        <item>Public Relations (BA)</item>
+        <item>Quantitative Biology (BS)</item>
+        <item>Real Estate Development (BS)</item>
+        <item>Religion (BA)</item>
+        <item>Russian (BA)</item>
+        <item>Social Sciences, with an Emphasis in Economics (BA)</item>
+        <item>Social Sciences, with an Emphasis in Psychology (BA)</item>
+        <item>Sociology (BA)</item>
+        <item>Spanish (BA)</item>
+        <item>Theatre (BA)</item>
+        <item>Theatre, Acting Emphasis (BA)</item>
+        <item>Theatre, Comedy Emphasis (BA)</item>
+        <item>Theatre, Design Emphasis (BA)</item>
+        <item>Theatre, Design Emphasis (BFA)</item>
+        <item>Theatre, Sound Design Emphasis (BFA)</item>
+        <item>Theatre, Stage Management Emphasis (BFA)</item>
+        <item>Theatre, Technical Direction Emphasis (BFA)</item>
+        <item>Urban Studies and Planning (BS)</item>
+        <item>Visual and Performing Arts Studies (BA)</item>
+        <item>Writing for Screen and Television (BFA)</item>
+    </string-array>
 </resources>

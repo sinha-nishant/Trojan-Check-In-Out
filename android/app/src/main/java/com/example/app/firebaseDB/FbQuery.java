@@ -514,7 +514,10 @@ public class FbQuery implements FirestoreConnector {
 
                             }
                         }
-
+                        if(student_ids.size()==0){
+                            studentsMLD.setValue(null);
+                            return;
+                        }
                         getStudents(student_ids, studentsMLD);
                     } else {
                         studentsMLD.setValue(new ArrayList<>());

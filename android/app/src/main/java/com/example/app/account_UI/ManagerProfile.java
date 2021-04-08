@@ -424,5 +424,10 @@ public class ManagerProfile extends AppCompatActivity {
         startActivity(i);
     }
 
+    public void openSearch(View v){
+        Intent i= new Intent(this, ManagerSearch.class);
+        startActivity(i);
+    }
+
 
 }
