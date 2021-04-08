@@ -97,9 +97,13 @@ public class searchResults extends AppCompatActivity {
             String startTime= bundle.getString("startTime");
             String endTime= bundle.getString("endTime");
             String building= bundle.getString("building");
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yy hh:mm");
+            Log.d("date",startDate);
+            Log.d("date",endDate);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy hh:mm");
             String startString= startDate+ " "+ startTime;
             String endString= endDate+ " "+ endTime;
+            Log.d("date",startString);
+            Log.d("date",endString);
             Date initialDate = sdf.parse(startString);
             Date finalDate = sdf.parse(endString);
             Log.d("search", "in search by building/time");
