@@ -29,7 +29,7 @@
         app:layout_constraintTop_toBottomOf="@+id/name_label" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName2"
+        android:id="@+id/last_name_input"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -46,7 +46,7 @@
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2" />
+        app:layout_constraintTop_toBottomOf="@+id/last_name_input" />
 
     <TextView
         android:id="@+id/start_date_label"
@@ -58,13 +58,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/building_spinner" />
 
-    <TextView
+    <EditText
         android:id="@+id/start_date_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="dd/mm/yyyy"
+        android:text="dd/mm/yy"
         android:textSize="20sp"
+        android:focusable="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/start_date_label" />
@@ -79,12 +80,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/start_date_text" />
 
-    <TextView
+    <EditText
         android:id="@+id/start_time_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="hh:mm:ss"
+        android:text="hh:mm"
+        android:focusable="false"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -100,12 +102,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/start_time_text" />
 
-    <TextView
+    <EditText
         android:id="@+id/end_date_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="dd/mm/yyyy"
+        android:text="dd/mm/yy"
+        android:focusable="false"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -121,12 +124,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/end_date_text" />
 
-    <TextView
+    <EditText
         android:id="@+id/end_time_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="hh:mm:ss"
+        android:text="hh:mm"
+        android:focusable="false"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -137,7 +141,7 @@
         android:layout_width="267dp"
         android:layout_height="32dp"
         android:layout_marginTop="16dp"
-        android:entries="@array/majors_array"
+        android:entries="@array/majors_search_array"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/end_time_text" />
@@ -147,6 +151,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:onClick="onSubmit"
         android:text="Submit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

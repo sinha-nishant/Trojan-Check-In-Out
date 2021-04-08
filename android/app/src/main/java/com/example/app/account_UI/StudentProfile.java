@@ -13,15 +13,13 @@ import android.widget.TextView;
 
 import com.example.app.R;
 
-public class   StudentProfile extends AppCompatActivity {
+public class StudentProfile extends AppCompatActivity {
 
     Fragment profileF, menuF;
     Button profileB, menuB;
     FrameLayout fl;
     FragmentManager fm;
     TextView tv;
-    String email;
-    String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +29,9 @@ public class   StudentProfile extends AppCompatActivity {
         profileF = new StudentProfileFragment();
         menuF = new StudentProfileMenu();
 
-        tv = (TextView) findViewById(R.id.textViewCurrBuilding);
-        tv.setText("You are currently checked into: ");
-        fl = (FrameLayout) findViewById(R.id.fl_fragment);
+        tv = findViewById(R.id.textViewCurrBuilding);
+        tv.setText("You are checked into: ");
+        fl = findViewById(R.id.fl_fragment);
 
         fm = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
@@ -41,24 +39,22 @@ public class   StudentProfile extends AppCompatActivity {
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 
-        profileB = (Button)findViewById(R.id.buttonFragment1);
+        profileB = findViewById(R.id.buttonFragment1);
         profileB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentTransaction fragmentTransaction = fm.beginTransaction();
                 fragmentTransaction.replace(R.id.fl_fragment, profileF);
-                //fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
 
-        menuB = (Button)findViewById(R.id.buttonFragment2);
+        menuB = findViewById(R.id.buttonFragment2);
         menuB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentTransaction fragmentTransaction = fm.beginTransaction();
                 fragmentTransaction.replace(R.id.fl_fragment, menuF);
-                //fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
