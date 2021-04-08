@@ -37,7 +37,7 @@ import com.example.app.users.Account;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-public class ManagerProfile extends AppCompatActivity {
+public class ManagerHome extends AppCompatActivity {
     ImageView imgView;
     TextView nameView;
     TextView emailView;
