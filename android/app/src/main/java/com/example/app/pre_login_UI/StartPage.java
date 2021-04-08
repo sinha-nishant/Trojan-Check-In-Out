@@ -10,43 +10,44 @@ import android.widget.Button;
 import com.example.app.R;
 
 public class StartPage extends AppCompatActivity {
-    private Button signupButton;
-    private Button loginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_john_test);
 
-        signupButton = (Button) findViewById(R.id.signup);
-        signupButton.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.signup).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openSignUp();
             }
         });
 
-        loginButton = (Button) findViewById(R.id.Login);
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.Login).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openLogIn();
+            }
+        });
+
+        findViewById(R.id.restoreBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openRestore();
             }
         });
     }
 
     public void openSignUp() {
         Intent i = new Intent(this, SignUpPage.class);
-        //Intent i = new Intent(this, StudentProfile.class);
         startActivity(i);
     }
     public void openLogIn() {
         Intent i = new Intent(this, LogInPage.class);
-        //Intent i = new Intent(this, StudentHistory.class);
         startActivity(i);
     }
 
-    public void openRestore(View v) {
+    public void openRestore() {
         Intent i = new Intent(this, RestorePage.class);
         startActivity(i);
     }

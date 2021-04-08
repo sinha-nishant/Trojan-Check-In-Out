@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/signup"
+        android:icon="@drawable/create_account_icon"
+        android:enabled="true"
+        android:title="Create"
+        />
+
+    <item
+        android:id="@+id/Login"
+        android:enabled="true"
+        android:title="Login"
+        android:icon="@drawable/login_icon"
+        />
+
+    <item
+        android:id="@+id/restoreBtn"
+        android:enabled="true"
+        android:title="Restore"
+        android:icon="@drawable/restore_account_icon"
+        />
+</menu>
