@@ -85,7 +85,6 @@ public class searchResults extends AppCompatActivity {
             String fName= bundle.getString("fName");
             String lName= bundle.getString("lName");
             FbQuery.search(fName,lName,studentsMLD);
-            Log.d("search","in if");
         }
         else if(type.equals("major")){
             String major= bundle.getString("major");
@@ -97,19 +96,11 @@ public class searchResults extends AppCompatActivity {
             String startTime= bundle.getString("startTime");
             String endTime= bundle.getString("endTime");
             String building= bundle.getString("building");
-            Log.d("date",startDate);
-            Log.d("date",endDate);
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy hh:mm");
             String startString= startDate+ " "+ startTime;
             String endString= endDate+ " "+ endTime;
-            Log.d("date",startString);
-            Log.d("date",endString);
             Date initialDate = sdf.parse(startString);
             Date finalDate = sdf.parse(endString);
-            Log.d("search", "in search by building/time");
-            Log.d("search", building);
-            Log.d("search", initialDate.toString());
-            Log.d("search", finalDate.toString());
             FbQuery.search(building,initialDate,finalDate,studentsMLD);
 
         }
