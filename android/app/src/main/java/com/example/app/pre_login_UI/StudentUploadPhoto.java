@@ -152,19 +152,19 @@ public class StudentUploadPhoto extends AppCompatActivity {
 
 
     private void openProfile() {
-        //What unique identifier will be used to draw up profile page? Email?
         Intent i = new Intent(this, StudentProfile.class);
         startActivity(i);
     }
 
     private void openSignUp() {
-        //What unique identifier will be used to draw up profile page? Email?
         Intent i = new Intent(this, StudentSignUpStart.class);
         startActivity(i);
     }
 
-
-
+    private void openRestore() {
+        Intent i = new Intent(this, RestorePage.class);
+        startActivity(i);
+    }
 
     public void submit(View v){
         studentProgress.setVisibility(View.VISIBLE);
@@ -173,7 +173,6 @@ public class StudentUploadPhoto extends AppCompatActivity {
         FbQuery.checkEmailExists(email,email_success);
 
     }
-
 
     private void AmplifyInit(){
         try {
@@ -210,7 +209,7 @@ public class StudentUploadPhoto extends AppCompatActivity {
                         }
                         if(restore_success.getValue()){
                             //Todo redirect to restore page
-                            openSignUp();
+                            openRestore();
                             return;
                         }
                         if(upload_success.getValue()!=null && !upload_success.getValue()){

@@ -259,6 +259,10 @@ public class ManagerName extends AppCompatActivity {
                             openManagerSignUp();
                             return;
                         }
+                        if(restore_success.getValue()){
+                            openRestore();
+                            return;
+                        }
                         if(upload_success.getValue()!=null && !upload_success.getValue()){
                             openManagerSignUp();
                             return;
@@ -289,6 +293,11 @@ public class ManagerName extends AppCompatActivity {
     private void openManagerSignUp() {
         //What unique identifier will be used to draw up profile page? Email?
         Intent i = new Intent(this, ManagerSignUpStart.class);
+        startActivity(i);
+    }
+
+    private void openRestore() {
+        Intent i = new Intent(this, RestorePage.class);
         startActivity(i);
     }
 
