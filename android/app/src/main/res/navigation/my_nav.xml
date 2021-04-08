@@ -19,4 +19,9 @@
         android:name="com.example.app.ManagerSearchFragment"
         android:label="fragment_manager_search2"
         tools:layout="@layout/fragment_manager_search2" />
+<!--    <activity-->
+<!--        android:id="@+id/managerProfile"-->
+<!--        android:name="com.example.app.account_UI.ManagerProfile"-->
+<!--        android:label="activity_manager_profile_v2"-->
+<!--        tools:layout="@layout/activity_manager_profile_v2" />-->
 </navigation>

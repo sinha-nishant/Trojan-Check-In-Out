@@ -23,7 +23,7 @@
         <activity android:name=".services.UrlUploadImage" />
         <activity android:name=".account_UI.ManagerCSV" />
         <activity
-            android:name=".account_UI.ManagerHome"
+            android:name=".account_UI.ManagerBuildings"
             android:exported="true" />
         <activity android:name=".account_UI.ManagerProfile" />
         <activity android:name=".account_UI.StudentHistory" />

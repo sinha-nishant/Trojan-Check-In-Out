@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/managerHome22"
-        android:title="Home"
-        android:icon="@drawable/ic_home"/>
-    <item android:id="@+id/managerSearch2"
+    <item android:id="@+id/manager_building"
+        android:title="Building"
+        android:icon="@drawable/ic_baseline_format_list_bulleted_24"/>
+    <item android:id="@+id/manager_search"
         android:title="Search"
         android:icon="@drawable/ic_baseline_search_24"/>
-    <item android:id="@+id/managerProfile2"
-        android:title="Profile"
-        android:icon="@drawable/ic_baseline_person_24"/>
+    <item android:id="@+id/manager_profile"
+        android:title="Home"
+        android:icon="@drawable/ic_home"/>
 </menu>

@@ -58,7 +58,7 @@ public class ManagerProfile extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manager_profile_v2);
+        setContentView(R.layout.activity_manager_home);
         Log.d("ManagerProfile","in manager Profile");
         SharedPreferences sp=  activity.getSharedPreferences("sharedPrefs",activity.MODE_PRIVATE);
 
