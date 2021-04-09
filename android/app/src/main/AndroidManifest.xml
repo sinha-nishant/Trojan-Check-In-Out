@@ -16,9 +16,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.App">
-        <activity android:name=".searchResults">
-        </activity>
-        <activity android:name=".pre_login_UI.RestorePage"></activity>
+        <activity android:name=".building.StudentDetailedView"></activity>
+        <activity android:name=".searchResults"></activity>
+        <activity android:name=".pre_login_UI.RestorePage" />
         <activity android:name=".building.BuildingStudents" />
         <activity android:name=".services.UrlUploadImage" />
         <activity android:name=".account_UI.ManagerCSV" />
@@ -31,10 +31,7 @@
         <activity android:name=".pre_login_UI.ManagerName" />
         <activity android:name=".pre_login_UI.LogInPage" />
         <activity android:name=".account_UI.QRScan" />
-
-        <activity android:name=".account_UI.ManagerSearch">
-        </activity>
-
+        <activity android:name=".account_UI.ManagerSearch"></activity>
         <activity android:name=".pre_login_UI.StudentEnterID" />
         <activity android:name=".pre_login_UI.StudentUploadPhoto" />
         <activity android:name=".pre_login_UI.StudentEnterName" />
