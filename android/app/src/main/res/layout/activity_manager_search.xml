@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Major"
-            android:entries="@array/majors_search_array"
+            android:entries="@array/majors_array"
             app:boxStrokeColor="#FFCC00"
             app:hintTextColor="@color/black"
             >

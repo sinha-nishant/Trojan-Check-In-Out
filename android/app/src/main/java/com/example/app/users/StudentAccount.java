@@ -1,6 +1,8 @@
 package com.example.app.users;
 
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.app.firebaseDB.FbUpdate;
@@ -81,6 +83,33 @@ public class StudentAccount extends Account {
     public String toString() {
         return this.getFirstName() + " " + this.getLastName() + " " + this.getUscID() + " " + this.getEmail()+" "+this.getMajor()+" "
                 +this.getPassword()+" "+this.getProfilePicture();
+    }
+
+    @Override
+    public int hashCode() {
+        int code=1;
+        code+=uscID.hashCode();
+        code+=email.hashCode();
+
+        return code;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(this ==obj){
+            return true;
+        }
+        StudentAccount  other = (StudentAccount)obj;
+        if(!this.uscID.equals(other.uscID)){
+
+            return false;
+        }
+        if(!this.email.equals(other.email)){
+            Log.d("search", "equals false in isEmail");
+            return false;
+        }
+        return true;
+
     }
 
 

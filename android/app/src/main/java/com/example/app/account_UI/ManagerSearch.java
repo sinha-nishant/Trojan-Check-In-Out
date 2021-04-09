@@ -47,6 +47,8 @@ public class ManagerSearch extends AppCompatActivity {
     private EditText startTime;
     private EditText endTime;
     Button submitBtn;
+    Bundle bundle;
+    Boolean canSearch=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +59,7 @@ public class ManagerSearch extends AppCompatActivity {
         lName = findViewById(R.id.last_name_input);
         building_spinner = findViewById(R.id.building_spinner);
         major_spinner = findViewById(R.id.major_spinner);
-        major_spinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.majors_search_array)));
+        major_spinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.majors_array)));
         buildingsMLDInit();
         DialogInit();
         startDate = findViewById(R.id.start_date_text);
@@ -69,6 +71,7 @@ public class ManagerSearch extends AppCompatActivity {
         setTime(startTime);
         setTime(endTime);
         submitBtn = findViewById(R.id.submit_button);
+        bundle= new Bundle();
         FbQuery.getAllBuildings(buildingsMLD);
     }
 
@@ -78,7 +81,6 @@ public class ManagerSearch extends AppCompatActivity {
             public void onChanged(@Nullable final List<Building> buildings){
                 if (buildings != null) {
                     List<String> names= new ArrayList<>();
-                    names.add("empty");
                     for(Building location: buildings) {
                         names.add(location.getName());
                         ArrayAdapter<String> adp = new ArrayAdapter<>(ManagerSearch.this,android.R.layout.simple_list_item_1,names);
@@ -157,36 +159,62 @@ public class ManagerSearch extends AppCompatActivity {
     public void onSubmit(View v){
         TextInputLayout selected_major = findViewById(R.id.selected_major);
         TextInputLayout selected_building = findViewById(R.id.selected_building);
+        int fNameLength=fName.getText().length();
+        int lNameLength=lName.getText().length();
+
+
         if (fName.getText().length() != 0 && lName.getText().length() != 0){
-            Bundle bundle= new Bundle();
-            bundle.putString("type", "name");
+            bundle.putString("name", "yes");
             bundle.putString("fName", fName.getText().toString());
             bundle.putString("lName", lName.getText().toString());
-            openSearch(bundle);
+            canSearch=true;
         }
-        else if (!(selected_major.getEditText().getText().toString().isEmpty())) {
-            Bundle bundle= new Bundle();
-            bundle.putString("type", "major");
-            bundle.putString("major", selected_major.getEditText().getText().toString());
-            openSearch(bundle);
+        else if(!(fNameLength==0  && lNameLength==0) ){
+            alertDialog.setMessage("Do not partial enter one name field.Fill both first and last name");
+            alertDialog.show();
+            canSearch=false;
+            return;
         }
-        else if (!startDate.getText().toString().isEmpty() &&
+
+        if (!(selected_major.getEditText().getText().toString().isEmpty())) {
+            bundle.putString("major", "yes");
+            bundle.putString("majorValue", selected_major.getEditText().getText().toString());
+            canSearch=true;
+        }
+
+        if (!startDate.getText().toString().isEmpty() &&
                 !endDate.getText().toString().isEmpty() &&
                 !startTime.getText().toString().isEmpty() &&
                 !endTime.getText().toString().isEmpty() &&
                 !(selected_building.getEditText().getText().toString().isEmpty())){
-            Bundle bundle= new Bundle();
-            bundle.putString("type", "building");
+            bundle.putString("building", "yes");
             bundle.putString("startDate", startDate.getText().toString());
             bundle.putString("endDate", endDate.getText().toString());
             bundle.putString("startTime", startTime.getText().toString());
             bundle.putString("endTime", endTime.getText().toString());
-            bundle.putString("building", selected_building.getEditText().getText().toString());
-            openSearch(bundle);
+            bundle.putString("buildingValue", selected_building.getEditText().getText().toString());
+            canSearch=true;
+
         }
+        else if(!(startDate.getText().length()==0 && endDate.getText().length()==0 && startTime.getText().length()==0
+            && endTime.getText().length()==0 && selected_building.getEditText().getText().length()==0)){
+            alertDialog.setMessage("Do not partial enter building,date and time fields");
+            alertDialog.show();
+            canSearch=false;
+            return;
+        }
+
+        if(canSearch){
+            openSearch();
+        }
+        else{
+            alertDialog.setMessage("Please fill in the filters accurately");
+            alertDialog.show();
+        }
+
     }
 
-    private void openSearch(Bundle bundle){
+    private void openSearch(){
         Intent i  = new Intent(this, searchResults.class);
         i.putExtras(bundle);
         startActivity(i);
