@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
@@ -449,7 +450,7 @@ public class FbQuery implements FirestoreConnector {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     if (!task.getResult().isEmpty()) {
-                        List<Long> student_ids = new ArrayList<>();
+                        HashSet<Long> student_ids = new HashSet<>();
                         for (DocumentSnapshot ds : task.getResult().getDocuments()) {
                             Date checkInTime = ds.getDate("checkInTime");
                             Date checkOutTime = null;
@@ -496,7 +497,7 @@ public class FbQuery implements FirestoreConnector {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     if (!task.getResult().isEmpty()) {
-                        List<Long> student_ids = new ArrayList<>();
+                        HashSet<Long> student_ids = new HashSet<>();
                         for (DocumentSnapshot ds : task.getResult().getDocuments()) {
                             String fName = ds.getString("firstName");
                             String lName = ds.getString("lastName");
@@ -530,7 +531,7 @@ public class FbQuery implements FirestoreConnector {
         });
     }
 
-    private static void getStudents(List<Long> student_ids, MutableLiveData<List<StudentAccount>> studentsMLD) {
+    private static void getStudents(HashSet<Long> student_ids, MutableLiveData<List<StudentAccount>> studentsMLD) {
         List<StudentAccount> students = new ArrayList<>();
         CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");
         for (Long id : student_ids) {
@@ -540,11 +541,6 @@ public class FbQuery implements FirestoreConnector {
                     if (task.isSuccessful() && !task.getResult().isEmpty()) {
                         students.add(task.getResult().getDocuments().get(0).toObject(StudentAccount.class));
                         if (students.size() == student_ids.size()) {
-
-                            for (StudentAccount sa : students) {
-                                Log.d("STUDENTS", sa.toString());
-                            }
-
                             students.sort(Comparator.comparing(StudentAccount::getLastName));
                             studentsMLD.setValue(students);
                         }

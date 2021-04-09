@@ -22,36 +22,34 @@ import java.util.List;
 
 public class searchResults extends AppCompatActivity {
     ListView lv;
-    MutableLiveData<List<StudentAccount>> studentsMLD= new MutableLiveData<>();
+    MutableLiveData<List<StudentAccount>> studentsMLD = new MutableLiveData<>();
     AlertDialog alertDialog;
     Bundle bundle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_result);
-        lv= findViewById(R.id.searchLv);
+        lv = findViewById(R.id.searchLv);
         MutableStudent();
         DialogInit();
-        bundle=this.getIntent().getExtras();
+        bundle = this.getIntent().getExtras();
         try {
             search();
         } catch (ParseException e) {
             e.printStackTrace();
         }
-//        FbQuery.search("Undeclared",studentsMLD);
     }
 
-    public void MutableStudent(){
-        final Observer<List<StudentAccount>> student_obs = new Observer<List<StudentAccount>>(){
+    public void MutableStudent() {
+        final Observer<List<StudentAccount>> student_obs = new Observer<List<StudentAccount>>() {
             @Override
-            public void onChanged(@javax.annotation.Nullable final List<StudentAccount> accounts){
-                Log.d("search", "search mld has changed");
-                if(accounts==null||accounts.size()==0){
+            public void onChanged(@javax.annotation.Nullable final List<StudentAccount> accounts) {
+                if (accounts == null || accounts.size() == 0) {
                     alertDialog.setMessage("No results found");
                     alertDialog.show();
-                }
-                else{
-                    SearchListAdaptor adaptor= new SearchListAdaptor(searchResults.this, R.layout.adapter_view_layout,accounts);
+                } else {
+                    SearchListAdaptor adaptor = new SearchListAdaptor(searchResults.this, R.layout.adapter_view_layout, accounts);
                     lv.setAdapter(adaptor);
                 }
             }
@@ -59,7 +57,7 @@ public class searchResults extends AppCompatActivity {
         studentsMLD.observe(this, student_obs);
     }
 
-    private void DialogInit(){
+    private void DialogInit() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle("Status of Action");
@@ -70,8 +68,7 @@ public class searchResults extends AppCompatActivity {
 
                     @Override
                     public void onClick(DialogInterface dialog,
-                                        int which)
-                    {
+                                        int which) {
                         openManagerSearch();
 
                     }
@@ -80,34 +77,31 @@ public class searchResults extends AppCompatActivity {
     }
 
     public void search() throws ParseException {
-        String type= bundle.getString("type");
-        if(type.equals("name")){
-            String fName= bundle.getString("fName");
-            String lName= bundle.getString("lName");
-            FbQuery.search(fName,lName,studentsMLD);
-        }
-        else if(type.equals("major")){
-            String major= bundle.getString("major");
-            FbQuery.search(major,studentsMLD);
-        }
-        else{
-            String startDate= bundle.getString("startDate");
-            String endDate= bundle.getString("endDate");
-            String startTime= bundle.getString("startTime");
-            String endTime= bundle.getString("endTime");
-            String building= bundle.getString("building");
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy hh:mm");
-            String startString= startDate+ " "+ startTime;
-            String endString= endDate+ " "+ endTime;
+        String type = bundle.getString("type");
+        if (type.equals("name")) {
+            String fName = bundle.getString("fName");
+            String lName = bundle.getString("lName");
+            FbQuery.search(fName, lName, studentsMLD);
+        } else if (type.equals("major")) {
+            String major = bundle.getString("major");
+            FbQuery.search(major, studentsMLD);
+        } else {
+            String startDate = bundle.getString("startDate");
+            String endDate = bundle.getString("endDate");
+            String startTime = bundle.getString("startTime");
+            String endTime = bundle.getString("endTime");
+            String building = bundle.getString("building");
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy HH:mm");
+            String startString = startDate + " " + startTime;
+            String endString = endDate + " " + endTime;
             Date initialDate = sdf.parse(startString);
             Date finalDate = sdf.parse(endString);
-            FbQuery.search(building,initialDate,finalDate,studentsMLD);
-
+            FbQuery.search(building, initialDate, finalDate, studentsMLD);
         }
     }
 
-    private void openManagerSearch(){
-        Intent i= new Intent(this, ManagerSearch.class);
+    private void openManagerSearch() {
+        Intent i = new Intent(this, ManagerSearch.class);
         startActivity(i);
     }
 }
