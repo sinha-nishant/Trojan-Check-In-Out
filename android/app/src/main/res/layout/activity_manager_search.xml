@@ -79,7 +79,8 @@
                 app:boxStrokeColor="#FFCC00"
                 app:hintTextColor="@color/black"
                 android:hint="Last Name"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                >
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/last_name_input"
@@ -105,7 +106,8 @@
             android:layout_height="wrap_content"
             app:boxStrokeColor="#FFCC00"
             app:hintTextColor="@color/black"
-            android:hint="Building Name">
+            android:hint="Building Name"
+            >
 
             <AutoCompleteTextView
                 android:id="@+id/building_spinner"
@@ -127,6 +129,7 @@
                 android:layout_weight="1"
                 android:layout_marginEnd="10dp"
                 android:hint="Start Date"
+                android:descendantFocusability="blocksDescendants"
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -145,6 +148,7 @@
                 android:hint="Start Time"
                 app:boxStrokeColor="#FFCC00"
                 app:hintTextColor="@color/black"
+                android:descendantFocusability="blocksDescendants"
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -167,6 +171,7 @@
                 android:layout_weight="1"
                 app:boxStrokeColor="#FFCC00"
                 app:hintTextColor="@color/black"
+                android:descendantFocusability="blocksDescendants"
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -174,7 +179,6 @@
                     android:hint="End Date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="none"
                 />
             </com.google.android.material.textfield.TextInputLayout>
             <!--      End Time      -->
@@ -186,6 +190,7 @@
                 app:boxStrokeColor="#FFCC00"
                 app:hintTextColor="@color/black"
                 android:hint="End Time"
+                android:descendantFocusability="blocksDescendants"
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
