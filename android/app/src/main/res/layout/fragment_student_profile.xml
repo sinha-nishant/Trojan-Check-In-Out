@@ -71,29 +71,18 @@
         tools:src="@tools:sample/avatars" />
 
     <Button
-        android:id="@+id/SelectImg"
+        android:id="@+id/studentUpdatePic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Change Picture"
         android:backgroundTint="#980909"
+        android:text="Update Picture"
         android:textColor="#FFC107"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView15"
-        app:layout_constraintVertical_bias="0.289" />
-
-    <Button
-        android:id="@+id/urlStudentProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Update Pic with Url"
-        android:backgroundTint="#980909"
-        android:textColor="#FFC107"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SelectImg" />
+        app:layout_constraintVertical_bias="0.322" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -36,8 +36,6 @@ import com.example.app.log_create.uploadPhoto;
 import com.example.app.users.StudentAccount;
 import com.example.app.users.StudentActivity;
 
-import org.w3c.dom.Text;
-
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
@@ -47,10 +45,10 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
     private TextView name, building_name;
     private Uri profilepic;
     private AlertDialog alertDialog;
+    AlertDialog picDialog;
     private ProgressBar pb;
-    Button urlUploadBtn;
+    Button UploadBtn;
     ImageView img;
-    Button uploadButton;
     MutableLiveData<StudentAccount> student = new MutableLiveData<>();
     MutableLiveData<Boolean> upload_success = new MutableLiveData<>();
     MutableLiveData<Boolean> firebase_success = new MutableLiveData<>();
@@ -68,9 +66,8 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
         pb = getActivity().findViewById(R.id.progressBar6);
         building_name = getActivity().findViewById(R.id.textViewCurrBuilding);
         MutableStudent();
-
         DialogInit();
-
+        DialogPicInit();
         MutableBoolean();
         MutableFirebase();
         SharedPreferences sp=  getContext().getSharedPreferences("sharedPrefs",getActivity().MODE_PRIVATE);
@@ -83,8 +80,8 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_student_profile, container, false);
-        urlUploadBtn = view.findViewById(R.id.urlStudentProfile);
-        urlUploadBtn.setOnClickListener(this);
+        UploadBtn = view.findViewById(R.id.studentUpdatePic);
+        UploadBtn.setOnClickListener(this);
         return view;
     }
 
@@ -200,6 +197,51 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
                 });
         alertDialog = builder.create();
     }
+    public void DialogPicInit(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        builder.setTitle("Status of Action");
+        builder.setCancelable(false);
+        builder.setPositiveButton("File",
+                new DialogInterface
+                        .OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                                        int which)
+                    {
+                        UploadBtn.setEnabled(false);
+                        imageChooser();
+
+
+                    }
+                });
+        builder.setNegativeButton("URL",
+                new DialogInterface
+                        .OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                                        int which)
+                    {
+                        UploadBtn.setEnabled(false);
+                        url();
+                    }
+                });
+        builder.setNeutralButton("Cancel",
+                new DialogInterface
+                        .OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                                        int which)
+                    {
+
+
+                    }
+                });
+        picDialog = builder.create();
+    }
 
     public void MutableStudent(){
         final Observer<StudentAccount> obs = new Observer<StudentAccount>(){
@@ -244,15 +286,6 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
                                 .skipMemoryCache(true).into(img);
                     }
                     pb.setVisibility(View.GONE);
-
-                    uploadButton = getView().findViewById(R.id.SelectImg);
-                    uploadButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            uploadButton.setEnabled(false);
-                            imageChooser();
-                        }
-                    });
                 }
             }
         };
@@ -274,7 +307,7 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
                     FbUpdate.updatePhoto(str_email, firebase_success);
                 }
                 else{
-                    uploadButton.setEnabled(true);
+                    UploadBtn.setEnabled(true);
                     alertDialog.setMessage("Error. Could not upload change profile picture");
                     alertDialog.show();
                 }
@@ -299,11 +332,11 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
                     Glide.with(getActivity()).load(profilepic.toString()).error(Glide.with(img).load(R.drawable.profile_blank)).diskCacheStrategy(DiskCacheStrategy.NONE)
                             .skipMemoryCache(true).into(img);
                     pb.setVisibility(View.GONE);
-                    uploadButton.setEnabled(true);
+                    UploadBtn.setEnabled(true);
                     alertDialog.setMessage("Updated image successfully");
                 }
                 else {
-                    uploadButton.setEnabled(true);
+                    UploadBtn.setEnabled(true);
                     alertDialog.setMessage("Error. Could not update profile picture");
                 }
                 alertDialog.show();
@@ -325,12 +358,7 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        Intent i = new Intent(getActivity(), UrlUploadImage.class);
-        Bundle bundle=new Bundle();
-        bundle.putString("email",str_email);
-        bundle.putString("id",str_id);
-        bundle.putString("created","yes");
-        i.putExtras(bundle);
-        startActivity(i);
+        picDialog.setMessage("How do you want to upload your picture");
+        picDialog.show();
     }
 }

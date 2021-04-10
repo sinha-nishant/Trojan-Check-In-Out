@@ -1,12 +1,8 @@
 package com.example.app.account_UI;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -37,7 +33,6 @@ import com.example.app.log_create.LogInOut;
 import com.example.app.log_create.uploadPhoto;
 import com.example.app.pre_login_UI.StartPage;
 import com.example.app.users.Account;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -58,7 +53,8 @@ public class ManagerHome extends AppCompatActivity {
     int SELECT_PICTURE = 200;
     ProgressBar pb;
     AlertDialog deleteDialog;
-    Button photoBtn, deleteBtn, signOutBtn, csvBtn, viewBuildingBtn, urlBtn;
+    AlertDialog picDialog;
+    Button deleteBtn, signOutBtn, csvBtn, viewBuildingBtn, picBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,36 +70,27 @@ public class ManagerHome extends AppCompatActivity {
         emailView= (TextView)findViewById(R.id.textView19);
         pb= (ProgressBar)findViewById(R.id.progressBar3);
         pb.setVisibility(View.GONE);
-
-        photoBtn= findViewById(R.id.button11);
         deleteBtn= findViewById(R.id.button15);
         signOutBtn= findViewById(R.id.button16);
         csvBtn= findViewById(R.id.csvBtn);
         viewBuildingBtn= findViewById(R.id.button17);
-        urlBtn=findViewById(R.id.urlManagerProfile);
+        picBtn=findViewById(R.id.ManagerProfilePic);
 
-//        SharedPreferences sp=  activity.getSharedPreferences("sharedPrefs",activity.MODE_PRIVATE);
-//
-//        email= sp.getString("email","");
-//        Log.d("ManagerProfile", email);
         MutableStudent();
         AmplifyInit();
         DialogInit();
         DeleteDialog();
+        DialogPicInit();
         MutableDelete();
         MutableBoolean();
         MutableFirebase();
-//        SharedPreferences sp=  activity.getSharedPreferences("sharedPrefs",activity.MODE_PRIVATE);
-//
-//        email= sp.getString("email","");
-//        Log.d("ManagerProfile", email);
         FbQuery.getManager(email, student);
 
 
     }
 
 
-    public void upload(View v){
+    public void upload(){
         imageChooser();
     }
 
@@ -217,6 +204,50 @@ public class ManagerHome extends AppCompatActivity {
                     }
                 });
         alertDialog = builder.create();
+    }
+
+    public void DialogPicInit(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Status of Action");
+        builder.setCancelable(false);
+        builder.setPositiveButton("File",
+                new DialogInterface
+                        .OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                                        int which)
+                    {
+                        upload();
+
+
+                    }
+                });
+        builder.setNegativeButton("URL",
+                new DialogInterface
+                        .OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                                        int which)
+                    {
+                        url();
+                    }
+                });
+        builder.setNeutralButton("Cancel",
+                new DialogInterface
+                        .OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                                        int which)
+                    {
+
+
+                    }
+                });
+        picDialog = builder.create();
     }
 
     public void DeleteDialog(){
@@ -406,27 +437,33 @@ public class ManagerHome extends AppCompatActivity {
     }
 
     public void disableBtns(){
-        photoBtn.setEnabled(false);
+        picBtn.setEnabled(false);
         deleteBtn.setEnabled(false);
         signOutBtn.setEnabled(false);
         csvBtn.setEnabled(false);
         viewBuildingBtn.setEnabled(false);
     }
     public void enableBtns(){
-        photoBtn.setEnabled(true);
+        picBtn.setEnabled(true);
         deleteBtn.setEnabled(true);
         signOutBtn.setEnabled(true);
         csvBtn.setEnabled(true);
         viewBuildingBtn.setEnabled(true);
     }
 
-    public void url(View v){
+    public void url(){
         Intent i = new Intent(this, UrlUploadImage.class);
         Bundle bundle=new Bundle();
         bundle.putString("email",email);
         bundle.putString("created","yes");
         i.putExtras(bundle);
         startActivity(i);
+    }
+
+    public  void choosePic(View v){
+        picDialog.setMessage("How do you want to upload your picture");
+        picDialog.show();
+
     }
 
     public void openSearch(View v){
