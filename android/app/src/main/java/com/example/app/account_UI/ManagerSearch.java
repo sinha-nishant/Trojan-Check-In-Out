@@ -60,8 +60,19 @@ public class ManagerSearch extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager_search);
+
+        findViewById(R.id.manager_building).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(ManagerSearch.this, ManagerBuildings.class);
+                startActivity(intent1);
+            }
+        });
+
+
 
         fName = findViewById(R.id.first_name_input);
         lName = findViewById(R.id.last_name_input);
@@ -228,34 +239,38 @@ public class ManagerSearch extends AppCompatActivity {
         startActivity(i);
     }
 
-    BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+//    BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView2);
 
 //    BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 //    NavController navController = Navigation.findNavController(this,  R.id.fragment2);
 //
 //    NavigationUI.setupWithNavController(bottomNavigationView, navController);
+
+
 //
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()){
-                case R.id.manager_building:
+//        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+//        @Override
+//        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//            switch (item.getItemId()){
+//                case R.id.manager_building:
+//                    Intent intent1 = new Intent(ManagerSearch.this, ManagerBuildings.class);
+//                    startActivity(intent1);
+//                    return false;
+//
+//                //case R.id.manager_search:
+//
+//                case R.id.manager_home:
+//                    Intent intent2 = new Intent(ManagerSearch.this, ManagerHome.class);
+//                    startActivity(intent2);
+//                    return false;
+//            }
+//
+//        }
+//    });
 
-                    break;
 
-                case R.id.manager_search:
-                    Intent intent1 = new Intent(ManagerBuildings.this, ManagerSearch.class);
-                    startActivity(intent1);
-                    break;
 
-                case R.id.manager_home:
-                    Intent intent2 = new Intent(ManagerBuildings.this, ManagerHome.class);
-                    startActivity(intent2);
-                    break;
-            }
-            return false;
-        }
-    });
+
 
 
 }
