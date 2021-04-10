@@ -6,6 +6,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -29,18 +30,19 @@ public class ManagerBuildings extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.manager_building:
+
                         break;
 
                     case R.id.manager_search:
+                        Intent intent1 = new Intent(ManagerBuildings.this, ManagerSearch.class);
+                        startActivity(intent1);
                         break;
 
                     case R.id.manager_home:
+                        Intent intent2 = new Intent(ManagerBuildings.this, ManagerHome.class);
+                        startActivity(intent2);
                         break;
                 }
-
-
-
-
                 return false;
             }
         });

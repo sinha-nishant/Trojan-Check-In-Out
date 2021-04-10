@@ -1,8 +1,12 @@
 package com.example.app.account_UI;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -22,6 +26,7 @@ import com.example.app.R;
 import com.example.app.building.Building;
 import com.example.app.firebaseDB.FbQuery;
 import com.example.app.searchResults;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.SimpleDateFormat;
@@ -49,6 +54,7 @@ public class ManagerSearch extends AppCompatActivity {
     Button submitBtn;
     Bundle bundle;
     Boolean canSearch=false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -219,4 +225,6 @@ public class ManagerSearch extends AppCompatActivity {
         i.putExtras(bundle);
         startActivity(i);
     }
+
+
 }
