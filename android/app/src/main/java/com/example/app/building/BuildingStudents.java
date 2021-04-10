@@ -3,6 +3,7 @@ package com.example.app.building;
 import android.content.Intent;
 import android.os.Bundle;
 import android.sax.Element;
+import android.transition.Explode;
 import android.transition.Fade;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -54,16 +55,14 @@ public class BuildingStudents extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         String buildingName= extras.getString("buildingName");
         Query query = fireStore.collection("Buildings").whereEqualTo("name",buildingName);
-        Fade fade = new Fade();
         View decor = getWindow().getDecorView();
-        fade.excludeTarget(decor.findViewById(R.id.action_bar_container),true);
-        fade.excludeTarget(android.R.id.statusBarBackground,true);
-        fade.excludeTarget(android.R.id.navigationBarBackground,true);
-        getWindow().setEnterTransition(fade);
-        getWindow().setEnterTransition(fade);
-
-
-
+        Explode explode = new Explode();
+        explode.excludeTarget(decor.findViewById(R.id.action_bar_container),true);
+        explode.excludeTarget(android.R.id.statusBarBackground,true);
+        explode.excludeTarget(android.R.id.navigationBarBackground,true);
+        explode.setDuration(500);
+        getWindow().setEnterTransition(explode);
+        getWindow().setExitTransition(explode);
         //RecyclerOptions
         FirestoreRecyclerOptions<Building> options = new FirestoreRecyclerOptions.Builder<Building>().setQuery(query,Building.class).build();
         firestoreRecyclerAdapter = new FirestoreRecyclerAdapter<Building, BuildingStudents.StudentIdViewHolder>(options) {
