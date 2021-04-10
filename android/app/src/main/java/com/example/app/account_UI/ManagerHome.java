@@ -1,8 +1,12 @@
 package com.example.app.account_UI;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -33,6 +37,7 @@ import com.example.app.log_create.LogInOut;
 import com.example.app.log_create.uploadPhoto;
 import com.example.app.pre_login_UI.StartPage;
 import com.example.app.users.Account;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -428,6 +433,33 @@ public class ManagerHome extends AppCompatActivity {
         Intent i= new Intent(this, ManagerSearch.class);
         startActivity(i);
     }
+
+//    BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+//    NavController navController = Navigation.findNavController(this,  R.id.fragment2);
+//
+//        //NavigationUI.setupWithNavController(bottomNavigationView, navController);
+//
+//        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+//        @Override
+//        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//            switch (item.getItemId()){
+//                case R.id.manager_building:
+//
+//                    break;
+//
+//                case R.id.manager_search:
+//                    Intent intent1 = new Intent(ManagerBuildings.this, ManagerSearch.class);
+//                    startActivity(intent1);
+//                    break;
+//
+//                case R.id.manager_home:
+//                    Intent intent2 = new Intent(ManagerBuildings.this, ManagerHome.class);
+//                    startActivity(intent2);
+//                    break;
+//            }
+//            return false;
+//        }
+//    });
 
 
 }
