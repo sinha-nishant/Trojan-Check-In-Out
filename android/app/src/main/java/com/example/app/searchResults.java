@@ -161,6 +161,11 @@ public class searchResults extends AppCompatActivity {
         }
         if(isBuilding!=null){
             Log.d("search","searching building as well");
+            if(!bundle.containsKey("startDate")){
+                String building = bundle.getString("buildingValue");
+                FbQuery.searchByBuilding(building,buildingMLD);
+                return;
+            }
             String startDate = bundle.getString("startDate");
             String endDate = bundle.getString("endDate");
             String startTime = bundle.getString("startTime");

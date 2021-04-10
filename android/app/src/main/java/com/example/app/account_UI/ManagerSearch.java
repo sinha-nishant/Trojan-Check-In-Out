@@ -215,6 +215,15 @@ public class ManagerSearch extends AppCompatActivity {
             canSearch=true;
 
         }
+        else if(startDate.getText().toString().isEmpty() &&
+                endDate.getText().toString().isEmpty() &&
+                startTime.getText().toString().isEmpty() &&
+                endTime.getText().toString().isEmpty() &&
+                !(selected_building.getEditText().getText().toString().isEmpty())){
+            bundle.putString("building", "yes");
+            bundle.putString("buildingValue", selected_building.getEditText().getText().toString());
+            canSearch=true;
+        }
         else if(!(startDate.getText().length()==0 && endDate.getText().length()==0 && startTime.getText().length()==0
             && endTime.getText().length()==0 && selected_building.getEditText().getText().length()==0)){
             alertDialog.setMessage("Do not partial enter building,date and time fields");
