@@ -1,6 +1,7 @@
 package com.example.app;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ public class SearchListAdaptor extends ArrayAdapter<StudentAccount> {
         TextView id;
         ImageView pic;
         TextView major;
+        TextView isActive;
         ListView history;
     }
 
@@ -51,6 +53,15 @@ public class SearchListAdaptor extends ArrayAdapter<StudentAccount> {
         String id= getItem(position).getUscID().toString();
         String url= getItem(position).getProfilePicture();
         String major = getItem(position).getMajor();
+
+        String isActive;
+        if (getItem(position).getIsActive() == null || getItem(position).getIsActive()) {
+            isActive = "Not deleted";
+        }
+        else {
+            isActive = "DELETED";
+        }
+
         List<StudentActivity> history = getItem(position).getActivity();
 
         final View result;
@@ -66,6 +77,7 @@ public class SearchListAdaptor extends ArrayAdapter<StudentAccount> {
             holder.id= convertView.findViewById(R.id.uscID);
             holder.pic= convertView.findViewById(R.id.majorPic);
             holder.major = convertView.findViewById(R.id.major);
+            holder.isActive = convertView.findViewById(R.id.isActive);
             holder.history = convertView.findViewById(R.id.visitHistory);
 
             MaterialCardView materialCardView = convertView.findViewById(R.id.card);
@@ -98,6 +110,10 @@ public class SearchListAdaptor extends ArrayAdapter<StudentAccount> {
         holder.email.setText(email);
         holder.id.setText(id);
         holder.major.setText(major);
+        holder.isActive.setText(isActive);
+        if (holder.isActive.getText() == "DELETED") {
+            holder.isActive.setTextColor(Color.RED);
+        }
 
         ArrayList<String> visits = new ArrayList<>();
         for(StudentActivity visit: history)
