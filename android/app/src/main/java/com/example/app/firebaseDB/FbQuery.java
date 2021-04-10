@@ -436,36 +436,6 @@ public class FbQuery implements FirestoreConnector {
     }
 
     /**
-     * Search by building
-     * @param buildingName Name of building that's history is desired
-     * @param studentsMLD List of StudentAccounts
-     */
-    public static void searchByBuilding(String buildingName, MutableLiveData<List<StudentAccount>> studentsMLD) {
-        FirestoreConnector.getDB().collection("Activities")
-                .whereEqualTo("buildingName", buildingName).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    if (!task.getResult().isEmpty()) {
-                        HashSet<Long> student_ids = new HashSet<>();
-                        for (DocumentSnapshot ds : task.getResult().getDocuments()) {
-                            Long uscID = ds.getLong("uscID");
-                            student_ids.add(uscID);
-                        }
-
-                        getStudents(student_ids, studentsMLD);
-                    } else {
-                        studentsMLD.setValue(new ArrayList<>());
-                    }
-                } else {
-                    Log.d("DATE", String.valueOf(task.getException()));
-                    studentsMLD.setValue(null);
-                }
-            }
-        });
-    }
-
-    /**
      * Search by building, date, and time
      *
      * @param buildingName Name of building that's history is desired
@@ -505,7 +475,7 @@ public class FbQuery implements FirestoreConnector {
                     }
                 } else {
                     Log.d("DATE", String.valueOf(task.getException()));
-                    studentsMLD.setValue(null);
+                    studentsMLD.setValue(new ArrayList<>());
                 }
             }
         });

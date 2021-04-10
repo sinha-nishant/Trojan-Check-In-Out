@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.icu.util.BuddhistCalendar;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
@@ -19,6 +20,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -58,6 +60,8 @@ public class searchResults extends AppCompatActivity {
         }
     }
 
+
+
     public void MutableFinished() {
         final Observer<Boolean> finished_obs = new Observer<Boolean>() {
             @Override
@@ -81,22 +85,23 @@ public class searchResults extends AppCompatActivity {
             @Override
             public void onChanged(@javax.annotation.Nullable final List<StudentAccount> accounts) {
                 if (accounts == null || accounts.size() == 0) {
-                    if (!searchResults.isEmpty())
+                    if(!searchResults.isEmpty())
                     {
                         searchResults=new HashSet<>();
                     }
                     finished.setValue(true);
                 }
                 else {
-                    if (finished.getValue()!=null){
+                    if(finished.getValue()!=null){
                         return;
                     }
-                    if (done==0){
+                    if(done==0){
                         searchResults= new HashSet<>(accounts);
                     }
                     else{
                         Set<StudentAccount> updateResults= new HashSet<>();
-                        for (StudentAccount acc: accounts){
+                        for(StudentAccount acc: accounts){
+                            Log.d("search","in loop");
                             if(searchResults.contains(acc)){
                                 updateResults.add(acc);
                             }
@@ -105,10 +110,13 @@ public class searchResults extends AppCompatActivity {
                             }
                         }
                         searchResults= updateResults;
+                        Log.d("search",searchResults.toString());
+
                     }
                     done++;
-                    if (done.equals(total)){
+                    if(done.equals(total)){
                         finished.setValue(true);
+
                     }
                 }
             }
@@ -134,6 +142,8 @@ public class searchResults extends AppCompatActivity {
                 });
         alertDialog = builder.create();
     }
+
+
 
     public void searchMany() throws ParseException {
 
@@ -173,6 +183,7 @@ public class searchResults extends AppCompatActivity {
             Date finalDate = sdf.parse(endString);
             FbQuery.search(building, initialDate, finalDate, buildingMLD);
         }
+
     }
 
     private void openManagerSearch() {
