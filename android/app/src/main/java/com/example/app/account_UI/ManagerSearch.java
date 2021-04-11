@@ -72,6 +72,14 @@ public class ManagerSearch extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.manager_home).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent2 = new Intent(ManagerSearch.this, ManagerHome.class);
+                startActivity(intent2);
+            }
+        });
+
 
 
         fName = findViewById(R.id.first_name_input);

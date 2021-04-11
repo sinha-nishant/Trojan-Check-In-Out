@@ -21,9 +21,9 @@ public class ManagerBuildings extends AppCompatActivity {
         setContentView(R.layout.activity_manager_buildings);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        NavController navController = Navigation.findNavController(this,  R.id.fragment2);
+        //NavController navController = Navigation.findNavController(this,  R.id.fragment2);
 
-        NavigationUI.setupWithNavController(bottomNavigationView, navController);
+        //NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

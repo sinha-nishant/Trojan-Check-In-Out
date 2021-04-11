@@ -60,6 +60,25 @@ public class ManagerHome extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager_home);
+
+        findViewById(R.id.manager_building).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(ManagerHome.this, ManagerBuildings.class);
+                startActivity(intent1);
+            }
+        });
+
+        findViewById(R.id.manager_search).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent2 = new Intent(ManagerHome.this, ManagerSearch.class);
+                startActivity(intent2);
+            }
+        });
+
+
+
         Log.d("ManagerProfile","in manager Profile");
         SharedPreferences sp=  activity.getSharedPreferences("sharedPrefs",activity.MODE_PRIVATE);
 
