@@ -107,8 +107,6 @@ private String m_Text = "";
                                         return true;
                                     case R.id.students_menu:
                                         //handle menu2 click
-                                        Toast toast2 = Toast.makeText(getApplicationContext(),"Students List Pressed",Toast.LENGTH_SHORT);
-                                        toast2.show();
                                         openStudentList(view,model.getName());
                                         return true;
 
@@ -196,7 +194,7 @@ private String m_Text = "";
                      UpdateCapacityService.updateCapacity(buildingName,new_capacity,updatedMLD);
                  }else if(new_capacity<currentOccupancy){
                      //display error message
-                     String errorMessage = "Error: Capacity entered is less than or equal to current occupancy";
+                     String errorMessage = "Error: Capacity entered is less than current occupancy";
                      Toast toast = Toast.makeText(getApplicationContext(),errorMessage,Toast.LENGTH_LONG);
                      toast.show();
                  }
