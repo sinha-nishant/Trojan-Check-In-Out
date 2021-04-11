@@ -32,6 +32,8 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import static android.text.Html.fromHtml;
+
 public class ManagerCSV extends AppCompatActivity {
     private Integer readRequestCode = 123;
     private Button upload;
@@ -146,12 +148,13 @@ public class ManagerCSV extends AppCompatActivity {
             public void onChanged(@Nullable final Boolean success){
               if(success){
                   setBuilder("Buildings have been updated","If any buildings were not updated, the names will be displayed");
-                  String textViewMessage = "Following Buildings Not Updated:\n";
+                  String textViewMessage = "<u>Following Buildings Not Updated<u/><br/>";
                   for(int i=0;i<cannotUpdate.size();i++){
-                      textViewMessage+=cannotUpdate.get(i)+"\n";
+                      textViewMessage+="<b>"+cannotUpdate.get(i)+"</b><br/>";
 
                   }
-                  notUpdatedNames.setText(textViewMessage);
+                  notUpdatedNames.setText(fromHtml(textViewMessage,1));
+
               }else{
                   setBuilder("Error","Something went wrong on our side. Please try again later");
 
