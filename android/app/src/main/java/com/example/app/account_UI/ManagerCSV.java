@@ -38,7 +38,7 @@ public class ManagerCSV extends AppCompatActivity {
     private Integer readRequestCode = 123;
     private Button upload;
     private TextView fileName;
-    private String fileNamePrefix = "File Chosen:";
+    private String fileNamePrefix = "File Chosen : ";
     private Button confirm;
     public HashMap<String, Integer> map = new HashMap<>();
     private ProgressBar loadingCircle;
@@ -148,9 +148,9 @@ public class ManagerCSV extends AppCompatActivity {
             public void onChanged(@Nullable final Boolean success){
               if(success){
                   setBuilder("Buildings have been updated","If any buildings were not updated, the names will be displayed");
-                  String textViewMessage = "<u>Following Buildings Not Updated<u/><br/>";
+                  String textViewMessage = "<u>Following Buildings Not Updated</u><br/>";
                   for(int i=0;i<cannotUpdate.size();i++){
-                      textViewMessage+="<b>"+cannotUpdate.get(i)+"</b><br/>";
+                      textViewMessage+="<b>"+cannotUpdate.get(i)+"</b><br/><br/>";
 
                   }
                   notUpdatedNames.setText(fromHtml(textViewMessage,1));
