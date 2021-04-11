@@ -25,6 +25,7 @@ import android.widget.TimePicker;
 
 import com.example.app.R;
 import com.example.app.building.Building;
+import com.example.app.building.BuildingsOccupancyList;
 import com.example.app.firebaseDB.FbQuery;
 import com.example.app.searchResults;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -67,7 +68,7 @@ public class ManagerSearch extends AppCompatActivity {
         findViewById(R.id.manager_building).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(ManagerSearch.this, ManagerBuildings.class);
+                Intent intent1 = new Intent(ManagerSearch.this, BuildingsOccupancyList.class);
                 startActivity(intent1);
             }
         });
@@ -255,35 +256,6 @@ public class ManagerSearch extends AppCompatActivity {
         i.putExtras(bundle);
         startActivity(i);
     }
-
-//    BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView2);
-
-//    BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
-//    NavController navController = Navigation.findNavController(this,  R.id.fragment2);
-//
-//    NavigationUI.setupWithNavController(bottomNavigationView, navController);
-
-
-//
-//        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-//        @Override
-//        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//            switch (item.getItemId()){
-//                case R.id.manager_building:
-//                    Intent intent1 = new Intent(ManagerSearch.this, ManagerBuildings.class);
-//                    startActivity(intent1);
-//                    return false;
-//
-//                //case R.id.manager_search:
-//
-//                case R.id.manager_home:
-//                    Intent intent2 = new Intent(ManagerSearch.this, ManagerHome.class);
-//                    startActivity(intent2);
-//                    return false;
-//            }
-//
-//        }
-//    });
 
 
 

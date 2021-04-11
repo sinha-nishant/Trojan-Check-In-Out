@@ -64,7 +64,7 @@ public class ManagerHome extends AppCompatActivity {
         findViewById(R.id.manager_building).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(ManagerHome.this, ManagerBuildings.class);
+                Intent intent1 = new Intent(ManagerHome.this, BuildingsOccupancyList.class);
                 startActivity(intent1);
             }
         });
@@ -489,33 +489,6 @@ public class ManagerHome extends AppCompatActivity {
         Intent i= new Intent(this, ManagerSearch.class);
         startActivity(i);
     }
-
-//    BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
-//    NavController navController = Navigation.findNavController(this,  R.id.fragment2);
-//
-//        //NavigationUI.setupWithNavController(bottomNavigationView, navController);
-//
-//        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-//        @Override
-//        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//            switch (item.getItemId()){
-//                case R.id.manager_building:
-//
-//                    break;
-//
-//                case R.id.manager_search:
-//                    Intent intent1 = new Intent(ManagerBuildings.this, ManagerSearch.class);
-//                    startActivity(intent1);
-//                    break;
-//
-//                case R.id.manager_home:
-//                    Intent intent2 = new Intent(ManagerBuildings.this, ManagerHome.class);
-//                    startActivity(intent2);
-//                    break;
-//            }
-//            return false;
-//        }
-//    });
 
 
 }

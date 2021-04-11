@@ -25,6 +25,7 @@
 
  import com.example.app.R;
  import com.example.app.account_UI.ManagerHome;
+ import com.example.app.account_UI.ManagerSearch;
  import com.example.app.firebaseDB.FirestoreConnector;
  import com.example.app.services.QRGeneration;
  import com.example.app.services.UpdateCapacityService;
@@ -50,6 +51,21 @@ private String m_Text = "";
         setContentView(R.layout.activity_hassib_test);
         fireStore = FirestoreConnector.getDB();
         mFirestoreData = findViewById(R.id.studentRView);
+         findViewById(R.id.manager_search).setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 Intent intent1 = new Intent(BuildingsOccupancyList.this, ManagerSearch.class);
+                 startActivity(intent1);
+             }
+         });
+
+         findViewById(R.id.manager_home).setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 Intent intent2 = new Intent(BuildingsOccupancyList.this, ManagerHome.class);
+                 startActivity(intent2);
+             }
+         });
 
         //Query
         Query query = fireStore.collection("Buildings").orderBy("name");

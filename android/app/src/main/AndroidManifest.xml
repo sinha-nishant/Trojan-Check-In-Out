@@ -22,9 +22,6 @@
         <activity android:name=".building.BuildingStudents" />
         <activity android:name=".services.UrlUploadImage" />
         <activity android:name=".account_UI.ManagerCSV" />
-        <activity
-            android:name=".account_UI.ManagerBuildings"
-            android:exported="true" />
         <activity android:name=".account_UI.ManagerHome" />
         <activity android:name=".account_UI.StudentHistory" />
         <activity android:name=".account_UI.StudentProfile" />
