@@ -67,7 +67,9 @@
                     android:id="@+id/first_name_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                />
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:minLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
             <!-- Last Name -->
             <com.google.android.material.textfield.TextInputLayout
@@ -86,7 +88,9 @@
                     android:id="@+id/last_name_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                />
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:minLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
         </androidx.appcompat.widget.LinearLayoutCompat>
         <TextView

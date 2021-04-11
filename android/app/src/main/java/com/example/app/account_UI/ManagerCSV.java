@@ -111,7 +111,6 @@ public class ManagerCSV extends AppCompatActivity {
         cannotUpdate.clear();
         if(bufferedReader.ready()){
             bufferedReader.readLine();
-            bufferedReader.readLine();
             String line = bufferedReader.readLine();
             while(line!=null){
                 List<String> caps = Arrays.asList(line.split(","));
