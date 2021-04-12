@@ -23,10 +23,6 @@ public class StudentSignUpStart extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_sign_up_start);
 
-        //Get the bundle
-        //Bundle bundle = getIntent().getExtras();
-        //Extract the data…
-        //String stuff = bundle.getString(“stuff”);
 
         emailInput = (EditText) findViewById(R.id.studentSignUpEmailAddress);
         passwordInput = (EditText) findViewById(R.id.studentSignUpPassword);

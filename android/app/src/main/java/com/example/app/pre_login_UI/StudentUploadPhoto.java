@@ -87,7 +87,6 @@ public class StudentUploadPhoto extends AppCompatActivity {
         major = bundle.getString("major");
 
         if(bundle.containsKey("url")){
-            Log.d("uriReturned", bundle.getString("url"));
             selectedImage=Uri.parse(bundle.getString("url"));
             Glide.with(this)
                     .load(selectedImage.toString()).error(Glide.with(this).load(R.drawable.profile_blank)).diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -136,7 +135,6 @@ public class StudentUploadPhoto extends AppCompatActivity {
             if (requestCode == SELECT_PICTURE) {
                 // Get the url of the image from data
                 selectedImage = data.getData();
-                Log.i("Image",selectedImage.toString());
                 if (null != selectedImage) {
                     // update the preview image in the layout
                     uploadImage.setImageURI(selectedImage);
@@ -239,8 +237,6 @@ public class StudentUploadPhoto extends AppCompatActivity {
                     //stop progress bar
                     studentProgress.setVisibility(View.GONE);
                     //Generate popupmessage
-                    Log.d("Create", "success");
-
 
                     LogInOut.SaveData(StudentUploadPhoto.this,email,Long.valueOf(id));
                     bUploadImage.setEnabled(true);
@@ -250,7 +246,6 @@ public class StudentUploadPhoto extends AppCompatActivity {
                 }
                 else{
                     studentProgress.setVisibility(View.GONE);
-                    //switch page
                     bUploadImage.setEnabled(true);
                     submitBtn.setEnabled(true);
                     alertDialog.setMessage("Could not successfully create your account");
@@ -270,13 +265,10 @@ public class StudentUploadPhoto extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable final Boolean exists){
                 if(!exists){
-
                     FbQuery.checkUSCidExists(Long.valueOf(id),id_success);
                 }
                 else{
                     studentProgress.setVisibility(View.GONE);
-                    //switch pagebUploadImage.setEnabled(false);
-                    Log.d("email","in student account email exists "+email);
                     bUploadImage.setEnabled(true);
                     submitBtn.setEnabled(true);
                     alertDialog.setMessage("This Email is already in use");
@@ -299,7 +291,6 @@ public class StudentUploadPhoto extends AppCompatActivity {
                 }
                 else{
                     studentProgress.setVisibility(View.GONE);
-                    //switch page
                     bUploadImage.setEnabled(true);
                     submitBtn.setEnabled(true);
                     alertDialog.setMessage("This ID is already in use");
@@ -324,19 +315,11 @@ public class StudentUploadPhoto extends AppCompatActivity {
                     }
                     if(ImageSet==1){
                     String uri =selectedImage.toString();
-                    Log.d("uploadUri", uri);
                     InputStream exampleInputStream=null;
 
 
                     try {
                         exampleInputStream = getContentResolver().openInputStream(Uri.parse(uri));
-                        if(exampleInputStream==null){
-                            Log.i("upload", "stream is null");
-                        }
-                        else{
-                            Log.i("upload", "stream is valid");
-                        }
-
 
                     } catch (FileNotFoundException e) {
                         Log.i("upload", "error in uri parsing");
@@ -371,14 +354,11 @@ public class StudentUploadPhoto extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable final Boolean isSuccess){
                 if(isSuccess){
-
-//                    FbQuery.checkUSCidExists(Long.valueOf(id),id_success);
                     CreateAccount.CreateStudent(fName, lName, email,password,Long.valueOf(id),major,create_success,true);
 
                 }
                 else{
                     studentProgress.setVisibility(View.GONE);
-                    //switch pagebUploadImage.setEnabled(false);
                     bUploadImage.setEnabled(true);
                     submitBtn.setEnabled(true);
                     alertDialog.setMessage("Could not upload image");
@@ -404,7 +384,7 @@ public class StudentUploadPhoto extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... arg0) {
-            doInBackground();   //your methods
+            doInBackground();
             return null;
         }
 
@@ -415,7 +395,6 @@ public class StudentUploadPhoto extends AppCompatActivity {
                 alertDialog.show();
             }
         }
-
 
 
         protected void doInBackground() {

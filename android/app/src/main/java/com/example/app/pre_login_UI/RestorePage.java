@@ -98,18 +98,12 @@ public class RestorePage extends AppCompatActivity {
                     pb.setVisibility(View.GONE);
                     LogInOut.SaveData(RestorePage.this,email,id);
                     alertDialog.setMessage("Succeeded in Restoring account");
-                    Log.d("firstTest",alertDialog.toString());
                     alertDialog.show();
-
-
-
                 }
                 else{
                     pb.setVisibility(View.GONE);
                     alertDialog.setMessage("Invalid Credentials");
-                    Log.d("firstTest",alertDialog.toString());
                     alertDialog.show();
-
                 }
             }
 

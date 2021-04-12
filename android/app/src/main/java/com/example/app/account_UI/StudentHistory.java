@@ -29,14 +29,8 @@ public class StudentHistory extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_history);
-
-        //BACKEND: Load in list of student activities here
-
-
         SharedPreferences sp=  getSharedPreferences("sharedPrefs",MODE_PRIVATE);
         uscID = sp.getLong("uscid",0L);
-        Log.d("history","id=  "+uscID.toString());
-
         MutableStudent();
         FbQuery.getStudent(uscID,student);
 
@@ -52,20 +46,13 @@ public class StudentHistory extends AppCompatActivity {
                     return;
                 }
                 else{
-                    Log.d("student","student found");
                     List<StudentActivity> activities= sa.getActivity();
-                    Log.d("history",sa.toString());
-                    Log.d("history",sa.getActivity().toString());
                     lv = (ListView)findViewById(R.id.buildingList);
                     buildings = new ArrayList<>(activities.size());
-
                     for(int i = 0; i < activities.size(); i++)
                         buildings.add(activities.get(i).toString());
                     ArrayAdapter<String> buildingAdapter = new ArrayAdapter(StudentHistory.this, android.R.layout.simple_list_item_1, buildings);
                     lv.setAdapter(buildingAdapter);
-
-
-
                 }
 
             }

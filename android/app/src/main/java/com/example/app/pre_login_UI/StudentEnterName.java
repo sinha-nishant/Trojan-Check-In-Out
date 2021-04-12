@@ -40,9 +40,6 @@ public class StudentEnterName extends AppCompatActivity {
                 fName = firstNameInput.getText().toString();
                 lName = lastNameInput.getText().toString();
 
-                //used for popups to user
-                //showToast(email);
-                //showToast(password);
                 if(fName.length() == 0 && lName.length() == 0)
                     showToast("First and last name are blank");
                 else if(fName.length() == 0 )
@@ -53,7 +50,6 @@ public class StudentEnterName extends AppCompatActivity {
                 {
                     //don't put info in database yet, keep passing values until completed
                     //go to next activity
-
                     openID(email, password, fName, lName);
                 }
             }

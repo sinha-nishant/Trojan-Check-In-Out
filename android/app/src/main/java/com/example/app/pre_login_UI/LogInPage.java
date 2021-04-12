@@ -60,16 +60,9 @@ public class  LogInPage extends AppCompatActivity {
                 studentProgress.setVisibility(View.VISIBLE);
                 LogInOut.LogIn(email,password,success);
 
-                //BACKEND: IF THIS EMAIL IS A STUDENT ACCOUNT,
-//                openProfileStudent();
-                //MARKUS: Manager Profile here
             }
         });
 
-    }
-    private void showToast(String text)
-    {
-        Toast.makeText(LogInPage.this, text, Toast.LENGTH_SHORT).show();
     }
 
     public void openProfileStudent() {
@@ -116,7 +109,6 @@ public class  LogInPage extends AppCompatActivity {
                                     openProfileStudent();
                                 }
 
-                                //need to check between accounts
                             }
 
                         }

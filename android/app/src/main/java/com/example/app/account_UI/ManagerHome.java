@@ -41,7 +41,7 @@ public class ManagerHome extends AppCompatActivity {
     ImageView imgView;
     TextView nameView;
     TextView emailView;
-    MutableLiveData<Account> student= new MutableLiveData<>();
+    MutableLiveData<Account> account= new MutableLiveData<>();
     MutableLiveData<Integer> delete_success= new MutableLiveData<>();
     MutableLiveData<Boolean> upload_success= new MutableLiveData<>();
     MutableLiveData<Boolean> Firebase_success= new MutableLiveData<>();
@@ -77,13 +77,8 @@ public class ManagerHome extends AppCompatActivity {
             }
         });
 
-
-
-        Log.d("ManagerProfile","in manager Profile");
         SharedPreferences sp=  activity.getSharedPreferences("sharedPrefs",activity.MODE_PRIVATE);
-
         email= sp.getString("email","");
-        Log.d("ManagerProfile", email+"ending");
         imgView= (ImageView)findViewById(R.id.imageView);
         nameView= (TextView)findViewById(R.id.textView18);
         emailView= (TextView)findViewById(R.id.textView19);
@@ -95,15 +90,15 @@ public class ManagerHome extends AppCompatActivity {
         viewBuildingBtn= findViewById(R.id.button17);
         picBtn=findViewById(R.id.ManagerProfilePic);
 
-        MutableStudent();
+        MutableAccount();
         AmplifyInit();
         DialogInit();
         DeleteDialog();
         DialogPicInit();
         MutableDelete();
-        MutableBoolean();
+        MutableUpdatePic();
         MutableFirebase();
-        FbQuery.getManager(email, student);
+        FbQuery.getManager(email, account);
 
 
     }
@@ -141,40 +136,16 @@ public class ManagerHome extends AppCompatActivity {
                 // Get the url of the image from data
                 profilePic = data.getData();
 
-                Log.i("Image",profilePic.toString());
                 if (null != profilePic) {
                     // update the preview image in the layout
 
                     String uri =profilePic.toString();
                     InputStream exampleInputStream=null;
-
-
-
                     try {
                         exampleInputStream = this.getContentResolver().openInputStream(Uri.parse(uri));
-                        if(exampleInputStream==null){
-                            Log.i("upload", "stream is null");
-                        }
-                        else{
-                            Log.i("upload", "stream is valid");
-                        }
-
 
                     } catch (FileNotFoundException e) {
                         Log.i("upload", "error in uri parsing");
-                    }
-                    if(email!=null){
-                        Log.i("photo",email);
-                    }
-                    else{
-                        Log.i("photo","email is null");
-                    }
-
-                    if(upload_success!=null){
-                        Log.i("photo",upload_success.toString());
-                    }
-                    else{
-                        Log.i("photo","mutable null");
                     }
                     pb.setVisibility(View.VISIBLE);
                     disableBtns();
@@ -240,7 +211,6 @@ public class ManagerHome extends AppCompatActivity {
                     {
                         upload();
 
-
                     }
                 });
         builder.setNegativeButton("URL",
@@ -282,7 +252,7 @@ public class ManagerHome extends AppCompatActivity {
                     public void onClick(DialogInterface dialog,
                                         int which)
                     {
-                        student.getValue().delete(delete_success);
+                        account.getValue().delete(delete_success);
 
                     }
                 });
@@ -302,27 +272,23 @@ public class ManagerHome extends AppCompatActivity {
     }
 
 
-    public void MutableStudent(){
+    public void MutableAccount(){
 
-        final Observer<Account> obs = new Observer<Account>(){
+        final Observer<Account> account_obs = new Observer<Account>(){
             @Override
-            public void onChanged(@javax.annotation.Nullable final Account a){
-                Log.d("ManagerProfile","mld changed");
-                if(a==null){
-                    Log.d("ManagerProfile","is null");
+            public void onChanged(@javax.annotation.Nullable final Account acc){
+                if(acc==null){
                     return;
                 }
                 else{
-                    Log.d("profile","in profile onchaged");
-                    Log.d("profile",a.toString());
-                    name= a.getFirstName()+ " "+ a.getLastName();
-                    email=a.getEmail();
-                    String uri=a.getProfilePicture();
+                    name= acc.getFirstName()+ " "+ acc.getLastName();
+                    email=acc.getEmail();
+                    String uri=acc.getProfilePicture();
                     if(uri==null){
                         profilePic=null;
                     }
                     else{
-                        profilePic=Uri.parse(a.getProfilePicture());
+                        profilePic=Uri.parse(acc.getProfilePicture());
                     }
                     nameView.setText(name);
                     emailView.setText(email);
@@ -337,20 +303,14 @@ public class ManagerHome extends AppCompatActivity {
             }
 
         };
-        student.observe(this, obs);
+        account.observe(this, account_obs);
     }
 
-    public void MutableBoolean(){
-        final Observer<Boolean> obs2 = new Observer<Boolean>(){
+    public void MutableUpdatePic(){
+        final Observer<Boolean> update_obs = new Observer<Boolean>(){
             @Override
-            public void onChanged(@javax.annotation.Nullable final Boolean b){
-                if(b){
-                    if(profilePic==null){
-                        Log.d("Check", "profile pic is null");
-                    }
-                    if(imgView==null){
-                        Log.d("Check", "img is null");
-                    }
+            public void onChanged(@javax.annotation.Nullable final Boolean isSuccess){
+                if(isSuccess){
                     FbUpdate.updatePhoto(email,Firebase_success);
                 }
                 else{
@@ -363,20 +323,14 @@ public class ManagerHome extends AppCompatActivity {
             }
 
         };
-        upload_success.observe(this, obs2);
+        upload_success.observe(this, update_obs);
     }
 
     public void MutableFirebase(){
-        final Observer<Boolean> obs3 = new Observer<Boolean>(){
+        final Observer<Boolean> firebase_obs = new Observer<Boolean>(){
             @Override
-            public void onChanged(@javax.annotation.Nullable final Boolean b){
-                if(b){
-                    if(profilePic==null){
-                        Log.d("Check", "profile pic is null");
-                    }
-                    if(imgView==null){
-                        Log.d("Check", "img is null");
-                    }
+            public void onChanged(@javax.annotation.Nullable final Boolean isSuccess){
+                if(isSuccess){
                     Glide.with(activity).load(profilePic.toString()).error(Glide.with(imgView).load(R.drawable.profile_blank)).diskCacheStrategy(DiskCacheStrategy.NONE)
                             .skipMemoryCache(true).into(imgView);
                     pb.setVisibility(View.GONE);
@@ -394,7 +348,7 @@ public class ManagerHome extends AppCompatActivity {
             }
 
         };
-        Firebase_success.observe(this, obs3);
+        Firebase_success.observe(this, firebase_obs);
 
     }
 
@@ -416,7 +370,7 @@ public class ManagerHome extends AppCompatActivity {
     }
 
     public void MutableDelete(){
-        final Observer<Integer> obs3 = new Observer<Integer>(){
+        final Observer<Integer> delete_obs = new Observer<Integer>(){
             @Override
             public void onChanged(@javax.annotation.Nullable final Integer result){
                 if(result==null){
@@ -441,7 +395,7 @@ public class ManagerHome extends AppCompatActivity {
             }
 
         };
-        delete_success.observe(this, obs3);
+        delete_success.observe(this, delete_obs);
     }
 
 

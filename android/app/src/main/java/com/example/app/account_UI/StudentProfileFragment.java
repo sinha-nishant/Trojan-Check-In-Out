@@ -144,28 +144,9 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
 
                     try {
                         exampleInputStream = getActivity().getContentResolver().openInputStream(Uri.parse(uri));
-                        if(exampleInputStream == null){
-                            Log.i("upload", "stream is null");
-                        }
-                        else{
-                            Log.i("upload", "stream is valid");
-                        }
 
                     } catch (FileNotFoundException e) {
                         Log.i("upload", "error in uri parsing");
-                    }
-                    if (str_email != null){
-                        Log.i("photo",str_email);
-                    }
-                    else {
-                        Log.i("photo","email is null");
-                    }
-
-                    if (upload_success != null) {
-                        Log.i("photo",upload_success.toString());
-                    }
-                    else {
-                        Log.i("photo","mutable null");
                     }
                     pb.setVisibility(View.VISIBLE);
                     uploadPhoto.update(exampleInputStream,str_email,upload_success);
@@ -212,8 +193,6 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
                     {
                         UploadBtn.setEnabled(false);
                         imageChooser();
-
-
                     }
                 });
         builder.setNegativeButton("URL",
@@ -248,7 +227,6 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
             @Override
             public void onChanged(@javax.annotation.Nullable final StudentAccount sa){
                 if(sa == null) {
-                    Log.d("profile","is null");
                     return;
                 }
                 else {
@@ -297,13 +275,6 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
             @Override
             public void onChanged(@javax.annotation.Nullable final Boolean uploadSuccess){
                 if(uploadSuccess){
-                    if(profilepic==null){
-                        Log.d("Check", "profile pic is null");
-                    }
-                    if(img==null){
-                        Log.d("Check", "img is null");
-                    }
-
                     FbUpdate.updatePhoto(str_email, firebase_success);
                 }
                 else{
@@ -322,12 +293,6 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
             @Override
             public void onChanged(@javax.annotation.Nullable final Boolean firebaseSuccess){
                 if(firebaseSuccess){
-                    if(profilepic == null) {
-                        Log.d("Check", "profile pic is null");
-                    }
-                    if(img == null) {
-                        Log.d("Check", "img is null");
-                    }
                     img = getView().findViewById(R.id.imageView2);
                     Glide.with(getActivity()).load(profilepic.toString()).error(Glide.with(img).load(R.drawable.profile_blank)).diskCacheStrategy(DiskCacheStrategy.NONE)
                             .skipMemoryCache(true).into(img);

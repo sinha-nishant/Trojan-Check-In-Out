@@ -97,11 +97,10 @@ public class StudentProfileMenu extends Fragment {
         DialogInit();
         DeleteDialog();
         MutableStudent();
-        MutableBoolean();
+        MutableDelete();
         MutableCheckOut();
         SharedPreferences sp=  getContext().getSharedPreferences("sharedPrefs",MODE_PRIVATE);
         Long id = sp.getLong("uscid",123456790L);
-        Log.d("StudentProfile",id+"ending");
         uscID=id.toString();
         FbQuery.getStudent(id,student);
     }
@@ -160,10 +159,8 @@ public class StudentProfileMenu extends Fragment {
         manualCheckOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("Calling manual check out","line 156");
                 disableBtns();
                manualCheckOut();
-                Log.d("After manualcheckout","line 158");
 
             }
         });
@@ -220,10 +217,6 @@ public class StudentProfileMenu extends Fragment {
 
                         pb.setVisibility(View.VISIBLE);
                         isDelete=true;
-                        if(uscID==null){
-                            Log.d("id","id is null");
-                        }
-                        Log.d("id",uscID);
                         FbQuery.getStudent(Long.valueOf((uscID)),student);
 
                     }
@@ -243,14 +236,13 @@ public class StudentProfileMenu extends Fragment {
     }
 
     public void MutableStudent(){
-        final Observer<StudentAccount> obs = new Observer<StudentAccount>(){
+        final Observer<StudentAccount> student_obs = new Observer<StudentAccount>(){
             @Override
             public void onChanged(@javax.annotation.Nullable final StudentAccount sa){
                 if(sa==null){
                     return;
                 }
                 else{
-                    Log.d("student","student found");
                     int activity_size= sa.getActivity().size();
                     if(activity_size==0){
                         building_name.setText("You are not checked into a building currently");
@@ -282,11 +274,11 @@ public class StudentProfileMenu extends Fragment {
             }
 
         };
-        student.observe(this, obs);
+        student.observe(this, student_obs);
     }
 
-    public void MutableBoolean(){
-        final Observer<Integer> obs2 = new Observer<Integer>(){
+    public void MutableDelete(){
+        final Observer<Integer> delete_obs = new Observer<Integer>(){
             @Override
             public void onChanged(@javax.annotation.Nullable final Integer result){
                 if(result==null){
@@ -314,7 +306,7 @@ public class StudentProfileMenu extends Fragment {
             }
 
         };
-        delete_success.observe(this, obs2);
+        delete_success.observe(this, delete_obs);
     }
 
     public void MutableCheckOut(){

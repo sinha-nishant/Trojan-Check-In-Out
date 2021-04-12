@@ -84,7 +84,6 @@ public class ManagerName extends AppCompatActivity {
         restoreMLDInit();
         uploadMLDInit();
         if(bundle.containsKey("url")){
-            Log.d("uriReturned", bundle.getString("url"));
             selectedImage=Uri.parse(bundle.getString("url"));
             Glide.with(this)
                     .load(selectedImage.toString()).error(Glide.with(this).load(R.drawable.profile_blank)).diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -164,7 +163,6 @@ public class ManagerName extends AppCompatActivity {
             if (requestCode == SELECT_PICTURE) {
                 // Get the url of the image from data
                 selectedImage = data.getData();
-                Log.i("Image",selectedImage.toString());
                 if (null != selectedImage) {
                     // update the preview image in the layout
                     img.setImageURI(selectedImage);
@@ -191,10 +189,6 @@ public class ManagerName extends AppCompatActivity {
                if(isSuccess){
                    //stop progress bar
                    pb.setVisibility(View.GONE);
-                   //Generate popupmessage
-                   Log.d("Create", "success");
-
-
                    LogInOut.SaveData(ManagerName.this,email,0L);
                    profileButton.setEnabled(true);
                    submitButton.setEnabled(true);
@@ -203,7 +197,6 @@ public class ManagerName extends AppCompatActivity {
                }
                else{
                    pb.setVisibility(View.GONE);
-                   //switch page
                    profileButton.setEnabled(true);
                    submitButton.setEnabled(true);
                    alertDialog.setMessage("Could not successfully create your account");
@@ -221,14 +214,11 @@ public class ManagerName extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable final Boolean isSuccess){
                 if(isSuccess){
-
-//                    FbQuery.checkUSCidExists(Long.valueOf(id),id_success);
                     CreateAccount.CreateManager(fName, lName, email,password,create_success,true);
 
                 }
                 else{
                     pb.setVisibility(View.GONE);
-                    //switch pagebUploadImage.setEnabled(false);
                     profileButton.setEnabled(true);
                     submitButton.setEnabled(true);
                     alertDialog.setMessage("Could not upload image");
@@ -312,7 +302,6 @@ public class ManagerName extends AppCompatActivity {
                     pb.setVisibility(View.GONE);
                     profileButton.setEnabled(true);
                     submitButton.setEnabled(true);
-                    //switch page
                     alertDialog.setMessage("This email is already in use");
                     alertDialog.show();
                 }
@@ -328,10 +317,7 @@ public class ManagerName extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable final Boolean exists){
                 if(!exists){
-
-
                     if(ImageSet==0){
-
                         CreateAccount.CreateManager(fName,lName,email,password,create_success,false);
                         return;
                     }
@@ -340,15 +326,8 @@ public class ManagerName extends AppCompatActivity {
                         String uri =selectedImage.toString();
                         InputStream exampleInputStream=null;
 
-
                         try {
                             exampleInputStream = getContentResolver().openInputStream(Uri.parse(uri));
-                            if(exampleInputStream==null){
-                                Log.i("upload", "stream is null");
-                            }
-                            else{
-                                Log.i("upload", "stream is valid");
-                            }
 
 
                         } catch (FileNotFoundException e) {
@@ -360,15 +339,11 @@ public class ManagerName extends AppCompatActivity {
                         uploadTask task= new uploadTask();
                         task.execute();
                     }
-
-
-
                 }
                 else{
                     pb.setVisibility(View.GONE);
                     profileButton.setEnabled(true);
                     submitButton.setEnabled(true);
-                    //switch page
                     alertDialog.setMessage("This account existed before. Please restore");
                     alertDialog.show();
                 }
