@@ -83,11 +83,14 @@ public class UrlUploadImage extends AppCompatActivity {
         else{
             isCreated=true;
         }
-        if(!isCreated){
-            Button uploadBtn=  findViewById(R.id.update);
-            uploadBtn.setEnabled(false);
-            uploadBtn.setVisibility(View.GONE);
-        }
+//        if(!isCreated){
+//            Button uploadBtn=  findViewById(R.id.update);
+//            uploadBtn.setEnabled(false);
+//            uploadBtn.setVisibility(View.GONE);
+//        }
+        Button uploadBtn=  findViewById(R.id.update);
+        uploadBtn.setEnabled(false);
+        uploadBtn.setVisibility(View.GONE);
 
     }
 
@@ -194,7 +197,6 @@ public class UrlUploadImage extends AppCompatActivity {
                                   alertDialog.setMessage("Url is not valid");
                                   alertDialog.show();
                                   uploadable=false;
-                                  Log.d("uri",uploadable.toString());
                                   return false;
                               }
                               @Override
@@ -202,7 +204,11 @@ public class UrlUploadImage extends AppCompatActivity {
                                   pb.setVisibility(View.GONE);
                                   uploadable=true;
                                   finalUrl=url.getText().toString();
-                                  Log.d("uri",uploadable.toString());
+                                  if(isCreated){
+                                      Button uploadBtn=  findViewById(R.id.update);
+                                      uploadBtn.setEnabled(true);
+                                      uploadBtn.setVisibility(View.VISIBLE);
+                                  }
                                   return false;
                               }
                           }

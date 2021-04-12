@@ -1,4 +1,4 @@
-package com.example.app;
+package com.example.app.services;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.app.R;
 import com.example.app.users.StudentAccount;
 import com.example.app.users.StudentActivity;
 import com.google.android.material.card.MaterialCardView;

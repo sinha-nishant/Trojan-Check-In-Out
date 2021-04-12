@@ -1,12 +1,8 @@
 package com.example.app.account_UI;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -14,7 +10,6 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -27,8 +22,6 @@ import com.example.app.R;
 import com.example.app.building.Building;
 import com.example.app.building.BuildingsOccupancyList;
 import com.example.app.firebaseDB.FbQuery;
-import com.example.app.searchResults;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.SimpleDateFormat;

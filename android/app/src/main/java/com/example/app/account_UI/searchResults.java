@@ -1,4 +1,4 @@
-package com.example.app;
+package com.example.app.account_UI;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
@@ -11,7 +11,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
 
-import com.example.app.account_UI.ManagerSearch;
+import com.example.app.R;
+import com.example.app.services.SearchListAdaptor;
 import com.example.app.firebaseDB.FbQuery;
 import com.example.app.users.StudentAccount;
 
