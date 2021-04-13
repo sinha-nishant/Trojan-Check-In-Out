@@ -100,6 +100,7 @@ public class BuildingStudents extends AppCompatActivity {
             public void onChanged(@Nullable final StudentAccount student) {
                 intent.putExtra("STUDENT_NAME",(student.getFirstName()+" "+student.getLastName()));
                 intent.putExtra("STUDENT_MAJOR", student.getMajor());
+                intent.putExtra("STUDENT_EMAIL", student.getEmail());
                 studentActivityList = student.getActivity();
                 intent.putExtra("STUDENT_IMAGE",student.getProfilePicture());
                 startActivity(intent);

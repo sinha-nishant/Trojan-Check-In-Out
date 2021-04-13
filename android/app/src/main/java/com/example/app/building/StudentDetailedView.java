@@ -42,6 +42,9 @@ public class StudentDetailedView extends AppCompatActivity {
         TextView studentHistoryTextView = findViewById(R.id.studentProfileHistory);
         studentHistoryTextView.setMovementMethod(new ScrollingMovementMethod());
         ImageView studentProfileImage = findViewById(R.id.studentImageView);
+        String studentEmail = extras.getString("STUDENT_EMAIL");
+        TextView studentEmailTextView = findViewById(R.id.studentProfileEmail);
+        studentEmailTextView.append(studentEmail);
         Glide.with(this).load(extras.getString("STUDENT_IMAGE")).placeholder(R.drawable.profile_blank).into(studentProfileImage);
         studentHistoryTextView.setText("");
         for(int i =0;i<BuildingStudents.studentActivityList.size();i++){

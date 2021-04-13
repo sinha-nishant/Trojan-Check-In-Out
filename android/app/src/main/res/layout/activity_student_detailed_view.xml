@@ -61,6 +61,16 @@
                         android:transitionName="student_profile_transition"
                         />
                     <TextView
+                        android:id="@+id/studentProfileEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:textAppearance="?attr/textAppearanceSubtitle2"
+                        android:textSize="16dp"
+                        android:layout_gravity="center"
+                        android:text="USC Email: "
+                        />
+                    <TextView
                         android:id="@+id/studentProfileMajor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
