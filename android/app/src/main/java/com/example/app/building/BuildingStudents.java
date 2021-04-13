@@ -55,14 +55,6 @@ public class BuildingStudents extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         String buildingName= extras.getString("buildingName");
         Query query = fireStore.collection("Buildings").whereEqualTo("name",buildingName);
-        View decor = getWindow().getDecorView();
-        Explode explode = new Explode();
-        explode.excludeTarget(decor.findViewById(R.id.action_bar_container),true);
-        explode.excludeTarget(android.R.id.statusBarBackground,true);
-        explode.excludeTarget(android.R.id.navigationBarBackground,true);
-        explode.setDuration(500);
-        getWindow().setEnterTransition(explode);
-        getWindow().setExitTransition(explode);
         //RecyclerOptions
         FirestoreRecyclerOptions<Building> options = new FirestoreRecyclerOptions.Builder<Building>().setQuery(query,Building.class).build();
         firestoreRecyclerAdapter = new FirestoreRecyclerAdapter<Building, BuildingStudents.StudentIdViewHolder>(options) {
@@ -83,7 +75,7 @@ public class BuildingStudents extends AppCompatActivity {
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        startTransition(mFirestoreData.findViewHolderForAdapterPosition(position).itemView.findViewById(R.id.idTextView));
+                        startTransition(adapter.getItem(position).toString());
                     }
                 });
             }
@@ -99,12 +91,10 @@ public class BuildingStudents extends AppCompatActivity {
         firestoreRecyclerAdapter.startListening();
     }
 
-    private void startTransition(TextView element) {
+    private void startTransition(String id) {
         Intent intent = new Intent(BuildingStudents.this, StudentDetailedView.class);
-        intent.putExtra("STUDENT_ID", element.getText());
+        intent.putExtra("STUDENT_ID", id);
         MutableLiveData<StudentAccount> studentDetailMLD = new MutableLiveData<>();
-        ActivityOptionsCompat optionsCompat =ActivityOptionsCompat.makeSceneTransitionAnimation(BuildingStudents.this,element, "student_profile_transition");
-
         final Observer<StudentAccount> studentDetailAccountObserver = new Observer<StudentAccount>() {
             @Override
             public void onChanged(@Nullable final StudentAccount student) {
@@ -112,12 +102,11 @@ public class BuildingStudents extends AppCompatActivity {
                 intent.putExtra("STUDENT_MAJOR", student.getMajor());
                 studentActivityList = student.getActivity();
                 intent.putExtra("STUDENT_IMAGE",student.getProfilePicture());
-                startActivity(intent,optionsCompat.toBundle());
+                startActivity(intent);
             }
         };
         studentDetailMLD.observe(BuildingStudents.this,studentDetailAccountObserver);
-        FbQuery.getStudent(Long.parseLong(element.getText().toString()),studentDetailMLD);
-//       startActivity(intent,optionsCompat.toBundle());
+        FbQuery.getStudent(Long.parseLong(id),studentDetailMLD);
     }
     @Override
     protected void onStop() {
@@ -127,7 +116,6 @@ public class BuildingStudents extends AppCompatActivity {
 
     private class StudentIdViewHolder extends RecyclerView.ViewHolder {
         private ListView idList;
-        //        private TextView capacity;
         public StudentIdViewHolder(@NonNull View itemView) {
             super(itemView);
             idList =(ListView) itemView.findViewById((R.id.studentIDListView));

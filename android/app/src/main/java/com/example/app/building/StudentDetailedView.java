@@ -31,15 +31,7 @@ public class StudentDetailedView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_detailed_view);
-        View decor = getWindow().getDecorView();
-        Explode explode = new Explode();
-        explode.excludeTarget(decor.findViewById(R.id.action_bar_container),true);
-        explode.excludeTarget(android.R.id.statusBarBackground,true);
-        explode.excludeTarget(android.R.id.navigationBarBackground,true);
-        explode.excludeTarget(findViewById(R.id.studentProfileID),true);
-        explode.setDuration(500);
-        getWindow().setEnterTransition(explode);
-        getWindow().setExitTransition(explode);
+
         Bundle extras = getIntent().getExtras();
         TextView studentIdTextView = findViewById(R.id.studentProfileID);
         studentIdTextView.setText( "USC ID: "+extras.getString("STUDENT_ID"));
