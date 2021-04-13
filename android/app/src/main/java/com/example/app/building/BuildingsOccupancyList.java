@@ -6,6 +6,7 @@
  import android.os.Bundle;
  import android.text.InputType;
  import android.view.LayoutInflater;
+ import android.view.Menu;
  import android.view.MenuItem;
  import android.view.View;
  import android.view.ViewGroup;
@@ -31,6 +32,7 @@
  import com.example.app.services.UpdateCapacityService;
  import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
  import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+ import com.google.android.material.bottomnavigation.BottomNavigationView;
  import com.google.firebase.firestore.FirebaseFirestore;
  import com.google.firebase.firestore.Query;
 
@@ -51,6 +53,12 @@ private String m_Text = "";
         setContentView(R.layout.activity_hassib_test);
         fireStore = FirestoreConnector.getDB();
         mFirestoreData = findViewById(R.id.studentRView);
+
+         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
+         Menu menu = bottomNavigationView.getMenu();
+         MenuItem menuItem = menu.getItem(0);
+         menuItem.setChecked(true);
+
          findViewById(R.id.manager_search).setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
@@ -66,6 +74,8 @@ private String m_Text = "";
                  startActivity(intent2);
              }
          });
+
+
 
         //Query
         Query query = fireStore.collection("Buildings").orderBy("name");
