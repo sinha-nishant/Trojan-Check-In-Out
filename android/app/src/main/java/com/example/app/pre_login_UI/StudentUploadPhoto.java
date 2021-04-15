@@ -45,6 +45,7 @@ public class StudentUploadPhoto extends AppCompatActivity {
     Button bUploadImage, submitBtn;
     ProgressBar studentProgress;
     AlertDialog alertDialog;
+    AlertDialog picDialog;
     Uri selectedImage;
     Integer ImageSet=0; //0 not set, 1 set by local imaage, 2 set by url
     private final MutableLiveData<Boolean> create_success = new MutableLiveData<>();
@@ -69,6 +70,7 @@ public class StudentUploadPhoto extends AppCompatActivity {
         studentProgress.setVisibility(View.GONE);
 
         DialogInit();
+        DialogPicInit();
         createMLDInit();
         emailMLDInit();
         idMLDInit();
@@ -95,7 +97,7 @@ public class StudentUploadPhoto extends AppCompatActivity {
         }
 
 
-        bUploadImage = (Button)findViewById(R.id.uploadImageButton);
+        bUploadImage = (Button)findViewById(R.id.createPic);
         submitBtn= findViewById(R.id.submit);
 
         // handle the Choose Image button to trigger
@@ -103,7 +105,9 @@ public class StudentUploadPhoto extends AppCompatActivity {
         bUploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imageChooser();
+                picDialog.setMessage("How do you want to upload your picture");
+                picDialog.show();
+
             }
         });
     }
@@ -227,6 +231,49 @@ public class StudentUploadPhoto extends AppCompatActivity {
                     }
                 });
         alertDialog = builder.create();
+    }
+
+    public void DialogPicInit(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Status of Action");
+        builder.setCancelable(false);
+        builder.setPositiveButton("File",
+                new DialogInterface
+                        .OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                                        int which)
+                    {
+                        imageChooser();
+
+                    }
+                });
+        builder.setNegativeButton("URL",
+                new DialogInterface
+                        .OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                                        int which)
+                    {
+                        url();
+                    }
+                });
+        builder.setNeutralButton("Cancel",
+                new DialogInterface
+                        .OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                                        int which)
+                    {
+
+
+                    }
+                });
+        picDialog = builder.create();
     }
 
     private void createMLDInit(){
@@ -371,7 +418,7 @@ public class StudentUploadPhoto extends AppCompatActivity {
         upload_success.observe(this, upload_obs);
     }
 
-    public void url(View v){
+    public void url(){
         Intent i = new Intent(this, UrlUploadImage.class);
         Bundle bundle=getIntent().getExtras();
         i.putExtras(bundle);

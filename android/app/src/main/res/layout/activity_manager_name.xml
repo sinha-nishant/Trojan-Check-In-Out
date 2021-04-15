@@ -47,17 +47,6 @@
         app:layout_constraintTop_toBottomOf="@+id/managerLastName"
         app:layout_constraintVertical_bias="0.42" />
 
-    <Button
-        android:id="@+id/choosePic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Choose Picture"
-        android:backgroundTint="#980909"
-        android:textColor="#FFC107"
-        app:layout_constraintBottom_toTopOf="@+id/nameButtonM"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="89dp"
@@ -81,15 +70,15 @@
         app:layout_constraintTop_toBottomOf="@+id/nameButtonM" />
 
     <Button
-        android:id="@+id/urlupload"
+        android:id="@+id/ImageUpload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="url"
-        android:text="Url Image Upload"
+        android:layout_marginTop="52dp"
         android:backgroundTint="#980909"
+        android:text="Choose Picture"
         android:textColor="#FFC107"
-        app:layout_constraintBottom_toTopOf="@+id/choosePic"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/managerLastName" />
 

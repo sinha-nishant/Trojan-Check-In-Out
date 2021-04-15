@@ -28,18 +28,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/uploadImageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Choose Image"
-        android:backgroundTint="#980909"
-        android:textColor="#FFC107"
-        app:layout_constraintBottom_toTopOf="@+id/progressBarStudentPhoto"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageToUpload" />
-
     <ProgressBar
         android:id="@+id/progressBarStudentPhoto"
         style="?android:attr/progressBarStyle"
@@ -55,25 +43,25 @@
         android:id="@+id/submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#980909"
         android:onClick="submit"
         android:text="Submit"
-        android:backgroundTint="#980909"
         android:textColor="#FFC107"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/uploadImageButton" />
+        app:layout_constraintTop_toBottomOf="@+id/createPic" />
 
     <Button
-        android:id="@+id/urlImg"
+        android:id="@+id/createPic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="url"
-        android:text="Url Image Upload"
+        android:layout_marginTop="40dp"
         android:backgroundTint="#980909"
+        android:text="Choose Picture"
         android:textColor="#FFC107"
-        app:layout_constraintBottom_toTopOf="@+id/uploadImageButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageToUpload" />
 </androidx.constraintlayout.widget.ConstraintLayout>

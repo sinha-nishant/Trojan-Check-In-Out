@@ -52,6 +52,7 @@ public class ManagerName extends AppCompatActivity {
     String email,password;
     ProgressBar pb;
     AlertDialog alertDialog;
+    AlertDialog picDialog;
     private final MutableLiveData<Boolean> create_success = new MutableLiveData<>();
     private final MutableLiveData<Boolean> email_success = new MutableLiveData<>();
     private final MutableLiveData<Boolean> restore_success = new MutableLiveData<>();
@@ -62,7 +63,7 @@ public class ManagerName extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager_name);
 
-        profileButton= (Button) findViewById(R.id.choosePic);
+        profileButton= (Button) findViewById(R.id.ImageUpload);
         img= (ImageView) findViewById(R.id.imageView3);
         firstNameInput = (EditText) findViewById(R.id.managerFirstName);
         lastNameInput = (EditText) findViewById(R.id.managerLastName);
@@ -79,6 +80,7 @@ public class ManagerName extends AppCompatActivity {
         submitButton = (Button) findViewById(R.id.nameButtonM);
         AmplifyInit();
         DialogInit();
+        DialogPicInit();
         createMLDInit();
         emailMLDInit();
         restoreMLDInit();
@@ -93,8 +95,8 @@ public class ManagerName extends AppCompatActivity {
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imageChooser();
-
+                picDialog.setMessage("How do you want to upload your picture");
+                picDialog.show();
             }
         });
 
@@ -272,6 +274,49 @@ public class ManagerName extends AppCompatActivity {
         alertDialog = builder.create();
     }
 
+    public void DialogPicInit(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Status of Action");
+        builder.setCancelable(false);
+        builder.setPositiveButton("File",
+                new DialogInterface
+                        .OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                                        int which)
+                    {
+                        imageChooser();
+
+                    }
+                });
+        builder.setNegativeButton("URL",
+                new DialogInterface
+                        .OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                                        int which)
+                    {
+                        url();
+                    }
+                });
+        builder.setNeutralButton("Cancel",
+                new DialogInterface
+                        .OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                                        int which)
+                    {
+
+
+                    }
+                });
+        picDialog = builder.create();
+    }
+
 
     private void openProfile() {
         //What unique identifier will be used to draw up profile page? Email?
@@ -391,7 +436,7 @@ public class ManagerName extends AppCompatActivity {
         }
     }
 
-    public void url(View v){
+    public void url(){
         Intent i = new Intent(this, UrlUploadImage.class);
         Bundle bundle=getIntent().getExtras();
         i.putExtras(bundle);
