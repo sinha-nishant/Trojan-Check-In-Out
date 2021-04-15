@@ -50,6 +50,7 @@ public class ManagerSearch extends AppCompatActivity {
     private EditText endDate;
     private EditText startTime;
     private EditText endTime;
+    private EditText ID;
     Button submitBtn;
     Bundle bundle;
     Boolean canSearch=false;
@@ -100,6 +101,7 @@ public class ManagerSearch extends AppCompatActivity {
         setTime(startTime);
         setTime(endTime);
         submitBtn = findViewById(R.id.submit_button);
+        ID = findViewById(R.id.id_input);
         bundle= new Bundle();
         FbQuery.getAllBuildings(buildingsMLD);
     }
@@ -241,6 +243,20 @@ public class ManagerSearch extends AppCompatActivity {
             canSearch=false;
             return;
         }
+        if(isValidID()){
+            bundle.putString("id", "yes");
+            bundle.putString("idValue", ID.getText().toString());
+            canSearch=true;
+        }
+        else{
+            if(ID.getText().toString().length()!=0){
+                alertDialog.setMessage("Please Enter a Valid ID");
+                alertDialog.show();
+                canSearch=false;
+                return;
+            }
+
+        }
 
         if(canSearch){
             openSearch();
@@ -257,6 +273,29 @@ public class ManagerSearch extends AppCompatActivity {
         i.putExtras(bundle);
         startActivity(i);
     }
+
+    private Boolean isValidID(){
+        String id = ID.getText().toString();
+        boolean letter = false;
+        for(int i = 0; i < id.length(); i++) {
+            if (!Character.isDigit(id.charAt(i))) {
+                letter = true;
+            }
+        }
+        if(letter)
+        {
+            return false;
+        }
+        else if(id.length() != 10)
+        {
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+
+
 
 
 

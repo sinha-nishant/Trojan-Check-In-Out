@@ -122,7 +122,7 @@ public class SearchListAdaptor extends ArrayAdapter<StudentAccount> {
         ArrayAdapter<String> buildingAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_list_item_1, visits);
         holder.history.setAdapter(buildingAdapter);
 
-        Glide.with(mContext).load(url).error(Glide.with(holder.pic).load(R.drawable.profile_blank)).diskCacheStrategy(DiskCacheStrategy.NONE)
+        Glide.with(mContext).load(url).thumbnail(0.2F).error(Glide.with(holder.pic).load(R.drawable.profile_blank)).diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true).into(holder.pic);
 
         return convertView;

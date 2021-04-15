@@ -8,7 +8,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ListView;
 
 import com.example.app.R;
@@ -30,12 +29,13 @@ public class searchResults extends AppCompatActivity {
     MutableLiveData<List<StudentAccount>> nameMLD = new MutableLiveData<>();
     MutableLiveData<List<StudentAccount>> majorMLD = new MutableLiveData<>();
     MutableLiveData<List<StudentAccount>> buildingMLD = new MutableLiveData<>();
+    MutableLiveData<StudentAccount> idMLD = new MutableLiveData<>();
     MutableLiveData<Boolean> finished=new MutableLiveData<>();
     Integer total=0;
     Integer done=0;
 
     Set<StudentAccount> searchResults= new HashSet<>();
-    Boolean isName,isMajor,isBuilding;
+    Boolean isName,isMajor,isBuilding, isID;
     AlertDialog alertDialog;
     Bundle bundle;
 
@@ -51,6 +51,7 @@ public class searchResults extends AppCompatActivity {
         MutableSearchInit(nameMLD);
         MutableSearchInit(majorMLD);
         MutableSearchInit(buildingMLD);
+        MutableSearchID(idMLD);
         MutableFinished();
         try {
             searchMany();
@@ -101,9 +102,6 @@ public class searchResults extends AppCompatActivity {
                             if(searchResults.contains(acc)){
                                 updateResults.add(acc);
                             }
-                            else{
-                                Log.d("search",acc.toString());
-                            }
                         }
                         searchResults= updateResults;
                     }
@@ -115,6 +113,42 @@ public class searchResults extends AppCompatActivity {
             }
         };
         mld.observe(this, search_obs);
+    }
+
+    public void MutableSearchID(MutableLiveData<StudentAccount> mld){
+        final Observer<StudentAccount>id_obs = new Observer<StudentAccount>() {
+            @Override
+            public void onChanged(@javax.annotation.Nullable final StudentAccount account) {
+                if (account == null) {
+                    if (!searchResults.isEmpty())
+                    {
+                        searchResults=new HashSet<>();
+                    }
+                    finished.setValue(true);
+                }
+                else {
+                    if (finished.getValue()!=null){
+                        return;
+                    }
+                    if (done==0){
+                        searchResults= new HashSet<>();
+                        searchResults.add(account);
+                    }
+                    else{
+                        Set<StudentAccount> updateResults= new HashSet<>();
+                        if(searchResults.contains(account)){
+                            updateResults.add(account);
+                        }
+                        searchResults= updateResults;
+                    }
+                    done++;
+                    if (done.equals(total)){
+                        finished.setValue(true);
+                    }
+                }
+            }
+        };
+        mld.observe(this, id_obs);
     }
 
     private void DialogInit() {
@@ -147,8 +181,11 @@ public class searchResults extends AppCompatActivity {
             total++;
         }
         if(bundle.containsKey("building")){
-            Log.d("search","found building bundle");
             isBuilding=false;
+            total++;
+        }
+        if(bundle.containsKey("id")){
+            isID=false;
             total++;
         }
         if(isName!=null){
@@ -161,23 +198,28 @@ public class searchResults extends AppCompatActivity {
             FbQuery.search(major, majorMLD);
         }
         if(isBuilding!=null){
-            Log.d("search","searching building as well");
             if(!bundle.containsKey("startDate")){
                 String building = bundle.getString("buildingValue");
                 FbQuery.searchByBuilding(building,buildingMLD);
-                return;
             }
-            String startDate = bundle.getString("startDate");
-            String endDate = bundle.getString("endDate");
-            String startTime = bundle.getString("startTime");
-            String endTime = bundle.getString("endTime");
-            String building = bundle.getString("buildingValue");
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy HH:mm");
-            String startString = startDate + " " + startTime;
-            String endString = endDate + " " + endTime;
-            Date initialDate = sdf.parse(startString);
-            Date finalDate = sdf.parse(endString);
-            FbQuery.search(building, initialDate, finalDate, buildingMLD);
+            else{
+                String startDate = bundle.getString("startDate");
+                String endDate = bundle.getString("endDate");
+                String startTime = bundle.getString("startTime");
+                String endTime = bundle.getString("endTime");
+                String building = bundle.getString("buildingValue");
+                SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy HH:mm");
+                String startString = startDate + " " + startTime;
+                String endString = endDate + " " + endTime;
+                Date initialDate = sdf.parse(startString);
+                Date finalDate = sdf.parse(endString);
+                FbQuery.search(building, initialDate, finalDate, buildingMLD);
+            }
+
+        }
+        if(isID!=null){
+            String id = bundle.getString("idValue");
+            FbQuery.getStudent(Long.valueOf(id),idMLD);
         }
     }
 
