@@ -1,7 +1,5 @@
 package com.example.app.services;
 
-import android.util.Log;
-
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -22,16 +20,11 @@ public class UpdateCapacityService {
             @Override
             public void onChanged(@Nullable final HashMap<String, Building> buildingHashMap){
                 for(int i =0;i<csvBuildingNames.size();i++){
-                    if(buildingHashMap.get(csvBuildingNames.get(i))==null){
-                        Log.d("Null on",csvBuildingNames.get(i));
-                    }
-                    else if(buildingHashMap.get(csvBuildingNames.get(i)).getOccupancy()>map.get(csvBuildingNames.get(i))){
+                    if(buildingHashMap.get(csvBuildingNames.get(i)).getOccupancy()>map.get(csvBuildingNames.get(i))){
                         cannotUpdate.add(csvBuildingNames.get(i));
                         map.remove(csvBuildingNames.get(i));
                     }
                 }
-                Log.d("Can't Update",cannotUpdate.toString());
-                Log.d("Can Update",map.toString());
                 FbUpdate.updateCapacities(map,updateMLD);
             }
         };

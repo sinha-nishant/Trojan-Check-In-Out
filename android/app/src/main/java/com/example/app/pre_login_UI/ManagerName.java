@@ -1,9 +1,5 @@
 package com.example.app.pre_login_UI;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,19 +14,23 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+
 import com.amplifyframework.AmplifyException;
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.app.services.UrlUploadImage;
-import com.example.app.account_UI.ManagerHome;
 import com.example.app.R;
+import com.example.app.account_UI.ManagerHome;
 import com.example.app.firebaseDB.FbQuery;
 import com.example.app.log_create.CreateAccount;
 import com.example.app.log_create.LogInOut;
 import com.example.app.log_create.uploadPhoto;
+import com.example.app.services.UrlUploadImage;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;

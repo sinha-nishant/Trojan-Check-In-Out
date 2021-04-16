@@ -8,10 +8,6 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-
 public class QRGeneration {
 
     public static Bitmap GetBitMap(String buildingName){
@@ -31,10 +27,5 @@ public class QRGeneration {
         return null;
 
     }
-    public static InputStream BitMapToInputStream(Bitmap buildinBitmap){
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        buildinBitmap.compress(Bitmap.CompressFormat.PNG,60 , outputStream);
-        InputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
-        return inputStream;
-    }
+
 }

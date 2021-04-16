@@ -1,9 +1,5 @@
 package com.example.app.pre_login_UI;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,10 +9,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.example.app.account_UI.ManagerHome;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+
 import com.example.app.R;
+import com.example.app.account_UI.ManagerHome;
 import com.example.app.account_UI.StudentProfile;
 import com.example.app.log_create.LogInOut;
 

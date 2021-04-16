@@ -1,7 +1,5 @@
 package com.example.app.log_create;
 
-import android.util.Log;
-
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.app.firebaseDB.FbUpdate;
@@ -19,7 +17,6 @@ public class CreateAccount {
     }
 
     public static void CreateManager(String firstName, String lastName, String email, String pw, MutableLiveData<Boolean> success, Boolean useUrl){
-        Log.i("CreateAccount","in create account");
 
         String hashedPw = BCrypt.withDefaults().hashToString(12, pw.toCharArray());
         Account a;
@@ -35,7 +32,6 @@ public class CreateAccount {
     }
 
     public static void CreateStudent(String firstName, String lastName, String email, String pw,Long id, String major,MutableLiveData<Boolean> success, Boolean useUrl){
-        Log.i("CreateAccount","in create account");
 
         String hashedPw = BCrypt.withDefaults().hashToString(12, pw.toCharArray());
         Account a;
@@ -49,7 +45,6 @@ public class CreateAccount {
 
     }
     public static void CreateManager(String firstName, String lastName, String email, String pw, InputStream url, MutableLiveData<Boolean> success){
-        Log.i("CreateAccount","in create account");
 
         String picUrl=AWSLink(email);
         String hashedPw = BCrypt.withDefaults().hashToString(12, pw.toCharArray());
@@ -59,7 +54,6 @@ public class CreateAccount {
     }
 
     public static void CreateStudent(String firstName, String lastName, String email, String pw,InputStream url,Long id, String major,MutableLiveData<Boolean> success){
-        Log.i("CreateAccount","in create account");
 
         String picUrl=AWSLink(email);
         String hashedPw = BCrypt.withDefaults().hashToString(12, pw.toCharArray());

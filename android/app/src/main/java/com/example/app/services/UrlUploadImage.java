@@ -1,9 +1,5 @@
 package com.example.app.services;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,6 +13,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import com.amplifyframework.AmplifyException;
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
@@ -34,7 +34,6 @@ import com.example.app.account_UI.StudentProfile;
 import com.example.app.log_create.uploadPhoto;
 import com.example.app.pre_login_UI.ManagerName;
 import com.example.app.pre_login_UI.StudentUploadPhoto;
-
 
 import java.io.InputStream;
 import java.net.MalformedURLException;
