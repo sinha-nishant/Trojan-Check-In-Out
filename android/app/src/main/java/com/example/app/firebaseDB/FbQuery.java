@@ -323,8 +323,8 @@ public class FbQuery implements FirestoreConnector {
                                                @Override
                                                public void onComplete(@NonNull Task<String> task2) {
                                                    if (!task2.isSuccessful()) {
-                                                       Log.d("TOKEN", "Fetching FCM registration token failed", task2.getException());
-                                                       login_success.setValue(null);
+                                                       Log.d("TOKEN", "FETCHING FCM TOKEN FAILED", task2.getException());
+                                                       login_success.setValue(true);
                                                        return;
                                                    }
 
