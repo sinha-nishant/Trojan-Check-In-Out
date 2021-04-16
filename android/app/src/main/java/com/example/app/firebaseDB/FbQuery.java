@@ -16,6 +16,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -288,8 +289,6 @@ public class FbQuery implements FirestoreConnector {
         });
     }
 
-    //check later
-
     /**
      * Validates log-in credentials
      *
@@ -303,23 +302,53 @@ public class FbQuery implements FirestoreConnector {
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            if (!task.getResult().isEmpty()) {
-                                DocumentSnapshot ds = task.getResult().getDocuments().get(0);
+                    public void onComplete(@NonNull Task<QuerySnapshot> task1) {
+                        if (task1.isSuccessful()) {
+                            if (!task1.getResult().isEmpty()) {
+                                DocumentSnapshot ds = task1.getResult().getDocuments().get(0);
                                 if (ds.getBoolean("isActive")) {
-                                    Log.d("AUTHENTICATE", email + " Auth successful!");
-                                    Long uscID = (Long) task.getResult().getDocuments().get(0).get("uscID");
-                                    Log.d("ID", String.valueOf(uscID));
-                                    String hashedPW = (String) task.getResult().getDocuments().get(0).get("password");
+                                    Long uscID = (Long) task1.getResult().getDocuments().get(0).get("uscID");
+                                    String hashedPW = (String) task1.getResult().getDocuments().get(0).get("password");
 
                                     BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), hashedPW);
                                     if (result.verified) {
                                         if (uscID == null) {
                                             uscID = 0L;
                                         }
-                                        LogInPage.setId(uscID);
-                                        login_success.setValue(true);
+
+                                        // Get FCM token
+                                        Long finalUscID = uscID;
+                                        FirebaseMessaging.getInstance().getToken()
+                                            .addOnCompleteListener(new OnCompleteListener<String>() {
+                                               @Override
+                                               public void onComplete(@NonNull Task<String> task2) {
+                                                   if (!task2.isSuccessful()) {
+                                                       Log.d("TOKEN", "Fetching FCM registration token failed", task2.getException());
+                                                       login_success.setValue(null);
+                                                       return;
+                                                   }
+
+                                                   // Get new FCM registration token
+                                                   String token = task2.getResult();
+
+                                                   // Set FCM registration token for account
+                                                   task1.getResult().getDocuments().get(0).getReference().update("fcmToken", token)
+                                                       .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                           @Override
+                                                           public void onComplete(@NonNull Task<Void> task) {
+                                                               if (task.isSuccessful()) {
+                                                                   LogInPage.setId(finalUscID);
+                                                                   login_success.setValue(true);
+                                                               }
+                                                               else {
+                                                                   login_success.setValue(null);
+                                                               }
+                                                           }
+                                                       }
+                                                   );
+                                               }
+                                           }
+                                        );
 
                                     } else {
                                         login_success.setValue(false);
@@ -386,7 +415,7 @@ public class FbQuery implements FirestoreConnector {
                         if (task.isSuccessful() && !task.getResult().isEmpty()) {
                             DocumentSnapshot ds = task.getResult().getDocuments().get(0);
                             if (ds.getBoolean("isActive")) {
-                                Account account = (Account) ds.toObject(Account.class);
+                                Account account = ds.toObject(Account.class);
                                 Log.d("MANAGER ACCOUNT", Objects.requireNonNull(account).toString());
                                 manager.setValue(account);
                             } else if (task.getResult().isEmpty()) {
