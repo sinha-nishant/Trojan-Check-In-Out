@@ -297,74 +297,77 @@ public class FbQuery implements FirestoreConnector {
      * @param login_success true if successfully authenticated, false if invalid credentials
      */
     public static void authenticate(String email, String password, MutableLiveData<Boolean> login_success) {
-        FirestoreConnector.getDB().collection("Accounts")
-                .whereEqualTo("email", email)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task1) {
-                        if (task1.isSuccessful()) {
-                            if (!task1.getResult().isEmpty()) {
-                                DocumentSnapshot ds = task1.getResult().getDocuments().get(0);
-                                if (ds.getBoolean("isActive")) {
-                                    Long uscID = (Long) task1.getResult().getDocuments().get(0).get("uscID");
-                                    String hashedPW = (String) task1.getResult().getDocuments().get(0).get("password");
+        try {
+            FirestoreConnector.getDB().collection("Accounts")
+                    .whereEqualTo("email", email)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task1) {
+                            if (task1.isSuccessful()) {
+                                if (!task1.getResult().isEmpty()) {
+                                    DocumentSnapshot ds = task1.getResult().getDocuments().get(0);
+                                    if (ds.getBoolean("isActive")) {
+                                        Long uscID = (Long) task1.getResult().getDocuments().get(0).get("uscID");
+                                        String hashedPW = (String) task1.getResult().getDocuments().get(0).get("password");
 
-                                    BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), hashedPW);
-                                    if (result.verified) {
-                                        if (uscID == null) {
-                                            uscID = 0L;
+                                        BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), hashedPW);
+                                        if (result.verified) {
+                                            if (uscID == null) {
+                                                uscID = 0L;
+                                            }
+
+                                            // Get FCM token
+                                            Long finalUscID = uscID;
+                                            FirebaseMessaging.getInstance().getToken()
+                                                    .addOnCompleteListener(new OnCompleteListener<String>() {
+                                                                               @Override
+                                                                               public void onComplete(@NonNull Task<String> task2) {
+                                                                                   if (!task2.isSuccessful()) {
+                                                                                       Log.d("TOKEN", "FETCHING FCM TOKEN FAILED", task2.getException());
+                                                                                       login_success.setValue(true);
+                                                                                       return;
+                                                                                   }
+
+                                                                                   // Get new FCM registration token
+                                                                                   String token = task2.getResult();
+
+                                                                                   // Set FCM registration token for account
+                                                                                   task1.getResult().getDocuments().get(0).getReference().update("fcmToken", token)
+                                                                                           .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                                                      @Override
+                                                                                                                      public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                          if (task.isSuccessful()) {
+                                                                                                                              LogInPage.setId(finalUscID);
+                                                                                                                              login_success.setValue(true);
+                                                                                                                          } else {
+                                                                                                                              login_success.setValue(null);
+                                                                                                                          }
+                                                                                                                      }
+                                                                                                                  }
+                                                                                           );
+                                                                               }
+                                                                           }
+                                                    );
+
+                                        } else {
+                                            login_success.setValue(false);
                                         }
-
-                                        // Get FCM token
-                                        Long finalUscID = uscID;
-                                        FirebaseMessaging.getInstance().getToken()
-                                            .addOnCompleteListener(new OnCompleteListener<String>() {
-                                               @Override
-                                               public void onComplete(@NonNull Task<String> task2) {
-                                                   if (!task2.isSuccessful()) {
-                                                       Log.d("TOKEN", "FETCHING FCM TOKEN FAILED", task2.getException());
-                                                       login_success.setValue(true);
-                                                       return;
-                                                   }
-
-                                                   // Get new FCM registration token
-                                                   String token = task2.getResult();
-
-                                                   // Set FCM registration token for account
-                                                   task1.getResult().getDocuments().get(0).getReference().update("fcmToken", token)
-                                                       .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                           @Override
-                                                           public void onComplete(@NonNull Task<Void> task) {
-                                                               if (task.isSuccessful()) {
-                                                                   LogInPage.setId(finalUscID);
-                                                                   login_success.setValue(true);
-                                                               }
-                                                               else {
-                                                                   login_success.setValue(null);
-                                                               }
-                                                           }
-                                                       }
-                                                   );
-                                               }
-                                           }
-                                        );
-
                                     } else {
+                                        Log.d("AUTHENTICATE", email + " Auth failed!");
                                         login_success.setValue(false);
                                     }
+
                                 } else {
                                     Log.d("AUTHENTICATE", email + " Auth failed!");
                                     login_success.setValue(false);
                                 }
-
-                            } else {
-                                Log.d("AUTHENTICATE", email + " Auth failed!");
-                                login_success.setValue(false);
                             }
                         }
-                    }
-                });
+                    });
+        }catch (Exception e){
+            login_success.setValue(true);
+        }
     }
 
     /**
