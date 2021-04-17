@@ -1,112 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/card"
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:paddingHorizontal="5dp"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardElevation="3dp"
-    app:strokeColor="@color/browser_actions_bg_grey"
-    app:strokeWidth="1.5dp"
-    app:cardCornerRadius="15dp"
-    >
-
-    <LinearLayout
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card"
         android:layout_width="match_parent"
+        android:paddingHorizontal="5dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_margin="8dp"
+        app:cardElevation="3dp"
+        app:strokeColor="@color/browser_actions_bg_grey"
+        app:strokeWidth="1.5dp"
+        app:cardCornerRadius="15dp"
         >
 
-
-
-        <ImageView
-            android:id="@+id/studentImageView"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:scaleType="centerCrop"
-            android:layout_gravity="center"
-            />
-        <ScrollView
+        <LinearLayout
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="0dp"
-                    android:layout_marginBottom="20dp"
-                    >
-                    <TextView
-                        android:id="@+id/studentFullName"
-                        android:layout_width="wrap_content"
-                        android:maxWidth="300dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <ImageButton
+                android:id="@+id/kickOutButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/kick_out"
+                android:background="@drawable/kick_out_border"
+                android:outlineSpotShadowColor="@android:color/holo_red_dark"
+                android:layout_marginTop="1dp"
+                />
+            <ImageView
+                android:id="@+id/studentImageView"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:scaleType="centerCrop"
+                android:layout_gravity="center"
+                />
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="TextView"
-                        android:layout_gravity="center"
-                        android:textAlignment="center"
-                        android:textAppearance="?attr/textAppearanceHeadline6"
-                        />
-                    <TextView
-                        android:id="@+id/studentProfileID"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:textAppearance="?attr/textAppearanceSubtitle2"
-                        android:textSize="16dp"
-                        android:layout_gravity="center"
-                        android:text="TextView"
-                        android:transitionName="student_profile_transition"
-                        />
-                    <TextView
-                        android:id="@+id/studentProfileEmail"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:textAppearance="?attr/textAppearanceSubtitle2"
-                        android:textSize="16dp"
-                        android:layout_gravity="center"
-                        android:text="USC Email: "
-                        />
-                    <TextView
-                        android:id="@+id/studentProfileMajor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:textAppearance="?attr/textAppearanceSubtitle2"
-                        android:textSize="16dp"
-                        android:layout_gravity="center"
-                        android:text="TextView"
-                        />
+                        android:orientation="vertical"
+                        android:padding="0dp"
+                        android:layout_marginBottom="20dp"
+                        >
+                        <TextView
+                            android:id="@+id/studentFullName"
+                            android:layout_width="wrap_content"
+                            android:maxWidth="300dp"
+                            android:layout_height="wrap_content"
+                            android:text="TextView"
+                            android:layout_gravity="center"
+                            android:textAlignment="center"
+                            android:textAppearance="?attr/textAppearanceHeadline6"
+                            />
+                        <TextView
+                            android:id="@+id/studentProfileID"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:textAppearance="?attr/textAppearanceSubtitle2"
+                            android:textSize="16dp"
+                            android:layout_gravity="center"
+                            android:text="TextView"
+                            android:transitionName="student_profile_transition"
+                            />
+                        <TextView
+                            android:id="@+id/studentProfileEmail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:textAppearance="?attr/textAppearanceSubtitle2"
+                            android:textSize="16dp"
+                            android:layout_gravity="center"
+                            android:text="USC Email: "
+                            />
+                        <TextView
+                            android:id="@+id/studentProfileMajor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:textAppearance="?attr/textAppearanceSubtitle2"
+                            android:textSize="16dp"
+                            android:layout_gravity="center"
+                            android:text="TextView"
+                            />
 
-                    <TextView
-                        android:id="@+id/visitLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="8dp"
-                        android:gravity="center"
-                        android:text="Visit History"
-                        android:textAppearance="?attr/textAppearanceHeadline1"
-                        android:textColor="@android:color/black"
-                        android:textSize="20dp"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:id="@+id/studentProfileHistory"
-                        android:layout_width="wrap_content"
-                        android:layout_height="200dp"
-                        android:layout_marginTop="8dp"
-                        android:textAppearance="?attr/textAppearanceSubtitle2"
-                        android:textSize="16dp"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="TextView"
-                        android:scrollbars = "vertical"
-                        />
+                        <TextView
+                            android:id="@+id/visitLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="8dp"
+                            android:gravity="center"
+                            android:text="Visit History"
+                            android:textAppearance="?attr/textAppearanceHeadline1"
+                            android:textColor="@android:color/black"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/studentProfileHistory"
+                            android:layout_width="wrap_content"
+                            android:layout_height="200dp"
+                            android:layout_marginTop="8dp"
+                            android:textAppearance="?attr/textAppearanceSubtitle2"
+                            android:textSize="16dp"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="TextView"
+                            android:scrollbars = "vertical"
+                            />
 
-                </LinearLayout>
-        </ScrollView>
-    </LinearLayout>
-</com.google.android.material.card.MaterialCardView>
+                    </LinearLayout>
+            </ScrollView>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+
+
+</LinearLayout>

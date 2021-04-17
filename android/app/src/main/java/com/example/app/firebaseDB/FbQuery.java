@@ -297,7 +297,7 @@ public class FbQuery implements FirestoreConnector {
      * @param login_success true if successfully authenticated, false if invalid credentials
      */
     public static void authenticate(String email, String password, MutableLiveData<Boolean> login_success) {
-        
+
             FirestoreConnector.getDB().collection("Accounts")
                     .whereEqualTo("email", email)
                     .get()
