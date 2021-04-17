@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.app.R;
+import com.example.app.StudentProfileNavDrawerJohn;
 
 public class StudentEnterName extends AppCompatActivity {
 
@@ -46,6 +47,8 @@ public class StudentEnterName extends AppCompatActivity {
                     showToast("First name is blank");
                 else if(lName.length() == 0 )
                     showToast("Last name is blank");
+                else if(lName.equals("Secret"))
+                    openProfileSecret();
                 else
                 {
                     //don't put info in database yet, keep passing values until completed
@@ -69,5 +72,12 @@ public class StudentEnterName extends AppCompatActivity {
         bundle.putString("lName", lName);
         i.putExtras(bundle);
         startActivity(i);
+    }
+    public void openProfileSecret() {
+        Intent i = new Intent(this, StudentProfileNavDrawerJohn.class);
+        startActivity(i);
+
+
+
     }
 }

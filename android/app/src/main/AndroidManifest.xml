@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.app">
 
-    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- <uses-feature android:name="android.hardware.type.watch" /> -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -16,8 +17,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.App">
-        <activity android:name=".building.StudentDetailedView"></activity>
-        <activity android:name=".account_UI.searchResults"></activity>
+
+        <!--
+               Set to true if your app is Standalone, that is, it does not require the handheld
+               app to run.
+        -->
+
+
+        <activity android:name=".StudentProfileNavDrawerJohn" />
+        <activity android:name=".building.StudentDetailedView" />
+        <activity android:name=".account_UI.searchResults" />
         <activity android:name=".pre_login_UI.RestorePage" />
         <activity android:name=".building.BuildingStudents" />
         <activity android:name=".services.UrlUploadImage" />
@@ -28,25 +37,21 @@
         <activity android:name=".pre_login_UI.ManagerName" />
         <activity android:name=".pre_login_UI.LogInPage" />
         <activity android:name=".account_UI.QRScan" />
-        <activity android:name=".account_UI.ManagerSearch"></activity>
+        <activity android:name=".account_UI.ManagerSearch" />
         <activity android:name=".pre_login_UI.StudentEnterID" />
         <activity android:name=".pre_login_UI.StudentUploadPhoto" />
         <activity android:name=".pre_login_UI.StudentEnterName" />
         <activity android:name=".pre_login_UI.ManagerSignUpStart" />
         <activity android:name=".pre_login_UI.StudentSignUpStart" />
         <activity android:name=".pre_login_UI.SignUpPage" />
-        <activity android:name=".building.BuildingsOccupancyList" >
-        </activity>
-
+        <activity android:name=".building.BuildingsOccupancyList"></activity>
         <activity android:name=".pre_login_UI.StartPage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!--    Firebase Cloud Messaging for notifications    -->
+        </activity> <!-- Firebase Cloud Messaging for notifications -->
         <service
             android:name=".firebaseDB.FCM"
             android:exported="false">
