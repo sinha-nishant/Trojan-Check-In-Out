@@ -7,6 +7,8 @@
     <string name="MS">Markus</string>
     <string name="HR">Hassib</string>
     <string name="AS">Angad</string>
+    <string name="navigation_drawer_open">Open Navigation Drawer</string>
+    <string name="navigation_drawer_close">Close Navigation Drawer</string>
     <string name="title_activity_manager_home">activity_manager_home</string>
     <!--
     This string is used for square devices and overridden by hello_world in
