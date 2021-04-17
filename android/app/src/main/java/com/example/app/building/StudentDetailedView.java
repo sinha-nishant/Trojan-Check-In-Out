@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.Image;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.app.R;
+import com.example.app.account_UI.StudentProfile;
 import com.example.app.firebaseDB.FbCheckInOut;
 import com.example.app.firebaseDB.FbQuery;
 import com.example.app.services.CheckInOut;
@@ -40,6 +42,7 @@ import static android.text.Html.fromHtml;
 public class StudentDetailedView extends AppCompatActivity {
     private AlertDialog kickOutConfirmationMessage;
     private AlertDialog.Builder builderForDoubleCheck;
+    private AlertDialog.Builder builder;
     private StudentActivity sa;
 
     @Override
@@ -47,6 +50,7 @@ public class StudentDetailedView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_detailed_view);
         builderForDoubleCheck= new AlertDialog.Builder(this);
+        builder= new AlertDialog.Builder(this);
         Bundle extras = getIntent().getExtras();
         TextView studentIdTextView = findViewById(R.id.studentProfileID);
         studentIdTextView.setText( "USC ID: "+extras.getString("STUDENT_ID"));
@@ -141,10 +145,30 @@ public class StudentDetailedView extends AppCompatActivity {
             public void onChanged(@javax.annotation.Nullable final Boolean success){
                 if(success){ //student is checked in  display checkin message
                    //display new alert saying student was kicked out
-                    Toast.makeText(getBaseContext(),"Student Kicked Out", Toast.LENGTH_LONG).show();
+                    builder.setTitle("Success")
+                            .setMessage("Student Kicked Out")
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // switch back to list of students
+                                    goToStudentList();
+                                }
+                            });
+                    kickOutConfirmationMessage=builder.create();
+                    kickOutConfirmationMessage.show();
                 }else { //wasn't able to check in student
                    //student wasn't kicked out because student is not in the building
-                    Toast.makeText(getBaseContext(),"Student Not Kicked Out", Toast.LENGTH_LONG).show();
+                    builder.setTitle("Error")
+                            .setMessage("Student Not Kicked Out")
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // stay on page
+                                }
+                            });
+                    kickOutConfirmationMessage=builder.create();
+                    //stop loading bar
+                    kickOutConfirmationMessage.show();
                 }
             }
         };
@@ -175,5 +199,9 @@ public class StudentDetailedView extends AppCompatActivity {
         /* Picking the date value in the required Format */
         String strTodayDate = todayDateFormat.format(date);
         return strTodayDate;
+    }
+    public void goToStudentList() {
+        Intent i = new Intent(this, BuildingStudents.class);
+        startActivity(i);
     }
 }
