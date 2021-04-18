@@ -110,17 +110,14 @@ public class ManagerCSV extends AppCompatActivity {
         csvBuildingNames.clear();
         cannotUpdate.clear();
         if(bufferedReader.ready()){
-            bufferedReader.readLine();
             String line = bufferedReader.readLine();
-            while(line!=null){
-                List<String> caps = Arrays.asList(line.split(","));
-                String buildingName = caps.get(0);
-                Integer capacity = Integer.parseInt(caps.get(1));
-                csvBuildingNames.add(buildingName);
-                map.put(buildingName,capacity);
-                line=bufferedReader.readLine();
-            }
+            if(line.toLowerCase().equals("update")){
+                updateProcedure(bufferedReader);
+            }else if(line.toLowerCase().equals("remove")){
 
+            }else if(line.toLowerCase().equals("add")){
+
+            }
         }
         csvFile.close();
         bufferedReader.close();
@@ -138,6 +135,20 @@ public class ManagerCSV extends AppCompatActivity {
     }
     public void updateClick(){
         doubleCheckMessage("Update Building Capacities","Are you sure you want to update capacities?");
+
+    }
+    public void updateProcedure(BufferedReader bufferedReader) throws IOException {
+        bufferedReader.readLine();
+        String line = bufferedReader.readLine();
+        Log.d("Building IS",line);
+        while(line!=null){
+            List<String> caps = Arrays.asList(line.split(","));
+            String buildingName = caps.get(0);
+            Integer capacity = Integer.parseInt(caps.get(1));
+            csvBuildingNames.add(buildingName);
+            map.put(buildingName,capacity);
+            line=bufferedReader.readLine();
+        }
 
     }
     public void updateCapacities(){
