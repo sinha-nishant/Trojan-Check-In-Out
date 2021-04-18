@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +13,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,7 +41,12 @@ public class SearchListAdaptor extends ArrayAdapter<StudentAccount> {
     private final int mResource;
     private int lastPosition=-1;
     private AlertDialog alertDialog;
+    private AlertDialog resultDialog;
+    private ProgressBar pbKickOut;
     private Bundle bundle;
+    private StudentAccount account;
+    private StudentActivity sa;
+
     static class ViewHolder{
         TextView name ;
         TextView email;
@@ -95,6 +99,9 @@ public class SearchListAdaptor extends ArrayAdapter<StudentAccount> {
             holder.major = convertView.findViewById(R.id.major);
             holder.isActive = convertView.findViewById(R.id.isActive);
             holder.history = convertView.findViewById(R.id.visitHistory);
+
+            ProgressBar pb= convertView.findViewById(R.id.pbKickOut);
+            pb.setVisibility(View.GONE);
             
             MaterialCardView materialCardView = convertView.findViewById(R.id.card);
 
@@ -140,19 +147,47 @@ public class SearchListAdaptor extends ArrayAdapter<StudentAccount> {
         Glide.with(mContext).load(url).thumbnail(0.2F).error(Glide.with(holder.pic).load(R.drawable.profile_blank)).diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true).into(holder.pic);
         //adding kick out listener
-        ImageView picView=(ImageView) convertView.findViewById(R.id.majorPic);
+        ImageView picView= convertView.findViewById(R.id.majorPic);
         View finalConvertView = convertView;
 
         picView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                MutableLiveData<StudentAccount> studentMLD = new MutableLiveData<>();    final Observer<StudentAccount> studentAccountObserver = new Observer<StudentAccount>(){
+                    @Override
+                    public void onChanged(@javax.annotation.Nullable final StudentAccount student){
+                        // check last index of studentactivity list
+                        List<StudentActivity> sa_list = student.getActivity();
+                        account = student;
+                        if(!sa_list.isEmpty()) {//no activity so check in if occupancy isn't full
+                            sa = sa_list.get(sa_list.size() - 1);
+                            if(sa.getCheckOutTime()!=null){
+                                ResultDialogInit();
+                                resultDialog.setMessage(((TextView)finalConvertView.findViewById(R.id.studentName)).getText().toString()+" is not in checked into any building");
+                                resultDialog.show();
+                            }
+                            else{
+                                bundle.putString("id",((TextView)finalConvertView.findViewById(R.id.uscID)).getText().toString());
+                                bundle.putString("name",((TextView)finalConvertView.findViewById(R.id.studentName)).getText().toString());
+                                pbKickOut= finalConvertView.findViewById(R.id.pbKickOut);
+                                DialogInit();
+                                alertDialog.setMessage("Please Confirm if you want to kick out "+  ((TextView)finalConvertView.findViewById(R.id.studentName)).getText().toString());
+                                alertDialog.show();
+                            }
+                        }
+                        else{
+                            ResultDialogInit();
+                            resultDialog.setMessage(((TextView)finalConvertView.findViewById(R.id.studentName)).getText().toString()+" is not in checked into any building");
+                            resultDialog.show();
+                        }
 
-                bundle.putString("id",((TextView)finalConvertView.findViewById(R.id.uscID)).getText().toString());
-                bundle.putString("name",((TextView)finalConvertView.findViewById(R.id.studentName)).getText().toString());
-                DialogInit();
-                alertDialog.setMessage("Please Confirm if you want to kick out "+  ((TextView)finalConvertView.findViewById(R.id.studentName)).getText().toString());
-                alertDialog.show();
+                    }
+                };
+                studentMLD.observe((LifecycleOwner) mContext,studentAccountObserver);
+                FbQuery.getStudent(Long.valueOf(((TextView)finalConvertView.findViewById(R.id.uscID)).getText().toString()), studentMLD);
                 return false;
+
+
             }
         });
 
@@ -172,6 +207,7 @@ public class SearchListAdaptor extends ArrayAdapter<StudentAccount> {
                     @Override
                     public void onClick(DialogInterface dialog,
                                         int which) {
+                        pbKickOut.setVisibility(View.VISIBLE);
                         kickOut();
 
                     }
@@ -188,19 +224,36 @@ public class SearchListAdaptor extends ArrayAdapter<StudentAccount> {
                 });
         alertDialog = builder.create();
     }
+    private void ResultDialogInit() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+
+        builder.setTitle("Status of Action");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Cancel",
+                new DialogInterface
+                        .OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                                        int which) {
+                    }
+                });
+        resultDialog = builder.create();
+    }
 
 
 public void kickOut(){
-    MutableLiveData<StudentAccount> studentMLD = new MutableLiveData<>();
     MutableLiveData<Boolean> checkOutMLD = new MutableLiveData<>();
-    Long retrieveID =Long.parseLong(bundle.getString("id"));
     final Observer<Boolean> checkOutObserver = new Observer<Boolean>(){
         @Override
         public void onChanged(@javax.annotation.Nullable final Boolean success){
+            ResultDialogInit();
             if(success){ //student is checked in  display checkin message
                 //display new alert saying student was kicked out
-                Toast.makeText(mContext,"Student Kicked Out", Toast.LENGTH_LONG).show();
-            }else { //wasn't able to check in student
+                resultDialog.setMessage("Student Kicked Out");
+                resultDialog.show();
+            }
+            else { //wasn't able to check in student
                 //student wasn't kicked out because student is not in the building
                 String error;
                 if(bundle.containsKey("kickOutError")){
@@ -209,35 +262,14 @@ public void kickOut(){
                 else{
                     error="student has not checked into any building";
                 }
-                Toast.makeText(mContext,"Student Not Kicked Out because "+ error, Toast.LENGTH_LONG).show();
+                resultDialog.setMessage("Student Not Kicked Out because "+error);
+                resultDialog.show();
             }
+            pbKickOut.setVisibility(View.GONE);
         }
     };
     checkOutMLD.observe((LifecycleOwner) mContext, checkOutObserver);
-    final Observer<StudentAccount> studentAccountObserver = new Observer<StudentAccount>(){
-        @Override
-        public void onChanged(@javax.annotation.Nullable final StudentAccount student){
-            // check last index of studentactivity list
-            List<StudentActivity> sa_list = student.getActivity();
-            StudentActivity sa;
-            if(!sa_list.isEmpty()) {//no activity so check in if occupancy isn't full
-                sa = sa_list.get(sa_list.size() - 1);
-                if(sa.getCheckOutTime()!=null){
-                    checkOutMLD.setValue(false);
-                    bundle.putString("kickOutError","student checked out of last building they entered");
-                    return;
-                }
-                bundle.putString("kickOutError","size= " +sa_list.size());
-                Date kickOutDate = new Date();
-                FbCheckInOut.checkOut(retrieveID,sa,kickOutDate,checkOutMLD);
-            }
-            else{
-                checkOutMLD.setValue(false);
-                bundle.putString("kickOutError","student has not checked into any building");
-            }
-        }
-    };
-    studentMLD.observe((LifecycleOwner) mContext,studentAccountObserver);
-    FbQuery.getStudent(retrieveID, studentMLD);
+    Date kickOutDate = new Date();
+    FbCheckInOut.checkOut(account.getUscID(),sa,kickOutDate,checkOutMLD);
 }
 }
