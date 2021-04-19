@@ -28,6 +28,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.app.R;
 import com.example.app.account_UI.searchResults;
+import com.example.app.firebaseDB.FCM;
 import com.example.app.firebaseDB.FbCheckInOut;
 import com.example.app.firebaseDB.FbQuery;
 import com.example.app.users.StudentAccount;
@@ -236,7 +237,7 @@ public class SearchListAdaptor extends ArrayAdapter<StudentAccount> {
 
         builder.setTitle("Status of Action");
         builder.setCancelable(false);
-        builder.setPositiveButton("Cancel",
+        builder.setPositiveButton("OK",
                 new DialogInterface
                         .OnClickListener() {
 
@@ -269,6 +270,7 @@ public void kickOut(){
             if(success){ //student is checked in  display checkin message
                 //display new alert saying student was kicked out
                 resultDialog.setMessage("Student Kicked Out");
+                FCM.notifyKickOut(account.getFcmToken());
             }
             else { //wasn't able to check in student
                 //student wasn't kicked out because student is not in the building
@@ -277,9 +279,10 @@ public void kickOut(){
                     error=bundle.getString("kickOutError");
                 }
                 else{
-                    error="student has not checked into any building";
+                    error="Student has not checked into any building";
                 }
-                resultDialog.setMessage("Student Not Kicked Out because "+error);
+
+                resultDialog.setMessage("Student not kicked out because " + error);
             }
             resultDialog.show();
             pbKickOut.setVisibility(View.GONE);

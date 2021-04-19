@@ -1,8 +1,5 @@
 package com.example.app.users;
 
-
-import android.util.Log;
-
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.app.firebaseDB.FbUpdate;
@@ -14,7 +11,7 @@ public class StudentAccount extends Account {
     private Long uscID;
     private String major;
     private List<StudentActivity> activity;
-
+    private String fcmToken;
 
     public StudentAccount() {};
 
@@ -51,18 +48,11 @@ public class StudentAccount extends Account {
 
 }
 
-
-
-
     public void setMajor(String newMajor,MutableLiveData<Boolean> success)
     {
         FbUpdate.updateMajor(uscID,newMajor,success);
 
     }
-
-
-
-
 
     public Long getUscID(){
         return this.uscID;
@@ -96,7 +86,7 @@ public class StudentAccount extends Account {
 
     @Override
     public boolean equals(Object obj) {
-        if(this ==obj){
+        if(this==obj){
             return true;
         }
         StudentAccount  other = (StudentAccount)obj;
@@ -105,13 +95,17 @@ public class StudentAccount extends Account {
             return false;
         }
         if(!this.email.equals(other.email)){
-            Log.d("search", "equals false in isEmail");
             return false;
         }
         return true;
 
     }
 
+    public String getFcmToken() {
+        return fcmToken;
+    }
 
-
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
+    }
 }

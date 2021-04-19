@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.app.R;
 import com.example.app.account_UI.StudentProfile;
+import com.example.app.firebaseDB.FCM;
 import com.example.app.firebaseDB.FbCheckInOut;
 import com.example.app.firebaseDB.FbQuery;
 import com.example.app.services.CheckInOut;
@@ -183,6 +184,9 @@ public class StudentDetailedView extends AppCompatActivity {
                     Date kickOutDate = new Date();
                     Log.d("Kick Out Date", kickOutDate.toString());
                     FbCheckInOut.checkOut(retrieveID,sa,kickOutDate,checkOutMLD);
+
+                    // Send notification to kicked out user
+                    FCM.notifyKickOut(student.getFcmToken());
                 }
             }
         };

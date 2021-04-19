@@ -80,8 +80,9 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:26.6.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-firestore'
-    // Firebase Cloud Messaging for notifications
+    // Firebase Cloud Messaging and Firebase Cloud Functions for notifications
     implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.google.firebase:firebase-functions'
 
     //glide
     implementation 'com.github.bumptech.glide:glide:4.12.0'
