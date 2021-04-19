@@ -206,6 +206,8 @@ public class StudentDetailedView extends AppCompatActivity {
     }
     public void goToStudentList() {
         Intent i = new Intent(this, BuildingStudents.class);
+        Bundle extras = getIntent().getExtras();
+        i.putExtra("buildingName", extras.getString("buildingNameDetail"));
         startActivity(i);
     }
 }

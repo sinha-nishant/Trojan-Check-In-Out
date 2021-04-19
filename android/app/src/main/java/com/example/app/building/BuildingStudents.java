@@ -46,6 +46,7 @@ public class BuildingStudents extends AppCompatActivity {
     private FirebaseFirestore fireStore;
     private FirestoreRecyclerAdapter firestoreRecyclerAdapter;
     public static List<StudentActivity> studentActivityList;
+    private String buildingName="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +54,7 @@ public class BuildingStudents extends AppCompatActivity {
         fireStore = FirestoreConnector.getDB();
         mFirestoreData = findViewById(R.id.studentRView);
         Bundle extras = getIntent().getExtras();
-        String buildingName= extras.getString("buildingName");
+        buildingName= extras.getString("buildingName");
         Query query = fireStore.collection("Buildings").whereEqualTo("name",buildingName);
         //RecyclerOptions
         FirestoreRecyclerOptions<Building> options = new FirestoreRecyclerOptions.Builder<Building>().setQuery(query,Building.class).build();
@@ -101,6 +102,7 @@ public class BuildingStudents extends AppCompatActivity {
                 intent.putExtra("STUDENT_NAME",(student.getFirstName()+" "+student.getLastName()));
                 intent.putExtra("STUDENT_MAJOR", student.getMajor());
                 intent.putExtra("STUDENT_EMAIL", student.getEmail());
+                intent.putExtra("buildingNameDetail", buildingName);
                 studentActivityList = student.getActivity();
                 intent.putExtra("STUDENT_IMAGE",student.getProfilePicture());
                 startActivity(intent);
