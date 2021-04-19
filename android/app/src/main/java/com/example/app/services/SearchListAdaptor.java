@@ -3,6 +3,7 @@ package com.example.app.services;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import androidx.lifecycle.Observer;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.app.R;
+import com.example.app.account_UI.searchResults;
 import com.example.app.firebaseDB.FbCheckInOut;
 import com.example.app.firebaseDB.FbQuery;
 import com.example.app.users.StudentAccount;
@@ -236,6 +238,13 @@ public class SearchListAdaptor extends ArrayAdapter<StudentAccount> {
                     @Override
                     public void onClick(DialogInterface dialog,
                                         int which) {
+                        if(bundle.containsKey("id")){
+                            bundle =((searchResults) mContext).getIntent().getExtras();
+                            Intent i= new Intent(mContext,searchResults.class);
+                            i.putExtras(bundle);
+                            mContext.startActivity(i);
+                        }
+
                     }
                 });
         resultDialog = builder.create();
