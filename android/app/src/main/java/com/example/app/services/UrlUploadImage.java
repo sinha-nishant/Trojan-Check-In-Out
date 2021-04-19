@@ -70,23 +70,9 @@ public class UrlUploadImage extends AppCompatActivity {
         }
 
         str_email=bundle.getString("email");
-        if(!bundle.containsKey("id")){
-            isStudent=false;
-        }
-        else{
-            isStudent=true;
-        }
-        if(!bundle.containsKey("created")){
-            isCreated=false;
-        }
-        else{
-            isCreated=true;
-        }
-//        if(!isCreated){
-//            Button uploadBtn=  findViewById(R.id.update);
-//            uploadBtn.setEnabled(false);
-//            uploadBtn.setVisibility(View.GONE);
-//        }
+        isStudent= bundle.containsKey("id");
+        isCreated= bundle.containsKey("created");
+
         Button uploadBtn=  findViewById(R.id.update);
         uploadBtn.setEnabled(false);
         uploadBtn.setVisibility(View.GONE);
@@ -126,6 +112,10 @@ public class UrlUploadImage extends AppCompatActivity {
         final Observer<Boolean> upload_obs = new Observer<Boolean>(){
             @Override
             public void onChanged(@javax.annotation.Nullable final Boolean isSuccess){
+                if(isSuccess==null){
+                    Log.i("UrlUploadImage", "upload boolean was null ");
+                    return;
+                }
                 if(isSuccess){
                     pb.setVisibility(View.GONE);
                     alertDialog.setMessage("Succeeded in uploading profile picture");

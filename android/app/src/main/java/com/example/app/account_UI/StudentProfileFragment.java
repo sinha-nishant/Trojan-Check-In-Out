@@ -38,6 +38,8 @@ import com.example.app.users.StudentActivity;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+import static android.app.Activity.RESULT_OK;
+
 public class StudentProfileFragment extends Fragment implements View.OnClickListener{
 
     private String str_name, str_email, str_id, str_major;
@@ -127,7 +129,7 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == getActivity().RESULT_OK) {
+        if (resultCode == RESULT_OK) {
 
             // compare the resultCode with the
             // SELECT_PICTURE constant
@@ -139,13 +141,14 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
 
                     // update the preview image in the layout
                     String uri = profilepic.toString();
-                    InputStream exampleInputStream = null;
+                    InputStream exampleInputStream;
 
                     try {
                         exampleInputStream = getActivity().getContentResolver().openInputStream(Uri.parse(uri));
 
                     } catch (FileNotFoundException e) {
                         Log.i("upload", "error in uri parsing");
+                        return;
                     }
                     pb.setVisibility(View.VISIBLE);
                     uploadPhoto.update(exampleInputStream,str_email,upload_success);
@@ -226,7 +229,7 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
             @Override
             public void onChanged(@javax.annotation.Nullable final StudentAccount sa){
                 if(sa == null) {
-                    return;
+                    Log.d("StudentProfileFragment","student mld is null");
                 }
                 else {
                     if(sa.getActivity().isEmpty()){
@@ -273,6 +276,10 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
         final Observer<Boolean> uploadSuccessObserver = new Observer<Boolean>(){
             @Override
             public void onChanged(@javax.annotation.Nullable final Boolean uploadSuccess){
+                if(uploadSuccess==null) {
+                    Log.d("StudentProfileFragment","upload mld is null");
+                    return;
+                }
                 if(uploadSuccess){
                     FbUpdate.updatePhoto(str_email, firebase_success);
                 }
@@ -291,6 +298,10 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
         final Observer<Boolean> firebaseSuccessObserver = new Observer<Boolean>(){
             @Override
             public void onChanged(@javax.annotation.Nullable final Boolean firebaseSuccess){
+                if(firebaseSuccess==null){
+                    Log.d("StudentProfileFragment","firebase mld is null");
+                    return;
+                }
                 if(firebaseSuccess){
                     img = getView().findViewById(R.id.imageView2);
                     Glide.with(getActivity()).load(profilepic.toString()).error(Glide.with(img).load(R.drawable.profile_blank)).diskCacheStrategy(DiskCacheStrategy.NONE)

@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -149,7 +150,7 @@ public class SearchListAdaptor extends ArrayAdapter<StudentAccount> {
         Glide.with(mContext).load(url).thumbnail(0.2F).error(Glide.with(holder.pic).load(R.drawable.profile_blank)).diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true).into(holder.pic);
         //adding kick out listener
-        ImageView picView= convertView.findViewById(R.id.majorPic);
+        ImageView picView= holder.pic;
         View finalConvertView = convertView;
 
         picView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -159,6 +160,10 @@ public class SearchListAdaptor extends ArrayAdapter<StudentAccount> {
                     @Override
                     public void onChanged(@javax.annotation.Nullable final StudentAccount student){
                         // check last index of studentactivity list
+                        if(student==null){
+                            Log.i("SearchListAdapter","student object null onLongClick");
+                            return;
+                        }
                         List<StudentActivity> sa_list = student.getActivity();
                         account = student;
                         if(!sa_list.isEmpty()) {//no activity so check in if occupancy isn't full
@@ -257,10 +262,13 @@ public void kickOut(){
         @Override
         public void onChanged(@javax.annotation.Nullable final Boolean success){
             ResultDialogInit();
+            if(success==null){
+                Log.i("SearchListAdapter","student object null on KickOut");
+                return;
+            }
             if(success){ //student is checked in  display checkin message
                 //display new alert saying student was kicked out
                 resultDialog.setMessage("Student Kicked Out");
-                resultDialog.show();
             }
             else { //wasn't able to check in student
                 //student wasn't kicked out because student is not in the building
@@ -272,8 +280,8 @@ public void kickOut(){
                     error="student has not checked into any building";
                 }
                 resultDialog.setMessage("Student Not Kicked Out because "+error);
-                resultDialog.show();
             }
+            resultDialog.show();
             pbKickOut.setVisibility(View.GONE);
         }
     };

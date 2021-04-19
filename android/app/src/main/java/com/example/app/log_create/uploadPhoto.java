@@ -12,9 +12,8 @@ public class uploadPhoto {
 
     public static void upload(InputStream uri,String email,MutableLiveData<Boolean>success){
         Log.i("uploadPhoto","in upload photo");
-        String key=email;
             Amplify.Storage.uploadInputStream(
-            key,
+            email,
             uri,
             result -> success.setValue(true),
             storageFailure -> success.setValue(false)
@@ -24,9 +23,8 @@ public class uploadPhoto {
 
     public static void update(InputStream uri,String email,MutableLiveData<Boolean>success){
         Log.i("uploadPhoto","in upload photo");
-        String key=email;
         Amplify.Storage.uploadInputStream(
-                key,
+                email,
                 uri,
                 result -> success.setValue(true),
                 storageFailure -> success.setValue(false)

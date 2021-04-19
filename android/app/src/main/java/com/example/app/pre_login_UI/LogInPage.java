@@ -15,7 +15,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 import com.example.app.R;
-import com.example.app.StudentProfileNavDrawerJohn;
 import com.example.app.account_UI.ManagerHome;
 import com.example.app.account_UI.StudentProfile;
 import com.example.app.log_create.LogInOut;
@@ -100,8 +99,8 @@ public class  LogInPage extends AppCompatActivity {
                     {
 
                         //change to different page
-                        if(success!=null){
-                            if(success.getValue()==true){
+                        if(success.getValue()!=null){
+                            if(success.getValue()){
                                 if(id==0){
                                     openProfileManager();
                                 }
@@ -121,6 +120,10 @@ public class  LogInPage extends AppCompatActivity {
         final Observer<Boolean> obs = new Observer<Boolean>(){
             @Override
             public void onChanged(@Nullable final Boolean b){
+                if(b==null){
+                    Log.d("LoginPage","success is null");
+                    return;
+                }
 
                 if(b){
                     studentProgress.setVisibility(View.GONE);

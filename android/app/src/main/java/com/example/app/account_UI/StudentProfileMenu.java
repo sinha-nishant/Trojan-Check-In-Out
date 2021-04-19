@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -239,7 +240,7 @@ public class StudentProfileMenu extends Fragment {
             @Override
             public void onChanged(@javax.annotation.Nullable final StudentAccount sa){
                 if(sa==null){
-                    return;
+                    Log.d("StudentProfileMenu","student mld is null");
                 }
                 else{
                     int activity_size= sa.getActivity().size();
@@ -281,6 +282,7 @@ public class StudentProfileMenu extends Fragment {
             @Override
             public void onChanged(@javax.annotation.Nullable final Integer result){
                 if(result==null){
+                    Log.d("StudentProfileMenu","delete mld is null");
                     return;
                 }
                 if(result==0){
@@ -312,6 +314,10 @@ public class StudentProfileMenu extends Fragment {
         final Observer<Boolean> checkOutObs = new Observer<Boolean>(){
             @Override
             public void onChanged(@javax.annotation.Nullable final Boolean result){
+                if(result==null){
+                    Log.d("StudentProfileMenu","check out mld is null");
+                    return;
+                }
                 if(result){
                     deleteStudent.delete(delete_success);
                 }

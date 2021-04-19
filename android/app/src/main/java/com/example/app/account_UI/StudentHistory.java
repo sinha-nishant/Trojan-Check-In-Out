@@ -2,6 +2,7 @@ package com.example.app.account_UI;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -42,7 +43,7 @@ public class StudentHistory extends AppCompatActivity {
             @Override
             public void onChanged(@javax.annotation.Nullable final StudentAccount sa){
                 if(sa==null){
-                    return;
+                    Log.d("StudentHistory","student mld is null");
                 }
                 else{
                     List<StudentActivity> activities= sa.getActivity();

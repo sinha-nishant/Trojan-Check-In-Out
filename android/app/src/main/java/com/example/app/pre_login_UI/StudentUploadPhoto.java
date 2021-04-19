@@ -200,11 +200,16 @@ public class StudentUploadPhoto extends AppCompatActivity {
                     {
 
                         studentProgress.setVisibility(View.GONE);
-                        if(email_success.getValue()){
+
+                        if(email_success.getValue()==null || email_success.getValue()){
                             openSignUp();
                             return;
                         }
-                        if(id_success.getValue()){
+                        if(id_success.getValue()==null||id_success.getValue()){
+                            openSignUp();
+                            return;
+                        }
+                        if(restore_success.getValue()==null){
                             openSignUp();
                             return;
                         }
@@ -279,6 +284,10 @@ public class StudentUploadPhoto extends AppCompatActivity {
         final Observer<Boolean> create_obs = new Observer<Boolean>(){
             @Override
             public void onChanged(@Nullable final Boolean isSuccess){
+                if(isSuccess==null){
+                    Log.d("StudentUploadPhoto","create mld is null");
+                    return;
+                }
                 if(isSuccess){
                     //stop progress bar
                     studentProgress.setVisibility(View.GONE);
@@ -310,6 +319,10 @@ public class StudentUploadPhoto extends AppCompatActivity {
         final Observer<Boolean> email_obs = new Observer<Boolean>(){
             @Override
             public void onChanged(@Nullable final Boolean exists){
+                if(exists==null){
+                    Log.d("StudentUploadPhoto","email mld is null");
+                    return;
+                }
                 if(!exists){
                     FbQuery.checkUSCidExists(Long.valueOf(id),id_success);
                 }
@@ -331,6 +344,10 @@ public class StudentUploadPhoto extends AppCompatActivity {
         final Observer<Boolean> id_obs = new Observer<Boolean>(){
             @Override
             public void onChanged(@Nullable final Boolean exists){
+                if(exists==null){
+                    Log.d("StudentUploadPhoto","id mld is null");
+                    return;
+                }
                 if(!exists){
                     FbQuery.checkStudentRestore(Long.valueOf(id),email,restore_success);
 
@@ -353,6 +370,10 @@ public class StudentUploadPhoto extends AppCompatActivity {
         final Observer<Boolean> restore_obs = new Observer<Boolean>(){
             @Override
             public void onChanged(@Nullable final Boolean exists){
+                if(exists==null){
+                    Log.d("StudentUploadPhoto","id mld is null");
+                    return;
+                }
                 if(!exists){
 
                     if(ImageSet==0){
@@ -369,10 +390,9 @@ public class StudentUploadPhoto extends AppCompatActivity {
 
                     } catch (FileNotFoundException e) {
                         Log.i("upload", "error in uri parsing");
+                        return;
                     }
-                    if(exampleInputStream==null){
-                        Log.d("uploadUri","stream is null");
-                    }
+
                     CreateAccount.CreateStudent(fName, lName, email,password,exampleInputStream,Long.valueOf(id),major,create_success);
                     }
                     if(ImageSet==2){
@@ -399,6 +419,10 @@ public class StudentUploadPhoto extends AppCompatActivity {
         final Observer<Boolean> upload_obs = new Observer<Boolean>(){
             @Override
             public void onChanged(@Nullable final Boolean isSuccess){
+                if(isSuccess==null){
+                    Log.d("StudentUploadPhoto","upload mld is null");
+                    return;
+                }
                 if(isSuccess){
                     CreateAccount.CreateStudent(fName, lName, email,password,Long.valueOf(id),major,create_success,true);
 

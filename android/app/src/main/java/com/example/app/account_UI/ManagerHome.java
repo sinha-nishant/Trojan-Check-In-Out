@@ -85,7 +85,7 @@ public class ManagerHome extends AppCompatActivity {
             }
         });
 
-        SharedPreferences sp=  activity.getSharedPreferences("sharedPrefs",activity.MODE_PRIVATE);
+        SharedPreferences sp=  activity.getSharedPreferences("sharedPrefs",MODE_PRIVATE);
         email= sp.getString("email","");
         imgView= (ImageView)findViewById(R.id.imageView);
         nameView= (TextView)findViewById(R.id.textView18);
@@ -136,7 +136,7 @@ public class ManagerHome extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == this.RESULT_OK) {
+        if (resultCode == RESULT_OK) {
 
             // compare the resultCode with the
             // SELECT_PICTURE constant
@@ -260,6 +260,10 @@ public class ManagerHome extends AppCompatActivity {
                     public void onClick(DialogInterface dialog,
                                         int which)
                     {
+                        if(account.getValue()==null){
+                            Log.d("ManageHome","account mld is null in delete dialog");
+                            return;
+                        }
                         account.getValue().delete(delete_success);
 
                     }
@@ -286,7 +290,7 @@ public class ManagerHome extends AppCompatActivity {
             @Override
             public void onChanged(@javax.annotation.Nullable final Account acc){
                 if(acc==null){
-                    return;
+                    Log.d("ManagerHome","account mld is null");
                 }
                 else{
                     name= acc.getFirstName()+ " "+ acc.getLastName();
@@ -318,6 +322,10 @@ public class ManagerHome extends AppCompatActivity {
         final Observer<Boolean> update_obs = new Observer<Boolean>(){
             @Override
             public void onChanged(@javax.annotation.Nullable final Boolean isSuccess){
+                if(isSuccess==null){
+                    Log.d("ManagerHome","update pic mld is null");
+                    return;
+                }
                 if(isSuccess){
                     FbUpdate.updatePhoto(email,Firebase_success);
                 }
@@ -338,20 +346,23 @@ public class ManagerHome extends AppCompatActivity {
         final Observer<Boolean> firebase_obs = new Observer<Boolean>(){
             @Override
             public void onChanged(@javax.annotation.Nullable final Boolean isSuccess){
+                if(isSuccess==null){
+                    Log.d("ManagerHome","firebase mld is null");
+                    return;
+                }
                 if(isSuccess){
                     Glide.with(activity).load(profilePic.toString()).error(Glide.with(imgView).load(R.drawable.profile_blank)).diskCacheStrategy(DiskCacheStrategy.NONE)
                             .skipMemoryCache(true).into(imgView);
                     pb.setVisibility(View.GONE);
                     enableBtns();
                     alertDialog.setMessage("updated image successfully");
-                    alertDialog.show();
                 }
                 else{
                     pb.setVisibility(View.GONE);
                     enableBtns();
                     alertDialog.setMessage("Error. Could not update profile Picture");
-                    alertDialog.show();
                 }
+                alertDialog.show();
 
             }
 

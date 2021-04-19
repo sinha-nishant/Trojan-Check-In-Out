@@ -35,7 +35,6 @@ import java.util.Locale;
 
 import javax.annotation.Nullable;
 
-
 @SuppressWarnings("Convert2Lambda")
 public class ManagerSearch extends AppCompatActivity {
 
@@ -237,7 +236,7 @@ public class ManagerSearch extends AppCompatActivity {
             canSearch=true;
         }
         else if(!(startDate.getText().length()==0 && endDate.getText().length()==0 && startTime.getText().length()==0
-            && endTime.getText().length()==0 && selected_building.getEditText().getText().length()==0)){
+                && endTime.getText().length()==0 && selected_building.getEditText().getText().length()==0)){
             alertDialog.setMessage("Do not partial enter building,date and time fields");
             alertDialog.show();
             canSearch=false;
@@ -286,13 +285,7 @@ public class ManagerSearch extends AppCompatActivity {
         {
             return false;
         }
-        else if(id.length() != 10)
-        {
-            return false;
-        }
-        else{
-            return true;
-        }
+        else return id.length() == 10;
     }
 
 
@@ -303,3 +296,5 @@ public class ManagerSearch extends AppCompatActivity {
 
 
 }
+
+

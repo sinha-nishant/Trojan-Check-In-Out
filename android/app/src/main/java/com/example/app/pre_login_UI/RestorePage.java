@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -74,6 +75,10 @@ public class RestorePage extends AppCompatActivity {
                     public void onClick(DialogInterface dialog,
                                         int which)
                     {
+                        if(restore_success.getValue()==null){
+                            Log.d("RestorePage", "restore success was null");
+                            return;
+                        }
                         if(restore_success.getValue()){
                             if(id==0L){
                                 openManager();
@@ -92,6 +97,10 @@ public class RestorePage extends AppCompatActivity {
         final Observer<Boolean> restore_obs = new Observer<Boolean>(){
             @Override
             public void onChanged(@Nullable final Boolean isSuccess){
+                if(isSuccess==null){
+                    Log.d("RestorePage", "restore mld init was null");
+                    return;
+                }
 
                 if(isSuccess){
                     pb.setVisibility(View.GONE);

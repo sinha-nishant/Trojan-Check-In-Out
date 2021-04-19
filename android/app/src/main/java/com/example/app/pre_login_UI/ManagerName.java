@@ -188,6 +188,10 @@ public class ManagerName extends AppCompatActivity {
        final Observer<Boolean> create_obs = new Observer<Boolean>(){
            @Override
            public void onChanged(@Nullable final Boolean isSuccess){
+               if(isSuccess==null){
+                   Log.d("ManagerName","create mld is null");
+                   return;
+               }
                if(isSuccess){
                    //stop progress bar
                    pb.setVisibility(View.GONE);
@@ -215,6 +219,10 @@ public class ManagerName extends AppCompatActivity {
         final Observer<Boolean> upload_obs = new Observer<Boolean>(){
             @Override
             public void onChanged(@Nullable final Boolean isSuccess){
+                if(isSuccess==null){
+                    Log.d("ManagerName","upload mld is null");
+                    return;
+                }
                 if(isSuccess){
                     CreateAccount.CreateManager(fName, lName, email,password,create_success,true);
 
@@ -246,7 +254,11 @@ public class ManagerName extends AppCompatActivity {
                     public void onClick(DialogInterface dialog,
                                         int which)
                     {
-                        if(email_success.getValue()){
+                        if(email_success.getValue()==null||email_success.getValue()){
+                            openManagerSignUp();
+                            return;
+                        }
+                        if(restore_success.getValue()==null){
                             openManagerSignUp();
                             return;
                         }
@@ -339,6 +351,10 @@ public class ManagerName extends AppCompatActivity {
         final Observer<Boolean> email_obs = new Observer<Boolean>(){
             @Override
             public void onChanged(@Nullable final Boolean exists){
+                if(exists==null){
+                    Log.d("ManagerName","email mld is null");
+                    return;
+                }
                 if(!exists){
                     FbQuery.checkManagerRestore(email,restore_success);
 
@@ -361,6 +377,10 @@ public class ManagerName extends AppCompatActivity {
         final Observer<Boolean> restore_obs = new Observer<Boolean>(){
             @Override
             public void onChanged(@Nullable final Boolean exists){
+                if(exists==null){
+                    Log.d("ManagerName","restore mld is null");
+                    return;
+                }
                 if(!exists){
                     if(ImageSet==0){
                         CreateAccount.CreateManager(fName,lName,email,password,create_success,false);
