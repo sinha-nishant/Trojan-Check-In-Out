@@ -176,6 +176,10 @@ public class ManagerCSV extends AppCompatActivity {
         updateMLD.observe(this,updateObserver);
         UpdateCapacityService.updateCapacities(this,map,cannotUpdate,csvBuildingNames,updateMLD);
     }
+    public void addNewBuildings(){
+        //call a service but do anything UI related here
+
+    }
     public void doubleCheckMessage(String title, String message){
         loadingCircle.setVisibility(View.INVISIBLE);
         builderForDoubleCheck.setTitle(title)
