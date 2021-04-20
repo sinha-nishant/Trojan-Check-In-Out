@@ -13,6 +13,7 @@
  import android.widget.Button;
  import android.widget.EditText;
  import android.widget.ImageView;
+ import android.widget.LinearLayout;
  import android.widget.PopupMenu;
  import android.widget.TextView;
  import android.widget.Toast;
@@ -27,12 +28,15 @@
  import com.example.app.R;
  import com.example.app.account_UI.ManagerHome;
  import com.example.app.account_UI.ManagerSearch;
+ import com.example.app.firebaseDB.FbQuery;
+ import com.example.app.firebaseDB.FbUpdate;
  import com.example.app.firebaseDB.FirestoreConnector;
  import com.example.app.services.QRGeneration;
  import com.example.app.services.UpdateCapacityService;
  import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
  import com.firebase.ui.firestore.FirestoreRecyclerOptions;
  import com.google.android.material.bottomnavigation.BottomNavigationView;
+ import com.google.android.material.floatingactionbutton.FloatingActionButton;
  import com.google.firebase.firestore.FirebaseFirestore;
  import com.google.firebase.firestore.Query;
 
@@ -51,6 +55,13 @@ private String m_Text = "";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hassib_test);
+        FloatingActionButton addBuilding =findViewById(R.id.addBuildingBtn);
+        addBuilding.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addBuildingAlertDialog("Add New Building","Enter the name of the new building and its capacity");
+            }
+        });
         fireStore = FirestoreConnector.getDB();
         mFirestoreData = findViewById(R.id.studentRView);
 
@@ -165,10 +176,7 @@ private String m_Text = "";
          }
      }
 
-     public void openManagerProfile(View v){
-         Intent i = new Intent(this, ManagerHome.class);
-         startActivity(i);
-     }
+
      public void openStudentList(View v, String buildingName){
          Intent i = new Intent(this, BuildingStudents.class);
          i.putExtra("buildingName", buildingName);
@@ -208,6 +216,78 @@ private String m_Text = "";
                      Toast toast = Toast.makeText(getApplicationContext(),errorMessage,Toast.LENGTH_LONG);
                      toast.show();
                  }
+             }
+         });
+         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+             @Override
+             public void onClick(DialogInterface dialog, int which) {
+                 dialog.cancel();
+             }
+         });
+
+         builder.show();
+     }
+     public void addBuildingAlertDialog(String title, String message){
+         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+         builder.setTitle(title);
+         builder.setMessage(message);
+
+         // Set up the input
+         LinearLayout linearLayout= new LinearLayout(this);
+         linearLayout.setOrientation(LinearLayout.VERTICAL);
+         final EditText newBuildingName = new EditText(this);
+         final EditText capacity = new EditText(this);
+         newBuildingName.setHint("Building Name");
+         capacity.setHint("Building Capacity");
+         // Specify the type of input expected
+         newBuildingName.setInputType(InputType.TYPE_CLASS_TEXT);
+         capacity.setInputType(InputType.TYPE_CLASS_NUMBER);
+         linearLayout.addView(newBuildingName);
+         linearLayout.addView(capacity);
+         builder.setView(linearLayout);
+
+         // Set up the buttons
+         builder.setPositiveButton("Add Building", new DialogInterface.OnClickListener() {
+             @Override
+             public void onClick(DialogInterface dialog, int which) {
+                 //first see if building already exists
+                 final Integer cap;
+                 if(!capacity.getText().toString().isEmpty()  && !newBuildingName.getText().toString().isEmpty() ){
+                     cap = Integer.parseInt(capacity.getText().toString());
+                 }else{//if user didn't enter both capacity and name don't go any further
+                     cap=null;
+                     dialog.cancel();
+                     Toast.makeText(getBaseContext(),"Enter a capacity and name please.",Toast.LENGTH_LONG).show();
+                     return;
+                 }
+                 MutableLiveData<Building> buildingMLD = new MutableLiveData<>();
+                 MutableLiveData<Boolean> addBuildingMLD = new MutableLiveData<>();
+                 final Observer<Building> getBuildingObserver = new Observer<Building>() {
+                     @Override
+                     public void onChanged(Building building) {
+                         if(building==null){//building doesn't exist so add it
+                             Building b = new Building(newBuildingName.getText().toString(),cap);
+                             FbUpdate.addBuilding(b,addBuildingMLD);
+
+                         }else{//building name exists so don't add it
+                             Toast.makeText(getBaseContext(),"Building already exists",Toast.LENGTH_LONG).show();
+                         }
+                     }
+                 };
+                 final Observer<Boolean> addBuildingObserver = new Observer<Boolean>() {
+                     @Override
+                     public void onChanged(Boolean success) {
+                         if(success){//building was added
+                             Toast.makeText(getBaseContext(),"Building added",Toast.LENGTH_LONG).show();
+                         }else{//building was not added
+                             Toast.makeText(getBaseContext(),"Something went wrong on our side. Try again later.",Toast.LENGTH_LONG).show();
+                         }
+                     }
+                 };
+                 buildingMLD.observe(BuildingsOccupancyList.this,getBuildingObserver);
+                 addBuildingMLD.observe(BuildingsOccupancyList.this,addBuildingObserver);
+                 FbQuery.getBuilding(newBuildingName.getText().toString(),buildingMLD);
+
              }
          });
          builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

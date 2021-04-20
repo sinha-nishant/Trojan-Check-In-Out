@@ -7,22 +7,27 @@ import java.util.List;
 
 public class Building {
     private String name;
-    private Integer capacity;
-    private Integer occupancy;
+    private Integer capacity=0;
+    private Integer occupancy=0;
     private List<Long> students_ids;//list of uscId
     private String qrCodeURL;
 
     public Building(String building_name, Integer max_capacity, Integer current_occupancy,String image_location ,List<Long> students_in_building){
-        name=building_name;
-        capacity=max_capacity;
-        occupancy=current_occupancy;
-        qrCodeURL=image_location;
-        if(students_in_building!=null){
-            students_ids=students_in_building;
+        this.name=building_name;
+        this.capacity=max_capacity;
+        this.occupancy=current_occupancy;
+        this.qrCodeURL=image_location;
+        if (students_in_building != null) {
+            this.students_ids=students_in_building;
         }
         else{
-            students_ids = new ArrayList<Long>();
+            this. students_ids = new ArrayList<Long>();
         }
+    }
+    public Building(String building_name, Integer capacity){
+        this.name=building_name;
+        this.capacity=capacity;
+        this.students_ids = new ArrayList<>();
     }
     public Building(){}
 

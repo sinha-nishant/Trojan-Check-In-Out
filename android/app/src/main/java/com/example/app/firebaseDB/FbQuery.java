@@ -200,6 +200,8 @@ public class FbQuery implements FirestoreConnector {
                     Building building = ds.toObject(Building.class);
                     Log.d("BUILDING", String.valueOf(Objects.requireNonNull(building).getStudents_ids()));
                     buildingMLD.setValue(building);
+                }else{
+                    buildingMLD.setValue(null);
                 }
             }
         });

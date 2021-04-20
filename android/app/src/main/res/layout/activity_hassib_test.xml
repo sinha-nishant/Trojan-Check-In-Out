@@ -7,11 +7,25 @@
     tools:context=".building.BuildingsOccupancyList"
     >
 
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addBuildingBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center"
+        android:layout_marginTop="7dp"
+        app:layout_constraintBottom_toTopOf="@+id/studentRView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_add_circle_24" />
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/studentRView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="70dp"
         android:paddingTop="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
