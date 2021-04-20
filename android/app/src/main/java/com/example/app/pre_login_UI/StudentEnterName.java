@@ -76,8 +76,5 @@ public class StudentEnterName extends AppCompatActivity {
     public void openProfileSecret() {
         Intent i = new Intent(this, StudentProfileNavDrawerJohn.class);
         startActivity(i);
-
-
-
     }
 }

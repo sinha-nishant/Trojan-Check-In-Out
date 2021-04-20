@@ -24,7 +24,10 @@
         -->
 
 
-        <activity android:name=".StudentProfileNavDrawerJohn" />
+        <activity
+            android:name=".StudentProfileNavDrawerJohn"
+            android:theme="@style/Theme.App.NoActionBar"
+            />
         <activity android:name=".building.StudentDetailedView" />
         <activity android:name=".account_UI.searchResults" />
         <activity android:name=".pre_login_UI.RestorePage" />

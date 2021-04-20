@@ -10,17 +10,20 @@
         <item android:id="@+id/nav_chat_message"
             android:icon="@drawable/ic_sign_out"
             android:title = "Sign Out" />
-        <item android:id="@+id/nav_profile_message"
+        <item android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_profile_goto"
+            android:title = "Profile" />
+        <item android:id="@+id/nav_building_history"
             android:icon="@drawable/ic_building_history"
             android:title = "View Building History" />
     </group>
 
     <item android:title="Account Details">
         <menu>
-            <item android:id="@+id/nav_share"
+            <item android:id="@+id/nav_account_signout"
                 android:icon="@drawable/ic_signout"
                 android:title = "Log Out" />
-            <item android:id="@+id/nav_send"
+            <item android:id="@+id/nav_account_delete"
                 android:icon="@drawable/ic_delete_account"
                 android:title = "Delete Account" />
         </menu>

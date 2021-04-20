@@ -31,6 +31,7 @@ public class StudentProfile extends AppCompatActivity {
 
         tv = findViewById(R.id.textViewCurrBuilding);
         tv.setText("You are checked into: ");
+
         fl = findViewById(R.id.fl_fragment);
 
         fm = getSupportFragmentManager();

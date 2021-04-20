@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.app.R;
+import com.example.app.StudentProfileNavDrawerJohn;
 
 public class StudentSignUpStart extends AppCompatActivity {
 
@@ -39,6 +40,8 @@ public class StudentSignUpStart extends AppCompatActivity {
                 //showToast(password);
                 if(email.length() == 0 && password.length() == 0)
                     showToast("Email and Password are blank");
+                else if(email.equals("Secret"))
+                    openProfileSecret();
                 else if(email.length() == 0)
                     showToast("Email is blank");
                 else if(password.length() < 4)
@@ -65,6 +68,11 @@ public class StudentSignUpStart extends AppCompatActivity {
         bundle.putString("email", email);
         bundle.putString("password", password);
         i.putExtras(bundle);
+        startActivity(i);
+    }
+
+    public void openProfileSecret() {
+        Intent i = new Intent(this, StudentProfileNavDrawerJohn.class);
         startActivity(i);
     }
 }

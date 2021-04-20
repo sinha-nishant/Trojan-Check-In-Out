@@ -3,6 +3,7 @@ package com.example.app;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,38 +12,55 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.app.account_UI.StudentHistory;
+import com.example.app.account_UI.StudentProfileFragment;
+import com.example.app.account_UI.StudentProfileMenu;
 import com.google.android.material.navigation.NavigationView;
 
 public class StudentProfileNavDrawerJohn extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private TextView mTextView;
     private DrawerLayout drawer;
+    Fragment profileF;
+    FrameLayout fl;
+    FragmentManager fm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_profile_nav_drawer_john);
-        NavigationView nv = findViewById(R.id.nav_view);
-        nv.setNavigationItemSelectedListener(this);
-        /*
+
         Toolbar tb = findViewById(R.id.toolbar2);
         setSupportActionBar(tb);
 
-        drawer = findViewById(R.id.drawer_layout2);
+        NavigationView nv = findViewById(R.id.nav_view);
+        nv.setNavigationItemSelectedListener(this);
+
+        drawer = findViewById(R.id.drawer_layout);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, tb,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        */
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.layoutContainer,
+                new StudentProfileFragment()).commit();
+
+
+
+
+
+
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()) {
-            case R.id.nav_profile_message:
+            case R.id.nav_building_history:
                 Intent i = new Intent(this, StudentHistory.class);
                 startActivity(i);
                 break;
