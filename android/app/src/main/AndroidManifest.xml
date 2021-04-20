@@ -3,11 +3,12 @@
     package="com.example.app">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -17,17 +18,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.App">
-
+        <activity android:name=".GeoFenceClient"></activity>
         <!--
                Set to true if your app is Standalone, that is, it does not require the handheld
                app to run.
         -->
-
-
         <activity
             android:name=".StudentProfileNavDrawerJohn"
-            android:theme="@style/Theme.App.NoActionBar"
-            />
+            android:theme="@style/Theme.App.NoActionBar" />
         <activity android:name=".building.StudentDetailedView" />
         <activity android:name=".account_UI.searchResults" />
         <activity android:name=".pre_login_UI.RestorePage" />
@@ -47,7 +45,7 @@
         <activity android:name=".pre_login_UI.ManagerSignUpStart" />
         <activity android:name=".pre_login_UI.StudentSignUpStart" />
         <activity android:name=".pre_login_UI.SignUpPage" />
-        <activity android:name=".building.BuildingsOccupancyList"></activity>
+        <activity android:name=".building.BuildingsOccupancyList" />
         <activity android:name=".pre_login_UI.StartPage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

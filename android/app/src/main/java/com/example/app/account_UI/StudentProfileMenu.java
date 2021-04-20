@@ -16,8 +16,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.OnLifecycleEvent;
 
 import com.example.app.R;
 import com.example.app.firebaseDB.FbCheckInOut;
@@ -103,6 +106,8 @@ public class StudentProfileMenu extends Fragment {
         Long id = sp.getLong("uscid",123456790L);
         uscID=id.toString();
         FbQuery.getStudent(id,student);
+        this.getLifecycle().addObserver(new ForegroundBackgroundListener());
+
     }
 
     @Override
@@ -274,7 +279,7 @@ public class StudentProfileMenu extends Fragment {
             }
 
         };
-        student.observe(this, student_obs);
+       student.observe(this, student_obs);
     }
 
     public void MutableDelete(){
@@ -468,5 +473,23 @@ public class StudentProfileMenu extends Fragment {
         btnSignOut.setEnabled(true);
         btnDelete.setEnabled(true);
         manualCheckOut.setEnabled(true);
+    }
+
+
+    class ForegroundBackgroundListener implements LifecycleObserver {
+
+        @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+        public void connectListener() {
+            SharedPreferences sp=  getContext().getSharedPreferences("sharedPrefs",getActivity().MODE_PRIVATE);
+            Long id = sp.getLong("uscid",0L);
+            FbQuery.getStudent(id,student);
+
+        }
+
+        @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+        public void disconnectListener() {
+            Log.d("ProcessLog", "APP IS ON Background");
+
+        }
     }
 }
