@@ -41,23 +41,19 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 public class ManagerHome extends AppCompatActivity {
-    ImageView imgView;
-    TextView nameView;
-    TextView emailView;
-    MutableLiveData<Account> account= new MutableLiveData<>();
-    MutableLiveData<Integer> delete_success= new MutableLiveData<>();
-    MutableLiveData<Boolean> upload_success= new MutableLiveData<>();
-    MutableLiveData<Boolean> Firebase_success= new MutableLiveData<>();
-    String name;
-    String email;
-    Uri profilePic;
-    Activity activity= this;
-    AlertDialog alertDialog;
-    int SELECT_PICTURE = 200;
-    ProgressBar pb;
-    AlertDialog deleteDialog;
-    AlertDialog picDialog;
-    Button deleteBtn, signOutBtn, csvBtn, viewBuildingBtn, picBtn;
+    private ImageView imgView;
+    protected TextView nameView, emailView;
+    private final MutableLiveData<Account> account= new MutableLiveData<>();
+    private final MutableLiveData<Integer> delete_success= new MutableLiveData<>();
+    private final MutableLiveData<Boolean> upload_success= new MutableLiveData<>();
+    private final MutableLiveData<Boolean> Firebase_success= new MutableLiveData<>();
+    private String name, email;
+    private Uri profilePic;
+    protected Activity activity= this;
+    private AlertDialog alertDialog,deleteDialog, picDialog;
+    private final int SELECT_PICTURE = 200;
+    private ProgressBar pb;
+    protected Button deleteBtn, signOutBtn, csvBtn, viewBuildingBtn, picBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,6 +150,10 @@ public class ManagerHome extends AppCompatActivity {
 
                     } catch (FileNotFoundException e) {
                         Log.i("upload", "error in uri parsing");
+                        pb.setVisibility(View.GONE);
+                        alertDialog.setMessage("Error. Could not find picture");
+                        alertDialog.show();
+                        return;
                     }
                     pb.setVisibility(View.VISIBLE);
                     disableBtns();
@@ -179,9 +179,9 @@ public class ManagerHome extends AppCompatActivity {
     public void DialogInit(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle("Status of Action");
+        builder.setTitle("Account Updates");
         builder.setCancelable(false);
-        builder.setPositiveButton("Yes",
+        builder.setPositiveButton("Confirm",
                 new DialogInterface
                         .OnClickListener() {
 
@@ -207,7 +207,7 @@ public class ManagerHome extends AppCompatActivity {
     public void DialogPicInit(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle("Status of Action");
+        builder.setTitle("Image Upload Format");
         builder.setCancelable(false);
         builder.setPositiveButton("File",
                 new DialogInterface
@@ -262,6 +262,9 @@ public class ManagerHome extends AppCompatActivity {
                     {
                         if(account.getValue()==null){
                             Log.d("ManageHome","account mld is null in delete dialog");
+                            pb.setVisibility(View.GONE);
+                            alertDialog.setMessage("Error in processing delete");
+                            alertDialog.show();
                             return;
                         }
                         account.getValue().delete(delete_success);
@@ -291,6 +294,9 @@ public class ManagerHome extends AppCompatActivity {
             public void onChanged(@javax.annotation.Nullable final Account acc){
                 if(acc==null){
                     Log.d("ManagerHome","account mld is null");
+                    pb.setVisibility(View.GONE);
+                    alertDialog.setMessage("Error in retrieving account details");
+                    alertDialog.show();
                 }
                 else{
                     name= acc.getFirstName()+ " "+ acc.getLastName();
@@ -324,6 +330,9 @@ public class ManagerHome extends AppCompatActivity {
             public void onChanged(@javax.annotation.Nullable final Boolean isSuccess){
                 if(isSuccess==null){
                     Log.d("ManagerHome","update pic mld is null");
+                    pb.setVisibility(View.GONE);
+                    alertDialog.setMessage("Error in processing update image request");
+                    alertDialog.show();
                     return;
                 }
                 if(isSuccess){
@@ -348,6 +357,9 @@ public class ManagerHome extends AppCompatActivity {
             public void onChanged(@javax.annotation.Nullable final Boolean isSuccess){
                 if(isSuccess==null){
                     Log.d("ManagerHome","firebase mld is null");
+                    pb.setVisibility(View.GONE);
+                    alertDialog.setMessage("Error in database when processing image update");
+                    alertDialog.show();
                     return;
                 }
                 if(isSuccess){
@@ -393,6 +405,9 @@ public class ManagerHome extends AppCompatActivity {
             @Override
             public void onChanged(@javax.annotation.Nullable final Integer result){
                 if(result==null){
+                    pb.setVisibility(View.GONE);
+                    alertDialog.setMessage("Error while processing delete");
+                    alertDialog.show();
                     return;
                 }
                 if(result==0){

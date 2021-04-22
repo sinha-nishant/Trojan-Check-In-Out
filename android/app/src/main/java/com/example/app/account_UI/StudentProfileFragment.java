@@ -46,17 +46,16 @@ import static android.app.Activity.RESULT_OK;
 public class StudentProfileFragment extends Fragment implements View.OnClickListener{
 
     private String str_name, str_email, str_id, str_major;
-    private TextView name, building_name;
+    protected TextView name, building_name;
     private Uri profilepic;
-    private AlertDialog alertDialog;
-    AlertDialog picDialog;
+    private AlertDialog alertDialog,picDialog;
     private ProgressBar pb;
-    Button UploadBtn;
-    ImageView img;
-    MutableLiveData<StudentAccount> student = new MutableLiveData<>();
-    MutableLiveData<Boolean> upload_success = new MutableLiveData<>();
-    MutableLiveData<Boolean> firebase_success = new MutableLiveData<>();
-    int SELECT_PICTURE = 200;
+    protected Button UploadBtn;
+    private ImageView img;
+    private final MutableLiveData<StudentAccount> student = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> upload_success = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> firebase_success = new MutableLiveData<>();
+    private final int SELECT_PICTURE = 200;
 
     public StudentProfileFragment() {
         // Required empty public constructor
@@ -152,6 +151,9 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
 
                     } catch (FileNotFoundException e) {
                         Log.i("upload", "error in uri parsing");
+                        UploadBtn.setEnabled(true);
+                        alertDialog.setMessage("Error. Could not find profile picture");
+                        alertDialog.show();
                         return;
                     }
                     pb.setVisibility(View.VISIBLE);
@@ -173,9 +175,9 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
 
     public void DialogInit(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Status of Action");
+        builder.setTitle("Image Upload");
         builder.setCancelable(false);
-        builder.setPositiveButton("Yes",
+        builder.setPositiveButton("Confirm",
                 new DialogInterface
                         .OnClickListener() {
                     @Override
@@ -187,7 +189,7 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
     public void DialogPicInit(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-        builder.setTitle("Status of Action");
+        builder.setTitle("Image Upload Format");
         builder.setCancelable(false);
         builder.setPositiveButton("File",
                 new DialogInterface
@@ -234,6 +236,9 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
             public void onChanged(@javax.annotation.Nullable final StudentAccount sa){
                 if(sa == null) {
                     Log.d("StudentProfileFragment","student mld is null");
+                    UploadBtn.setEnabled(true);
+                    alertDialog.setMessage("Error. Could not retrieve account information");
+                    alertDialog.show();
                 }
                 else {
                     if(sa.getActivity().isEmpty()){
@@ -282,6 +287,9 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
             public void onChanged(@javax.annotation.Nullable final Boolean uploadSuccess){
                 if(uploadSuccess==null) {
                     Log.d("StudentProfileFragment","upload mld is null");
+                    UploadBtn.setEnabled(true);
+                    alertDialog.setMessage("Error occurred while trying to upload image");
+                    alertDialog.show();
                     return;
                 }
                 if(uploadSuccess){
@@ -304,6 +312,9 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
             public void onChanged(@javax.annotation.Nullable final Boolean firebaseSuccess){
                 if(firebaseSuccess==null){
                     Log.d("StudentProfileFragment","firebase mld is null");
+                    UploadBtn.setEnabled(true);
+                    alertDialog.setMessage("Error occurred in database while processing your request");
+                    alertDialog.show();
                     return;
                 }
                 if(firebaseSuccess){
@@ -348,15 +359,7 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
             SharedPreferences sp=  getContext().getSharedPreferences("sharedPrefs",getActivity().MODE_PRIVATE);
             Long id = sp.getLong("uscid",0L);
             FbQuery.getStudent(id,student);
-
-
-
         }
 
-        @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-        public void disconnectListener() {
-            Log.d("ProcessLog", "APP IS ON Background");
-
-        }
     }
 }

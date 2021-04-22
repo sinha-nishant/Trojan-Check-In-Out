@@ -46,24 +46,17 @@ public class StudentProfileMenu extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    MutableLiveData<StudentAccount> student= new MutableLiveData<>();
-    MutableLiveData<Integer> delete_success= new MutableLiveData<>();
-    MutableLiveData<Boolean> checkOut_success= new MutableLiveData<>();
-    StudentAccount deleteStudent;
-    Boolean isDelete = false;
-
-    AlertDialog alertDialog;
-    AlertDialog checkInOutMessage;
-    AlertDialog deleteDialog;
-
+    private final MutableLiveData<StudentAccount> student= new MutableLiveData<>();
+    private final MutableLiveData<Integer> delete_success= new MutableLiveData<>();
+    private final MutableLiveData<Boolean> checkOut_success= new MutableLiveData<>();
+    protected StudentAccount deleteStudent;
+    private Boolean isDelete = false;
+    private AlertDialog alertDialog,checkInOutMessage,deleteDialog;
     private StudentActivity sa;
-
-
-    // TODO: Rename and change types of parameters
-    Button btnQR, btnHistory, btnSignOut, btnDelete,manualCheckOut;
-    String email;
-    String uscID;
-    TextView building_name;
+    protected Button btnQR, btnHistory, btnSignOut, btnDelete,manualCheckOut;
+    protected String email;
+    private String uscID;
+    private TextView building_name;
     private ProgressBar pb;
 
     public StudentProfileMenu() {
@@ -188,9 +181,9 @@ public class StudentProfileMenu extends Fragment {
     public void DialogInit(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-        builder.setTitle("Status of Action");
+        builder.setTitle("Returning to Start Page");
         builder.setCancelable(false);
-        builder.setPositiveButton("Yes",
+        builder.setPositiveButton("Confirm",
                 new DialogInterface
                         .OnClickListener() {
 
@@ -211,7 +204,7 @@ public class StudentProfileMenu extends Fragment {
 
         builder.setTitle("Confirmation of Delete Request");
         builder.setCancelable(false);
-        builder.setPositiveButton("Yes",
+        builder.setPositiveButton("Confirm",
                 new DialogInterface
                         .OnClickListener() {
 
@@ -246,6 +239,8 @@ public class StudentProfileMenu extends Fragment {
             public void onChanged(@javax.annotation.Nullable final StudentAccount sa){
                 if(sa==null){
                     Log.d("StudentProfileMenu","student mld is null");
+                    alertDialog.setMessage("Could not retrieve profile information");
+                    alertDialog.show();
                 }
                 else{
                     int activity_size= sa.getActivity().size();
@@ -288,15 +283,20 @@ public class StudentProfileMenu extends Fragment {
             public void onChanged(@javax.annotation.Nullable final Integer result){
                 if(result==null){
                     Log.d("StudentProfileMenu","delete mld is null");
+                    pb.setVisibility(View.GONE);
+                    alertDialog.setMessage("Error trying to process delete request");
+                    alertDialog.show();
                     return;
                 }
                 if(result==0){
                     enableBtns();
+                    pb.setVisibility(View.GONE);
                     alertDialog.setMessage("We could not check you out of your last building. Delete failed");
                     alertDialog.show();
                 }
                 else if(result==1){
                     enableBtns();
+                    pb.setVisibility(View.GONE);
                     alertDialog.setMessage("Unsuccessful in deleting your account");
                     alertDialog.show();
                 }
@@ -321,6 +321,9 @@ public class StudentProfileMenu extends Fragment {
             public void onChanged(@javax.annotation.Nullable final Boolean result){
                 if(result==null){
                     Log.d("StudentProfileMenu","check out mld is null");
+                    pb.setVisibility(View.GONE);
+                    alertDialog.setMessage("Error trying to process checkout");
+                    alertDialog.show();
                     return;
                 }
                 if(result){
@@ -483,12 +486,6 @@ public class StudentProfileMenu extends Fragment {
             SharedPreferences sp=  getContext().getSharedPreferences("sharedPrefs",getActivity().MODE_PRIVATE);
             Long id = sp.getLong("uscid",0L);
             FbQuery.getStudent(id,student);
-
-        }
-
-        @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-        public void disconnectListener() {
-            Log.d("ProcessLog", "APP IS ON Background");
 
         }
     }

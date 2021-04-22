@@ -40,19 +40,16 @@ import javax.annotation.Nullable;
 
 public class ManagerName extends AppCompatActivity {
 
-    String fName, lName;
-    EditText firstNameInput;
-    EditText lastNameInput;
-    Button submitButton;
-    Button profileButton;
-    int SELECT_PICTURE = 200;
-    ImageView img;
-    Uri selectedImage;
-    Integer ImageSet=0;//0 not set, 1 set by local imaage, 2 set by url
-    String email,password;
-    ProgressBar pb;
-    AlertDialog alertDialog;
-    AlertDialog picDialog;
+    private String fName, lName;
+    private EditText firstNameInput,lastNameInput;
+    protected Button submitButton,profileButton;
+    private final int SELECT_PICTURE = 200;
+    private ImageView img;
+    private Uri selectedImage;
+    private Integer ImageSet=0;//0 not set, 1 set by local imaage, 2 set by url
+    private String email,password;
+    private ProgressBar pb;
+    private AlertDialog alertDialog,picDialog;
     private final MutableLiveData<Boolean> create_success = new MutableLiveData<>();
     private final MutableLiveData<Boolean> email_success = new MutableLiveData<>();
     private final MutableLiveData<Boolean> restore_success = new MutableLiveData<>();
@@ -190,6 +187,11 @@ public class ManagerName extends AppCompatActivity {
            public void onChanged(@Nullable final Boolean isSuccess){
                if(isSuccess==null){
                    Log.d("ManagerName","create mld is null");
+                   pb.setVisibility(View.GONE);
+                   profileButton.setEnabled(true);
+                   submitButton.setEnabled(true);
+                   alertDialog.setMessage("Error processing your account creation request");
+                   alertDialog.show();
                    return;
                }
                if(isSuccess){
@@ -221,6 +223,11 @@ public class ManagerName extends AppCompatActivity {
             public void onChanged(@Nullable final Boolean isSuccess){
                 if(isSuccess==null){
                     Log.d("ManagerName","upload mld is null");
+                    pb.setVisibility(View.GONE);
+                    profileButton.setEnabled(true);
+                    submitButton.setEnabled(true);
+                    alertDialog.setMessage("Error processing image upload");
+                    alertDialog.show();
                     return;
                 }
                 if(isSuccess){
@@ -244,9 +251,9 @@ public class ManagerName extends AppCompatActivity {
     private void DialogInit(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle("Status of Action");
+        builder.setTitle("Manager Account Creation");
         builder.setCancelable(false);
-        builder.setPositiveButton("Yes",
+        builder.setPositiveButton("Confirm",
                 new DialogInterface
                         .OnClickListener() {
 
@@ -289,7 +296,7 @@ public class ManagerName extends AppCompatActivity {
     public void DialogPicInit(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle("Status of Action");
+        builder.setTitle("Image Upload Format");
         builder.setCancelable(false);
         builder.setPositiveButton("File",
                 new DialogInterface
@@ -353,6 +360,11 @@ public class ManagerName extends AppCompatActivity {
             public void onChanged(@Nullable final Boolean exists){
                 if(exists==null){
                     Log.d("ManagerName","email mld is null");
+                    pb.setVisibility(View.GONE);
+                    profileButton.setEnabled(true);
+                    submitButton.setEnabled(true);
+                    alertDialog.setMessage("Error processing the email");
+                    alertDialog.show();
                     return;
                 }
                 if(!exists){
@@ -379,6 +391,11 @@ public class ManagerName extends AppCompatActivity {
             public void onChanged(@Nullable final Boolean exists){
                 if(exists==null){
                     Log.d("ManagerName","restore mld is null");
+                    pb.setVisibility(View.GONE);
+                    profileButton.setEnabled(true);
+                    submitButton.setEnabled(true);
+                    alertDialog.setMessage("Error occured while checking if account was deleted before");
+                    alertDialog.show();
                     return;
                 }
                 if(!exists){
@@ -396,6 +413,11 @@ public class ManagerName extends AppCompatActivity {
 
 
                         } catch (FileNotFoundException e) {
+                            pb.setVisibility(View.GONE);
+                            profileButton.setEnabled(true);
+                            submitButton.setEnabled(true);
+                            alertDialog.setMessage("Could not find image");
+                            alertDialog.show();
                             Log.i("upload", "error in uri parsing");
                         }
                         CreateAccount.CreateManager(fName, lName, email,password,exampleInputStream,create_success);

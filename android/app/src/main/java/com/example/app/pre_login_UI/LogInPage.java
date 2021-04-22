@@ -23,14 +23,12 @@ import javax.annotation.Nullable;
 
 public class  LogInPage extends AppCompatActivity {
 
-    String email, password;
-    EditText emailInput;
-    EditText passwordInput;
-    Button submitLoginButton;
-    MutableLiveData<Boolean> success=new MutableLiveData<>();
-    ProgressBar studentProgress;
-    AlertDialog alertDialog;
-
+    private String email, password;
+    private EditText emailInput,passwordInput;
+    protected Button submitLoginButton;
+    private final MutableLiveData<Boolean> success=new MutableLiveData<>();
+    private ProgressBar pb;
+    private AlertDialog alertDialog;
     private static Long id;
 
     @Override
@@ -44,8 +42,8 @@ public class  LogInPage extends AppCompatActivity {
 
         submitLoginButton = (Button) findViewById(R.id.btnLogin2);
 
-        studentProgress = (ProgressBar)findViewById(R.id.progressBar2);
-        studentProgress.setVisibility(View.GONE);
+        pb = (ProgressBar)findViewById(R.id.progressBar2);
+        pb.setVisibility(View.GONE);
 
         DialogInit();
         MutableInit();
@@ -56,7 +54,7 @@ public class  LogInPage extends AppCompatActivity {
             public void onClick(View v) {
                 email = emailInput.getText().toString();
                 password = passwordInput.getText().toString();
-                studentProgress.setVisibility(View.VISIBLE);
+                pb.setVisibility(View.VISIBLE);
                 LogInOut.LogIn(email,password,success);
 
             }
@@ -87,9 +85,9 @@ public class  LogInPage extends AppCompatActivity {
     public void DialogInit(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle("Status of Action");
+        builder.setTitle("Login");
         builder.setCancelable(false);
-        builder.setPositiveButton("Yes",
+        builder.setPositiveButton("Confirm",
                 new DialogInterface
                         .OnClickListener() {
 
@@ -119,28 +117,28 @@ public class  LogInPage extends AppCompatActivity {
     public void MutableInit(){
         final Observer<Boolean> obs = new Observer<Boolean>(){
             @Override
-            public void onChanged(@Nullable final Boolean b){
-                if(b==null){
+            public void onChanged(@Nullable final Boolean isSuccess){
+                if(isSuccess==null){
                     Log.d("LoginPage","success is null");
+                    pb.setVisibility(View.GONE);
+                    alertDialog.setMessage("Error processing login");
+                    alertDialog.show();
+
                     return;
                 }
 
-                if(b){
-                    studentProgress.setVisibility(View.GONE);
+                if(isSuccess){
+                    pb.setVisibility(View.GONE);
                     LogInOut.SaveData(LogInPage.this,email,id);
-
-                    studentProgress.setVisibility(View.GONE);
                     alertDialog.setMessage("Succeeded in Logging In");
-                    Log.d("firstTest",alertDialog.toString());
                     alertDialog.show();
 
 
 
                 }
                 else{
-                    studentProgress.setVisibility(View.GONE);
+                    pb.setVisibility(View.GONE);
                     alertDialog.setMessage("Invalid Credentials");
-                    Log.d("firstTest",alertDialog.toString());
                     alertDialog.show();
 
                 }

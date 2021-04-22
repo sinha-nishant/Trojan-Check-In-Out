@@ -14,10 +14,9 @@ import com.example.app.StudentProfileNavDrawerJohn;
 
 public class StudentSignUpStart extends AppCompatActivity {
 
-    String email, password;
-    EditText emailInput;
-    EditText passwordInput;
-    Button submitButton;
+    private String email, password;
+    private EditText emailInput,passwordInput;
+    protected Button submitButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

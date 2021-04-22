@@ -23,15 +23,14 @@ import com.example.app.log_create.LogInOut;
 import javax.annotation.Nullable;
 
 public class RestorePage extends AppCompatActivity {
-    TextView emailTv;
-    TextView pwTv;
-    Button restoreBtn;
-    ProgressBar pb;
-    MutableLiveData<Boolean> restore_success=new MutableLiveData<>();
-    AlertDialog alertDialog;
+    private TextView emailTv;
+    private TextView pwTv;
+    protected Button restoreBtn;
+    private ProgressBar pb;
+    private final MutableLiveData<Boolean> restore_success=new MutableLiveData<>();
+    private AlertDialog alertDialog;
     private static Long id;
-    String email;
-    String pw;
+    private String email, pw;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +64,9 @@ public class RestorePage extends AppCompatActivity {
     public void DialogInit(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle("Status of Action");
+        builder.setTitle("Restoration Status");
         builder.setCancelable(false);
-        builder.setPositiveButton("Yes",
+        builder.setPositiveButton("Confirm",
                 new DialogInterface
                         .OnClickListener() {
 
@@ -99,6 +98,9 @@ public class RestorePage extends AppCompatActivity {
             public void onChanged(@Nullable final Boolean isSuccess){
                 if(isSuccess==null){
                     Log.d("RestorePage", "restore mld init was null");
+                    pb.setVisibility(View.GONE);
+                    alertDialog.setMessage("Error processing your restoration request");
+                    alertDialog.show();
                     return;
                 }
 

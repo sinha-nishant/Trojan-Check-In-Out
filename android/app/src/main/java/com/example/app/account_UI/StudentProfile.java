@@ -15,11 +15,11 @@ import com.example.app.R;
 
 public class StudentProfile extends AppCompatActivity {
 
-    Fragment profileF, menuF;
-    Button profileB, menuB;
-    FrameLayout fl;
-    FragmentManager fm;
-    TextView tv;
+    private Fragment profileF, menuF;
+    protected Button profileB, menuB;
+    protected FrameLayout fl;
+    protected FragmentManager fm;
+    protected TextView tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -14,10 +14,10 @@ import com.example.app.R;
 
 public class StudentEnterID extends AppCompatActivity {
 
-    private Button idButton;
-    String id, major;
-    EditText idInput;
-    Spinner majorSelect;
+    protected Button idButton;
+    private String id, major;
+    private EditText idInput;
+    private Spinner majorSelect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

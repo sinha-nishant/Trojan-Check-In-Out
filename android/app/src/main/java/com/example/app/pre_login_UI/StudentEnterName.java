@@ -14,10 +14,9 @@ import com.example.app.StudentProfileNavDrawerJohn;
 
 public class StudentEnterName extends AppCompatActivity {
 
-    String fName, lName;
-    EditText firstNameInput;
-    EditText lastNameInput;
-    Button submitButton;
+    private String fName, lName;
+    private EditText firstNameInput,lastNameInput;
+    protected Button submitButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

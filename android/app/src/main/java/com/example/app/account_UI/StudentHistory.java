@@ -19,11 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StudentHistory extends AppCompatActivity {
-
-    ListView lv;
-    ArrayList<String> buildings;
-    MutableLiveData<StudentAccount> student= new MutableLiveData<>();
-    Long uscID;
+    private ListView lv;
+    private ArrayList<String> buildings;
+    private final MutableLiveData<StudentAccount> student= new MutableLiveData<>();
+    protected Long uscID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -24,20 +24,18 @@ import java.util.List;
 import java.util.Set;
 
 public class searchResults extends AppCompatActivity {
-    ListView lv;
-
-    MutableLiveData<List<StudentAccount>> nameMLD = new MutableLiveData<>();
-    MutableLiveData<List<StudentAccount>> majorMLD = new MutableLiveData<>();
-    MutableLiveData<List<StudentAccount>> buildingMLD = new MutableLiveData<>();
-    MutableLiveData<StudentAccount> idMLD = new MutableLiveData<>();
-    MutableLiveData<Boolean> finished=new MutableLiveData<>();
-    Integer total=0;
-    Integer done=0;
-
-    Set<StudentAccount> searchResults= new HashSet<>();
-    Boolean isName,isMajor,isBuilding, isID;
-    AlertDialog alertDialog;
-    Bundle bundle;
+    private ListView lv;
+    private final MutableLiveData<List<StudentAccount>> nameMLD = new MutableLiveData<>();
+    private final MutableLiveData<List<StudentAccount>> majorMLD = new MutableLiveData<>();
+    private final MutableLiveData<List<StudentAccount>> buildingMLD = new MutableLiveData<>();
+    private final MutableLiveData<StudentAccount> idMLD = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> finished=new MutableLiveData<>();
+    private Integer total=0;
+    private Integer done=0;
+    private Set<StudentAccount> searchResults= new HashSet<>();
+    private Boolean isName,isMajor,isBuilding, isID;
+    private AlertDialog alertDialog;
+    private Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,9 +152,9 @@ public class searchResults extends AppCompatActivity {
     private void DialogInit() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle("Status of Action");
+        builder.setTitle("Return to Search");
         builder.setCancelable(false);
-        builder.setPositiveButton("Yes",
+        builder.setPositiveButton("Confirm",
                 new DialogInterface
                         .OnClickListener() {
 

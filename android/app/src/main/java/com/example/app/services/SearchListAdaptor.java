@@ -163,6 +163,8 @@ public class SearchListAdaptor extends ArrayAdapter<StudentAccount> {
                         // check last index of studentactivity list
                         if(student==null){
                             Log.i("SearchListAdapter","student object null onLongClick");
+                            resultDialog.setMessage("Error occurred while retrieving the students data");
+                            resultDialog.show();
                             return;
                         }
                         List<StudentActivity> sa_list = student.getActivity();
@@ -206,7 +208,7 @@ public class SearchListAdaptor extends ArrayAdapter<StudentAccount> {
     private void DialogInit() {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 
-        builder.setTitle("Status of Action");
+        builder.setTitle("Kick Out Confirmation");
         builder.setCancelable(false);
         builder.setPositiveButton("Yes",
                 new DialogInterface
@@ -235,9 +237,9 @@ public class SearchListAdaptor extends ArrayAdapter<StudentAccount> {
     private void ResultDialogInit() {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 
-        builder.setTitle("Status of Action");
+        builder.setTitle("Kick Out Result");
         builder.setCancelable(false);
-        builder.setPositiveButton("OK",
+        builder.setPositiveButton("confirm",
                 new DialogInterface
                         .OnClickListener() {
 
@@ -265,6 +267,9 @@ public void kickOut(){
             ResultDialogInit();
             if(success==null){
                 Log.i("SearchListAdapter","student object null on KickOut");
+                resultDialog.setMessage("Error in database when trying to kick out student");
+                resultDialog.show();
+                pbKickOut.setVisibility(View.GONE);
                 return;
             }
             if(success){ //student is checked in  display checkin message

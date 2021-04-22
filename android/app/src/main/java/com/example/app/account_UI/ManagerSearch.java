@@ -41,7 +41,7 @@ public class ManagerSearch extends AppCompatActivity {
     private EditText fName;
     private EditText lName;
     private AutoCompleteTextView building_spinner;
-    private AutoCompleteTextView major_spinner;
+    protected AutoCompleteTextView major_spinner;
     private final MutableLiveData<List<Building>> buildingsMLD = new MutableLiveData<>();
     private AlertDialog alertDialog;
     private final Calendar myCalendar = Calendar.getInstance();
@@ -50,9 +50,9 @@ public class ManagerSearch extends AppCompatActivity {
     private EditText startTime;
     private EditText endTime;
     private EditText ID;
-    Button submitBtn;
-    Bundle bundle;
-    Boolean canSearch=false;
+    protected Button submitBtn;
+    protected Bundle bundle;
+    protected Boolean canSearch=false;
 
 
     @Override
@@ -128,9 +128,9 @@ public class ManagerSearch extends AppCompatActivity {
 
     private void DialogInit(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Status of Action");
+        builder.setTitle("Search Results");
         builder.setCancelable(false);
-        builder.setPositiveButton("Yes",
+        builder.setPositiveButton("Confirm",
                 new DialogInterface
                         .OnClickListener() {
                     @Override

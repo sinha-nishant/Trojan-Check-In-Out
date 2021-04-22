@@ -41,16 +41,16 @@ import java.net.URL;
 
 
 public class UrlUploadImage extends AppCompatActivity {
-    AlertDialog alertDialog;
-    TextView url;
-    ImageView img;
-    Boolean uploadable;
-    MutableLiveData<Boolean> upload_success= new MutableLiveData<>();
-    String str_email;
-    Boolean isStudent;
-    Boolean isCreated;
-    String finalUrl;
-    ProgressBar pb;
+    private AlertDialog alertDialog;
+    private TextView url;
+    private ImageView img;
+    private Boolean uploadable;
+    private final MutableLiveData<Boolean> upload_success= new MutableLiveData<>();
+    private String str_email;
+    private Boolean isStudent;
+    private Boolean isCreated;
+    private String finalUrl;
+    private ProgressBar pb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,9 +82,9 @@ public class UrlUploadImage extends AppCompatActivity {
     public void DialogInit(){
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
 
-        builder.setTitle("Status of Action");
+        builder.setTitle("URL Image Selection");
         builder.setCancelable(false);
-        builder.setPositiveButton("Yes",
+        builder.setPositiveButton("Confirm",
                 new DialogInterface
                         .OnClickListener() {
 
@@ -114,6 +114,9 @@ public class UrlUploadImage extends AppCompatActivity {
             public void onChanged(@javax.annotation.Nullable final Boolean isSuccess){
                 if(isSuccess==null){
                     Log.i("UrlUploadImage", "upload boolean was null ");
+                    pb.setVisibility(View.GONE);
+                    alertDialog.setMessage("Database error occurred while uploading");
+                    alertDialog.show();
                     return;
                 }
                 if(isSuccess){

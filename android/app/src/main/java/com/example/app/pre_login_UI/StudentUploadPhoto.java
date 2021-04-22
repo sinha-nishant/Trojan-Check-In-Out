@@ -38,22 +38,20 @@ import javax.annotation.Nullable;
 
 public class StudentUploadPhoto extends AppCompatActivity {
 
-    String email, password, fName, lName, id, major;
-
-    ImageView uploadImage;
-    Button bUploadImage, submitBtn;
-    ProgressBar studentProgress;
-    AlertDialog alertDialog;
-    AlertDialog picDialog;
-    Uri selectedImage;
-    Integer ImageSet=0; //0 not set, 1 set by local imaage, 2 set by url
+    private String email, password, fName, lName, id, major;
+    private ImageView uploadImage;
+    protected Button bUploadImage, submitBtn;
+    private ProgressBar studentProgress;
+    private AlertDialog alertDialog;
+    private AlertDialog picDialog;
+    private Uri selectedImage;
+    private Integer ImageSet=0; //0 not set, 1 set by local imaage, 2 set by url
     private final MutableLiveData<Boolean> create_success = new MutableLiveData<>();
     private final MutableLiveData<Boolean> email_success = new MutableLiveData<>();
     private final MutableLiveData<Boolean> id_success = new MutableLiveData<>();
     private final MutableLiveData<Boolean> restore_success = new MutableLiveData<>();
     private final MutableLiveData<Boolean> upload_success = new MutableLiveData<>();
-
-    int SELECT_PICTURE = 200;
+    private final int SELECT_PICTURE = 200;
 
 
 
@@ -188,9 +186,9 @@ public class StudentUploadPhoto extends AppCompatActivity {
     private void DialogInit(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle("Status of Action");
+        builder.setTitle("Student Account Creation");
         builder.setCancelable(false);
-        builder.setPositiveButton("Yes",
+        builder.setPositiveButton("Confirm",
                 new DialogInterface
                         .OnClickListener() {
 
@@ -240,7 +238,7 @@ public class StudentUploadPhoto extends AppCompatActivity {
     public void DialogPicInit(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle("Status of Action");
+        builder.setTitle("Image Upload Format");
         builder.setCancelable(false);
         builder.setPositiveButton("File",
                 new DialogInterface
@@ -286,6 +284,9 @@ public class StudentUploadPhoto extends AppCompatActivity {
             public void onChanged(@Nullable final Boolean isSuccess){
                 if(isSuccess==null){
                     Log.d("StudentUploadPhoto","create mld is null");
+                    studentProgress.setVisibility(View.GONE);
+                    alertDialog.setMessage("Error in database when processing the new account");
+                    alertDialog.show();
                     return;
                 }
                 if(isSuccess){
@@ -321,6 +322,9 @@ public class StudentUploadPhoto extends AppCompatActivity {
             public void onChanged(@Nullable final Boolean exists){
                 if(exists==null){
                     Log.d("StudentUploadPhoto","email mld is null");
+                    studentProgress.setVisibility(View.GONE);
+                    alertDialog.setMessage("Error processing your email");
+                    alertDialog.show();
                     return;
                 }
                 if(!exists){
@@ -346,6 +350,9 @@ public class StudentUploadPhoto extends AppCompatActivity {
             public void onChanged(@Nullable final Boolean exists){
                 if(exists==null){
                     Log.d("StudentUploadPhoto","id mld is null");
+                    studentProgress.setVisibility(View.GONE);
+                    alertDialog.setMessage("Error processing your ID");
+                    alertDialog.show();
                     return;
                 }
                 if(!exists){
@@ -372,6 +379,9 @@ public class StudentUploadPhoto extends AppCompatActivity {
             public void onChanged(@Nullable final Boolean exists){
                 if(exists==null){
                     Log.d("StudentUploadPhoto","id mld is null");
+                    studentProgress.setVisibility(View.GONE);
+                    alertDialog.setMessage("Error processing account restoration");
+                    alertDialog.show();
                     return;
                 }
                 if(!exists){
@@ -390,6 +400,9 @@ public class StudentUploadPhoto extends AppCompatActivity {
 
                     } catch (FileNotFoundException e) {
                         Log.i("upload", "error in uri parsing");
+                        studentProgress.setVisibility(View.GONE);
+                        alertDialog.setMessage("Could not find the image");
+                        alertDialog.show();
                         return;
                     }
 
@@ -421,6 +434,9 @@ public class StudentUploadPhoto extends AppCompatActivity {
             public void onChanged(@Nullable final Boolean isSuccess){
                 if(isSuccess==null){
                     Log.d("StudentUploadPhoto","upload mld is null");
+                    studentProgress.setVisibility(View.GONE);
+                    alertDialog.setMessage("Error processing your account");
+                    alertDialog.show();
                     return;
                 }
                 if(isSuccess){
