@@ -34,35 +34,45 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 
 public class FbUpdate implements FirestoreConnector {
     /**
-     * Batch update capacities
+     * Batch add buildings
      *
      * @param buildings hashmap from building name and capacities
      * @param success   indicates whether addition occurred successfully
      */
     public static void addBuildings(HashMap<String, Integer> buildings, MutableLiveData<Boolean> success) {
+        //building variables
+        Integer occupancy = 0;
+        List<Long> students_ids = null;//list of uscId
+        String qrCodeURL = null;
+
+
         CollectionReference buildingsFB = FirestoreConnector.getDB().collection("Buildings");
-        HashSet<String> currentBuildings = new HashSet<>();
-        buildingsFB.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        WriteBatch batch = FirestoreConnector.getDB().batch();
+
+        //new code
+        for (Map.Entry mapElement : buildings.entrySet()) {
+            String key = (String) mapElement.getKey();
+            //key and value set here, rest set above
+            String name = key;
+            Integer capacity = (Integer) mapElement.getValue();
+            DocumentReference buildingRef = buildingsFB.document();
+            Building building = new Building(name, capacity, occupancy, qrCodeURL, students_ids);
+            batch.set(buildingRef, building);
+
+        }
+
+        // Execute batch capacity updates
+        batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+            public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    if (!task.getResult().isEmpty()) {
-                        for (DocumentSnapshot ds : task.getResult().getDocuments()) {
-                            currentBuildings.add(ds.getString("name"));
-                        }
-                    }
+                    success.setValue(true);
+                } else {
+                    Log.d("ADD BUILDINGS", String.valueOf(task.getException()));
+                    success.setValue(false);
                 }
             }
         });
-
-        for (Map.Entry mapElement : buildings.entrySet()) {
-            String key = (String) mapElement.getKey();
-            if(!currentBuildings.contains(key)){
-                addBuildingName(key, success);
-            }
-        }
-
-        updateCapacities(buildings, success);
     }
 
     public static void addBuildingName(String buildingName, MutableLiveData<Boolean> success) {
