@@ -48,7 +48,7 @@ public class StudentProfileNavDrawerJohn extends AppCompatActivity implements Na
         toggle.syncState();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.layoutContainer,
-                new StudentProfileFragment()).commit();
+                new FragmentQROptions()).commit();
 
 
 
