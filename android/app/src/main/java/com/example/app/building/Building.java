@@ -1,6 +1,7 @@
 package com.example.app.building;
 
 import com.example.app.users.StudentAccount;
+import com.google.firebase.firestore.Exclude;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,12 +45,16 @@ public class Building {
     public String getQrCodeURL(){
         return qrCodeURL;
     }
-    public List<StudentAccount> getStudents(){
-        return new ArrayList<StudentAccount>();
-    }
     public List<Long> getStudents_ids(){
         return this.students_ids;
     }
+
+    @Exclude
+    public List<StudentAccount> getStudents(){
+        return new ArrayList<StudentAccount>();
+    }
+
+    @Exclude
     public Boolean getAvailability(){return occupancy<capacity;}
 
     //setters
