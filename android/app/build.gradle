@@ -51,11 +51,8 @@ dependencies {
     implementation group: 'com.google.zxing', name: 'core', version: '3.4.1'
     implementation 'androidx.recyclerview:recyclerview:1.2.0'
     implementation 'androidx.wear:wear:1.1.0'
-<<<<<<< Updated upstream
     implementation 'androidx.lifecycle:lifecycle-process:2.2.0'
-=======
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
->>>>>>> Stashed changes
+
     testImplementation 'junit:junit:4.+'
 
     //added
