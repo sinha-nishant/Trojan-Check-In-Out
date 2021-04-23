@@ -34,4 +34,27 @@ public class UpdateCapacityService {
     public static void updateCapacity(String buildingName, Integer newCapacity, MutableLiveData<Boolean> updateMLD){
         FbUpdate.updateCapacity(buildingName,updateMLD,newCapacity);
     }
+    public static void addBuildings(LifecycleOwner owner, HashMap<String, Integer> map, List<String> cannotUpdate, List<String> csvBuildingNames, MutableLiveData<Boolean> addMLD){
+        // get all buildings map from firebase
+        MutableLiveData<HashMap<String, Building>> buildingsMLD = new MutableLiveData<>();
+        final Observer<HashMap<String, Building>> buildingsObserver = new Observer<HashMap<String, Building>>(){
+            @Override
+            public void onChanged(@Nullable final HashMap<String, Building> buildingHashMap){
+                //iterate through csvBuildingNames and if exists in database then add it to cannotUpdate and remove from map
+                for(int i =0;i<csvBuildingNames.size();i++){
+                    if(buildingHashMap.containsKey(csvBuildingNames.get(i))){// if building exists then cannot add it
+                        cannotUpdate.add(csvBuildingNames.get(i));
+                        map.remove(csvBuildingNames.get(i));
+                    }
+                }
+                FbUpdate.addBuildings(map,addMLD);
+
+            }
+        };
+        buildingsMLD.observe(owner,buildingsObserver);
+        FbQuery.getAllBuildingsMap(buildingsMLD);
+
+        //once done iterating call batch add
+    }
+
 }
