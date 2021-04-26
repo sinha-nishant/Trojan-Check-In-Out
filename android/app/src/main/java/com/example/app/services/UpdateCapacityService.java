@@ -20,7 +20,7 @@ public class UpdateCapacityService {
             @Override
             public void onChanged(@Nullable final HashMap<String, Building> buildingHashMap){
                 for(int i =0;i<csvBuildingNames.size();i++){
-                    if(buildingHashMap.get(csvBuildingNames.get(i)).getOccupancy()>map.get(csvBuildingNames.get(i)) || !buildingHashMap.containsKey(csvBuildingNames.get(i))){
+                    if(!buildingHashMap.containsKey(csvBuildingNames.get(i)) || buildingHashMap.get(csvBuildingNames.get(i)).getOccupancy()>map.get(csvBuildingNames.get(i))){
                         cannotUpdate.add(csvBuildingNames.get(i));
                         map.remove(csvBuildingNames.get(i));
                     }
