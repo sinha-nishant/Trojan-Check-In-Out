@@ -208,7 +208,12 @@ public class ManagerCSV extends AppCompatActivity {
                   notUpdatedNames.setText(fromHtml(textViewMessage,1));
 
               }else{
-                  setBuilder("Error","Something went wrong on our side. Please try again later");
+                  if(map.size()==0){
+                      setBuilder("Error","Buildings entered don't exist.");
+                  }else{
+                      setBuilder("Error","Something went wrong on our side. Please try again later.");
+                  }
+
 
               }
               confirm.setEnabled(true);
