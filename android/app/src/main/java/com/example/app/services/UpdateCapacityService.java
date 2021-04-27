@@ -25,9 +25,12 @@ public class UpdateCapacityService {
                         map.remove(csvBuildingNames.get(i));
                     }
                 }
-                FbUpdate.updateCapacities(map,updateMLD);
+                if(map.size()>0){
+                    FbUpdate.updateCapacities(map,updateMLD);
+                }
             }
         };
+
         buildingsMLD.observe(owner,buildingsObserver);
         FbQuery.getAllBuildingsMap(buildingsMLD);
     }
