@@ -27,6 +27,8 @@ public class UpdateCapacityService {
                 }
                 if(map.size()>0){
                     FbUpdate.updateCapacities(map,updateMLD);
+                }else{
+                    updateMLD.setValue(false);
                 }
             }
         };
