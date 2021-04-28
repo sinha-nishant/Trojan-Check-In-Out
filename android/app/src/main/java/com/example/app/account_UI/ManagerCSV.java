@@ -178,8 +178,13 @@ public class ManagerCSV extends AppCompatActivity {
                         enableButton=false;
                         break;
                     }
-                    csvBuildingNames.add(buildingName);
-                    map.put(buildingName,capacity);
+                    else if(buildingName.trim().length()==0){
+                        Toast.makeText(getApplicationContext(),"Format Error: Can't have empty building name",Toast.LENGTH_LONG).show();
+                        enableButton=false;
+                        break;
+                    }
+                    csvBuildingNames.add(buildingName.trim());
+                    map.put(buildingName.trim(),capacity);
                     line=bufferedReader.readLine();
                 }catch(NumberFormatException e){
                     Toast.makeText(getApplicationContext(),"Format Error: Must follow building name with integer for capacity.",Toast.LENGTH_LONG).show();

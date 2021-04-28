@@ -266,7 +266,7 @@ private String m_Text = "";
                      @Override
                      public void onChanged(Building building) {
                          if(building==null){//building doesn't exist so add it
-                             Building b = new Building(newBuildingName.getText().toString(),cap);
+                             Building b = new Building(newBuildingName.getText().toString().trim(),cap);
                              FbUpdate.addBuilding(b,addBuildingMLD);
 
                          }else{//building name exists so don't add it
