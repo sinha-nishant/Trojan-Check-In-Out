@@ -64,6 +64,9 @@ public class StudentProfileNavDrawerJohn extends AppCompatActivity implements Na
                 Intent i = new Intent(this, StudentHistory.class);
                 startActivity(i);
                 break;
+            case R.id.nav_pw_change:
+                //Do work here, Arjun
+                break;
         }
         return true;
     }
