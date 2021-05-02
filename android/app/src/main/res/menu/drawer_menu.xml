@@ -7,6 +7,9 @@
         <item android:id="@+id/nav_profile"
             android:icon="@drawable/ic_profile_goto"
             android:title = "Profile" />
+        <item android:id="@+id/nav_qr_frag"
+            android:icon="@drawable/ic_baseline_qr_code_24"
+            android:title = "Check In/Out" />
         <item android:id="@+id/nav_building_history"
             android:icon="@drawable/ic_building_history"
             android:title = "View Building History" />

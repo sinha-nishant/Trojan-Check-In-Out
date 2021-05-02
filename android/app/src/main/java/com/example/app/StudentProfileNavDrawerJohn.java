@@ -67,6 +67,14 @@ public class StudentProfileNavDrawerJohn extends AppCompatActivity implements Na
             case R.id.nav_pw_change:
                 //Do work here, Arjun
                 break;
+            case R.id.nav_profile:
+                getSupportFragmentManager().beginTransaction().replace(R.id.layoutContainer,
+                        new StudentProfileFragment()).commit();
+                break;
+            case R.id.nav_qr_frag:
+                getSupportFragmentManager().beginTransaction().replace(R.id.layoutContainer,
+                        new FragmentQROptions()).commit();
+                break;
         }
         return true;
     }

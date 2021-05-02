@@ -23,6 +23,7 @@ import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.app.R;
+import com.example.app.StudentProfileNavDrawerJohn;
 import com.example.app.account_UI.StudentProfile;
 import com.example.app.firebaseDB.FbQuery;
 import com.example.app.log_create.CreateAccount;
@@ -151,6 +152,7 @@ public class StudentUploadPhoto extends AppCompatActivity {
 
 
     private void openProfile() {
+        //Intent i = new Intent(this, StudentProfileNavDrawerJohn.class);
         Intent i = new Intent(this, StudentProfile.class);
         startActivity(i);
     }
