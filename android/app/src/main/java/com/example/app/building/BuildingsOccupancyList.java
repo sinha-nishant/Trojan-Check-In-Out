@@ -40,6 +40,10 @@
  import com.google.firebase.firestore.FirebaseFirestore;
  import com.google.firebase.firestore.Query;
 
+ import javax.annotation.Nullable;
+
+ import static android.text.Html.fromHtml;
+
  public class BuildingsOccupancyList extends AppCompatActivity {
 
 public static final String shared_pref = "sharedPrefs";
@@ -130,7 +134,14 @@ private String m_Text = "";
                                         //handle menu2 click
                                         openStudentList(view,model.getName());
                                         return true;
-
+                                    case R.id.remove_menu:
+                                        //display message asking if you want to delete
+                                        if(model.getOccupancy()==0){
+                                            confirmRemoveBuildingMessage("Remove Building", "Are you sure you want to delete "+holder.buildingName.getText(),holder.buildingName.getText().toString());
+                                        }else{
+                                            Toast.makeText(getApplicationContext(),"Error: Cannot remove a building while students inside it.",Toast.LENGTH_LONG).show();
+                                        }
+                                        return true;
                                     default:
                                         return false;
                                 }
@@ -216,6 +227,43 @@ private String m_Text = "";
                      Toast toast = Toast.makeText(getApplicationContext(),errorMessage,Toast.LENGTH_LONG);
                      toast.show();
                  }
+             }
+         });
+         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+             @Override
+             public void onClick(DialogInterface dialog, int which) {
+                 dialog.cancel();
+             }
+         });
+
+         builder.show();
+     }
+     public void confirmRemoveBuildingMessage(String title, String message,String buildingToRemove){
+         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+         builder.setTitle(title);
+         builder.setMessage(message);
+
+         builder.setPositiveButton("Remove Building", new DialogInterface.OnClickListener() {
+             @Override
+             public void onClick(DialogInterface dialog, int which) {
+                 //remove the building since already exists and occupancy is 0
+                 Toast.makeText(getApplicationContext(),"Remove building confirmed",Toast.LENGTH_LONG).show();
+                 MutableLiveData<Boolean> removeMLD = new MutableLiveData<>();
+                 final Observer<Boolean> removeObserver = new Observer<Boolean>(){
+                     @Override
+                     public void onChanged(@Nullable final Boolean success){
+                         if(success){
+                             Toast.makeText(getApplicationContext(),"Successfully removed.",Toast.LENGTH_LONG).show();
+                         }else{
+                             Toast.makeText(getApplicationContext(),"Failed to remove.Try again later.",Toast.LENGTH_LONG).show();
+                         }
+                     }
+                 };
+                 removeMLD.observe(BuildingsOccupancyList.this,removeObserver);
+
+                 /*uncomment once firebase remove single building is done*/
+                 //FbUpdate.removeBuilding(buildingToRemove,removeMLD);
+
              }
          });
          builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
