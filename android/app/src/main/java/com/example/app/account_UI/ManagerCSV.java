@@ -38,10 +38,10 @@ import javax.annotation.Nullable;
 import static android.text.Html.fromHtml;
 
 public class ManagerCSV extends AppCompatActivity {
-    private Integer readRequestCode = 123;
+    private final Integer readRequestCode = 123;
     private Button upload;
     private TextView fileName;
-    private String fileNamePrefix = "File Chosen : ";
+    private String fileNamePrefix = "File Chosen: ";
     private Button confirm;
     public HashMap<String, Integer> map = new HashMap<>();
     private ProgressBar loadingCircle;
@@ -102,7 +102,7 @@ public class ManagerCSV extends AppCompatActivity {
         csvBuildingNames.clear();
         cannotUpdate.clear();
         if(bufferedReader.ready()){
-            String line = bufferedReader.readLine();
+            String line = bufferedReader.readLine().trim();
             if(line.toLowerCase().equals("update")){
                 confirm.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -287,8 +287,6 @@ public class ManagerCSV extends AppCompatActivity {
                   }else{
                       setBuilder("Error","Something went wrong on our side. Please try again later.");
                   }
-
-
               }
               confirm.setEnabled(true);
               upload.setEnabled(true);
@@ -308,13 +306,11 @@ public class ManagerCSV extends AppCompatActivity {
                     String textViewMessage = "<u>Following Buildings Not Been Added</u><br/>";
                     for(int i=0;i<cannotUpdate.size();i++){
                         textViewMessage+="<b>"+cannotUpdate.get(i)+"</b><br/><br/>";
-
                     }
                     notUpdatedNames.setText(fromHtml(textViewMessage,1));
 
                 }else{
                     setBuilder("Error","Something went wrong on our side. Please try again later");
-
                 }
                 confirm.setEnabled(true);
                 upload.setEnabled(true);
@@ -335,7 +331,6 @@ public class ManagerCSV extends AppCompatActivity {
                         confirm.setEnabled(false);
                         if(functionality.equals("Update")){
                             updateCapacities();
-
                         }else if(functionality.equals("Add")){
                             addNewBuildings();
                         }else if(functionality.equals("Remove")){
