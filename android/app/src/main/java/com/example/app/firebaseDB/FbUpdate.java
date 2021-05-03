@@ -111,6 +111,78 @@ public class FbUpdate implements FirestoreConnector {
         });
     }
 
+    /**
+     * Batch delete buildings
+     *
+     * @param buildings list of building names
+     * @param success   indicates whether addition occurred successfully
+     */
+    public static void deleteBuildings(List<String> buildings, MutableLiveData<Boolean> success){
+        // get all buildings in the list
+        FirestoreConnector.getDB().collection("Buildings").whereIn("name", buildings)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                    WriteBatch batch = FirestoreConnector.getDB().batch();
+                    // Add delete of building reference to batch
+                    for (QueryDocumentSnapshot qds : task.getResult()) {
+                        batch.delete(qds.getReference());
+                    }
+                    // Execute batch deletes
+                    batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                success.setValue(true);
+                            } else {
+                                Log.d("DELETE", String.valueOf(task.getException()));
+                                success.setValue(false);
+                            }
+                        }
+                    });
+                } else {
+                    Log.d("DELETE", String.valueOf(task.getException()));
+                    success.setValue(false);
+                }
+            }
+        });
+
+    }
+
+
+    /**
+     * Delete single building
+     *
+     * @param buildingName  building name
+     * @param success   indicates whether addition occurred successfully
+     */
+    public static void deleteBuilding(String buildingName, MutableLiveData<Boolean> success){
+        FirestoreConnector.getDB().collection("Buildings").
+                whereEqualTo("name", buildingName).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful() && !task.getResult().isEmpty()){
+                    for (QueryDocumentSnapshot qds:task.getResult()){
+                        FirestoreConnector.getDB().collection("Buildings")
+                                .document(qds.getId())
+                                .delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    success.setValue(true);
+                                    Log.d("DELETE", buildingName + " deleted");
+                                } else {
+                                    success.setValue(false);
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
+
 
     // Update Capacity
     public static void updateCapacity(String buildingName, MutableLiveData<Boolean> success, Integer newCapacity) {
