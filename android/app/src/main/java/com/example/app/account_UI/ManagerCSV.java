@@ -29,7 +29,9 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 
@@ -82,7 +84,6 @@ public class ManagerCSV extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK){
             File csvFile = new File(data.getData().getPath());
-             Log.d("Got CSV",csvFile.toString());
              String fileChosen = fileNamePrefix+csvFile.getName();
              fileName.setText(fileChosen);
             try {
@@ -114,6 +115,16 @@ public class ManagerCSV extends AppCompatActivity {
                 });
                 updateAddProcedure(bufferedReader);
             }else if(line.toLowerCase().equals("remove")){
+                confirm.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        loadingCircle.setVisibility(View.VISIBLE);
+                        upload.setEnabled(false);
+                        updateClick("Remove");
+                        Log.d("Remove","Btn pressed");
+                    }
+                });
+                removeProcedure(bufferedReader);
 
             }else if(line.toLowerCase().equals("add")){
                 updateAddProcedure(bufferedReader);
@@ -136,7 +147,6 @@ public class ManagerCSV extends AppCompatActivity {
         csvFile.close();
         bufferedReader.close();
         isr.close();
-        Log.d("Map",map.toString());
     }
 
     @Override
@@ -150,13 +160,48 @@ public class ManagerCSV extends AppCompatActivity {
         doubleCheckMessage(procedure+" Buildings","Are you sure you want to "+procedure+" buildings?", procedure);
 
     }
+    public void removeProcedure(BufferedReader bufferedReader) throws IOException {
+        csvBuildingNames.clear();
+        cannotUpdate.clear();
+        String indicator = bufferedReader.readLine();
+        if(indicator.trim().isEmpty() || !indicator.trim().toLowerCase().equals("building name")){
+            Toast.makeText(getApplicationContext(), "Format Error: Must follow 'Remove' line with 'Building Name' as a title", Toast.LENGTH_LONG).show();
+            confirm.setEnabled(false);
+            return;
+        }
+        String line = bufferedReader.readLine();
+        boolean enableButton = true;
+        while(line!=null){
+            //error check
+            //1. must contain only one column of names
+            //2. cannot be blank line
+            line = line.trim();
+            if(line.isEmpty()) {
+                Toast.makeText(getApplicationContext(), "Format Error: Cannot have a blank line. Line must have one building name", Toast.LENGTH_LONG).show();
+                enableButton = false;
+                break;
+            }
+            if(line.contains(",")){
+                Toast.makeText(getApplicationContext(), "Format Error: Must have one column consisting of building names", Toast.LENGTH_LONG).show();
+                enableButton = false;
+                break;
+            }
+            csvBuildingNames.add(line);
+            line=bufferedReader.readLine();
+        }
+        confirm.setEnabled(enableButton);
+    }
     public void updateAddProcedure(BufferedReader bufferedReader) throws IOException {
         map.clear();
         csvBuildingNames.clear();
         cannotUpdate.clear();
-        bufferedReader.readLine();
+        String indicator = bufferedReader.readLine();
+        if(indicator.trim().isEmpty() || !indicator.trim().toLowerCase().equals("building name,capacity")){
+            Toast.makeText(getApplicationContext(), "Format Error: Must follow 'Update/Add' line with 'Building Name,Capacity' as a title", Toast.LENGTH_LONG).show();
+            confirm.setEnabled(false);
+            return;
+        }
         String line = bufferedReader.readLine();
-        Log.d("Building IS",line);
         boolean enableButton = true;
         while(line!=null){
             //error check
@@ -197,6 +242,30 @@ public class ManagerCSV extends AppCompatActivity {
         }
 
         confirm.setEnabled(enableButton);
+    }
+    public void removeBuildings(){
+        MutableLiveData<Boolean> removeMLD = new MutableLiveData<>();
+        final Observer<Boolean> removeObserver = new Observer<Boolean>(){
+            @Override
+            public void onChanged(@Nullable final Boolean success){
+                if(success){
+                    setBuilder("Buildings have been removed","If any buildings were not removed due to not existing or having people in them will be displayed");
+                    String textViewMessage = "<u>Following Buildings Not Removed</u><br/>";
+                    for(int i=0;i<cannotUpdate.size();i++){
+                        textViewMessage+="<b>"+cannotUpdate.get(i)+"</b><br/><br/>";
+
+                    }
+                    notUpdatedNames.setText(fromHtml(textViewMessage,1));
+
+                }else{
+                        setBuilder("Error","Either building names don't exist or none of buildings had an occupancy of 0.");
+                }
+                confirm.setEnabled(true);
+                upload.setEnabled(true);
+            }
+        };
+        removeMLD.observe(this, removeObserver);
+        UpdateCapacityService.removeBuildings(this,cannotUpdate,csvBuildingNames,removeMLD);
     }
     public void updateCapacities(){
         MutableLiveData<Boolean> updateMLD = new MutableLiveData<>();
@@ -269,6 +338,8 @@ public class ManagerCSV extends AppCompatActivity {
 
                         }else if(functionality.equals("Add")){
                             addNewBuildings();
+                        }else if(functionality.equals("Remove")){
+                            removeBuildings();
                         }
                     }
                 })

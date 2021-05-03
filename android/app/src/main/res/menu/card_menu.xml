@@ -11,5 +11,10 @@
         android:id="@+id/students_menu"
         android:icon="@drawable/students_icon"
         app:showAsAction="ifRoom"/>
+    <item
+        android:title="Delete Building"
+        android:id="@+id/remove_menu"
+        android:icon="@drawable/delete_building_icon"
+        app:showAsAction="ifRoom"/>
 
 </menu>
