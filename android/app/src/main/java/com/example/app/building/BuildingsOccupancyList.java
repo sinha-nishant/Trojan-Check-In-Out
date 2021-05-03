@@ -262,7 +262,7 @@ private String m_Text = "";
                  removeMLD.observe(BuildingsOccupancyList.this,removeObserver);
 
                  /*uncomment once firebase remove single building is done*/
-                 //FbUpdate.removeBuilding(buildingToRemove,removeMLD);
+                 FbUpdate.deleteBuilding(buildingToRemove,removeMLD);
 
              }
          });

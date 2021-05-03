@@ -77,8 +77,7 @@ public class UpdateCapacityService {
                     }
                 }
                 if(removeableBuildings.size()>0){// some or all building names provided by user were valid
-                    /*uncomment once firebase remove batch buildings done*/
-                    //FbUpdate.removeBuildings(removeableBuildings,removeMLD);
+                    FbUpdate.deleteBuildings(removeableBuildings,removeMLD);
                 }else{// all names provided by user didn't exist in firebase
                     removeMLD.setValue(false);
                 }
