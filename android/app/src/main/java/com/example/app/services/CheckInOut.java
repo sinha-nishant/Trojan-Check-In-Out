@@ -37,7 +37,6 @@ public class CheckInOut {
 
         buildingsMLD.observe(owner,buildingsObserver);
         FbQuery.getBuilding(scanResult,buildingsMLD);
-        FbCheckInOut.checkIn(uscId,sa,checkInMLD);
     }
     public static void checkOut(MutableLiveData<Boolean> checkOutMLD, StudentActivity sa,Long uscId){
         Date checkOutDate = new Date();
