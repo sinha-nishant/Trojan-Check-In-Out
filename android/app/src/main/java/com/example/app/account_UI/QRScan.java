@@ -218,7 +218,7 @@ public class QRScan extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                        //check in student since they double checked
                         if(functionality.equals("checkIn")){
-                            CheckInOut.checkIn(checkInMLD,postScanResult.getText().toString(),retrieveID);
+                            CheckInOut.checkIn(QRScan.this,checkInMLD,postScanResult.getText().toString(),retrieveID);
                         }else if(functionality.equals("checkOut")){
                             CheckInOut.checkOut(checkOutMLD,sa,retrieveID);
 
