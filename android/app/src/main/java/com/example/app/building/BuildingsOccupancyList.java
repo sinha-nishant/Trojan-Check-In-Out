@@ -28,6 +28,7 @@
  import com.example.app.R;
  import com.example.app.account_UI.ManagerHome;
  import com.example.app.account_UI.ManagerSearch;
+ import com.example.app.firebaseDB.FbCheckInOut;
  import com.example.app.firebaseDB.FbQuery;
  import com.example.app.firebaseDB.FbUpdate;
  import com.example.app.firebaseDB.FirestoreConnector;
@@ -243,11 +244,12 @@ private String m_Text = "";
          builder.setTitle(title);
          builder.setMessage(message);
 
+//         FbQuery.getBuilding(buildingToRemove,buildingsMLD);
          builder.setPositiveButton("Remove Building", new DialogInterface.OnClickListener() {
              @Override
              public void onClick(DialogInterface dialog, int which) {
-                 //remove the building since already exists and occupancy is 0
-                 Toast.makeText(getApplicationContext(),"Remove building confirmed",Toast.LENGTH_LONG).show();
+                 //remove the building since already exists and  check again still occupancy is 0
+
                  MutableLiveData<Boolean> removeMLD = new MutableLiveData<>();
                  final Observer<Boolean> removeObserver = new Observer<Boolean>(){
                      @Override
@@ -255,15 +257,27 @@ private String m_Text = "";
                          if(success){
                              Toast.makeText(getApplicationContext(),"Successfully removed.",Toast.LENGTH_LONG).show();
                          }else{
-                             Toast.makeText(getApplicationContext(),"Failed to remove.Try again later.",Toast.LENGTH_LONG).show();
+                             Toast.makeText(getApplicationContext(),"Failed to remove.Try again later or when occupancy is 0.",Toast.LENGTH_LONG).show();
                          }
                      }
                  };
                  removeMLD.observe(BuildingsOccupancyList.this,removeObserver);
+                 MutableLiveData<Building> buildingsMLD = new MutableLiveData<>();
+                 final Observer< Building> buildingsObserver = new Observer<Building>(){
+                     @Override
+                     public void onChanged(@Nullable final Building building){
+                         if(building.getOccupancy()==0){
+                             FbUpdate.deleteBuilding(buildingToRemove,removeMLD);
 
+                         }else{
+                             removeMLD.setValue(false);
+                         }
+                     }
+                 };
+
+                 buildingsMLD.observe(BuildingsOccupancyList.this,buildingsObserver);
                  /*uncomment once firebase remove single building is done*/
-                 FbUpdate.deleteBuilding(buildingToRemove,removeMLD);
-
+                 FbQuery.getBuilding(buildingToRemove,buildingsMLD);
              }
          });
          builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
