@@ -31,6 +31,7 @@ import com.bumptech.glide.request.target.Target;
 import com.example.app.R;
 import com.example.app.account_UI.ManagerHome;
 import com.example.app.account_UI.StudentProfile;
+import com.example.app.firebaseDB.FbUpdate;
 import com.example.app.log_create.uploadPhoto;
 import com.example.app.pre_login_UI.ManagerName;
 import com.example.app.pre_login_UI.StudentUploadPhoto;
@@ -46,6 +47,7 @@ public class UrlUploadImage extends AppCompatActivity {
     private ImageView img;
     private Boolean uploadable;
     private final MutableLiveData<Boolean> upload_success= new MutableLiveData<>();
+    private final MutableLiveData<Boolean> FbUpdate_success= new MutableLiveData<>();
     private String str_email;
     private Boolean isStudent;
     private Boolean isCreated;
@@ -57,6 +59,7 @@ public class UrlUploadImage extends AppCompatActivity {
         setContentView(R.layout.activity_url_upload_image);
         DialogInit();
         MutableUpload();
+        MutableFirebase();
         AmplifyInit();
         url= findViewById(R.id.url);
         img= findViewById(R.id.urlImage);
@@ -120,13 +123,39 @@ public class UrlUploadImage extends AppCompatActivity {
                     return;
                 }
                 if(isSuccess){
-                    pb.setVisibility(View.GONE);
-                    alertDialog.setMessage("Succeeded in uploading profile picture");
-                    alertDialog.show();
+                    FbUpdate.updatePhoto(str_email,FbUpdate_success);
                 }
                 else{
                     pb.setVisibility(View.GONE);
                     alertDialog.setMessage("Error. Could not upload change profile picture");
+                    alertDialog.show();
+                }
+
+            }
+
+        };
+        upload_success.observe(this, upload_obs);
+    }
+
+    public void MutableFirebase(){
+        final Observer<Boolean> upload_obs = new Observer<Boolean>(){
+            @Override
+            public void onChanged(@javax.annotation.Nullable final Boolean isSuccess){
+                if(isSuccess==null){
+                    Log.i("UrlUploadImage", "Firebase boolean was null ");
+                    pb.setVisibility(View.GONE);
+                    alertDialog.setMessage("Database error occurred updating profile picture");
+                    alertDialog.show();
+                    return;
+                }
+                if(isSuccess){
+                    pb.setVisibility(View.GONE);
+                    alertDialog.setMessage("Succeeded in updating profile picture");
+                    alertDialog.show();
+                }
+                else{
+                    pb.setVisibility(View.GONE);
+                    alertDialog.setMessage("Error. Database could not update photo");
                     alertDialog.show();
                 }
 
