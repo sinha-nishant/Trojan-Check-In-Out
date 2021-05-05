@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -101,6 +102,7 @@ public class ManagerSearch extends AppCompatActivity {
         setTime(endTime);
         submitBtn = findViewById(R.id.submit_button);
         ID = findViewById(R.id.id_input);
+        ID.setInputType(InputType.TYPE_CLASS_NUMBER);
         bundle= new Bundle();
         FbQuery.getAllBuildings(buildingsMLD);
     }
