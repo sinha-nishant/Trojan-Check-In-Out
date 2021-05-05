@@ -595,6 +595,31 @@ public class FbQuery implements FirestoreConnector {
         });
     }
 
+    /**
+     * Search by uscID
+     * @param uscID id of desired student
+     * @param student MLD in which student account result will be stored
+     */
+    public static void search(Long uscID, MutableLiveData<StudentAccount> student) {
+        FirestoreConnector.getDB().collection("Accounts").whereEqualTo("uscID", uscID).get()
+            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                        DocumentSnapshot ds = task.getResult().getDocuments().get(0);
+                        StudentAccount account = ds.toObject(StudentAccount.class);
+                        Objects.requireNonNull(account).setUscID((Long) ds.get("uscID"));
+                        student.setValue(account);
+                    }
+
+                    // If database call failed or empty result set
+                    else {
+                        student.setValue(null);
+                    }
+                }
+            });
+    }
+
     private static void getStudents(HashSet<Long> student_ids, MutableLiveData<List<StudentAccount>> studentsMLD) {
         List<StudentAccount> students = new ArrayList<>();
         CollectionReference accounts = FirestoreConnector.getDB().collection("Accounts");

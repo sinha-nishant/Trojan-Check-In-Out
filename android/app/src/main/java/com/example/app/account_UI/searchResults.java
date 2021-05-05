@@ -217,7 +217,7 @@ public class searchResults extends AppCompatActivity {
         }
         if(isID!=null){
             String id = bundle.getString("idValue");
-            FbQuery.getStudent(Long.valueOf(id),idMLD);
+            FbQuery.search(Long.valueOf(id),idMLD);
         }
     }
 
