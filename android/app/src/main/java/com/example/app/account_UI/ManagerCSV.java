@@ -260,6 +260,7 @@ public class ManagerCSV extends AppCompatActivity {
                 }else{
                         setBuilder("Error","Either building names don't exist or none of buildings had an occupancy of 0.");
                 }
+                cannotUpdate.clear();
                 confirm.setEnabled(true);
                 upload.setEnabled(true);
             }
@@ -283,11 +284,12 @@ public class ManagerCSV extends AppCompatActivity {
 
               }else{
                   if(map.size()==0){
-                      setBuilder("Error","Buildings entered don't exist.");
+                      setBuilder("Error","All buildings entered have an error. Either they don't exist or the capacity is less than occupancy. Please look over and fix.");
                   }else{
                       setBuilder("Error","Something went wrong on our side. Please try again later.");
                   }
               }
+              cannotUpdate.clear();
               confirm.setEnabled(true);
               upload.setEnabled(true);
             }
@@ -312,6 +314,7 @@ public class ManagerCSV extends AppCompatActivity {
                 }else{
                     setBuilder("Error","Something went wrong on our side. Please try again later");
                 }
+                cannotUpdate.clear();
                 confirm.setEnabled(true);
                 upload.setEnabled(true);
             }

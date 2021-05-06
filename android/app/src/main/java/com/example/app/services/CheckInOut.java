@@ -26,7 +26,7 @@ public class CheckInOut {
         final Observer< Building> buildingsObserver = new Observer<Building>(){
             @Override
             public void onChanged(@Nullable final Building building){
-                if(building.getCapacity()>building.getOccupancy()){
+                if(building!=null && building.getCapacity()>building.getOccupancy()){
                     FbCheckInOut.checkIn(uscId,sa,checkInMLD);
                 }else{
                     checkInMLD.setValue(false);

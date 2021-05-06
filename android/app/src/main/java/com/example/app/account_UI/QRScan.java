@@ -82,7 +82,7 @@ public class QRScan extends AppCompatActivity {
                 if(success){ //student is checked in  display checkin message
                     setBuilder("Check In Success", "You are now checked in! Don't forget to check out once you leave the building.");
                 }else { //wasn't able to check in student
-                    setBuilder("Check In Failure","Something went wrong with our database. Please try again later.");
+                    setBuilder("Check In Failure","Something went wrong. Either building was recently deleted or capacity reached");
                 }
 
             }
@@ -91,12 +91,16 @@ public class QRScan extends AppCompatActivity {
         final Observer<Building> buildingObserver = new Observer<Building>(){
             @Override
             public void onChanged(@Nullable final Building scannedBuilding){
-                if(scannedBuilding.getOccupancy()<scannedBuilding.getCapacity()){ //if not null and scanned building occupancy isn't full then checkin and display checkin message
+                if(scannedBuilding!= null && scannedBuilding.getOccupancy()<scannedBuilding.getCapacity()){ //if not null and scanned building occupancy isn't full then checkin and display checkin message
                     //add a pop up here saying are you sure you want to check in
                     doubleCheckMessage("Eligible for Check In","Are you sure you want to check into "+postScanResult.getText()+"?","checkIn");
 
                 }else { //if not null and scanned building full then just display capacity full message with the capacity
-                   setBuilder("Check In Failure","The building has reached its full capacity of "+scannedBuilding.getCapacity().toString()+" students.");
+                    if(scannedBuilding!=null){
+                        setBuilder("Check In Failure","The building has reached its full capacity of "+scannedBuilding.getCapacity().toString()+" students.");
+                    }else{
+                        setBuilder("Check In Failure","The building has been deleted");
+                    }
                 }
 
             }
