@@ -6,14 +6,18 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,6 +45,8 @@ import com.example.app.users.StudentActivity;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+
 import static android.app.Activity.RESULT_OK;
 
 public class StudentProfileFragment extends Fragment implements View.OnClickListener{
@@ -50,11 +56,12 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
     private Uri profilepic;
     private AlertDialog alertDialog,picDialog;
     private ProgressBar pb;
-    protected Button UploadBtn;
+    protected Button UploadBtn,pwBtn;
     private ImageView img;
     private final MutableLiveData<StudentAccount> student = new MutableLiveData<>();
     private final MutableLiveData<Boolean> upload_success = new MutableLiveData<>();
     private final MutableLiveData<Boolean> firebase_success = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> password_success = new MutableLiveData<>();
     private final int SELECT_PICTURE = 200;
 
     public StudentProfileFragment() {
@@ -73,6 +80,7 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
         DialogPicInit();
         MutableBoolean();
         MutableFirebase();
+        MutablePassword();
         SharedPreferences sp=  getContext().getSharedPreferences("sharedPrefs",getActivity().MODE_PRIVATE);
         Long id = sp.getLong("uscid",0L);
         FbQuery.getStudent(id,student);
@@ -86,6 +94,8 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
         View view=inflater.inflate(R.layout.fragment_student_profile, container, false);
         UploadBtn = view.findViewById(R.id.studentUpdatePic);
         UploadBtn.setOnClickListener(this);
+        pwBtn= view.findViewById(R.id.UpdatePw);
+        pwBtn.setOnClickListener(this);
         return view;
     }
 
@@ -336,6 +346,33 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
         firebase_success.observe(this, firebaseSuccessObserver);
     }
 
+    public void MutablePassword(){
+        final Observer<Boolean> passwordObserver = new Observer<Boolean>(){
+            @Override
+            public void onChanged(@javax.annotation.Nullable final Boolean pwSuccess){
+                if(pwSuccess==null) {
+                    Log.d("StudentProfileFragment","pw mld is null");
+                    UploadBtn.setEnabled(true);
+                    alertDialog.setMessage("Error occurred while trying to update password");
+                    alertDialog.show();
+                    return;
+                }
+                if(pwSuccess){
+                    UploadBtn.setEnabled(true);
+                    alertDialog.setMessage("Updated password successfully");
+                    alertDialog.show();
+                }
+                else{
+                    UploadBtn.setEnabled(true);
+                    alertDialog.setMessage("Error. Could not change password successfully ");
+                    alertDialog.show();
+                }
+            }
+        };
+
+        password_success.observe(this, passwordObserver);
+    }
+
     public void url(){
         Intent i = new Intent(getActivity(), UrlUploadImage.class);
         Bundle bundle=new Bundle();
@@ -348,8 +385,43 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        picDialog.setMessage("How do you want to upload your picture");
-        picDialog.show();
+        if(v.getId()==pwBtn.getId()){
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("Update Password");
+            builder.setMessage("Please enter new password");
+            LinearLayout linearLayout= new LinearLayout(getActivity());
+            linearLayout.setOrientation(LinearLayout.VERTICAL);
+            final EditText pw = new EditText(getContext());
+            pw.setHint("Enter new Password");
+            pw.setInputType(InputType.TYPE_CLASS_TEXT);
+            linearLayout.addView(pw);
+            builder.setView(linearLayout);
+            builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if(pw.getText().toString().trim().length()<4){
+                        Toast.makeText(getContext(),"Password must be longer than 3 characters",Toast.LENGTH_LONG).show();
+                    }
+                    else{
+                        String hashedPw =  BCrypt.withDefaults().hashToString(12,pw.getText().toString().trim().toCharArray());
+                        FbUpdate.updatePassword(str_email,hashedPw,password_success);
+                        dialog.cancel();
+                    }
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            builder.show();
+
+        }
+        else{
+            picDialog.setMessage("How do you want to upload your picture");
+            picDialog.show();
+        }
     }
 
     class ForegroundBackgroundListener implements LifecycleObserver {
@@ -362,4 +434,7 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
         }
 
     }
+    
+
+
 }
