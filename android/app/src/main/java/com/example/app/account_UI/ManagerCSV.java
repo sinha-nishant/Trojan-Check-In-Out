@@ -259,6 +259,14 @@ public class ManagerCSV extends AppCompatActivity {
 
                 }else{
                         setBuilder("Error","Either building names don't exist or none of buildings had an occupancy of 0.");
+                        if(cannotUpdate.size()>0) {
+                            String textViewMessage = "<u>Following Buildings Not Removed</u><br/>";
+                            for (int i = 0; i < cannotUpdate.size(); i++) {
+                                textViewMessage += "<b>" + cannotUpdate.get(i) + "</b><br/><br/>";
+
+                            }
+                            notUpdatedNames.setText(fromHtml(textViewMessage, 1));
+                        }
                 }
                 cannotUpdate.clear();
                 confirm.setEnabled(true);
