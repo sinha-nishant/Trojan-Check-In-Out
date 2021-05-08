@@ -314,7 +314,7 @@ private String m_Text = "";
              public void onClick(DialogInterface dialog, int which) {
                  //first see if building already exists
                  final Integer cap;
-                 if(!capacity.getText().toString().isEmpty()  && !newBuildingName.getText().toString().isEmpty() ){
+                 if(!capacity.getText().toString().trim().isEmpty()  && !newBuildingName.getText().toString().trim().isEmpty() ){
                      cap = Integer.parseInt(capacity.getText().toString());
                  }else{//if user didn't enter both capacity and name don't go any further
                      cap=null;
@@ -348,7 +348,7 @@ private String m_Text = "";
                  };
                  buildingMLD.observe(BuildingsOccupancyList.this,getBuildingObserver);
                  addBuildingMLD.observe(BuildingsOccupancyList.this,addBuildingObserver);
-                 FbQuery.getBuilding(newBuildingName.getText().toString(),buildingMLD);
+                 FbQuery.getBuilding(newBuildingName.getText().toString().trim(),buildingMLD);
 
              }
          });
