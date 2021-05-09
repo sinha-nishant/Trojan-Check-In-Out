@@ -50,6 +50,9 @@ public class ManagerCSV extends AppCompatActivity {
     private AlertDialog updateMessage;
     private List<String> csvBuildingNames = new ArrayList<String>();
     private List<String> cannotUpdate = new ArrayList<String>();
+    private List<String> occupancyErrorBuildings = new ArrayList<String>();
+    private List<String> notExistErrorBuildings = new ArrayList<String>();
+
     private TextView notUpdatedNames;
 
     @Override
@@ -84,7 +87,7 @@ public class ManagerCSV extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK){
             File csvFile = new File(data.getData().getPath());
-             String fileChosen = fileNamePrefix+csvFile.getName();
+             String fileChosen = fileNamePrefix+csvFile.getPath();
              fileName.setText(fileChosen);
             try {
                 readCSV(data.getData());
@@ -251,30 +254,52 @@ public class ManagerCSV extends AppCompatActivity {
                 if(success){
                     setBuilder("Buildings have been removed","If any buildings were not removed due to not existing or having people in them will be displayed");
                     String textViewMessage = "<u>Following Buildings Not Removed</u><br/>";
-                    for(int i=0;i<cannotUpdate.size();i++){
-                        textViewMessage+="<b>"+cannotUpdate.get(i)+"</b><br/><br/>";
+                    for (int i = 0; i < occupancyErrorBuildings.size(); i++) {
+                        textViewMessage += "<b>" + occupancyErrorBuildings.get(i) + " - Occupied</b><br/><br/>";
 
                     }
+                    for (int i = 0; i < notExistErrorBuildings.size(); i++) {
+                        textViewMessage += "<b>" + notExistErrorBuildings.get(i) + "  - Building nonexistent</b><br/><br/>";
+
+                    }
+
                     notUpdatedNames.setText(fromHtml(textViewMessage,1));
 
                 }else{
-                        setBuilder("Error","Either building names don't exist or none of buildings had an occupancy of 0.");
+                        if(occupancyErrorBuildings.size()>0 && notExistErrorBuildings.size()>0){
+                            setBuilder("Error","Some building names don't exist and some of buildings had an occupancy of 0.");
+                        }else if (occupancyErrorBuildings.size()>0 ){
+                            setBuilder("Error","Buildings entered did not have occupancy of 0");
+
+
+                        }else if(notExistErrorBuildings.size()>0){
+                            setBuilder("Error","Buildings entered didn't exist");
+                        }else{
+                            setBuilder("Server Issue","Try again.");
+
+                        }
                         if(cannotUpdate.size()>0) {
                             String textViewMessage = "<u>Following Buildings Not Removed</u><br/>";
-                            for (int i = 0; i < cannotUpdate.size(); i++) {
-                                textViewMessage += "<b>" + cannotUpdate.get(i) + "</b><br/><br/>";
+                            for (int i = 0; i < occupancyErrorBuildings.size(); i++) {
+                                textViewMessage += "<b>" + occupancyErrorBuildings.get(i) + " - Occupied</b><br/><br/>";
+
+                            }
+                            for (int i = 0; i < notExistErrorBuildings.size(); i++) {
+                                textViewMessage += "<b>" + notExistErrorBuildings.get(i) + "  - Building nonexistent</b><br/><br/>";
 
                             }
                             notUpdatedNames.setText(fromHtml(textViewMessage, 1));
                         }
                 }
+                occupancyErrorBuildings.clear();
+                notExistErrorBuildings.clear();
                 cannotUpdate.clear();
                 confirm.setEnabled(true);
                 upload.setEnabled(true);
             }
         };
         removeMLD.observe(this, removeObserver);
-        UpdateCapacityService.removeBuildings(this,cannotUpdate,csvBuildingNames,removeMLD);
+        UpdateCapacityService.removeBuildings(this,csvBuildingNames,removeMLD,occupancyErrorBuildings,notExistErrorBuildings);
     }
     public void updateCapacities(){
         MutableLiveData<Boolean> updateMLD = new MutableLiveData<>();

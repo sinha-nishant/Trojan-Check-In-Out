@@ -61,7 +61,7 @@ public class UpdateCapacityService {
 
         //once done iterating call batch add
     }
-    public static void removeBuildings(LifecycleOwner owner, List<String> cannotUpdate, List<String> csvBuildingNames, MutableLiveData<Boolean> removeMLD) {
+    public static void removeBuildings(LifecycleOwner owner, List<String> csvBuildingNames, MutableLiveData<Boolean> removeMLD, List<String> occupancyErrorBuildings,List<String> notExistErrorBuildings) {
         //iterate through csvBuildingnames and add ones that exist to array you will pass onto firebase
         List<String> removeableBuildings = new ArrayList<String>();
         MutableLiveData<HashMap<String, Building>> buildingsMLD = new MutableLiveData<>();
@@ -70,10 +70,14 @@ public class UpdateCapacityService {
             public void onChanged(@Nullable final HashMap<String, Building> buildingHashMap){
                 //iterate through csvBuildingNames and if building does exist add it to removeableBuildings
                 for(int i =0;i<csvBuildingNames.size();i++){
-                    if(buildingHashMap.containsKey(csvBuildingNames.get(i)) && buildingHashMap.get(csvBuildingNames.get(i)).getOccupancy()==0 ){// building exists and has no students so can be removed
-                        removeableBuildings.add(csvBuildingNames.get(i));
-                    }else{//doesn't exist or has students so can't remove
-                        cannotUpdate.add(csvBuildingNames.get(i));
+                    if(buildingHashMap.containsKey(csvBuildingNames.get(i))){
+                        if(buildingHashMap.get(csvBuildingNames.get(i)).getOccupancy()==0){
+                            removeableBuildings.add(csvBuildingNames.get(i));
+                        }else{
+                            occupancyErrorBuildings.add(csvBuildingNames.get(i));
+                        }
+                    }else{//building doesn't exist sorrryyyyy
+                        notExistErrorBuildings.add(csvBuildingNames.get(i));
                     }
                 }
                 if(removeableBuildings.size()>0){// some or all building names provided by user were valid
