@@ -54,7 +54,7 @@
         android:id="@+id/button15"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="24dp"
         android:backgroundTint="#980909"
         android:onClick="Delete"
         android:text="Delete Account"
@@ -127,6 +127,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.521" />
+
+    <Button
+        android:id="@+id/pwUpdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#980909"
+        android:onClick="updatePw"
+        android:text="Update Password"
+        android:textColor="#FFC107"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/csvBtn" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

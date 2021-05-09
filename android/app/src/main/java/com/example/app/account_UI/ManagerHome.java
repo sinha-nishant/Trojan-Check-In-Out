@@ -7,14 +7,18 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
@@ -40,6 +44,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+
 public class ManagerHome extends AppCompatActivity {
     private ImageView imgView;
     protected TextView nameView, emailView;
@@ -47,6 +53,7 @@ public class ManagerHome extends AppCompatActivity {
     private final MutableLiveData<Integer> delete_success= new MutableLiveData<>();
     private final MutableLiveData<Boolean> upload_success= new MutableLiveData<>();
     private final MutableLiveData<Boolean> Firebase_success= new MutableLiveData<>();
+    private final MutableLiveData<Boolean> password_success= new MutableLiveData<>();
     private String name, email;
     private Uri profilePic;
     protected Activity activity= this;
@@ -102,6 +109,7 @@ public class ManagerHome extends AppCompatActivity {
         MutableDelete();
         MutableUpdatePic();
         MutableFirebase();
+        MutablePassword();
         FbQuery.getManager(email, account);
 
 
@@ -432,6 +440,31 @@ public class ManagerHome extends AppCompatActivity {
         delete_success.observe(this, delete_obs);
     }
 
+    public void MutablePassword(){
+        final Observer<Boolean> passwordObserver = new Observer<Boolean>(){
+            @Override
+            public void onChanged(@javax.annotation.Nullable final Boolean pwSuccess){
+                if(pwSuccess==null) {
+                    Log.d("ManagerHOme","pw mld is null");
+                    alertDialog.setMessage("Error occurred while trying to update password");
+                    alertDialog.show();
+                    return;
+                }
+                if(pwSuccess){
+                    alertDialog.setMessage("Updated password successfully");
+                    alertDialog.show();
+                }
+                else{
+                    alertDialog.setMessage("Error. Could not change password successfully ");
+                    alertDialog.show();
+                }
+
+            }
+        };
+
+        password_success.observe(this, passwordObserver);
+    }
+
 
     public void openBuildings(View v){
         Intent i = new Intent(this, BuildingsOccupancyList.class);
@@ -471,6 +504,39 @@ public class ManagerHome extends AppCompatActivity {
         picDialog.setMessage("How do you want to upload your picture");
         picDialog.show();
 
+    }
+
+    public void updatePw(View v){
+        AlertDialog.Builder builder = new AlertDialog.Builder(ManagerHome.this);
+        builder.setTitle("Update Password");
+        builder.setMessage("Please enter new password");
+        LinearLayout linearLayout= new LinearLayout(ManagerHome.this);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        final EditText pw = new EditText(ManagerHome.this);
+        pw.setHint("Enter new Password");
+        pw.setInputType(InputType.TYPE_CLASS_TEXT);
+        linearLayout.addView(pw);
+        builder.setView(linearLayout);
+        builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(pw.getText().toString().trim().length()<4){
+                    Toast.makeText(ManagerHome.this,"Password must be longer than 3 characters",Toast.LENGTH_LONG).show();
+                }
+                else{
+                    String hashedPw =  BCrypt.withDefaults().hashToString(12,pw.getText().toString().trim().toCharArray());
+                    FbUpdate.updatePassword(email,hashedPw,password_success);
+                    dialog.cancel();
+                }
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
     }
 
 

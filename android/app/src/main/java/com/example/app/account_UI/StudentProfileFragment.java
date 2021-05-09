@@ -192,7 +192,9 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
                         .OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog,
-                                        int which) {}
+                                        int which) {
+                        alertDialog.setTitle("Image Upload");
+                    }
                 });
         alertDialog = builder.create();
     }
@@ -350,6 +352,7 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
         final Observer<Boolean> passwordObserver = new Observer<Boolean>(){
             @Override
             public void onChanged(@javax.annotation.Nullable final Boolean pwSuccess){
+                alertDialog.setTitle("Account Update");
                 if(pwSuccess==null) {
                     Log.d("StudentProfileFragment","pw mld is null");
                     UploadBtn.setEnabled(true);
@@ -367,6 +370,7 @@ public class StudentProfileFragment extends Fragment implements View.OnClickList
                     alertDialog.setMessage("Error. Could not change password successfully ");
                     alertDialog.show();
                 }
+
             }
         };
 
